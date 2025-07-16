@@ -3,17 +3,24 @@
 namespace App\Livewire\Admin;
 
 use App\Models\franchises;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class ManageFranchises extends Component
+
 {
+    #[Layout('components.layouts.admin-layout')]
+
+
     public $search = '';
     public $statusFilter = '';
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
     public $perPage = 10;
     public function render()
+    
     {
+
         $franchises = franchises::query()
             ->when($this->search, function ($query) {
                 $query->where('franchise_name', 'like', '%' . $this->search . '%')

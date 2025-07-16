@@ -34,8 +34,8 @@
                      x-transition:leave-start="opacity-100 scale-100" 
                      x-transition:leave-end="opacity-0 scale-95"
                      class="ml-8 mt-1 space-y-1">
-                    <a wire:navigate href="{{route('admin.add-franchise')}}" class="block py-2 px-4 rounded hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors">Add Franchise</a>
-                    <a wire:navigate href="{{route('admin.manage-franchises')}}" class="block py-2 px-4 rounded hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors">Manage Franchises</a>
+                    {{-- <a wire:navigate href="{{route('admin.add-franchise')}}" class="block py-2 px-4 rounded hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors">Add Franchise</a> --}}
+                    {{-- <a wire:navigate href="{{route('admin.manage-franchises')}}" class="block py-2 px-4 rounded hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors">Manage Franchises</a> --}}
                 </div>
             </div>
             <!-- Staff Management -->

@@ -4,10 +4,13 @@ namespace App\Livewire\Admin;
 
 use App\Models\franchises;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class AddFranchises extends Component
 {
+    #[Layout('components.layouts.admin-layout')]
+
     public $franchise_name;
     public $contact_no;
     public $email;
