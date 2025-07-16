@@ -12,12 +12,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin', AdminDashboard::class);
-Route::get('admin/add-franchise',AddFranchises::class)->name('admin.add-franchise');
-Route::get('admin/manage-franchises',ManageFranchises::class)->name('admin.manage-franchises');
-Route::get('/admin/view-franchises/{id}', ViewFranchises::class)
-    ->name('admin.view-franchises');
 
+
+Route::prefix("admin")->group(function(){
+    // admin login route here
+    Route::name("admin")->group(function(){
+        Route::middleware("auth")->group(function(){
+            Route::get('', AdminDashboard::class);
+            Route::get('add-franchise',AddFranchises::class)->name('add-franchise');
+            Route::get('manage-franchises',ManageFranchises::class)->name('manage-franchises');
+            Route::get('view-franchises/{id}', ViewFranchises::class)->name('view-franchises');
+        });
+    });
+});
 
 Route::prefix("franchise")->group(function(){
     Route::get("/login", Login::class)->name("franchise.login");
