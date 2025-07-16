@@ -15,7 +15,7 @@ Route::get('/', function () {
 Route::get('admin', AdminDashboard::class);
 Route::get('admin/add-franchise',AddFranchises::class)->name('admin.add-franchise');
 Route::get('admin/manage-franchises',ManageFranchises::class)->name('admin.manage-franchises');
-Route::get('/admin/view-franchises/{id?}', ViewFranchises::class)
+Route::get('/admin/view-franchises/{id}', ViewFranchises::class)
     ->name('admin.view-franchises');
 
 
