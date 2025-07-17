@@ -6,6 +6,7 @@ use App\Livewire\Admin\ManageFranchises;
 use App\Livewire\Admin\ViewFranchises;
 use App\Livewire\Franchise\Dashboard;
 use App\Livewire\Franchise\Login;
+use App\Livewire\Franchise\ManageServiceRequest;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,4 +32,5 @@ Route::prefix("franchise")->group(function(){
     // Route::middleware(['auth'])->group(function () {
     Route::get("/dashboard", Dashboard::class)->name("franchise.dashboard");
     // });
+    Route::get("/manage/request", ManageServiceRequest::class)->name("franchise.manage.request");
 });
