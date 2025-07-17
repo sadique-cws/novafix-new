@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('service_requests', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('reciptionist_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-            // $table->foreignId('technician_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('receptioners_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('technician_id')->nullable()->constrained("staff")->onDelete('cascade');
+            $table->foreignId('service_categories_id')->constrained()->onDelete('cascade');
             $table->string('service_code');
             $table->string('owner_name');
             $table->string('product_name');
             $table->string('email')->nullable();
             $table->string('contact');
             $table->string('brand');
-            // $table->foreignId('type_id')->constrained()->onDelete('cascade');
             $table->string('serial_no')->nullable();
             $table->string('MAC')->nullable();
             $table->string('color');

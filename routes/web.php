@@ -10,6 +10,10 @@ use App\Livewire\Franchise\Login;
 use App\Livewire\Franchise\ManageReceptioners;
 use App\Livewire\Franchise\ManageServiceRequest;
 use App\Livewire\Franchise\ViewReceptioners;
+use App\Livewire\Frontdesk\ManageServiceRequest as FrontdeskManageServiceRequest;
+use App\Livewire\Frontdesk\FrontDashboard;
+use App\Livewire\Frontdesk\FrontDeskLogin;
+use App\Livewire\Frontdesk\ServiceRequestForm;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -48,4 +52,13 @@ Route::prefix("franchise")->group(function () {
         Route::get('/receptionists/{id}', ViewReceptioners::class)
             ->name('view.receptionist');
     });
+});
+
+Route::prefix("frontdesk")->group(function(){
+    Route::get("/login", FrontDeskLogin::class)->name("frontdesk.login");
+    // Route::middleware(['auth'])->group(function () {
+    Route::get("/service-request/create", ServiceRequestForm::class)->name("frontdesk.servicerequest.create");
+    Route::get("/dashboard", FrontDashboard::class)->name("frontdesk.dashboard");
+    Route::get("/manage/service-request", FrontdeskManageServiceRequest::class)->name("frontdesk.servicerequest.manage");
+    // });
 });
