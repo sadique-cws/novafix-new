@@ -40,6 +40,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+
+        'franchise' => [  // Add this new guard
+            'driver' => 'session',
+            'provider' => 'franchises',
+        ],
     ],
 
     /*
@@ -65,6 +75,11 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
+
+        'franchises' => [  // Add this new provider
+            'driver' => 'eloquent',
+            'model' => App\Models\franchises::class, // Make sure this model exists
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
