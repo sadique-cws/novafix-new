@@ -7,6 +7,8 @@ use App\Livewire\Admin\ViewFranchises;
 use App\Livewire\Franchise\Dashboard;
 use App\Livewire\Franchise\Login;
 use App\Livewire\Franchise\ManageServiceRequest;
+use App\Livewire\Frontdesk\FrontDashboard;
+use App\Livewire\Frontdesk\FrontDeskLogin;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,4 +35,11 @@ Route::prefix("franchise")->group(function(){
     Route::get("/dashboard", Dashboard::class)->name("franchise.dashboard");
     // });
     Route::get("/manage/request", ManageServiceRequest::class)->name("franchise.manage.request");
+});
+
+Route::prefix("frontdesk")->group(function(){
+    Route::get("/login", FrontDeskLogin::class)->name("frontdesk.login");
+    // Route::middleware(['auth'])->group(function () {
+    Route::get("/dashboard", FrontDashboard::class)->name("frontdesk.dashboard");
+    // });
 });
