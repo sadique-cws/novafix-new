@@ -2,17 +2,14 @@
 <div class="flex h-screen bg-gray-100 fixed ">
     <!-- Sidebar -->
     <div id="sidebar" class="w-64 bg-white shadow-lg hidden md:block transition-all duration-300">
-      
-        
         <nav class="mt-4 px-4 space-y-1">
             <!-- Dashboard -->
-            <a href="#" class="flex items-center py-2 px-4 rounded hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors">
+            <a href="{{route('admin.dashboard')}}" class="flex items-center py-2 px-4 rounded hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                 </svg>
                 Dashboard
             </a>
-            
             <!-- Franchises Dropdown -->
             <div x-data="{ open: false }" class="relative">
                 <button @click="open = !open" class="w-full flex justify-between items-center py-2 px-4 rounded hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors">
@@ -34,8 +31,8 @@
                      x-transition:leave-start="opacity-100 scale-100" 
                      x-transition:leave-end="opacity-0 scale-95"
                      class="ml-8 mt-1 space-y-1">
-                    {{-- <a wire:navigate href="{{route('admin.add-franchise')}}" class="block py-2 px-4 rounded hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors">Add Franchise</a> --}}
-                    {{-- <a wire:navigate href="{{route('admin.manage-franchises')}}" class="block py-2 px-4 rounded hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors">Manage Franchises</a> --}}
+                    <a wire:navigate href="{{route('admin.add-franchise')}}" class="block py-2 px-4 rounded hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors">Add Franchise</a>
+                    <a wire:navigate href="{{route('admin.manage-franchises')}}" class="block py-2 px-4 rounded hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors">Manage Franchises</a> 
                 </div>
             </div>
             <!-- Staff Management -->
