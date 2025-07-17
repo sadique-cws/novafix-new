@@ -94,11 +94,12 @@
                         <ul id="receptioners-dropdown"
                             class="hidden absolute left-0 right-0 mt-1 ml-4 bg-white border m-2 shadow-md rounded-lg py-1 z-10 w-56">
                             <li>
-                                <a href="{{route('franchise.add.receptioners')}}"
+                                <a href="{{ route('franchise.add.receptioners') }}"
                                     class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Add Receptioners</a>
                             </li>
                             <li>
-                                <a href="{{route('franchise.manage.receptioners')}}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Manage
+                                <a href="{{ route('franchise.manage.receptioners') }}"
+                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Manage
                                     Receptioners</a>
                             </li>
                         </ul>
@@ -135,36 +136,36 @@
                     </li>
                 </ul>
 
-             <div class="mt-8 pt-4 border-t border-gray-200">
-    @auth('franchise')
-        <div class="flex items-center">
-            <img src="{{ Auth::guard('franchise')->user()->profile_photo_url ?? 'https://placehold.co/40x40' }}" 
-                 alt="User profile picture"
-                 class="rounded-full mr-3 w-10 h-10">
-            <div>
-                <h4 class="font-medium text-gray-800">
-                    {{ Auth::guard('franchise')->user()->franchise_name }}
-                </h4>
-                <p class="text-sm text-gray-500">
-                    {{ Auth::guard('franchise')->user()->email }}
-                </p>
-            </div>
-        </div>
-        
-        <!-- Logout Form -->
-        <form method="POST" action="{{ route('franchise.logout') }}" class="w-full">
-            @csrf
-            <button type="submit" class="w-full mt-4 px-4 py-2 bg-gray-100 rounded-lg text-gray-700 hover:bg-gray-200">
-                <i class="fas fa-sign-out-alt mr-2"></i> Logout
-            </button>
-        </form>
-    @else
-        <div class="text-center py-4">
-            <p class="text-gray-500">Not logged in</p>
-            <a href="{{ route('franchise.login') }}" class="text-blue-500 hover:underline">Login</a>
-        </div>
-    @endauth
-</div>
+                <div class="mt-8 pt-4 border-t border-gray-200">
+                    @auth('franchise')
+                        <div class="flex items-center">
+                            <img src="{{ Auth::guard('franchise')->user()->profile_photo_url ?? 'https://placehold.co/40x40' }}"
+                                alt="User profile picture" class="rounded-full mr-3 w-10 h-10">
+                            <div>
+                                <h4 class="font-medium text-gray-800">
+                                    {{ Auth::guard('franchise')->user()->franchise_name }}
+                                </h4>
+                                <p class="text-sm text-gray-500">
+                                    {{ Auth::guard('franchise')->user()->email }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Logout Form -->
+                        <form method="POST" action="{{ route('franchise.logout') }}" class="w-full">
+                            @csrf
+                            <button type="submit"
+                                class="w-full mt-4 px-4 py-2 bg-gray-100 rounded-lg text-gray-700 hover:bg-gray-200">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </button>
+                        </form>
+                    @else
+                        <div class="text-center py-4">
+                            <p class="text-gray-500">Not logged in</p>
+                            <a href="{{ route('franchise.login') }}" class="text-blue-500 hover:underline">Login</a>
+                        </div>
+                    @endauth
+                </div>
             </nav>
         </div>
 
@@ -315,14 +316,15 @@
                 }
             });
         });
-         function toggleDropdown(event, dropdownId) {
-        event.preventDefault();
-        const dropdown = document.getElementById(dropdownId);
-        const chevron = document.getElementById('receptioners-chevron');
-        
-        dropdown.classList.toggle('hidden');
-        chevron.classList.toggle('rotate-180');
-    }
+
+        function toggleDropdown(event, dropdownId) {
+            event.preventDefault();
+            const dropdown = document.getElementById(dropdownId);
+            const chevron = document.getElementById('receptioners-chevron');
+
+            dropdown.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
     </script>
 </body>
 
