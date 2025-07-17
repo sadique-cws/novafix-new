@@ -19,9 +19,9 @@ Route::get('/', function () {
 
 Route::prefix("admin")->group(function(){
     // admin login route here
-    Route::name("admin")->group(function(){
+    Route::name("admin.")->group(function(){
         // Route::middleware("auth")->group(function(){
-            Route::get('', AdminDashboard::class);
+            Route::get('', AdminDashboard::class)->name('dashboard');
             Route::get('add-franchise',AddFranchises::class)->name('add-franchise');
             Route::get('manage-franchises',ManageFranchises::class)->name('manage-franchises');
             Route::get('view-franchises/{id}', ViewFranchises::class)->name('view-franchises');

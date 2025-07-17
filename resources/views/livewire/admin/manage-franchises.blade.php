@@ -42,11 +42,7 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" wire:click="sortBy('franchise_name')">
                                 <div class="flex items-center">
                                     <span>Name</span>
-                                    @if($sortField === 'franchise_name')
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-                                        </svg>
-                                    @endif
+                                  
                                 </div>
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -55,21 +51,13 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" wire:click="sortBy('email')">
                                 <div class="flex items-center">
                                     <span>Email</span>
-                                    @if($sortField === 'email')
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-                                        </svg>
-                                    @endif
+                                
                                 </div>
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" wire:click="sortBy('status')">
                                 <div class="flex items-center">
                                     <span>Status</span>
-                                    @if($sortField === 'status')
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-                                        </svg>
-                                    @endif
+                                  
                                 </div>
                             </th>
                             <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -138,10 +126,7 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
-            <div class="px-6 py-4 border-t border-gray-100">
-                {{ $franchises->links() }}
-            </div>
+        
         </div>
     </div>
 </div>
