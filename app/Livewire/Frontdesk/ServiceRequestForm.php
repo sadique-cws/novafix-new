@@ -6,10 +6,10 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('components.layouts.frontdesk-layout')]
-class FrontDeskLogin extends Component
+class ServiceRequestForm extends Component
 {
     public function render()
     {
-        return view('livewire.frontdesk.front-desk-login');
+        return view('livewire.frontdesk.service-request-form');
     }
 }

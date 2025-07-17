@@ -59,13 +59,13 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-r-full">
+                            <a href="{{ route("frontdesk.servicerequest.create") }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-r-full">
                                 <i class="fas fa-plus-circle mr-3"></i>
                                 <span>New Service</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-r-full">
+                            <a href="{{ route("frontdesk.servicerequest.manage") }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-r-full">
                                 <i class="fas fa-tasks mr-3"></i>
                                 <span>Service Queue</span>
                             </a>
