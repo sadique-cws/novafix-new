@@ -18,17 +18,14 @@ use App\Livewire\Frontdesk\ManageServiceRequest as FrontdeskManageServiceRequest
 use App\Livewire\Frontdesk\FrontDashboard;
 use App\Livewire\Frontdesk\FrontDeskLogin;
 use App\Livewire\Frontdesk\ServiceRequestForm;
+use App\Livewire\Homepage;
 use App\Livewire\Staff\AssignedTask;
 use App\Livewire\Staff\Dashboard as StaffDashboard;
 use App\Livewire\Staff\Login as StaffLogin;
 use App\Livewire\Staff\ShowTask;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
+Route::get('/', Homepage::class)->name('home');
 
 Route::prefix("admin")->group(function () {
     // admin login route here
@@ -46,7 +43,7 @@ Route::prefix("franchise")->group(function () {
     Route::name("franchise.")->group(function () {
         Route::get("/login", Login::class)->name("login");
         // Route::middleware(['auth'])->group(function () {
-        //logout 
+        //logout
         Route::post('/logout', function () {
             auth()->guard('franchise')->logout();
             return redirect()->route('franchise.login');
