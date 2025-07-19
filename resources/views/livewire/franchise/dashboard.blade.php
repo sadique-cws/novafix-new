@@ -8,7 +8,7 @@
                             </div>
                             <div>
                                 <p class="text-gray-500 text-sm">Total Franchises</p>
-                                <h3 class="text-2xl font-bold">128</h3>
+                                <h3 class="text-2xl font-bold">12</h3>
                             </div>
                         </div>
                         <div class="mt-4">
@@ -17,7 +17,6 @@
                             </p>
                         </div>
                     </div>
-
                     <div class="card stat-card bg-white rounded-lg shadow p-6">
                         <div class="flex items-center">
                             <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">

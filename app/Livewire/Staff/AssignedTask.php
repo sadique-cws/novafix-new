@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Livewire\Frontdesk;
-use Illuminate\Support\Facades\Auth;
+namespace App\Livewire\Staff;
 
-use App\Models\ServiceRequest;
-use App\Models\Staff;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\ServiceRequest;
+use Illuminate\Support\Facades\Auth;
 
-#[Layout('components.layouts.frontdesk-layout')]
-class ManageServiceRequest extends Component
+#[Layout('components.layouts.staff-layout')]
+class AssignedTask extends Component
 {
-
     use WithPagination;
+
     public $search = '';
     public $statusFilter = '';
     public $perPage = 10;
@@ -35,7 +34,6 @@ class ManageServiceRequest extends Component
         } else {
             $this->sortDirection = 'asc';
         }
-
         $this->sortField = $field;
     }
 
@@ -48,11 +46,13 @@ class ManageServiceRequest extends Component
     {
         $this->resetPage();
     }
+   
 
     public function render()
     {
         $requests = ServiceRequest::query()
-            ->where('receptioners_id', Auth::guard('frontdesk')->user()->id) // Filter by logged-in receptionist
+            ->where('technician_id', Auth::guard('staff')->user()->id) // Only show tasks assigned to current staff member
+            ->with(['receptionist']) // Eager load the receptionist relationship
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('service_code', 'like', '%' . $this->search . '%')
@@ -73,15 +73,9 @@ class ManageServiceRequest extends Component
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
 
-        return view('livewire.frontdesk.manage-service-request', [
-            'requests' => $requests,
+        return view('livewire.staff.assigned-task', [
+            'requests' => $requests
         ]);
-    }
-
-    public function deleteRequest($id)
-    {
-        ServiceRequest::destroy($id);
-        session()->flash('message', 'Service request deleted successfully.');
     }
 
     public function updateStatus($id, $status)
@@ -95,17 +89,4 @@ class ManageServiceRequest extends Component
             session()->flash('message', 'Status updated successfully.');
         }
     }
-
-    public function assignTechnician($requestId, $technicianId)
-    {
-        $request = ServiceRequest::find($requestId);
-        if ($request) {
-            $request->update([
-                'technician_id' => $technicianId,
-                'last_update' => now()
-            ]);
-            session()->flash('message', 'Technician assigned successfully.');
-        }
-    }
-   
 }

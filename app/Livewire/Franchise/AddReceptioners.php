@@ -4,6 +4,7 @@ namespace App\Livewire\Franchise;
 
 use App\Models\franchises;
 use App\Models\Receptioners;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -44,7 +45,7 @@ class AddReceptioners extends Component
         $this->validate();
 
         Receptioners::create([
-            'franchise_id' => $this->franchise_id,
+            'franchise_id' => Auth::guard('franchise')->user()->id,
             'name' => $this->name,
             'contact' => $this->contact,
             'email' => $this->email,
@@ -57,7 +58,7 @@ class AddReceptioners extends Component
         ]);
 
         session()->flash('success', 'Receptionist added successfully!');
-        $this->redirect('/manage-receptioners', navigate: true);
+        $this->redirect('manage-receptioners', navigate: true);
     }
    
 }

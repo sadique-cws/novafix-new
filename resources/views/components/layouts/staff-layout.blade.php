@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechCare - Service Center Dashboard</title>
+    <title>TechCare - Staff Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script>
         tailwind.config = {
             theme: {
@@ -21,6 +20,7 @@
                         danger: '#EF4444', // red-500
                         warning: '#F59E0B', // amber-500
                         info: '#06B6D4', // cyan-500
+                        staff: '#8B5CF6', // violet-500 (for staff-specific accent)
                     }
                 }
             }
@@ -38,8 +38,8 @@
                     <i class="fas fa-bars text-xl"></i>
                 </button>
                 <img src="https://placehold.co/40x40" alt="TechCare logo"
-                    class="h-10 w-10 rounded-full border-2 border-primary">
-                <h1 class="text-xl md:text-2xl font-semibold text-gray-800">NovaFix Service Center</h1>
+                    class="h-10 w-10 rounded-full border-2 border-staff">
+                <h1 class="text-xl md:text-2xl font-semibold text-gray-800">NovaFix Staff Portal</h1>
             </div>
             <div class="flex items-center space-x-4">
                 <button class="relative p-2 text-gray-600 hover:text-gray-900 focus:outline-none">
@@ -51,8 +51,8 @@
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open" class="flex items-center gap-2 focus:outline-none">
                         <img src="{{ auth()->user()->profile_photo_url ?? 'https://placehold.co/36x36' }}"
-                            alt="User Profile" class="h-9 w-9 rounded-full border-2 border-primary">
-                        <span class="font-medium hidden sm:inline">{{Auth::guard('frontdesk')->user()->name }}</span>
+                            alt="User Profile" class="h-9 w-9 rounded-full border-2 border-staff">
+                        <span class="font-medium hidden sm:inline">{{Auth::guard('staff')->user()->name}}</span>
                         <i class="fas fa-chevron-down text-xs ml-1"></i>
                     </button>
 
@@ -81,40 +81,53 @@
             </div>
         </div>
     </header>
-
-    <div class="flex pt-[72px]">
+    <div class="flex pt-[72px] ">
         <!-- Fixed Sidebar (desktop) -->
         <aside id="sidebar"
             class="fixed md:relative z-40 bg-white w-64 shadow-md py-6 inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition duration-200 ease-in-out">
             <nav>
                 <ul class="space-y-1">
                     <li>
-                        <a wire:navigate href="{{route('frontdesk.dashboard')}}"
-                            class="flex items-center px-5 py-3 bg-primary text-white font-medium rounded-r-full">
+                        <a wire:navigate href="{{ route('staff.dashboard') }}"
+                            class="flex items-center px-5 py-3 hover:bg-gray-100 text-gray-700 rounded-r-full transition duration-150">
                             <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
                         </a>
                     </li>
                     <li>
-                        <a wire:navigate href="{{ route('frontdesk.servicerequest.create') }}"
-                            class="flex items-center px-5 py-3 hover:bg-gray-100 text-gray-700 rounded-r-full transition duration-150">
-                            <i class="fas fa-plus-circle mr-3"></i> New Service
+                        <a wire:navigate href="{{route('staff.assigned.task')}}"
+                            class="flex items-center px-5 py-3 bg-staff text-white font-medium rounded-r-full">
+                            <i class="fas fa-tasks mr-3"></i> Assigned Tasks
                         </a>
                     </li>
                     <li>
-                        <a wire:navigate href="{{ route('frontdesk.servicerequest.manage') }}"
+                        <a wire:navigate href=""
                             class="flex items-center px-5 py-3 hover:bg-gray-100 text-gray-700 rounded-r-full transition duration-150">
-                            <i class="fas fa-tasks mr-3"></i> Service Queue
+                            <i class="fas fa-check-circle mr-3"></i> Completed Tasks
                         </a>
                     </li>
-                    <!-- ... other menu items ... -->
+                    <li>
+                        <a wire:navigate href=""
+                            class="flex items-center px-5 py-3 hover:bg-gray-100 text-gray-700 rounded-r-full transition duration-150">
+                            <i class="fas fa-boxes mr-3"></i> Inventory
+                        </a>
+                    </li>
+                    <li>
+                        <a wire:navigate href=""
+                            class="flex items-center px-5 py-3 hover:bg-gray-100 text-gray-700 rounded-r-full transition duration-150">
+                            <i class="fas fa-chart-bar mr-3"></i> Reports
+                        </a>
+                    </li>
+                    <li>
+                        <a wire:navigate href=""
+                            class="flex items-center px-5 py-3 hover:bg-gray-100 text-gray-700 rounded-r-full transition duration-150">
+                            <i class="fas fa-cog mr-3"></i> Settings
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </aside>
-
-        <!-- Main Content -->
-        <main class="flex-1 ml-0 p-4 md:p-6">
-            {{ $slot }}
-        </main>
+  {{ $slot }}
+    
     </div>
 
     <!-- Mobile Overlay -->

@@ -50,6 +50,14 @@ return [
             'driver' => 'session',
             'provider' => 'franchises',
         ],
+        'frontdesk' => [
+            'driver' => 'session',
+            'provider' => 'frontdesks',
+        ],
+        'staff' => [
+            'driver' => 'session',
+            'provider' => 'staff',
+        ],
     ],
 
     /*
@@ -84,6 +92,14 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+        'frontdesks' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Receptioners::class,
+        ],
+        'staff' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Staff::class,
+        ],
     ],
 
     /*

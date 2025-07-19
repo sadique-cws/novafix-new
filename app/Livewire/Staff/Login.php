@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Livewire\Franchise;
+namespace App\Livewire\Staff;
 
-use App\Models\franchises;
-use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 #[Layout('components.layouts.public-layout')]
 class Login extends Component
 {
-
     public $email;
     public $password;
     public $error;
@@ -28,18 +25,17 @@ class Login extends Component
     {
         $this->validate();
 
-        if (Auth::guard('franchise')->attempt([
+        if (Auth::guard('staff')->attempt([
             'email' => $this->email,
             'password' => $this->password
         ])) {
-          $this->redirect('dashboard', navigate: true);
+            $this->redirect('dashboard');
         }
 
         $this->error = 'Invalid email or password';
     }
-
     public function render()
     {
-        return view('livewire.franchise.login');
+        return view('livewire.staff.login');
     }
 }

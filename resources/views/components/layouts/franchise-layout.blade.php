@@ -75,12 +75,36 @@
             <nav class="p-4">
                 <ul>
                     <li class="mb-1">
-                        <a href="#"
-                            class="flex items-center p-3 text-gray-700 rounded-lg bg-blue-50 text-blue-600">
+                        <a wire:navigate href="{{route('franchise.dashboard')}}"
+                            class="flex items-center p-3  rounded-lg bg-blue-50 text-blue-600">
                             <i class="fas fa-tachometer-alt mr-3"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
+
+                    <!-- Staff Section -->
+                    <li class="mb-1 relative">
+                        <a href="" onclick="toggleDropdown(event, 'staff-dropdown')"
+                            class="flex items-center justify-between p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                            <div class="flex items-center">
+                                <i class="fas fa-users-cog mr-3"></i>
+                                <span>Staff</span>
+                            </div>
+                            <i class="fas fa-chevron-down text-xs ml-2 transition-transform" id="staff-chevron"></i>
+                        </a>
+                        <ul id="staff-dropdown"
+                            class="hidden absolute left-0 right-0 mt-1 ml-4 bg-white border m-2 shadow-md rounded-lg py-1 z-10 w-56">
+                            <li>
+                                <a wire:navigate href="{{route('franchise.add.staff')}}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Add Staff</a>
+                            </li>
+                            <li>
+                                <a wire:navigate href="{{route('franchise.manage.staff')}}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Manage
+                                    Staff</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
                     <li class="mb-1 relative">
                         <a href="#" onclick="toggleDropdown(event, 'receptioners-dropdown')"
                             class="flex items-center justify-between p-3 text-gray-700 rounded-lg hover:bg-blue-50">
@@ -94,42 +118,48 @@
                         <ul id="receptioners-dropdown"
                             class="hidden absolute left-0 right-0 mt-1 ml-4 bg-white border m-2 shadow-md rounded-lg py-1 z-10 w-56">
                             <li>
-                                <a href="{{ route('franchise.add.receptioners') }}"
+                                <a wire:navigate href="{{ route('franchise.add.receptioners') }}"
                                     class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Add Receptioners</a>
                             </li>
                             <li>
-                                <a href="{{ route('franchise.manage.receptioners') }}"
+                                <a wire:navigate href="{{ route('franchise.manage.receptioners') }}"
                                     class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Manage
                                     Receptioners</a>
                             </li>
                         </ul>
                     </li>
                     <li class="mb-1">
-                        <a href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a wire:navigate href="" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                            <i class="fas fa-tags mr-3"></i>
+                            <span>Types</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a  href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-users mr-3"></i>
                             <span>Customers</span>
                         </a>
                     </li>
                     <li class="mb-1">
-                        <a href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a wire:navigate href="{{route('franchise.manage.service')}}" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-wrench mr-3"></i>
                             <span>Services</span>
                         </a>
                     </li>
                     <li class="mb-1">
-                        <a href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a  href="{{route('franchise.manage.payments')}}" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-file-invoice-dollar mr-3"></i>
-                            <span>Invoices</span>
+                            <span>Manage </span>
                         </a>
                     </li>
                     <li class="mb-1">
-                        <a href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a  href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-chart-line mr-3"></i>
                             <span>Reports</span>
                         </a>
                     </li>
                     <li class="mb-1">
-                        <a href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a  href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-cog mr-3"></i>
                             <span>Settings</span>
                         </a>
@@ -162,7 +192,7 @@
                     @else
                         <div class="text-center py-4">
                             <p class="text-gray-500">Not logged in</p>
-                            <a href="{{ route('franchise.login') }}" class="text-blue-500 hover:underline">Login</a>
+                            <a wire:navigate href="{{ route('franchise.login') }}" class="text-blue-500 hover:underline">Login</a>
                         </div>
                     @endauth
                 </div>

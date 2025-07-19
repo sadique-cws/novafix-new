@@ -10,5 +10,8 @@ class franchises extends Authenticatable
 {
    use HasFactory, Notifiable;
    protected $guarded = [];
-   
+   public function payments()
+   {
+      return $this->hasMany(Payment::class);
+   }
 }
