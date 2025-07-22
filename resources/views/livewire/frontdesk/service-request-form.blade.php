@@ -142,15 +142,7 @@
                     @enderror
                 </div>
 
-                <!-- Status -->
-                <div>
-                    <label for="status" class="block text-sm font-medium text-slate-600">Status</label>
-                    <input type="number" step="0.01" id="status" wire:model="status"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
-                    @error('status')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
+            
 
                 <!-- Problem and Remark -->
                 <div class="md:col-span-2">
@@ -161,16 +153,7 @@
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-
-                <div class="md:col-span-2">
-                    <label for="remark" class="block text-sm font-medium text-slate-600">Remark</label>
-                    <textarea id="remark" wire:model="remark" rows="2"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2"></textarea>
-                    @error('remark')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-
+                
                 <div>
                     <label for="estimate_delivery" class="block text-sm font-medium text-slate-600">Estimated
                         Delivery</label>

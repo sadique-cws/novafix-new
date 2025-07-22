@@ -34,8 +34,5 @@ class Login extends Component
 
         $this->error = 'Invalid email or password';
     }
-    public function render()
-    {
-        return view('livewire.staff.login');
-    }
+ 
 }

@@ -75,7 +75,7 @@
             <nav class="p-4">
                 <ul>
                     <li class="mb-1">
-                        <a wire:navigate href="{{route('franchise.dashboard')}}"
+                        <a wire:navigate href="{{ route('franchise.dashboard') }}"
                             class="flex items-center p-3  rounded-lg bg-blue-50 text-blue-600">
                             <i class="fas fa-tachometer-alt mr-3"></i>
                             <span>Dashboard</span>
@@ -95,10 +95,12 @@
                         <ul id="staff-dropdown"
                             class="hidden absolute left-0 right-0 mt-1 ml-4 bg-white border m-2 shadow-md rounded-lg py-1 z-10 w-56">
                             <li>
-                                <a wire:navigate href="{{route('franchise.add.staff')}}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Add Staff</a>
+                                <a wire:navigate href="{{ route('franchise.add.staff') }}"
+                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Add Staff</a>
                             </li>
                             <li>
-                                <a wire:navigate href="{{route('franchise.manage.staff')}}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Manage
+                                <a wire:navigate href="{{ route('franchise.manage.staff') }}"
+                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Manage
                                     Staff</a>
                             </li>
 
@@ -129,37 +131,40 @@
                         </ul>
                     </li>
                     <li class="mb-1">
-                        <a wire:navigate href="" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a wire:navigate href=""
+                            class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-tags mr-3"></i>
                             <span>Types</span>
                         </a>
                     </li>
                     <li class="mb-1">
-                        <a  href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-users mr-3"></i>
                             <span>Customers</span>
                         </a>
                     </li>
                     <li class="mb-1">
-                        <a wire:navigate href="{{route('franchise.manage.service')}}" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a wire:navigate href="{{ route('franchise.manage.service') }}"
+                            class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-wrench mr-3"></i>
                             <span>Services</span>
                         </a>
                     </li>
                     <li class="mb-1">
-                        <a  href="{{route('franchise.manage.payments')}}" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="{{ route('franchise.manage.payments') }}"
+                            class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-file-invoice-dollar mr-3"></i>
                             <span>Manage </span>
                         </a>
                     </li>
                     <li class="mb-1">
-                        <a  href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-chart-line mr-3"></i>
                             <span>Reports</span>
                         </a>
                     </li>
                     <li class="mb-1">
-                        <a  href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-cog mr-3"></i>
                             <span>Settings</span>
                         </a>
@@ -181,18 +186,16 @@
                             </div>
                         </div>
 
-                        <!-- Logout Form -->
-                        <form method="POST" action="{{ route('franchise.logout') }}" class="w-full">
-                            @csrf
-                            <button type="submit"
-                                class="w-full mt-4 px-4 py-2 bg-gray-100 rounded-lg text-gray-700 hover:bg-gray-200">
-                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                            </button>
-                        </form>
+
+                        <a href="{{ route('franchise.logout') }}"
+                            class="w-full mt-4 px-4 py-2 bg-gray-100 rounded-lg text-gray-700 hover:bg-gray-200">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </a>
                     @else
                         <div class="text-center py-4">
                             <p class="text-gray-500">Not logged in</p>
-                            <a wire:navigate href="{{ route('franchise.login') }}" class="text-blue-500 hover:underline">Login</a>
+                            <a wire:navigate href="{{ route('franchise.login') }}"
+                                class="text-blue-500 hover:underline">Login</a>
                         </div>
                     @endauth
                 </div>

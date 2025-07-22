@@ -24,4 +24,11 @@ class Staff extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return asset('storage/' . $this->image);
+        }
+        return asset('images/default-avatar.png'); // Default image if none exists
+    }
 }

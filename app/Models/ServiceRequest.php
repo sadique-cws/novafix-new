@@ -25,6 +25,7 @@ class ServiceRequest extends Model
         'status',
         'last_update',
         'delivered_by',
+        'delivery_status',
         'estimate_delivery',
         'date_of_delivery',
         'image'
@@ -55,6 +56,10 @@ class ServiceRequest extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+    public function deliveredBy()
+    {
+        return $this->belongsTo(Receptioners::class, 'delivered_by');
     }
    
 }

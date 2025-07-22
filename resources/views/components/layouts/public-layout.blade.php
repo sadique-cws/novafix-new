@@ -9,7 +9,9 @@
     @livewireStyles
 </head>
 <body>
-     <livewire:partials.navbar />
+   <div class="p-4 bg-blue-500">
+  <h2 class="font-semibold text-white text-2xl">   NovaFix</h2>
+   </div>
 
    
     <div class="mt-24">

@@ -40,6 +40,9 @@ class Payment extends Model
     {
         return $this->belongsTo(franchises::class);
     }
-
+    public function receivedBy()
+    {
+        return $this->belongsTo(Receptioners::class, 'received_by');
+    }
    
 }

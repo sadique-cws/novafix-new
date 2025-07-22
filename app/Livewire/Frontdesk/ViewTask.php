@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire\Staff;
+namespace App\Livewire\Frontdesk;
 
+use Livewire\Attributes\Layout;
 use App\Models\Payment;
 use App\Models\ServiceRequest;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('components.layouts.staff-layout')]
-class ShowTask extends Component
+#[Layout('components.layouts.frontdesk-layout')]
+class ViewTask extends Component
 {
     public ServiceRequest $task;
     public $statusOptions = [
@@ -122,20 +122,17 @@ class ShowTask extends Component
         $discountAmount = 0;
         $totalAmount = $this->paymentAmount + $taxAmount - $discountAmount;
 
-        // Create payment record with pending status
         $payment = Payment::create([
             'service_request_id' => $this->task->id,
             'amount' => $this->paymentAmount,
             'total_amount' => $totalAmount,
             'payment_method' => $this->paymentMethod,
             'transaction_id' => $this->paymentMethod === 'cash' ? 'CASH-' . uniqid() : $this->paymentReference,
-            'status' => 'pending', // Payment status is pending
-            'staff_id' => Auth::guard('staff')->user()->id,
-            'notes' => $this->paymentReference
-            
+            'status' => 'completed',
+            'received_by' => Auth::guard('frontdesk')->user()->id,
+            'notes' => $this->paymentReference,
         ]);
 
-        // Update service request to completed
         $this->task->update([
             'status' => 100,
             'last_update' => now(),
@@ -161,10 +158,21 @@ class ShowTask extends Component
         $this->showPaymentSection = false;
         $this->selectedStatus = $this->task->status;
     }
+    public function markAsDelivered()
+    {
+        $this->task->update([
+            'delivery_status' => 1,
+            'delivered_by' => auth('frontdesk')->id(),
+            'delivered_at' => now(),
+        ]);
+
+        session()->flash('delivery-success', 'Service request marked as delivered successfully!');
+        $this->task->refresh();
+    }
 
     public function render()
     {
-        return view('livewire.staff.show-task', [
+        return view('livewire.frontdesk.view-task', [
             'task' => $this->task->load('receptionist', 'serviceCategory', 'payments')
         ]);
     }

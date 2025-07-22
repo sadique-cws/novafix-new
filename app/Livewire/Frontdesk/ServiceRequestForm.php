@@ -112,7 +112,10 @@ class ServiceRequestForm extends Component
         $this->resetForm();
 
         session()->flash('success', 'Service request created successfully!');
-        $this->redirectRoute('frontdesk.servicerequest.manage', navigate: true);
+        $this->redirect(
+            route('frontdesk.servicerequest.manage'),
+            navigate: true
+        );
     }
 
     protected function resetForm()

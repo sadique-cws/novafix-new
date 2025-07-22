@@ -4,123 +4,233 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechCare - Service Center Dashboard</title>
+    <title>NovaFix - Service Center Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        poppins: ['Poppins', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: '#3B82F6', // indigo-500
-                        secondary: '#10B981', // emerald-500
-                        danger: '#EF4444', // red-500
-                        warning: '#F59E0B', // amber-500
-                        info: '#06B6D4', // cyan-500
-                    }
-                }
-            }
-        };
-    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-left: 3px solid #3B82F6;
+            color: #3B82F6;
+            font-weight: 500;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(243, 244, 246, 0.5);
+        }
+
+        .notification-dot {
+            box-shadow: 0 0 0 2px white;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800 font-poppins">
+<body class="bg-gray-50 text-gray-800 font-poppins antialiased">
     <!-- Fixed Navbar -->
-    <header class="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
-        <div class="px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-gray-900">
+    <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50 border-b border-gray-100">
+        <div class="px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <button id="mobile-menu-button" class="md:hidden text-gray-500 hover:text-primary focus:outline-none">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <img src="https://placehold.co/40x40" alt="TechCare logo"
-                    class="h-10 w-10 rounded-full border-2 border-primary">
-                <h1 class="text-xl md:text-2xl font-semibold text-gray-800">NovaFix Service Center</h1>
+                <div class="flex items-center gap-3">
+                    <div
+                        class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
+                        <span class="text-white font-semibold text-lg">NF</span>
+                    </div>
+                    <h1 class="text-xl md:text-2xl font-semibold text-dark-800">NovaFix <span
+                            class="text-primary-600">Recepoinst</span></h1>
+                </div>
             </div>
-            <div class="flex items-center space-x-4">
-                <button class="relative p-2 text-gray-600 hover:text-gray-900 focus:outline-none">
-                    <i class="fas fa-bell text-xl"></i>
-                    <span
-                        class="absolute -top-1 -right-1 px-1.5 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full">3</span>
-                </button>
+
+            <div class="flex items-center space-x-5">
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open"
+                        class="relative p-1 text-gray-500 hover:text-primary focus:outline-none">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full notification-dot"></span>
+                    </button>
+
+                    <div x-show="open" @click.away="open = false" x-transition
+                        class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50">
+                        <div class="px-4 py-2 border-b border-gray-100">
+                            <h3 class="font-medium text-gray-800">Notifications (3)</h3>
+                        </div>
+                        <div class="divide-y divide-gray-100">
+                            <a href="#" class="block px-4 py-3 hover:bg-gray-50 transition">
+                                <div class="flex items-start">
+                                    <div
+                                        class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
+                                        <i class="fas fa-tools"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-800">New service request</p>
+                                        <p class="text-xs text-gray-500 mt-1">Customer: John Doe - iPhone 13</p>
+                                        <p class="text-xs text-gray-400 mt-1">2 minutes ago</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <!-- More notification items -->
+                        </div>
+                        <div class="px-4 py-2 text-center border-t border-gray-100">
+                            <a href="#" class="text-sm font-medium text-primary hover:text-blue-700">View all
+                                notifications</a>
+                        </div>
+                    </div>
+                </div>
 
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open" class="flex items-center gap-2 focus:outline-none">
-                        <img src="{{ auth()->user()->profile_photo_url ?? 'https://placehold.co/36x36' }}"
-                            alt="User Profile" class="h-9 w-9 rounded-full border-2 border-primary">
-                        <span class="font-medium hidden sm:inline">{{Auth::guard('frontdesk')->user()->name }}</span>
-                        <i class="fas fa-chevron-down text-xs ml-1"></i>
+                        <img src="{{ auth()->user()->profile_photo_url ?? 'https://placehold.co/40x40' }}"
+                            alt="User Profile" class="h-9 w-9 rounded-full border-2 border-white shadow-sm">
+                        <div class="text-left hidden md:block">
+                            <p class="text-sm font-medium text-gray-800">{{ Auth::guard('frontdesk')->user()->name }}
+                            </p>
+                            <p class="text-xs text-gray-500">Front Desk</p>
+                        </div>
+                        <i class="fas fa-chevron-down text-xs ml-1 text-gray-500"></i>
                     </button>
 
-                    <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-100"
-                        x-transition:enter-start="transform opacity-0 scale-95"
-                        x-transition:enter-end="transform opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-75"
-                        x-transition:leave-start="transform opacity-100 scale-100"
-                        x-transition:leave-end="transform opacity-0 scale-95"
-                        class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            <i class="fas fa-user mr-2"></i> Profile
+                    <div x-show="open" @click.away="open = false" x-transition
+                        class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-md py-1 z-50 border border-gray-100">
+                        <a href="#"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition flex items-center">
+                            <i class="fas fa-user-circle mr-2 text-gray-500"></i> Profile
                         </a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            <i class="fas fa-cog mr-2"></i> Settings
+                        <a href="#"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition flex items-center">
+                            <i class="fas fa-cog mr-2 text-gray-500"></i> Settings
                         </a>
-                        <form method="POST" action="">
-                            @csrf
-                            <button type="submit"
-                                class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                            </button>
-                        </form>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="{{ route('frontdesk.logout') }}"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition flex items-center">
+                            <i class="fas fa-sign-out-alt mr-2 text-gray-500"></i> Logout
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="flex pt-[72px]">
-        <!-- Fixed Sidebar (desktop) -->
+    <div class="flex pt-16">
+        <!-- Fixed Sidebar -->
         <aside id="sidebar"
-            class="fixed md:relative z-40 bg-white w-64 shadow-md py-6 inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition duration-200 ease-in-out">
-            <nav>
+            class="fixed top-16 left-0 bottom-0 bg-white w-64 shadow-sm py-4  border-r border-gray-100 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out overflow-y-auto">
+            <nav class="px-3">
                 <ul class="space-y-1">
                     <li>
-                        <a wire:navigate href="{{route('frontdesk.dashboard')}}"
-                            class="flex items-center px-5 py-3 bg-primary text-white font-medium rounded-r-full">
-                            <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
+                        <a wire:navigate href="{{ route('frontdesk.dashboard') }}"
+                            class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150 {{ request()->routeIs('frontdesk.dashboard') ? 'active' : '' }}">
+                            <i class="fas fa-tachometer-alt mr-3 text-gray-500"></i>
+                            <span>Dashboard</span>
                         </a>
                     </li>
                     <li>
                         <a wire:navigate href="{{ route('frontdesk.servicerequest.create') }}"
-                            class="flex items-center px-5 py-3 hover:bg-gray-100 text-gray-700 rounded-r-full transition duration-150">
-                            <i class="fas fa-plus-circle mr-3"></i> New Service
+                            class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150 {{ request()->routeIs('frontdesk.servicerequest.create') ? 'active' : '' }}">
+                            <i class="fas fa-plus-circle mr-3 text-gray-500"></i>
+                            <span>New Service Request</span>
                         </a>
                     </li>
                     <li>
                         <a wire:navigate href="{{ route('frontdesk.servicerequest.manage') }}"
-                            class="flex items-center px-5 py-3 hover:bg-gray-100 text-gray-700 rounded-r-full transition duration-150">
-                            <i class="fas fa-tasks mr-3"></i> Service Queue
+                            class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150 {{ request()->routeIs('frontdesk.servicerequest.manage') ? 'active' : '' }}">
+                            <i class="fas fa-tasks mr-3 text-gray-500"></i>
+                            <span>Service Queue</span>
+                            <span
+                                class="ml-auto bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">5</span>
                         </a>
                     </li>
-                    <!-- ... other menu items ... -->
+                    <li>
+                        <a wire:navigate href="{{ route('frontdesk.servicerequest.completed') }}"
+                            class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150 {{ request()->routeIs('frontdesk.servicerequest.completed') ? 'active' : '' }}">
+                            <i class="fas fa-check-circle mr-3 text-gray-500"></i>
+                            <span>Completed Services</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a wire:navigate href="#"
+                            class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150">
+                            <i class="fas fa-users mr-3 text-gray-500"></i>
+                            <span>Customers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a wire:navigate href="#"
+                            class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150">
+                            <i class="fas fa-boxes mr-3 text-gray-500"></i>
+                            <span>Inventory</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a wire:navigate href="#"
+                            class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150">
+                            <i class="fas fa-chart-line mr-3 text-gray-500"></i>
+                            <span>Reports</span>
+                        </a>
+                    </li>
                 </ul>
+
+                <div class="mt-8 px-4">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Support</h3>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="#"
+                                class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150">
+                                <i class="fas fa-question-circle mr-3 text-gray-500"></i>
+                                <span>Help Center</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150">
+                                <i class="fas fa-cog mr-3 text-gray-500"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 ml-0 p-4 md:p-6">
-            {{ $slot }}
+        <main class="flex-1 md:ml-64 transition-all duration-200">
+            <div class="px-6 py-5">
+                <!-- Breadcrumbs -->
+                <div class="flex items-center text-sm text-gray-600 mb-6">
+                    <a href="{{ route('frontdesk.dashboard') }}" class="hover:text-primary">Dashboard</a>
+                    <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                    <span class="text-gray-500">Current Page</span>
+                </div>
+
+                <!-- Page Header -->
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">@yield('title', 'Dashboard')</h2>
+                        <p class="text-gray-600 mt-1">@yield('subtitle', 'Overview of your service center')</p>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        @yield('header-actions')
+                    </div>
+                </div>
+
+                <!-- Page Content -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    {{ $slot }}
+                </div>
+            </div>
         </main>
     </div>
 
     <!-- Mobile Overlay -->
-    <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
+    <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden" x-cloak></div>
 
-    <!-- JS for Sidebar Toggle -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -139,7 +249,8 @@
                 document.body.classList.remove('overflow-hidden');
             });
 
-            document.querySelectorAll('#sidebar nav ul li a').forEach(item => {
+            // Close sidebar when a link is clicked (on mobile)
+            document.querySelectorAll('#sidebar nav a').forEach(item => {
                 item.addEventListener('click', function() {
                     if (window.innerWidth < 768) {
                         sidebar.classList.add('-translate-x-full');
@@ -149,6 +260,7 @@
                 });
             });
 
+            // Responsive behavior
             window.addEventListener('resize', () => {
                 if (window.innerWidth >= 768) {
                     sidebar.classList.remove('-translate-x-full');

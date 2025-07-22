@@ -31,6 +31,7 @@ return new class extends Migration
             $table->double('status', 8, 2)->default(0.00);
             $table->dateTime('last_update')->nullable();
             $table->string('delivered_by')->nullable();
+            $table->boolean('delivery_status')->default(false);
             $table->dateTime('estimate_delivery')->nullable();
             $table->dateTime('date_of_delivery')->nullable();
             $table->timestamps(); // created_at and updated_at

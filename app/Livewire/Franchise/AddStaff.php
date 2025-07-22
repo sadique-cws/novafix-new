@@ -57,7 +57,7 @@ class AddStaff extends Component
 
         // Handle image upload
         if ($this->image) {
-            $validated['image'] = $this->image->store('staff-images', 'public');
+            $validated['image'] = $this->image->store('/staff/images', 'public');
            
         }
 
