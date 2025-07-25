@@ -24,6 +24,7 @@ use App\Livewire\Frontdesk\Profile as FrontdeskProfile;
 use App\Livewire\Frontdesk\ServiceRequestForm;
 use App\Livewire\Frontdesk\ShowCompletedTask;
 use App\Livewire\Frontdesk\SmsSender;
+use App\Livewire\Frontdesk\ViewPayments;
 use App\Livewire\Frontdesk\ViewTask;
 use App\Livewire\Staff\AssignedTask;
 use App\Livewire\Staff\CompletedTask as StaffCompletedTask;
@@ -92,12 +93,9 @@ Route::prefix("frontdesk")->group(function () {
         ->name('frontdesk.view.task');
     Route::get('/profile',FrontdeskProfile::class)->name('frontdesk.profile'); 
     Route::get('/manage/payments', ManagePayment::class)->name('frontdesk.manage.payments');
-    Route::get('/msg-test', SmsSender::class)->name('frontdesk.otp.test');
-    Route::get('/msg-show', function () {
-        $msg91 = new Msg91Service();
-        $response = $msg91->sendSMS('7250407215', 'Test message from TechBazar');
-        dd($response);
-    });
+    Route::get('/payment-details/{serviceCode}', ViewPayments::class)
+        ->name('frontdesk.payment-details');
+   
     // });
 });
 Route::prefix("staff")->group(
