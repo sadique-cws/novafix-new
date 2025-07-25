@@ -4,6 +4,8 @@ namespace App\Livewire\Frontdesk;
 
 use App\Models\ServiceRequest;
 use App\Models\Payment;
+use App\Services\Msg91Service;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -24,6 +26,16 @@ class ShowCompletedTask extends Component
     public $transaction_id = '';
     public $notes = '';
     public $status = 'completed';
+    public $showOtpModal = false;
+    public $otp = '';
+
+    public $customerMobile = '';
+    public $otpSent = false;
+    public $otpTimeout = false;
+    public $otpExpiresAt;
+    public $otpResendAvailable = false;
+    public $otpAttempts = 0;
+    public $maxOtpAttempts = 3;
 
     protected $rules = [
         'amount' => 'required|numeric|min:0',
@@ -35,6 +47,12 @@ class ShowCompletedTask extends Component
         'notes' => 'nullable|string',
         'status' => 'required|in:pending,completed,failed',
     ];
+    protected $msg91Service;
+
+    public function __construct()
+    {
+        $this->msg91Service = app(Msg91Service::class);
+    }
 
     public function mount($requestId)
     {
@@ -116,16 +134,101 @@ class ShowCompletedTask extends Component
         session()->flash('payment-success', $message);
     }
 
-    public function markAsDelivered()
+    public function initiateDelivery(Msg91Service $msg91Service)
     {
-        $this->request->update([
-            'delivery_status' => 1,
-            'delivered_by' => auth('frontdesk')->id(),
-            'delivered_at' => now(),
+        $this->validate([
+            'request.contact' => 'required|digits:10'
         ]);
 
-        session()->flash('delivery-success', 'Service request marked as delivered successfully!');
-        $this->request->refresh();
+        $this->customerMobile = $this->request->contact;
+
+        // Reset OTP state
+        $this->otpSent = false;
+        $this->otpTimeout = false;
+        $this->otpAttempts = 0;
+
+        // Send OTP
+        $otpResponse = $msg91Service->sendOtp(
+            $this->customerMobile,
+            $this->request->owner_name ?? 'Customer'
+        );
+
+        if ($otpResponse['success']) {
+            $this->otpSent = true;
+            $this->otpExpiresAt = now()->addSeconds(60);
+            $this->otpTimeout = false;
+            $this->showOtpModal = true;
+
+           
+            $this->dispatch('start-otp-timer', expiresAt: now()->addSeconds(60)->timestamp);
+            session()->flash('otp-info', 'OTP sent to customer mobile. Valid for 60 seconds.');
+        } else {
+            session()->flash('otp-error', 'Failed to send OTP. Please try again.');
+            Log::error('OTP Send Failed', ['response' => $otpResponse]);
+        }
+    }
+
+    public function verifyOtpAndMarkDelivered()
+    {
+        $this->validate(['otp' => 'required|digits:6']);
+
+        // Check if OTP is expired
+        if (now()->gt($this->otpExpiresAt)) {
+            session()->flash('otp-error', 'OTP has expired. Please request a new one.');
+            $this->otpTimeout = true;
+            return;
+        }
+
+        // Check max attempts
+        if ($this->otpAttempts >= $this->maxOtpAttempts) {
+            session()->flash('otp-error', 'Maximum OTP attempts reached. Please request a new OTP.');
+            $this->otpTimeout = true;
+            return;
+        }
+
+        $this->otpAttempts++;
+
+        $verificationResponse = $this->msg91Service->verifyOtp(
+            $this->customerMobile,
+            $this->otp
+        );
+
+        if ($verificationResponse['success']) {
+            // Mark as delivered
+            $this->request->update([
+                'delivery_status' => 1,
+                'delivered_by' => auth('frontdesk')->id(),
+                'delivered_at' => now(),
+            ]);
+
+            $this->showOtpModal = false;
+            $this->reset(['otp', 'otpSent', 'otpTimeout']);
+            $this->request->refresh();
+
+            session()->flash('delivery-success', 'Service marked as delivered successfully!');
+        } else {
+            $remainingAttempts = $this->maxOtpAttempts - $this->otpAttempts;
+            $message = 'Invalid OTP.';
+            if ($remainingAttempts > 0) {
+                $message .= " {$remainingAttempts} attempts remaining.";
+            } else {
+                $message .= " No attempts remaining.";
+                $this->otpTimeout = true;
+            }
+
+            session()->flash('otp-error', $message);
+            Log::error('OTP Verification Failed', [
+                'mobile' => $this->customerMobile,
+                'response' => $verificationResponse
+            ]);
+        }
+    }
+
+    // Add this method to handle OTP timeout
+    public function otpTimedOut()
+    {
+        $this->otpTimeout = true;
+        session()->flash('otp-error', 'OTP has expired. Please request a new one.');
     }
 
     public function resetPaymentForm()
@@ -148,5 +251,4 @@ class ShowCompletedTask extends Component
     public function render()
     {
         return view('livewire.frontdesk.show-completed-task');
-    }
-}
+}}

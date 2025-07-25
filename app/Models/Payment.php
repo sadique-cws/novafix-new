@@ -44,5 +44,9 @@ class Payment extends Model
     {
         return $this->belongsTo(Receptioners::class, 'received_by');
     }
+    public function service()
+    {
+        return $this->belongsTo(ServiceRequest::class, 'service_request_id');
+    }
    
 }

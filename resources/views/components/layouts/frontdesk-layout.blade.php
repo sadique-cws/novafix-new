@@ -33,7 +33,7 @@
 
 <body class="bg-gray-50 text-gray-800 font-poppins antialiased">
     <!-- Fixed Navbar -->
-    <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50 border-b border-gray-100">
+    <header class="fixed top-0 left-0 right-0 py-1 bg-white shadow-sm z-50 border-b border-gray-100">
         <div class="px-6 py-3 flex justify-between items-center">
             <div class="flex items-center gap-4">
                 <button id="mobile-menu-button" class="md:hidden text-gray-500 hover:text-primary focus:outline-none">
@@ -45,7 +45,7 @@
                         <span class="text-white font-semibold text-lg">NF</span>
                     </div>
                     <h1 class="text-xl md:text-2xl font-semibold text-dark-800">NovaFix <span
-                            class="text-primary-600">Recepoinst</span></h1>
+                            class="text-primary-600">Receptioners</span></h1>
                 </div>
             </div>
 
@@ -90,7 +90,7 @@
                         <img src="{{ auth()->user()->profile_photo_url ?? 'https://placehold.co/40x40' }}"
                             alt="User Profile" class="h-9 w-9 rounded-full border-2 border-white shadow-sm">
                         <div class="text-left hidden md:block">
-                            <p class="text-sm font-medium text-gray-800">{{ Auth::guard('frontdesk')->user()->name }}
+                            <p class="text-md font-medium text-gray-800">{{ Auth::guard('frontdesk')->user()->name }}
                             </p>
                             <p class="text-xs text-gray-500">Front Desk</p>
                         </div>
@@ -99,7 +99,7 @@
 
                     <div x-show="open" @click.away="open = false" x-transition
                         class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-md py-1 z-50 border border-gray-100">
-                        <a href="#"
+                        <a wire:navigate href="{{ route('frontdesk.profile') }}"
                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition flex items-center">
                             <i class="fas fa-user-circle mr-2 text-gray-500"></i> Profile
                         </a>
@@ -118,7 +118,7 @@
         </div>
     </header>
 
-    <div class="flex pt-16">
+    <div class="flex pt-20">
         <!-- Fixed Sidebar -->
         <aside id="sidebar"
             class="fixed top-16 left-0 bottom-0 bg-white w-64 shadow-sm py-4  border-r border-gray-100 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out overflow-y-auto">
@@ -154,27 +154,15 @@
                             <span>Completed Services</span>
                         </a>
                     </li>
+                   
                     <li>
-                        <a wire:navigate href="#"
-                            class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150">
-                            <i class="fas fa-users mr-3 text-gray-500"></i>
-                            <span>Customers</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a wire:navigate href="#"
+                        <a wire:navigate href="{{route('frontdesk.manage.payments')}}"
                             class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150">
                             <i class="fas fa-boxes mr-3 text-gray-500"></i>
-                            <span>Inventory</span>
+                            <span>Manage Payment</span>
                         </a>
                     </li>
-                    <li>
-                        <a wire:navigate href="#"
-                            class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150">
-                            <i class="fas fa-chart-line mr-3 text-gray-500"></i>
-                            <span>Reports</span>
-                        </a>
-                    </li>
+                   
                 </ul>
 
                 <div class="mt-8 px-4">
@@ -201,31 +189,14 @@
 
         <!-- Main Content -->
         <main class="flex-1 md:ml-64 transition-all duration-200">
-            <div class="px-6 py-5">
-                <!-- Breadcrumbs -->
-                <div class="flex items-center text-sm text-gray-600 mb-6">
-                    <a href="{{ route('frontdesk.dashboard') }}" class="hover:text-primary">Dashboard</a>
-                    <i class="fas fa-chevron-right mx-2 text-xs"></i>
-                    <span class="text-gray-500">Current Page</span>
-                </div>
 
-                <!-- Page Header -->
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-800">@yield('title', 'Dashboard')</h2>
-                        <p class="text-gray-600 mt-1">@yield('subtitle', 'Overview of your service center')</p>
-                    </div>
-                    <div class="mt-4 md:mt-0">
-                        @yield('header-actions')
-                    </div>
-                </div>
 
-                <!-- Page Content -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    {{ $slot }}
-                </div>
+            <!-- Page Content -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                {{ $slot }}
             </div>
-        </main>
+    </div>
+    </main>
     </div>
 
     <!-- Mobile Overlay -->

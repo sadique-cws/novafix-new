@@ -34,5 +34,12 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'msg91' => [
+        'auth_key' => env('MSG91_AUTH_KEY'),
+        'sender_id' => env('MSG91_SENDER_ID', 'DEFAULT'),
+        'route' => env('MSG91_ROUTE', 4), // 4 for transactional route
+        'template_id' => env('MSG91_TEMPLATE_ID'),
+    ],
+    
 
 ];

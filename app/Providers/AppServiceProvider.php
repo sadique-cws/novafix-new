@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Msg91Service;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +12,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(Msg91Service::class, function ($app) {
+            return new Msg91Service();
+        });
     }
 
     /**
