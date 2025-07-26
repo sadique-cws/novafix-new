@@ -18,9 +18,10 @@ class ManagePayments extends Component
     public $perPage = 10;
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
-    public $selectedStatus = '';
-    public $paymentMethods = [];
-    public $dateRange = '';
+    public $statusFilter = ''; // Changed from selectedStatus to match view
+    public $paymentMethodFilter = '';
+    public $startDate = '';
+    public $endDate = '';
     public $showFilters = false;
 
     protected $queryString = [
@@ -28,16 +29,15 @@ class ManagePayments extends Component
         'perPage' => ['except' => 10],
         'sortField' => ['except' => 'created_at'],
         'sortDirection' => ['except' => 'desc'],
-        'selectedStatus' => ['except' => ''],
-        'dateRange' => ['except' => ''],
+        'statusFilter' => ['except' => ''],
+        'paymentMethodFilter' => ['except' => ''],
+        'startDate' => ['except' => ''],
+        'endDate' => ['except' => ''],
     ];
 
     public function mount()
     {
-        $this->paymentMethods = Payment::distinct()
-            ->where('franchise_id', Auth::user()->franchise_id)
-            ->pluck('payment_method')
-            ->toArray();
+        // No need to load payment methods here unless for a dropdown
     }
 
     public function sortBy($field)
@@ -52,17 +52,19 @@ class ManagePayments extends Component
 
     public function resetFilters()
     {
-        $this->search = '';
-        $this->selectedStatus = '';
-        $this->dateRange = '';
+        $this->reset(['search', 'statusFilter', 'paymentMethodFilter', 'startDate', 'endDate']);
         $this->resetPage();
     }
 
     public function getPayments()
     {
+        $franchiseId = Auth::guard('franchise')->id();
+
         return Payment::query()
-            ->with(['serviceRequest', 'staff'])
-            ->where('franchise_id', Auth::user()->franchise_id)
+            ->with(['serviceRequest.receptioner', 'staff'])
+            ->whereHas('serviceRequest.receptioner', function ($query) use ($franchiseId) {
+                $query->where('franchise_id', $franchiseId);
+            })
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('transaction_id', 'like', '%' . $this->search . '%')
@@ -72,25 +74,37 @@ class ManagePayments extends Component
                         });
                 });
             })
-            ->when($this->selectedStatus, function ($query) {
-                $query->where('status', $this->selectedStatus);
+            ->when($this->statusFilter, function ($query) {
+                $query->where('status', $this->statusFilter);
             })
-            ->when($this->dateRange, function ($query) {
-                $dates = explode(' to ', $this->dateRange);
-                $query->whereDate('created_at', '>=', $dates[0])
-                    ->whereDate('created_at', '<=', $dates[1] ?? $dates[0]);
+            ->when($this->paymentMethodFilter, function ($query) {
+                $query->where('payment_method', $this->paymentMethodFilter);
             })
-            ->orderBy($this->sortField, $this->sortDirection)
+            ->when($this->startDate && $this->endDate, function ($query) {
+                $query->whereBetween('created_at', [
+                    $this->startDate . ' 00:00:00',
+                    $this->endDate . ' 23:59:59'
+                ]);
+            })
+            ->when($this->sortField, function ($query) {
+                $query->orderBy($this->sortField, $this->sortDirection);
+            })
             ->paginate($this->perPage);
     }
 
     public function render()
     {
+        $franchiseId = Auth::guard('franchise')->id();
+
         return view('livewire.franchise.manage-payments', [
             'payments' => $this->getPayments(),
-            'totalAmount' => Payment::where('franchise_id', Auth::user()->franchise_id)
+            'totalAmount' => Payment::whereHas('serviceRequest.receptioner', function ($query) use ($franchiseId) {
+                $query->where('franchise_id', $franchiseId);
+            })
                 ->sum('total_amount'),
-            'todayAmount' => Payment::where('franchise_id', Auth::user()->franchise_id)
+            'todayAmount' => Payment::whereHas('serviceRequest.receptioner', function ($query) use ($franchiseId) {
+                $query->where('franchise_id', $franchiseId);
+            })
                 ->whereDate('created_at', today())
                 ->sum('total_amount'),
         ]);

@@ -7,20 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
 
-    protected $fillable = [
-        'service_request_id',
-        'amount',
-        'discount',
-        'tax',
-        'total_amount',
-        'payment_method',
-        'transaction_id',
-        'status',
-        'notes',
-        'received_by',
-    ];
 
-   
+
+    protected $guarded = [];
+
 
     public function receiver()
     {
@@ -48,5 +38,8 @@ class Payment extends Model
     {
         return $this->belongsTo(ServiceRequest::class, 'service_request_id');
     }
+  
+
+   
    
 }

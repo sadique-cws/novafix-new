@@ -24,7 +24,7 @@ class ShowTask extends Component
     public $showPaymentSection = false;
     public $showRejectionModal = false;
     public $rejectionReason = '';
-    public $paymentMethod = 'cash';
+  
     public $paymentAmount = 0;
     public $paymentReference = '';
     public $paymentCompleted = false;
@@ -113,7 +113,6 @@ class ShowTask extends Component
     public function completeWithPayment()
     {
         $this->validate([
-            'paymentMethod' => 'required|string|in:cash,card,upi',
             'paymentAmount' => 'required|numeric|min:0',
             'paymentReference' => 'nullable|string|max:255',
         ]);
@@ -127,8 +126,8 @@ class ShowTask extends Component
             'service_request_id' => $this->task->id,
             'amount' => $this->paymentAmount,
             'total_amount' => $totalAmount,
-            'payment_method' => $this->paymentMethod,
-            'transaction_id' => $this->paymentMethod === 'cash' ? 'CASH-' . uniqid() : $this->paymentReference,
+           
+         
             'status' => 'pending', // Payment status is pending
             'staff_id' => Auth::guard('staff')->user()->id,
             'notes' => $this->paymentReference
@@ -139,9 +138,9 @@ class ShowTask extends Component
         $this->task->update([
             'status' => 100,
             'last_update' => now(),
-            'payment_method' => $this->paymentMethod,
+           
             'service_amount' => $totalAmount,
-            'completed_at' => now(),
+            
         ]);
 
         $this->paymentCompleted = true;

@@ -7,124 +7,179 @@ use App\Models\Staff;
 use App\Models\ServiceCategory;
 use App\Models\ServiceRequest;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Rule;
-use Livewire\Attributes\Layout;
 use Livewire\WithFileUploads;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
 
 #[Layout('components.layouts.frontdesk-layout')]
+
 class ServiceRequestForm extends Component
 {
     use WithFileUploads;
 
-    // Form fields
-    #[Rule('nullable|exists:staff,id')]
+    // Form fields - updated to match database
+    public $receptioners_id;
     public $technician_id;
-
-    #[Rule('required|exists:service_categories,id')]
     public $service_categories_id;
-
     public $service_code;
-
-    #[Rule('required|string|max:255')]
     public $owner_name;
-
-    #[Rule('required|string|max:255')]
     public $product_name;
-
-    #[Rule('nullable|email')]
     public $email;
-
-    #[Rule('required|string|max:20')]
     public $contact;
-
-    #[Rule('required|string|max:255')]
     public $brand;
-
-    #[Rule('nullable|string|max:255')]
     public $serial_no;
-
-    #[Rule('nullable|string|max:255')]
     public $MAC;
-
-    #[Rule('required|string|max:100')]
     public $color;
-
-    #[Rule('nullable|numeric|min:0')]
-    public $service_amount = 0.00;
-
-    #[Rule('required|string')]
+    public $service_amount = 0;
     public $problem;
-
-    #[Rule('nullable|string')]
-    public $remark;
-
-    #[Rule('nullable|numeric')]
     public $status = 0.00;
-
-    #[Rule('nullable|date')]
     public $last_update;
-
-    #[Rule('nullable|string|max:255')]
     public $delivered_by;
-
-    #[Rule('nullable|date|after:today')]
+    public $delivery_status = false;
     public $estimate_delivery;
-
-    #[Rule('nullable|date')]
     public $date_of_delivery;
-
-    #[Rule('nullable|image|max:2048')]
     public $image;
+    public $capturedImage;
+    public $cameraError;
+
+    protected function rules()
+    {
+        return [
+            'service_categories_id' => 'required|exists:service_categories,id',
+            'technician_id' => 'nullable|exists:staff,id',
+            'owner_name' => 'required|string|max:255',
+            'product_name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'contact' => 'required|string|max:20',
+            'brand' => 'required|string|max:255',
+            'serial_no' => 'nullable|string|max:255',
+            'MAC' => 'nullable|string|max:255',
+            'color' => 'required|string|max:100',
+            'service_amount' => 'nullable|numeric|min:0',
+            'problem' => 'required|string',
+            'estimate_delivery' => 'required|date',
+            'date_of_delivery' => 'nullable|date|after_or_equal:estimate_delivery',
+            'image' => 'nullable|image|max:2048',
+        ];
+    }
 
     public function mount()
     {
-        $this->last_update = now()->format('Y-m-d\TH:i');
-        $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d\TH:i');
+        $this->receptioners_id = Auth::guard('frontdesk')->user()->id;
+        $this->last_update = now();
+        $this->estimate_delivery = Carbon::now()->addDays(3);
         $this->generateServiceCode();
+        $this->generateSerialNumber();
     }
 
     protected function generateServiceCode()
     {
-        $latestRequest = ServiceRequest::latest()->first();
-        $this->service_code = $latestRequest
-            ? 'SR-' . str_pad((int) substr($latestRequest->service_code, 3) + 1, 5, '0', STR_PAD_LEFT)
-            : 'SR-00001';
+        $datePart = now()->format('Ymd');
+        $randomPart = Str::upper(Str::random(4));
+        $this->service_code = "SR-{$datePart}-{$randomPart}";
+    }
+
+    protected function generateSerialNumber()
+    {
+        $lastRequest = ServiceRequest::orderBy('id', 'desc')->first();
+        $lastSerial = $lastRequest ? intval(preg_replace('/[^0-9]/', '', $lastRequest->serial_no)) : 0;
+        $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d\TH:i');
+        $this->serial_no = 'SN-' . str_pad($lastSerial + 1, 6, '0', STR_PAD_LEFT);
     }
 
     public function save()
     {
-        $validated = $this->validate();
+        $this->validate();
 
-        if ($this->image) {
-            $validated['image'] = $this->image->store('service-requests', 'public');
+        DB::beginTransaction();
+        try {
+            $imagePath = null;
+            if ($this->capturedImage) {
+                $imagePath = $this->storeCapturedImage();
+            } elseif ($this->image) {
+                $imagePath = $this->image->store('service-requests', 'public');
+            }
+
+            $serviceRequest = ServiceRequest::create([
+                'receptioners_id' => $this->receptioners_id,
+                'technician_id' => $this->technician_id,
+                'service_categories_id' => $this->service_categories_id,
+                'service_code' => $this->service_code,
+                'owner_name' => $this->owner_name,
+                'product_name' => $this->product_name,
+                'email' => $this->email,
+                'contact' => $this->contact,
+                'brand' => $this->brand,
+                'serial_no' => $this->serial_no,
+                'MAC' => $this->MAC,
+                'color' => $this->color,
+                'service_amount' => $this->service_amount,
+                'problem' => $this->problem,
+                'status' => $this->status,
+                'last_update' => $this->last_update,
+                'delivered_by' => $this->delivered_by,
+                'delivery_status' => $this->delivery_status,
+                'estimate_delivery' => $this->estimate_delivery,
+                'date_of_delivery' => $this->date_of_delivery,
+                'image' => $imagePath
+            ]);
+
+            DB::commit();
+
+            session()->flash('success', 'Service request created successfully!');
+            return redirect()->route('frontdesk.servicerequest.manage');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if (isset($imagePath)) {
+                Storage::disk('public')->delete($imagePath);
+            }
+            session()->flash('error', 'Failed to create service request: ' . $e->getMessage());
+            logger()->error('Service Request Error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
         }
-
-        $validated['receptioners_id'] = Auth::guard('frontdesk')->user()->id;
-
-        if (empty($validated['service_code'])) {
-            $this->generateServiceCode();
-            $validated['service_code'] = $this->service_code;
-        }
-
-        ServiceRequest::create($validated);
-
-        $this->resetForm();
-
-        session()->flash('success', 'Service request created successfully!');
-        $this->redirect(
-            route('frontdesk.servicerequest.manage'),
-            navigate: true
-        );
     }
 
-    protected function resetForm()
+
+    protected function storeCapturedImage()
+    {
+        try {
+            if (!Str::startsWith($this->capturedImage, 'data:image/jpeg;base64,')) {
+                throw new \Exception('Invalid image format');
+            }
+
+            $imageData = base64_decode(preg_replace('#^data:image/jpeg;base64,#i', '', $this->capturedImage));
+
+            if (!$imageData) {
+                throw new \Exception('Failed to decode image');
+            }
+
+            $fileName = 'captured_' . time() . '.jpg';
+            $path = 'service-requests/' . $fileName;
+
+            if (!Storage::disk('public')->put($path, $imageData)) {
+                throw new \Exception('Failed to store image');
+            }
+
+            return $path;
+        } catch (\Exception $e) {
+            $this->cameraError = $e->getMessage();
+            throw $e;
+        }
+    }
+
+    public function clearImage()
+    {
+        $this->reset('image', 'capturedImage', 'cameraError');
+    }
+
+    public function resetForm()
     {
         $this->resetExcept(['technicians', 'categories']);
-        $this->last_update = now()->format('Y-m-d\TH:i');
         $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d\TH:i');
-        $this->status = 0.00;
         $this->generateServiceCode();
+        $this->generateSerialNumber();
     }
 
     public function render()

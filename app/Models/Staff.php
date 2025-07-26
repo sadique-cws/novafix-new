@@ -31,4 +31,11 @@ class Staff extends Authenticatable
         }
         return asset('images/default-avatar.png'); // Default image if none exists
     }
+    public function serviceRequests()
+    {
+        return $this->hasMany(ServiceRequest::class, 'technician_id');
+    }
+
+    // Add this relationship if you need to access the service category
+  
 }

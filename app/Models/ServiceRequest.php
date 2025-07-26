@@ -6,38 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ServiceRequest extends Model
 {
-    protected $fillable = [
-        'receptioners_id',
-        'technician_id',
-        'service_categories_id',
-        'service_code',
-        'owner_name',
-        'product_name',
-        'email',
-        'contact',
-        'brand',
-        'serial_no',
-        'MAC',
-        'color',
-        'service_amount',
-        'problem',
-        'remark',
-        'status',
-        'last_update',
-        'delivered_by',
-        'delivery_status',
-        'estimate_delivery',
-        'date_of_delivery',
-        'image'
-    ];
+    protected $guarded = [];
 
-    protected $casts = [
-        'last_update' => 'datetime',
-        'estimate_delivery' => 'datetime',
-        'date_of_delivery' => 'datetime',
-        'service_amount' => 'decimal:2',
-        'status' => 'decimal:2'
-    ];
+
 
     public function receptionist()
     {
@@ -61,5 +32,11 @@ class ServiceRequest extends Model
     {
         return $this->belongsTo(Receptioners::class, 'delivered_by');
     }
+    public function receptioner()
+    {
+        return $this->belongsTo(Receptioners::class, 'receptioners_id');
+    }
+
+  
    
 }

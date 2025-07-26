@@ -2,6 +2,7 @@
 
 use App\Livewire\Admin\AddFranchises;
 use App\Livewire\Admin\AdminDashboard;
+use App\Livewire\Admin\Franchises\Add;
 use App\Livewire\Admin\ManageFranchises;
 use App\Livewire\Admin\ViewFranchises;
 use App\Livewire\Franchise\AddReceptioners;
@@ -47,6 +48,7 @@ Route::prefix("admin")->group(function () {
         // Route::middleware("auth")->group(function(){
         Route::get('', AdminDashboard::class)->name('dashboard');
         Route::get('add-franchise', AddFranchises::class)->name('add-franchise');
+
         Route::get('manage-franchises', ManageFranchises::class)->name('manage-franchises');
         Route::get('view-franchises/{id}', ViewFranchises::class)->name('view-franchises');
     });
@@ -91,11 +93,11 @@ Route::prefix("frontdesk")->group(function () {
     Route::get('/completed/service-request/{requestId}', ShowCompletedTask::class)->name('frontdesk.servicerequest.show');
     Route::get('/view-task/{task}', ViewTask::class)
         ->name('frontdesk.view.task');
-    Route::get('/profile',FrontdeskProfile::class)->name('frontdesk.profile'); 
+    Route::get('/profile', FrontdeskProfile::class)->name('frontdesk.profile');
     Route::get('/manage/payments', ManagePayment::class)->name('frontdesk.manage.payments');
     Route::get('/payment-details/{serviceCode}', ViewPayments::class)
         ->name('frontdesk.payment-details');
-   
+
     // });
 });
 Route::prefix("staff")->group(

@@ -8,14 +8,19 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <form wire:submit.prevent="save" class="space-y-6" enctype="multipart/form-data">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Service Category Dropdown -->
                 <div>
-                    <label for="service_categories_id" class="block text-sm font-medium text-slate-600">Service
-                        Category</label>
+                    <label for="service_categories_id" class="block text-sm font-medium text-slate-600">Service Category *</label>
                     <select id="service_categories_id" wire:model="service_categories_id"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                         <option value="">Select Service Category</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -30,7 +35,7 @@
                 <div>
                     <label for="technician_id" class="block text-sm font-medium text-slate-600">Technician</label>
                     <select id="technician_id" wire:model="technician_id"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                         <option value="">Select Technician</option>
                         @foreach ($technicians as $tech)
                             <option value="{{ $tech->id }}">{{ $tech->name }}</option>
@@ -41,7 +46,7 @@
                     @enderror
                 </div>
 
-                <!-- Basic Information -->
+                <!-- Service Code -->
                 <div>
                     <label for="service_code" class="block text-sm font-medium text-slate-600">Service Code</label>
                     <div class="mt-1 w-full rounded-md border border-slate-300 shadow-sm bg-gray-50 p-2">
@@ -50,125 +55,267 @@
                     <input type="hidden" wire:model="service_code">
                 </div>
 
+                <!-- Owner Name -->
                 <div>
-                    <label for="owner_name" class="block text-sm font-medium text-slate-600">Owner Name</label>
-                    <input type="text" id="owner_name" wire:model="owner_name" required
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                    <label for="owner_name" class="block text-sm font-medium text-slate-600">Owner Name *</label>
+                    <input type="text" id="owner_name" wire:model="owner_name"
+                           class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('owner_name')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
+                <!-- Product Name -->
                 <div>
-                    <label for="product_name" class="block text-sm font-medium text-slate-600">Product Name</label>
-                    <input type="text" id="product_name" wire:model="product_name" required
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                    <label for="product_name" class="block text-sm font-medium text-slate-600">Product Name *</label>
+                    <input type="text" id="product_name" wire:model="product_name"
+                           class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('product_name')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
+                <!-- Email -->
                 <div>
                     <label for="email" class="block text-sm font-medium text-slate-600">Email</label>
                     <input type="email" id="email" wire:model="email"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                           class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('email')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
+                <!-- Contact -->
                 <div>
-                    <label for="contact" class="block text-sm font-medium text-slate-600">Contact</label>
-                    <input type="text" id="contact" wire:model="contact" required
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                    <label for="contact" class="block text-sm font-medium text-slate-600">Contact *</label>
+                    <input type="tel" id="contact" wire:model="contact"
+                           class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('contact')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
+                <!-- Brand -->
                 <div>
-                    <label for="brand" class="block text-sm font-medium text-slate-600">Brand</label>
-                    <input type="text" id="brand" wire:model="brand" required
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                    <label for="brand" class="block text-sm font-medium text-slate-600">Brand *</label>
+                    <input type="text" id="brand" wire:model="brand"
+                           class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('brand')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
+                <!-- Serial No -->
                 <div>
                     <label for="serial_no" class="block text-sm font-medium text-slate-600">Serial No</label>
                     <input type="text" id="serial_no" wire:model="serial_no"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                           class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('serial_no')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
+                <!-- MAC Address -->
                 <div>
                     <label for="MAC" class="block text-sm font-medium text-slate-600">MAC Address</label>
                     <input type="text" id="MAC" wire:model="MAC"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                           class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('MAC')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
+                <!-- Color -->
                 <div>
-                    <label for="color" class="block text-sm font-medium text-slate-600">Color</label>
-                    <input type="text" id="color" wire:model="color" required
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                    <label for="color" class="block text-sm font-medium text-slate-600">Color *</label>
+                    <input type="text" id="color" wire:model="color"
+                           class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('color')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
+                <!-- Service Amount -->
                 <div>
                     <label for="service_amount" class="block text-sm font-medium text-slate-600">Service Amount</label>
                     <input type="number" step="0.01" id="service_amount" wire:model="service_amount"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                           class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('service_amount')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <!-- Image Upload -->
-                <div>
-                    <label for="image" class="block text-sm font-medium text-slate-600">Product Image</label>
-                    <input type="file" accept="image/*" capture="environment" wire:model="image" id="photo" 
-                    class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
-                         
-                    @error('image')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
+                <!-- Image Upload Section -->
+              <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-slate-600">Product Image</label>
+
+                    <div x-data="{
+                        showCamera: false,
+                        capturedImage: null,
+                        stream: null,
+                        error: null,
+                    
+                        async startCamera() {
+                            this.error = null;
+                            @this.set('cameraError', null);
+                            try {
+                                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                                    throw new Error('Camera not supported in your browser');
+                                }
+                    
+                                this.showCamera = true;
+                                await this.$nextTick();
+                    
+                                this.stream = await navigator.mediaDevices.getUserMedia({
+                                    video: {
+                                        facingMode: 'environment',
+                                        width: { ideal: 1280 },
+                                        height: { ideal: 720 }
+                                    },
+                                    audio: false
+                                });
+                    
+                                this.$refs.video.srcObject = this.stream;
+                            } catch (err) {
+                                console.error('Camera error:', err);
+                                this.error = err.message;
+                                @this.set('cameraError', err.message);
+                                this.showCamera = false;
+                                this.stopCamera();
+                            }
+                        },
+                    
+                        stopCamera() {
+                            if (this.stream) {
+                                this.stream.getTracks().forEach(track => track.stop());
+                                this.stream = null;
+                            }
+                        },
+                    
+                        captureImage() {
+                            try {
+                                const video = this.$refs.video;
+                                if (!video || !video.videoWidth) {
+                                    throw new Error('Camera not ready');
+                                }
+                    
+                                const canvas = document.createElement('canvas');
+                                canvas.width = video.videoWidth;
+                                canvas.height = video.videoHeight;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                                this.capturedImage = canvas.toDataURL('image/jpeg');
+                                @this.set('capturedImage', this.capturedImage);
+                                @this.set('image', null);
+                    
+                                this.stopCamera();
+                                this.showCamera = false;
+                            } catch (err) {
+                                console.error('Capture error:', err);
+                                this.error = 'Failed to capture image: ' + err.message;
+                                @this.set('cameraError', 'Failed to capture image');
+                            }
+                        },
+                    
+                        retakeImage() {
+                            this.capturedImage = null;
+                            @this.set('capturedImage', null);
+                            this.startCamera();
+                        }
+                    }" x-init="$watch('showCamera', value => { if (!value) { stopCamera(); } })">
+                        <!-- File Upload Option -->
+                        <div class="mt-1 flex items-center">
+                            <input type="file" id="image" wire:model="image" accept="image/*"
+                                class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                        </div>
+
+                        <!-- Camera Controls -->
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            <button type="button" @click="startCamera" x-show="!showCamera && !capturedImage"
+                                class="inline-flex items-center px-3 py-2 border border-slate-300 shadow-sm text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                Use Camera
+                            </button>
+
+                            <button type="button" @click="stopCamera" x-show="showCamera"
+                                class="inline-flex items-center px-3 py-2 border border-slate-300 shadow-sm text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Cancel Camera
+                            </button>
+
+                            <button type="button" @click="captureImage" x-show="showCamera"
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Capture Image
+                            </button>
+
+                            <button type="button" @click="retakeImage" x-show="capturedImage"
+                                class="inline-flex items-center px-3 py-2 border border-slate-300 shadow-sm text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Retake Image
+                            </button>
+                        </div>
+
+                        <!-- Camera Preview -->
+                        <div x-show="showCamera" class="mt-2">
+                            <video x-ref="video" autoplay playsinline
+                                class="w-full h-auto rounded-md border border-slate-300 max-h-64"></video>
+                        </div>
+
+                        <!-- Captured Image Preview -->
+                        <div x-show="capturedImage" class="mt-2">
+                            <img :src="capturedImage" alt="Captured product image"
+                                class="w-full h-auto max-h-64 object-contain rounded-md border border-slate-300">
+                        </div>
+
+                        <!-- Error Messages -->
+                        <div x-show="error" class="mt-2 p-2 bg-red-100 text-red-700 rounded">
+                            <span x-text="error"></span>
+                        </div>
+                        @error('cameraError')
+                            <div class="mt-2 p-2 bg-red-100 text-red-700 rounded">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                        @error('image')
+                            <div class="mt-2 p-2 bg-red-100 text-red-700 rounded">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
                 </div>
 
-            
-
-                <!-- Problem and Remark -->
+                <!-- Problem Description -->
                 <div class="md:col-span-2">
-                    <label for="problem" class="block text-sm font-medium text-slate-600">Problem</label>
-                    <textarea id="problem" wire:model="problem" rows="3" required
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2"></textarea>
+                    <label for="problem" class="block text-sm font-medium text-slate-600">Problem Description *</label>
+                    <textarea id="problem" wire:model="problem" rows="3"
+                              class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2"></textarea>
                     @error('problem')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-                
+
+                <!-- Remark -->
+             
+
+                <!-- Estimate Delivery -->
                 <div>
-                    <label for="estimate_delivery" class="block text-sm font-medium text-slate-600">Estimated
-                        Delivery</label>
+                    <label for="estimate_delivery" class="block text-sm font-medium text-slate-600">Estimated Delivery *</label>
                     <input type="datetime-local" id="estimate_delivery" wire:model="estimate_delivery"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                           class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('estimate_delivery')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
+                <!-- Date of Delivery -->
                 <div>
-                    <label for="date_of_delivery" class="block text-sm font-medium text-slate-600">Date of
-                        Delivery</label>
+                    <label for="date_of_delivery" class="block text-sm font-medium text-slate-600">Date of Delivery</label>
                     <input type="datetime-local" id="date_of_delivery" wire:model="date_of_delivery"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                           class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('date_of_delivery')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
@@ -177,7 +324,7 @@
 
             <div class="pt-4">
                 <button type="submit"
-                    class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition duration-200">
+                        class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition duration-200">
                     Submit Request
                 </button>
             </div>
