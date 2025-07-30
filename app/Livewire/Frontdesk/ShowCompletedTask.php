@@ -125,7 +125,6 @@ class ShowCompletedTask extends Component
 
         // Update service request with payment information
         $this->request->update([
-            'service_amount' => $this->amount,
             'status' => '100' // Assuming 100 means completed
         ]);
 
@@ -198,7 +197,6 @@ class ShowCompletedTask extends Component
             $this->request->update([
                 'delivery_status' => 1,
                 'delivered_by' => auth('frontdesk')->id(),
-                'delivered_at' => now(),
             ]);
 
             $this->showOtpModal = false;

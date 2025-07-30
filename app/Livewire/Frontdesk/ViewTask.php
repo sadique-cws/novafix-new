@@ -154,10 +154,6 @@ class ViewTask extends Component
 
         $this->task->update([
             'status' => 100,
-            'last_update' => now(),
-            'payment_method' => $this->paymentMethod,
-            'service_amount' => $totalAmount,
-            'completed_at' => now(),
         ]);
 
         $this->paymentCompleted = true;
@@ -248,7 +244,6 @@ class ViewTask extends Component
             $this->task->update([
                 'delivery_status' => 1,
                 'delivered_by' => auth('frontdesk')->id(),
-                'delivered_at' => now(),
             ]);
 
             $this->showOtpModal = false;
@@ -291,7 +286,6 @@ class ViewTask extends Component
         $this->task->update([
             'delivery_status' => 1,
             'delivered_by' => auth('frontdesk')->id(),
-            'delivered_at' => now(),
         ]);
 
         session()->flash('delivery-success', 'Service request marked as delivered successfully!');

@@ -17,8 +17,12 @@ class ManageFranchises extends Component
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
     public $perPage = 10;
+  
+    public function edit($id){
+        return redirect(route('admin.edit-franchise', ['id' => $id]));
+    }
+
     public function render()
-    
     {
 
         $franchises = franchises::query()

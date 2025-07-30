@@ -184,9 +184,9 @@
                                     <div class="flex items-center justify-between">
                                         <p class="text-sm font-medium text-gray-900 truncate">{{ $delivery->service_code }}</p>
                                         <div class="ml-2 flex-shrink-0 flex">
-                                            <p class="text-xs font-medium {{ $delivery->date_of_delivery->isToday() ? 'text-green-600' : 'text-gray-500' }}">
-                                                {{ $delivery->date_of_delivery->format('M j') }}
-                                                <span class="font-normal">{{ $delivery->date_of_delivery->format('h:i A') }}</span>
+                                            <p class="text-xs font-medium {{ $delivery->date_of_delivery ? 'text-green-600' : 'text-gray-500' }}">
+                                                {{ $delivery->date_of_delivery }}
+                                                <span class="font-normal">{{ $delivery->date_of_delivery }}</span>
                                             </p>
                                         </div>
                                     </div>

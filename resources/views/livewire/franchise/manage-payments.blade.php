@@ -199,10 +199,10 @@
                             {{ $payment->created_at->format('d M Y, h:i A') }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button wire:click="viewPayment({{ $payment->id }})" 
+                            <a wire:navigate href="{{route('franchise.payments.view',$payment->id)}}"  
                                     class="text-blue-600 hover:text-blue-900 mr-3">
                                 <i class="fas fa-eye"></i>
-                            </button>
+                            </a>
                             <button wire:click="editPayment({{ $payment->id }})" 
                                     class="text-yellow-600 hover:text-yellow-900 mr-3">
                                 <i class="fas fa-edit"></i>

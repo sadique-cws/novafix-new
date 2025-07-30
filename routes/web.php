@@ -1,9 +1,13 @@
 <?php
 
 use App\Livewire\Admin\AddFranchises;
+
+use App\Livewire\Admin\EditFranchise; 
 use App\Livewire\Admin\AdminDashboard;
+use App\Livewire\Admin\Adminlogin;
 use App\Livewire\Admin\Franchises\Add;
 use App\Livewire\Admin\ManageFranchises;
+use App\Livewire\Admin\Performance;
 use App\Livewire\Admin\ViewFranchises;
 use App\Livewire\Franchise\AddReceptioners;
 use App\Livewire\Franchise\AddStaff;
@@ -14,6 +18,7 @@ use App\Livewire\Franchise\ManageService;
 use App\Livewire\Franchise\ManagePayments;
 use App\Livewire\Franchise\ManageServiceRequest;
 use App\Livewire\Franchise\ManageStaff;
+use App\Livewire\Franchise\ViewCustomerPayment;
 use App\Livewire\Franchise\ViewReceptioners;
 use App\Livewire\Frontdesk\CompletedTask;
 use App\Livewire\Frontdesk\ManageServiceRequest as FrontdeskManageServiceRequest;
@@ -47,10 +52,13 @@ Route::prefix("admin")->group(function () {
     Route::name("admin.")->group(function () {
         // Route::middleware("auth")->group(function(){
         Route::get('', AdminDashboard::class)->name('dashboard');
+        Route::get('login',Adminlogin::class)->name('login');
         Route::get('add-franchise', AddFranchises::class)->name('add-franchise');
 
         Route::get('manage-franchises', ManageFranchises::class)->name('manage-franchises');
         Route::get('view-franchises/{id}', ViewFranchises::class)->name('view-franchises');
+        Route::get('franchises/edit/{id}', EditFranchise::class)->name('edit-franchise');
+        Route::get('Franchise-performance', Performance::class)->name('franchise.performance');
     });
 });
 // });
@@ -76,6 +84,8 @@ Route::prefix("franchise")->group(function () {
         Route::get('/manage-staff', ManageStaff::class)->name('manage.staff');
         Route::get('/manage-service', ManageService::class)->name('manage.service');
         Route::get('/manage-payments', ManagePayments::class)->name('manage.payments');
+
+        Route::get('/manage-payments/{paymentId}', ViewCustomerPayment::class)->name('payments.view');
     });
 });
 

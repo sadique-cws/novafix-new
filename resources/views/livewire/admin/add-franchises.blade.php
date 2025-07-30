@@ -1,5 +1,5 @@
 <div>
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 mt-14 lg:px-8">
+    <div class="max-w-4xl mx-auto">
         <div class="bg-white shadow rounded-lg p-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Create New Franchise</h2>
 

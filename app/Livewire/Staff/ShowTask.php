@@ -126,8 +126,6 @@ class ShowTask extends Component
             'service_request_id' => $this->task->id,
             'amount' => $this->paymentAmount,
             'total_amount' => $totalAmount,
-           
-         
             'status' => 'pending', // Payment status is pending
             'staff_id' => Auth::guard('staff')->user()->id,
             'notes' => $this->paymentReference
@@ -137,10 +135,7 @@ class ShowTask extends Component
         // Update service request to completed
         $this->task->update([
             'status' => 100,
-            'last_update' => now(),
-           
-            'service_amount' => $totalAmount,
-            
+            'last_update' => now(),  
         ]);
 
         $this->paymentCompleted = true;

@@ -62,7 +62,7 @@ class ServiceRequestForm extends Component
             'problem' => 'required|string',
             'estimate_delivery' => 'required|date',
             'date_of_delivery' => 'nullable|date|after_or_equal:estimate_delivery',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image',
         ];
     }
 
@@ -74,12 +74,27 @@ class ServiceRequestForm extends Component
         $this->generateServiceCode();
         $this->generateSerialNumber();
     }
+    public function updatedImage()
+    {
+        $this->validate([
+            'image' => 'image', // 1MB Max
+        ]);
+    }
+    public function setCapturedImage($imageData)
+    {
+        $this->capturedImage = $imageData;
+        $this->image = null; // Clear file upload if exists
+    }
 
     protected function generateServiceCode()
     {
         $datePart = now()->format('Ymd');
         $randomPart = Str::upper(Str::random(4));
         $this->service_code = "SR-{$datePart}-{$randomPart}";
+    }
+    public function removeImage()
+    {
+        $this->reset('image', 'capturedImage');
     }
 
     protected function generateSerialNumber()

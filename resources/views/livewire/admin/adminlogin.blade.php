@@ -1,6 +1,8 @@
 <div>
-    <form wire:submit.prevent="login" class="space-y-6">
-        <h3 class="text-2xl font-semibold text-gray-800 text-center">Franchise Portal</h3>
+    <form  wire:submit="login" class="space-y-6">
+        <h3 class="text-2xl font-semibold text-gray-800 text-center">Admin Portal</h3>
+         @error('email') <span class="error">{{ $message }}</span> @enderror
+        @error('password') <span class="error">{{ $message }}</span> @enderror
         <div>
             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
                 Email Address
@@ -9,7 +11,7 @@
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="fas fa-envelope text-gray-400"></i>
                 </div>
-                <input id="email" wire:model="email" type="email" autocomplete="email" required
+                <input id="email" type="email" wire:model="email" autocomplete="email" required
                     class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 sm:text-sm transition-all duration-300"
                     placeholder="you@example.com">
             </div>
@@ -23,7 +25,7 @@
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="fas fa-lock text-gray-400"></i>
                 </div>
-                <input id="password" wire:model="password" type="password" autocomplete="current-password" required
+                <input id="password" type="password" wire:model="password" autocomplete="current-password" required
                     class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 sm:text-sm transition-all duration-300"
                     placeholder="••••••••">
             </div>

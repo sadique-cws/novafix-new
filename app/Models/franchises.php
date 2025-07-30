@@ -11,8 +11,7 @@ class franchises extends Authenticatable
    use HasFactory, Notifiable;
 
    protected $guarded = [];
-
-
+   
    public function receptioners()
    {
       return $this->hasMany(Receptioners::class);
@@ -43,6 +42,7 @@ class franchises extends Authenticatable
          $query->where('franchise_id', $this->id);
       });
    }
+   
 }
 
 

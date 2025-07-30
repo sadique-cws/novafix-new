@@ -63,15 +63,36 @@ class ManagePayment extends Component
             ->where('status', 'completed')
             ->count();
 
+        $completedAmount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
+            ->where('status', 'completed')
+            ->sum('total_amount');
+
         $pendingCount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
             ->where('status', 'pending')
             ->count();
+
+        $pendingAmount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
+            ->where('status', 'pending')
+            ->sum('total_amount');
+
+        $failedCount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
+            ->where('status', 'failed')
+            ->count();
+
+        $failedAmount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
+            ->where('status', 'failed')
+            ->sum('total_amount');
 
         return view('livewire.frontdesk.manage-payment', [
             'payments' => $payments,
             'totalAmount' => $totalAmount,
             'completedCount' => $completedCount,
+            'completedAmount' => $completedAmount,
             'pendingCount' => $pendingCount,
+            'pendingAmount' => $pendingAmount,
+            'failedCount' => $failedCount,
+            'failedAmount' => $failedAmount,
+            'totalPayments' => $payments->total(),
         ]);
     }
 }

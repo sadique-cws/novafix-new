@@ -96,13 +96,14 @@
         <div class="fixed inset-0 z-40 bg-gray-900 bg-opacity-50 hidden transition-opacity duration-300" id="sidebarBackdrop"></div>
 
         <!-- Sidebar -->
-        <div class="sidebar bg-white w-70 fixed md:relative h-full border-r border-gray-200" id="sidebar">
+        <div class="sidebar bg-white w-[22%] fixed md:relative h-full border-r border-gray-200" id="sidebar">
             <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-                <div class="flex items-center">
-                    <img src="https://placehold.co/40x40"
-                        alt="Company logo with circular blue background and white text SC for Service Center"
-                        class="mr-3 rounded-full">
-                    <span class="text-xl font-semibold text-gray-800 whitespace-nowrap">Franchise Dashboard</span>
+                <div class="flex items-center gap-3">
+                    <div
+                        class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
+                        <span class="text-white font-semibold text-lg">NF</span>
+                    </div>
+                    <h1 class="text-xl md:text-2xl font-semibold text-dark-800">Franchise Dashboard</h1>
                 </div>
                 <button id="sidebarClose" class="md:hidden text-gray-500 hover:text-gray-700 focus:outline-none">
                     <i class="fas fa-times"></i>

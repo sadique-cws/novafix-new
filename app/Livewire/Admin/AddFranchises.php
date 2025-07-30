@@ -30,7 +30,7 @@ class AddFranchises extends Component
     public $state;
     public $country;
     public $doc;
-    public $status = 'pending';
+    public $status = 'active';
 
     protected $rules = [
         'franchise_name' => 'required|min:3|max:255',

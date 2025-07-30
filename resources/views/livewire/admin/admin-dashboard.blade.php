@@ -1,183 +1,485 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
-    <!-- Main Content -->
-    <main class="flex-1 w-full max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+<div>
+    <!-- Main content area -->
+    <main class="flex-1 overflow-y-auto  sm:p-4 bg-gray-50">
+        <!-- Dashboard Overview -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">Dashboard Overview</h1>
+            <p class="text-gray-600">Welcome back! Here's what's happening with your franchises today.</p>
+        </div>
+
         <!-- Stats Cards -->
-        <div class="mb-8 animate-slide-up">
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <!-- Total Franchises -->
-                <div class="bg-white overflow-hidden rounded-xl shadow-card card-hover relative shine-effect transform transition-all duration-300 hover:scale-105">
-                    <div class="px-5 py-6 sm:p-7">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-primary-500 rounded-lg p-3.5">
-                                <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                </svg>
-                            </div>
-                            <div class="ml-5 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">Total Franchises</dt>
-                                    <dd class="text-2xl font-bold text-gray-900">142</dd>
-                                </dl>
-                            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Franchises -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Total Franchises</p>
+                        <p class="text-3xl font-semibold text-gray-800 mt-1">24</p>
+                        <p class="text-sm text-green-600 mt-2"><span class="font-medium">+3.2%</span> from last month</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-store text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Staff -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Active Staff</p>
+                        <p class="text-3xl font-semibold text-gray-800 mt-1">187</p>
+                        <p class="text-sm text-green-600 mt-2"><span class="font-medium">+5.7%</span> from last month
+                        </p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-users text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border-l-4 border-yellow-500">
+                <div class="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-3 xs:gap-4">
+                    <div class="flex-1 min-w-0"> <!-- Added min-w-0 to prevent text overflow -->
+                        <p class="text-xs xs:text-sm font-medium text-gray-500">Recepoinst</p>
+                        <p class="text-3xl font-semibold text-gray-800 mt-1">187</p>
+                        <p class="text-sm text-green-600 mt-2"><span class="font-medium">+20%</span> from last month
+                        </p>
+                    </div>
+                    <div class="bg-yellow-100 p-2.5 xs:p-3 rounded-full self-end xs:self-auto ml-auto xs:ml-0">
+                        <i class="fas fa-tasks text-yellow-600 text-base xs:text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Revenue -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-purple-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Monthly Revenue</p>
+                        <p class="text-3xl font-semibold text-gray-800 mt-1">$284,592</p>
+                        <p class="text-sm text-green-600 mt-2"><span class="font-medium">+12.4%</span> from last month
+                        </p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-dollar-sign text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Tasks -->
+
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Revenue Chart -->
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800">Revenue Overview</h2>
+                    <select
+                        class="text-sm border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                        <option selected>Last 12 Months</option>
+                    </select>
+                </div>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Franchise Performance -->
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800">Top Performing Franchises</h2>
+                    <select
+                        class="text-sm border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>By Revenue</option>
+                        <option selected>By Growth</option>
+                        <option>By Customer Satisfaction</option>
+                    </select>
+                </div>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity & Top Franchises -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Recent Activity -->
+            <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h2>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 p-2 rounded-full mr-3">
+                            <i class="fas fa-user-plus text-blue-600 text-sm"></i>
                         </div>
-                        <div class="mt-5 pt-4 border-t border-gray-100">
-                            <a href="/franchises" class="text-sm font-semibold text-primary-600 hover:text-primary-500 transition-colors flex items-center">
-                                View all franchises <span class="ml-1" aria-hidden="true">&rarr;</span>
-                            </a>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">New staff member added</p>
+                            <p class="text-xs text-gray-500">John Doe joined New York franchise</p>
+                            <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-green-100 p-2 rounded-full mr-3">
+                            <i class="fas fa-money-bill-wave text-green-600 text-sm"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">Payment received</p>
+                            <p class="text-xs text-gray-500">$2,450 from Chicago franchise</p>
+                            <p class="text-xs text-gray-400 mt-1">5 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-purple-100 p-2 rounded-full mr-3">
+                            <i class="fas fa-store text-purple-600 text-sm"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">New franchise application</p>
+                            <p class="text-xs text-gray-500">Application from Miami, FL received</p>
+                            <p class="text-xs text-gray-400 mt-1">1 day ago</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-yellow-100 p-2 rounded-full mr-3">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">Maintenance alert</p>
+                            <p class="text-xs text-gray-500">Equipment issue reported at Houston franchise</p>
+                            <p class="text-xs text-gray-400 mt-1">1 day ago</p>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Active Staff -->
-                <div class="bg-white overflow-hidden rounded-xl shadow-card card-hover relative shine-effect transform transition-all duration-300 hover:scale-105">
-                    <div class="px-5 py-6 sm:p-7">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-secondary-500 rounded-lg p-3.5">
-                                <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                            </div>
-                            <div class="ml-5 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">Active Staff</dt>
-                                    <dd class="text-2xl font-bold text-gray-900">87</dd>
-                                </dl>
-                            </div>
+            <!-- Top Franchises -->
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Top Franchises This Month</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                            <span class="text-blue-600 font-medium">1</span>
                         </div>
-                        <div class="mt-5 pt-4 border-t border-gray-100">
-                            <a href="/staff" class="text-sm font-semibold text-primary-600 hover:text-primary-500 transition-colors flex items-center">
-                                Manage staff <span class="ml-1" aria-hidden="true">&rarr;</span>
-                            </a>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">New York Downtown</p>
+                            <p class="text-xs text-gray-500">$42,800 revenue</p>
                         </div>
+                        <span class="text-green-600 text-sm font-medium">+12%</span>
                     </div>
-                </div>
-
-                <!-- Pending Requests -->
-                <div class="bg-white overflow-hidden rounded-xl shadow-card card-hover relative shine-effect transform transition-all duration-300 hover:scale-105">
-                    <div class="px-5 py-6 sm:p-7">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-yellow-500 rounded-lg p-3.5">
-                                <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                            </div>
-                            <div class="ml-5 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">Pending Requests</dt>
-                                    <dd class="text-2xl font-bold text-gray-900">12</dd>
-                                </dl>
-                            </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                            <span class="text-blue-600 font-medium">2</span>
                         </div>
-                        <div class="mt-5 pt-4 border-t border-gray-100">
-                            <a href="/user-requests" class="text-sm font-semibold text-primary-600 hover:text-primary-500 transition-colors flex items-center">
-                                Review requests <span class="ml-1" aria-hidden="true">&rarr;</span>
-                            </a>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">Chicago North</p>
+                            <p class="text-xs text-gray-500">$38,500 revenue</p>
                         </div>
+                        <span class="text-green-600 text-sm font-medium">+8%</span>
                     </div>
-                </div>
-
-                <!-- Monthly Revenue -->
-                <div class="bg-white overflow-hidden rounded-xl shadow-card card-hover relative shine-effect transform transition-all duration-300 hover:scale-105">
-                    <div class="px-5 py-6 sm:p-7">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-green-500 rounded-lg p-3.5">
-                                <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div class="ml-5 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">Monthly Revenue</dt>
-                                    <dd class="text-2xl font-bold text-gray-900">$24,560</dd>
-                                </dl>
-                            </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                            <span class="text-blue-600 font-medium">3</span>
                         </div>
-                        <div class="mt-5 pt-4 border-t border-gray-100">
-                            <a href="/payments" class="text-sm font-semibold text-primary-600 hover:text-primary-500 transition-colors flex items-center">
-                                View details <span class="ml-1" aria-hidden="true">&rarr;</span>
-                            </a>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">Los Angeles West</p>
+                            <p class="text-xs text-gray-500">$35,200 revenue</p>
                         </div>
+                        <span class="text-green-600 text-sm font-medium">+15%</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                            <span class="text-gray-600 font-medium">4</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">Houston Central</p>
+                            <p class="text-xs text-gray-500">$28,750 revenue</p>
+                        </div>
+                        <span class="text-red-600 text-sm font-medium">-2%</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Recent Franchises -->
-        <div class="bg-white rounded-xl shadow-card mb-10 overflow-hidden animate-slide-up">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-6 border-b border-gray-100">
-                <h3 class="text-xl font-bold text-gray-800">Recent Franchises</h3>
-                <a href="#" class="text-primary-600 text-sm font-semibold hover:text-primary-500 transition-colors mt-3 sm:mt-0">View all franchises</a>
+        <!-- Franchise List -->
+        <div class="bg-white p-6 rounded-xl shadow-sm mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-lg font-semibold text-gray-800">All Franchises</h2>
+                <button
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    <i class="fas fa-plus mr-2"></i> Add New
+                </button>
             </div>
-            <div class="divide-y divide-gray-100">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 hover:bg-gray-50 transition-colors">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                            <span class="text-primary-600 font-semibold">P</span>
-                        </div>
-                        <div class="ml-4">
-                            <p class="font-semibold text-gray-800">Pumes</p>
-                            <p class="text-xs text-gray-500">Joined 2 days ago</p>
-                        </div>
-                    </div>
-                    <span class="inline-block mt-2 sm:mt-0 bg-primary-50 text-primary-600 text-xs px-3 py-1 rounded-full font-medium animate-pulse-slow">New</span>
-                </div>
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 hover:bg-gray-50 transition-colors">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                            <span class="text-primary-600 font-semibold">N</span>
-                        </div>
-                        <div class="ml-4">
-                            <p class="font-semibold text-gray-800">Novafix</p>
-                            <p class="text-xs text-gray-500">Joined 1 week ago</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 hover:bg-gray-50 transition-colors">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                            <span class="text-primary-600 font-semibold">B</span>
-                        </div>
-                        <div class="ml-4">
-                            <p class="font-semibold text-gray-800">Balaji Laptop & Novafix</p>
-                            <p class="text-xs text-gray-500">Joined 2 weeks ago</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 hover:bg-gray-50 transition-colors">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                            <span class="text-primary-600 font-semibold">R</span>
-                        </div>
-                        <div class="ml-4">
-                            <p class="font-semibold text-gray-800">Repair Master</p>
-                            <p class="text-xs text-gray-500">Joined 3 weeks ago</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="bg-white rounded-xl shadow-card p-6 animate-slide-up">
-            <h3 class="text-xl font-bold text-gray-800 mb-6">UNIDOS Performance</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="p-5 border border-gray-100 rounded-xl text-center bg-blue-50/50 transition-all hover:bg-blue-100">
-                    <p class="text-sm font-medium text-gray-600">Total Requests</p>
-                    <p class="text-3xl font-extrabold text-blue-700 mt-2">24</p>
-                </div>
-                <div class="p-5 border border-gray-100 rounded-xl text-center bg-green-50/50 transition-all hover:bg-green-100">
-                    <p class="text-sm font-medium text-gray-600">Completed</p>
-                    <p class="text-3xl font-extrabold text-green-600 mt-2">18</p>
-                </div>
-                <div class="p-5 border border-gray-100 rounded-xl text-center bg-yellow-50/50 transition-all hover:bg-yellow-100">
-                    <p class="text-sm font-medium text-gray-600">In Progress</p>
-                    <p class="text-3xl font-extrabold text-yellow-500 mt-2">4</p>
-                </div>
-                <div class="p-5 border border-gray-100 rounded-xl text-center bg-red-50/50 transition-all hover:bg-red-100">
-                    <p class="text-sm font-medium text-gray-600">Pending</p>
-                    <p class="text-3xl font-extrabold text-red-500 mt-2">2</p>
-                </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Franchise</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Location</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Revenue</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Growth</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40"
+                                            alt="">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">New York Downtown</div>
+                                        <div class="text-sm text-gray-500">ID: NY001</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">New York, NY</div>
+                                <div class="text-sm text-gray-500">Est. 2018</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-badge status-active">Active</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">$42,800</div>
+                                <div class="text-sm text-gray-500">This month</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-green-600 text-sm font-medium">+12%</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <button class="text-blue-600 hover:text-blue-900 mr-3">View</button>
+                                <button class="text-gray-600 hover:text-gray-900">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40"
+                                            alt="">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Chicago North</div>
+                                        <div class="text-sm text-gray-500">ID: CH002</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">Chicago, IL</div>
+                                <div class="text-sm text-gray-500">Est. 2019</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-badge status-active">Active</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">$38,500</div>
+                                <div class="text-sm text-gray-500">This month</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-green-600 text-sm font-medium">+8%</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <button class="text-blue-600 hover:text-blue-900 mr-3">View</button>
+                                <button class="text-gray-600 hover:text-gray-900">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40"
+                                            alt="">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Los Angeles West</div>
+                                        <div class="text-sm text-gray-500">ID: LA003</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">Los Angeles, CA</div>
+                                <div class="text-sm text-gray-500">Est. 2020</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-badge status-active">Active</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">$35,200</div>
+                                <div class="text-sm text-gray-500">This month</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-green-600 text-sm font-medium">+15%</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <button class="text-blue-600 hover:text-blue-900 mr-3">View</button>
+                                <button class="text-gray-600 hover:text-gray-900">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40"
+                                            alt="">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Houston Central</div>
+                                        <div class="text-sm text-gray-500">ID: HO004</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">Houston, TX</div>
+                                <div class="text-sm text-gray-500">Est. 2021</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-badge status-pending">Pending</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">$28,750</div>
+                                <div class="text-sm text-gray-500">This month</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-red-600 text-sm font-medium">-2%</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <button class="text-blue-600 hover:text-blue-900 mr-3">View</button>
+                                <button class="text-gray-600 hover:text-gray-900">Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>
+    <script>
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
+                        'Dec'
+                    ],
+                    datasets: [{
+                        label: 'Revenue ($)',
+                        data: [18500, 22000, 24500, 28000, 32000, 35000, 38000, 42000, 39000, 43000,
+                            47000, 52000
+                        ],
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        borderColor: 'rgba(67, 97, 238, 1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Performance Chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(performanceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['New York', 'Chicago', 'Los Angeles', 'Houston', 'Miami'],
+                    datasets: [{
+                        label: 'Growth %',
+                        data: [12, 8, 15, -2, 5],
+                        backgroundColor: [
+                            'rgba(67, 97, 238, 0.7)',
+                            'rgba(103, 114, 229, 0.7)',
+                            'rgba(72, 149, 239, 0.7)',
+                            'rgba(239, 68, 68, 0.7)',
+                            'rgba(16, 185, 129, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(67, 97, 238, 1)',
+                            'rgba(103, 114, 229, 1)',
+                            'rgba(72, 149, 239, 1)',
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(16, 185, 129, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 768) {
+                sidebar.classList.add('active');
+                sidebarBackdrop.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+        });
+    </script>
+
 </div>

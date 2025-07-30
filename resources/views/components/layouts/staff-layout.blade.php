@@ -86,11 +86,10 @@
                 </button>
                 <div class="flex items-center gap-3">
                     <div
-                        class="h-10 w-10 rounded-lg bg-gradient-to-br from-staff-500 to-primary-500 flex items-center justify-center">
+                        class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
                         <span class="text-white font-semibold text-lg">NF</span>
                     </div>
-                    <h1 class="text-xl md:text-2xl font-semibold text-dark-800">NovaFix <span
-                            class="text-primary-600">Staff</span></h1>
+                    <h1 class="text-xl md:text-2xl font-semibold text-dark-800">NovaFix <span class="text-blue-500">Staff Panel</span></h1>
                 </div>
             </div>
             <div class="flex items-center space-x-4">

@@ -36,6 +36,25 @@ class ServiceRequest extends Model
     {
         return $this->belongsTo(Receptioners::class, 'receptioners_id');
     }
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'service_request_id');
+    }
+
+    /**
+     * Relationship with ServiceCategory
+     */
+  
+
+    /**
+     * Relationship with Receptioner
+     */
+  
+
+    /**
+     * Relationship with Technician (Staff)
+     */
+   
 
   
    
