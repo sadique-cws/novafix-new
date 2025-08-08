@@ -7,7 +7,7 @@ use App\Models\Payment;
 use App\Models\Receptioners;
 use App\Models\ServiceRequest;
 use App\Models\Staff;
-use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
