@@ -231,14 +231,13 @@
 
                 <!-- Staff Management -->
                 <li class="mb-1 relative">
-                    <a wire:navigate href="#"
+                    <a wire:navigate href="{{ route('admin.manage-staffs') }}"
                         class="flex items-center justify-between p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
                         <div class="flex items-center">
                             <i class="fas fa-users-cog mr-3 w-5 text-center"></i>
                             <span>Staff Management</span>
                         </div>
                     </a>
-
                 </li>
 
                 <!-- Receptionists -->

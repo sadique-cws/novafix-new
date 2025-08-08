@@ -7,6 +7,7 @@ use App\Livewire\Admin\AdminDashboard;
 use App\Livewire\Admin\Adminlogin;
 use App\Livewire\Admin\Franchises\Add;
 use App\Livewire\Admin\ManageFranchises;
+use App\Livewire\Admin\ManageStaffs;
 use App\Livewire\Admin\Performance;
 use App\Livewire\Admin\ViewFranchises;
 use App\Livewire\Franchise\AddReceptioners;
@@ -32,6 +33,7 @@ use App\Livewire\Frontdesk\ShowCompletedTask;
 use App\Livewire\Frontdesk\SmsSender;
 use App\Livewire\Frontdesk\ViewPayments;
 use App\Livewire\Frontdesk\ViewTask;
+use App\Livewire\Public\Homepage;
 use App\Livewire\Staff\AssignedTask;
 use App\Livewire\Staff\CompletedTask as StaffCompletedTask;
 use App\Livewire\Staff\Dashboard as StaffDashboard;
@@ -41,10 +43,7 @@ use App\Livewire\Staff\ShowTask;
 use App\Services\Msg91Service;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get("/", Homepage::class)->name('homepage');
 
 
 Route::prefix("admin")->group(function () {
@@ -56,6 +55,7 @@ Route::prefix("admin")->group(function () {
         Route::get('add-franchise', AddFranchises::class)->name('add-franchise');
 
         Route::get('manage-franchises', ManageFranchises::class)->name('manage-franchises');
+        Route::get('manage-staffs', ManageStaffs::class)->name('manage-staffs');
         Route::get('view-franchises/{id}', ViewFranchises::class)->name('view-franchises');
         Route::get('franchises/edit/{id}', EditFranchise::class)->name('edit-franchise');
         Route::get('Franchise-performance', Performance::class)->name('franchise.performance');

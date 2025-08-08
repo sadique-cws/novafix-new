@@ -14,7 +14,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500">Total Franchises</p>
-                        <p class="text-3xl font-semibold text-gray-800 mt-1">24</p>
+                        <p class="text-3xl font-semibold text-gray-800 mt-1">{{ $franchiseCount }}</p>
                         <p class="text-sm text-green-600 mt-2"><span class="font-medium">+3.2%</span> from last month</p>
                     </div>
                     <div class="bg-blue-100 p-3 rounded-full">
@@ -28,7 +28,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500">Active Staff</p>
-                        <p class="text-3xl font-semibold text-gray-800 mt-1">187</p>
+                        <p class="text-3xl font-semibold text-gray-800 mt-1">{{ $staffCount }}</p>
                         <p class="text-sm text-green-600 mt-2"><span class="font-medium">+5.7%</span> from last month
                         </p>
                     </div>
@@ -41,7 +41,7 @@
                 <div class="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-3 xs:gap-4">
                     <div class="flex-1 min-w-0"> <!-- Added min-w-0 to prevent text overflow -->
                         <p class="text-xs xs:text-sm font-medium text-gray-500">Recepoinst</p>
-                        <p class="text-3xl font-semibold text-gray-800 mt-1">187</p>
+                        <p class="text-3xl font-semibold text-gray-800 mt-1">{{ $receptionistCount }}</p>
                         <p class="text-sm text-green-600 mt-2"><span class="font-medium">+20%</span> from last month
                         </p>
                     </div>
@@ -56,7 +56,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500">Monthly Revenue</p>
-                        <p class="text-3xl font-semibold text-gray-800 mt-1">$284,592</p>
+                        <p class="text-3xl font-semibold text-gray-800 mt-1">₹{{ number_format($totalPayments, 2) }}</p>
                         <p class="text-sm text-green-600 mt-2"><span class="font-medium">+12.4%</span> from last month
                         </p>
                     </div>
