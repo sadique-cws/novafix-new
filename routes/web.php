@@ -9,6 +9,10 @@ use App\Livewire\Admin\Franchises\Add;
 use App\Livewire\Admin\ManageFranchises;
 use App\Livewire\Admin\ManageStaffs;
 use App\Livewire\Admin\Performance;
+use App\Livewire\Admin\ReceptionstManage;
+use App\Livewire\Admin\ReceptionstView;
+use App\Livewire\Admin\StaffManage;
+use App\Livewire\Admin\StaffView;
 use App\Livewire\Admin\ViewFranchises;
 use App\Livewire\Franchise\AddReceptioners;
 use App\Livewire\Franchise\AddStaff;
@@ -21,6 +25,7 @@ use App\Livewire\Franchise\ManageServiceRequest;
 use App\Livewire\Franchise\ManageStaff;
 use App\Livewire\Franchise\ViewCustomerPayment;
 use App\Livewire\Franchise\ViewReceptioners;
+use App\Livewire\Franchise\ViewStaff;
 use App\Livewire\Frontdesk\CompletedTask;
 use App\Livewire\Frontdesk\ManageServiceRequest as FrontdeskManageServiceRequest;
 use App\Livewire\Frontdesk\FrontDashboard;
@@ -59,6 +64,10 @@ Route::prefix("admin")->group(function () {
         Route::get('view-franchises/{id}', ViewFranchises::class)->name('view-franchises');
         Route::get('franchises/edit/{id}', EditFranchise::class)->name('edit-franchise');
         Route::get('Franchise-performance', Performance::class)->name('franchise.performance');
+        Route::get('Receptionst-Management',ReceptionstManage::class)->name('receptionst.management');
+        Route::get('Staff-Management', StaffManage::class)->name('staff.management');
+        Route::get('Staff-Management/{id}', StaffView::class)->name('staff.view');
+        Route::get('Receptionst-Management/{id}', ReceptionstView::class)->name('Receptionst.view');
     });
 });
 // });
@@ -78,10 +87,10 @@ Route::prefix("franchise")->group(function () {
         Route::get("/manage/request", ManageServiceRequest::class)->name("manage.request");
         Route::get('/add-receptioners', AddReceptioners::class)->name('add.receptioners');
         Route::get('/manage-receptioners', ManageReceptioners::class)->name('manage.receptioners');
-        Route::get('/receptionists/{id}', ViewReceptioners::class)
-            ->name('view.receptionist');
+        Route::get('/receptionists/{id}', ViewReceptioners::class)->name('view.receptionist');
         Route::get('/Add-staff', AddStaff::class)->name('add.staff');
         Route::get('/manage-staff', ManageStaff::class)->name('manage.staff');
+        Route::get('/staff-view/{id}', ViewStaff::class)->name('view.staff');
         Route::get('/manage-service', ManageService::class)->name('manage.service');
         Route::get('/manage-payments', ManagePayments::class)->name('manage.payments');
 
