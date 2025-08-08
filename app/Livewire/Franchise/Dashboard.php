@@ -187,11 +187,11 @@ class Dashboard extends Component
     protected function getStatusInfo($status)
     {
         switch ($status) {
-            case 'completed':
+            case '100':
                 return ['class' => 'bg-green-100 text-green-800', 'text' => 'Completed'];
-            case 'in_progress':
+            case '50':
                 return ['class' => 'bg-blue-100 text-blue-800', 'text' => 'In Progress'];
-            case 'cancelled':
+            case '90':
                 return ['class' => 'bg-red-100 text-red-800', 'text' => 'Cancelled'];
             default:
                 return ['class' => 'bg-yellow-100 text-yellow-800', 'text' => 'Pending'];

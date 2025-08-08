@@ -17,6 +17,8 @@ class ViewStaff extends Component
     public $chartType = 'bar';
     public $performanceRange = '6months';
 
+    protected $listeners = ['refreshChart' => '$refresh'];
+
     public function mount($id)
     {
         $this->staffId = $id;
@@ -35,17 +37,14 @@ class ViewStaff extends Component
         $this->activeTab = $tab;
     }
 
-    public function setPerformanceRange($range)
+    public function updatedPerformanceRange()
     {
-        $this->performanceRange = $range;
-        // Livewire will automatically re-render the component and update performanceData
+        $this->emit('refreshChart');
     }
 
-    public function setChartType($type)
+    public function updatedChartType()
     {
-        $this->chartType = $type;
-        // Emit event to frontend to update chart type
-        $this->emit('update-chart', ['type' => $type]);
+        $this->emit('updateChart', ['type' => $this->chartType]);
     }
 
     public function getPerformanceDataProperty()

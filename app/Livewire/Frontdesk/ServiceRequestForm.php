@@ -33,7 +33,7 @@ class ServiceRequestForm extends Component
     public $serial_no;
     public $MAC;
     public $color;
-    public $service_amount = 0;
+    public $service_amount;
     public $problem;
     public $status = 0.00;
     public $last_update;

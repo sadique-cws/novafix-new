@@ -36,6 +36,7 @@ class ShowCompletedTask extends Component
     public $otpResendAvailable = false;
     public $otpAttempts = 0;
     public $maxOtpAttempts = 3;
+    public $countdownSeconds ;
 
     protected $rules = [
         'amount' => 'required|numeric|min:0',
@@ -145,6 +146,7 @@ class ShowCompletedTask extends Component
         $this->otpSent = false;
         $this->otpTimeout = false;
         $this->otpAttempts = 0;
+        $this->countdownSeconds = 60;
 
         // Send OTP
         $otpResponse = $msg91Service->sendOtp(

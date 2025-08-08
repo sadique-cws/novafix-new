@@ -75,8 +75,8 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <button wire:click="edit({{ $staff->id }})"
-                                    class="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
+                                <a href="{{route('franchise.staff.edit',$staff->id)}}"
+                                    class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
                               <a wire:navigate href="{{route('franchise.view.staff',$staff->id)}}" class="text-green-600 hover:text-green-900 mr-3">View</a>
                                 <button wire:confirm='Are You So You want to Delete This Staff' wire:click="delete({{ $staff->id }})"
                                     class="text-red-600 hover:text-red-900">

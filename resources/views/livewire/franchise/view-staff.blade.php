@@ -140,131 +140,134 @@
                 </div>
             </div>
 
-            <!-- Performance Tab -->
-            <div x-show="activeTab === 'performance'" x-cloak x-transition
-                 x-data="{
-                    chart: null,
-                    chartType: '{{ $chartType }}',
-                    performanceRange: '{{ $performanceRange }}',
-                    initChart() {
-                        const ctx = this.$refs.chartCanvas.getContext('2d');
-                        this.chart = new Chart(ctx, {
-                            type: this.chartType,
-                            data: {
-                                labels: @json($performanceData['labels']),
-                                datasets: [
-                                    {
-                                        label: 'Services Completed',
-                                        data: @json($performanceData['services']),
-                                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                                        borderColor: 'rgba(59, 130, 246, 1)',
-                                        borderWidth: 1,
-                                        yAxisID: 'y'
-                                    },
-                                    {
-                                        label: 'Revenue (₹)',
-                                        data: @json($performanceData['revenues']),
-                                        backgroundColor: 'rgba(16, 185, 129, 0.5)',
-                                        borderColor: 'rgba(16, 185, 129, 1)',
-                                        borderWidth: 1,
-                                        type: 'line',
-                                        yAxisID: 'y1'
-                                    }
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                interaction: {
-                                    mode: 'index',
-                                    intersect: false,
-                                },
-                                scales: {
-                                    y: {
-                                        type: 'linear',
-                                        display: true,
-                                        position: 'left',
-                                        title: {
-                                            display: true,
-                                            text: 'Services Completed'
-                                        }
-                                    },
-                                    y1: {
-                                        type: 'linear',
-                                        display: true,
-                                        position: 'right',
-                                        title: {
-                                            display: true,
-                                            text: 'Revenue (₹)'
-                                        },
-                                        grid: {
-                                            drawOnChartArea: false,
-                                        }
-                                    }
-                                }
+          <div x-show="activeTab === 'performance'" x-cloak x-transition
+     x-data="{
+        chart: null,
+        chartType: '{{ $chartType }}',
+        performanceRange: '{{ $performanceRange }}',
+        initChart() {
+            const ctx = this.$refs.chartCanvas.getContext('2d');
+            this.chart = new Chart(ctx, {
+                type: this.chartType,
+                data: {
+                    labels: @json($performanceData['labels']),
+                    datasets: [
+                        {
+                            label: 'Services Completed',
+                            data: @json($performanceData['services']),
+                            backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Revenue (₹)',
+                            data: @json($performanceData['revenues']),
+                            backgroundColor: 'rgba(16, 185, 129, 0.5)',
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            borderWidth: 1,
+                            type: 'line',
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Services Completed'
                             }
-                        });
-                    },
-                    updateChart(type) {
-                        this.chartType = type;
-                        this.chart.destroy();
-                        this.initChart();
-                    },
-                    updateRange(range) {
-                        this.performanceRange = range;
-                        $wire.performanceRange = range;
-                        $wire.$refresh();
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Revenue (₹)'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            }
+                        }
                     }
-                 }"
-                 x-init="initChart"
-                 @update-chart.window="updateChart($event.detail.type)">
-                <div class="space-y-4">
-                    <h3 class="text-lg font-medium text-gray-900">Performance Metrics</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="border rounded-lg p-4">
-                            <h4 class="text-sm font-medium text-gray-500">Total Services</h4>
-                            <p class="text-2xl font-bold text-gray-900 mt-1">{{ $performanceData['total_services'] }}</p>
-                        </div>
-                        <div class="border rounded-lg p-4">
-                            <h4 class="text-sm font-medium text-gray-500">Total Revenue</h4>
-                            <p class="text-2xl font-bold text-gray-900 mt-1">₹{{ number_format($performanceData['total_revenue'], 2) }}</p>
-                        </div>
-                        <div class="border rounded-lg p-4">
-                            <h4 class="text-sm font-medium text-gray-500">Performance Trend</h4>
-                            <p class="text-2xl font-bold text-gray-900 mt-1 flex items-center">
-                                {{ $performanceData['performance_change'] }}%
-                                <span x-html="$performanceData['performance_change'] >= 0 ? '&uarr;' : '&darr;'" 
-                                      :class="$performanceData['performance_change'] >= 0 ? 'text-green-500' : 'text-red-500'" 
-                                      class="ml-1"></span>
-                            </p>
-                        </div>
-                    </div>
+                }
+            });
+        },
+        updateChart(type) {
+            this.chartType = type;
+            if (this.chart) {
+                this.chart.destroy();
+            }
+            this.initChart();
+        },
+        refreshChart() {
+            if (this.chart) {
+                this.chart.destroy();
+            }
+            this.initChart();
+        }
+     }"
+     x-init="initChart"
+     @refresh-chart.window="refreshChart()"
+     @update-chart.window="updateChart($event.detail.type)">
+    <div class="space-y-4">
+        <h3 class="text-lg font-medium text-gray-900">Performance Metrics</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border rounded-lg p-4">
+                <h4 class="text-sm font-medium text-gray-500">Total Services</h4>
+                <p class="text-2xl font-bold text-gray-900 mt-1">{{ $performanceData['total_services'] }}</p>
+            </div>
+            <div class="border rounded-lg p-4">
+                <h4 class="text-sm font-medium text-gray-500">Total Revenue</h4>
+                <p class="text-2xl font-bold text-gray-900 mt-1">₹{{ number_format($performanceData['total_revenue'], 2) }}</p>
+            </div>
+            <div class="border rounded-lg p-4">
+                <h4 class="text-sm font-medium text-gray-500">Performance Trend</h4>
+                <p class="text-2xl font-bold text-gray-900 mt-1 flex items-center">
+                    {{ $performanceData['performance_change'] }}%
+                    <span x-html="$performanceData['performance_change'] >= 0 ? '&uarr;' : '&darr;'" 
+                          :class="$performanceData['performance_change'] >= 0 ? 'text-green-500' : 'text-red-500'" 
+                          class="ml-1"></span>
+                </p>
+            </div>
+        </div>
 
-                    <!-- Performance Chart -->
-                    <div class="mt-6 border rounded-lg p-4 bg-gray-50">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-                            <h4 class="font-medium text-gray-900">Performance Overview</h4>
-                            <div class="flex gap-2">
-                                <select x-model="chartType" @change="updateChart(chartType)" 
-                                        class="border rounded px-2 py-1 text-sm">
-                                    <option value="bar">Bar Chart</option>
-                                    <option value="line">Line Chart</option>
-                                </select>
-                                <select x-model="performanceRange" @change="updateRange(performanceRange)" 
-                                        class="border rounded px-2 py-1 text-sm">
-                                    <option value="1month">Last 1 Month</option>
-                                    <option value="3months">Last 3 Months</option>
-                                    <option value="6months">Last 6 Months</option>
-                                    <option value="1year">Last 1 Year</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="h-64">
-                            <canvas id="performanceChart" x-ref="chartCanvas"></canvas>
-                        </div>
-                    </div>
+        <!-- Performance Chart -->
+        <div class="mt-6 border rounded-lg p-4 bg-gray-50">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
+                <h4 class="font-medium text-gray-900">Performance Overview</h4>
+                <div class="flex gap-2">
+                    <select x-model="chartType" @change="$wire.chartType = chartType" 
+                            class="border rounded px-2 py-1 text-sm">
+                        <option value="bar">Bar Chart</option>
+                        <option value="line">Line Chart</option>
+                    </select>
+                    <select x-model="performanceRange" @change="$wire.performanceRange = performanceRange" 
+                            class="border rounded px-2 py-1 text-sm">
+                        <option value="1month">Last 1 Month</option>
+                        <option value="3months">Last 3 Months</option>
+                        <option value="6months">Last 6 Months</option>
+                        <option value="1year">Last 1 Year</option>
+                    </select>
                 </div>
             </div>
+            <div class="h-64">
+                <canvas id="performanceChart" x-ref="chartCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
 
             <!-- Services Tab -->
             <div x-show="activeTab === 'services'" x-cloak x-transition>

@@ -32,10 +32,7 @@ class ViewTask extends Component
     public $paymentCompleted = false;
     public $taskRejected = false;
     public $otp = '';
-
     public $showOtpModal = false;
-
-
     public $customerMobile = '';
     public $otpSent = false;
     public $otpTimeout = false;
@@ -46,6 +43,12 @@ class ViewTask extends Component
     public $countdownSeconds = 60;
     public $otpExpired = false;
 
+    protected Msg91Service $msg91Service;
+
+    public function boot(Msg91Service $msg91Service)
+    {
+        $this->msg91Service = $msg91Service;
+    }
 
     public function mount(ServiceRequest $task)
     {
@@ -55,8 +58,6 @@ class ViewTask extends Component
         $this->paymentCompleted = $task->payments->isNotEmpty();
         $this->taskRejected = $task->status == 90;
     }
-    protected $msg91Service;
-
 
     public function rejectTask()
     {
@@ -167,7 +168,8 @@ class ViewTask extends Component
             duration: 5000
         );
     }
-    public function initiateDelivery(Msg91Service $msg91Service)
+
+    public function initiateDelivery()
     {
         $this->validate([
             'task.contact' => 'required|digits:10'
@@ -184,7 +186,7 @@ class ViewTask extends Component
 
         try {
             // Send OTP
-            $otpResponse = $msg91Service->sendOtp(
+            $otpResponse = $this->msg91Service->sendOtp(
                 $this->customerMobile,
                 $this->task->owner_name ?? 'Customer'
             );
@@ -269,7 +271,6 @@ class ViewTask extends Component
         }
     }
 
-    // Add this method to handle OTP timeout
     public function otpTimedOut()
     {
         $this->otpTimeout = true;
@@ -281,6 +282,7 @@ class ViewTask extends Component
         $this->showPaymentSection = false;
         $this->selectedStatus = $this->task->status;
     }
+
     public function markAsDelivered()
     {
         $this->task->update([

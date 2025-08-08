@@ -287,7 +287,7 @@
                                 @if ($otpTimeout)
                                     OTP expired
                                 @else
-                                    Time remaining: <span id="countdown">60</span> seconds
+                                    Time remaining: <span id="countdown">{{$countdownSeconds}}</span> seconds
                                 @endif
                             </span>
                         </div>

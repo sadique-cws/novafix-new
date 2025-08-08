@@ -159,7 +159,6 @@
                             class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150 {{ request()->routeIs('frontdesk.servicerequest.manage') ? 'active' : '' }}">
                             <i class="fas fa-tasks mr-3 text-gray-500"></i>
                             <span>Service Queue</span>
-                            <span class="ml-auto bg-blue-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">5</span>
                         </a>
                     </li>
                     <li>

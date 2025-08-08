@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Service Center Franchise Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -62,20 +62,43 @@
             }
         }
 
-        /* Better mobile menu toggle */
-        .mobile-menu-button {
-            display: block;
-        }
-
-        @media (min-width: 768px) {
-            .mobile-menu-button {
-                display: none;
+        /* Mobile specific styles */
+        @media (max-width: 767px) {
+            header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 40;
+                padding: 0.5rem 1rem;
             }
-        }
+            
+            .mobile-menu-button {
+                z-index: 50;
+            }
+            
+            #sidebar {
+                width: 80%;
+                top: 0;
+                height: 100vh;
+                padding-top: 64px;
+            }
+            
+            #sidebarBackdrop {
+                top: 64px;
+                height: calc(100vh - 64px);
+            }
+            
+            main {
+                margin-top: 64px;
+                padding-top: 1rem;
+                min-height: calc(100vh - 64px);
+            }
 
-        /* Smooth transitions */
-        .transition-slow {
-            transition: all 0.4s ease;
+            .sidebar-nav {
+                max-height: calc(100vh - 120px);
+                overflow-y: auto;
+            }
         }
 
         /* Better dropdown shadows */
@@ -86,6 +109,11 @@
         /* Better input focus states */
         .input-focus:focus {
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        /* Smooth transitions */
+        .transition-slow {
+            transition: all 0.4s ease;
         }
     </style>
 </head>
@@ -99,8 +127,7 @@
         <div class="sidebar bg-white w-[22%] fixed md:relative h-full border-r border-gray-200" id="sidebar">
             <div class="p-4 border-b border-gray-200 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div
-                        class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
+                    <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
                         <span class="text-white font-semibold text-lg">NF</span>
                     </div>
                     <h1 class="text-xl md:text-2xl font-semibold text-dark-800">Franchise Dashboard</h1>
@@ -110,7 +137,7 @@
                 </button>
             </div>
 
-            <nav class="p-4 overflow-y-auto" style="max-height: calc(100vh - 64px);">
+            <nav class="p-4 sidebar-nav" style="max-height: calc(100vh - 64px);">
                 <ul>
                     <li class="mb-1">
                         <a wire:navigate href="{{ route('franchise.dashboard') }}"
@@ -277,33 +304,81 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Sidebar toggle functionality
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebarClose = document.getElementById('sidebarClose');
-        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+        // Initialize the dashboard when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSidebar();
+            initializeDropdowns();
+            initializeCharts();
+            setupEventListeners();
+        });
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('active');
-            sidebarBackdrop.classList.toggle('hidden');
-            document.body.classList.toggle('overflow-hidden');
+        // Sidebar functionality
+        function initializeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarClose = document.getElementById('sidebarClose');
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+            function toggleSidebar() {
+                sidebar.classList.toggle('active');
+                sidebarBackdrop.classList.toggle('hidden');
+                document.body.classList.toggle('overflow-hidden', sidebar.classList.contains('active'));
+            }
+
+            if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);
+            if (sidebarClose) sidebarClose.addEventListener('click', toggleSidebar);
+            if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = sidebarToggle.contains(event.target);
+                
+                if (!isClickInsideSidebar && !isClickOnToggle && window.innerWidth < 768) {
+                    sidebar.classList.remove('active');
+                    sidebarBackdrop.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768) {
+                    sidebar.classList.add('active');
+                    sidebarBackdrop.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                }
+            });
         }
 
-        sidebarToggle.addEventListener('click', toggleSidebar);
-        sidebarClose.addEventListener('click', toggleSidebar);
-        sidebarBackdrop.addEventListener('click', toggleSidebar);
+        // Dropdown functionality
+        function initializeDropdowns() {
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(event) {
+                const dropdowns = document.querySelectorAll('[id$="-dropdown"]');
+                dropdowns.forEach(dropdown => {
+                    if (!dropdown.contains(event.target) && !event.target.closest('button[onclick*="'+dropdown.id+'"]')) {
+                        dropdown.classList.add('hidden');
+                        const chevronId = dropdown.id.replace('-dropdown', '-chevron');
+                        const chevron = document.getElementById(chevronId);
+                        if (chevron) chevron.classList.remove('rotate');
+                    }
+                });
+            });
 
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const isClickInsideSidebar = sidebar.contains(event.target);
-            const isClickOnToggle = sidebarToggle.contains(event.target);
-            
-            if (!isClickInsideSidebar && !isClickOnToggle && window.innerWidth < 768) {
-                sidebar.classList.remove('active');
-                sidebarBackdrop.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
-            }
-        });
+            // Add touch event listeners for mobile
+            document.addEventListener('touchstart', function(event) {
+                const dropdowns = document.querySelectorAll('[id$="-dropdown"]');
+                dropdowns.forEach(dropdown => {
+                    if (!dropdown.contains(event.target) && !event.target.closest('button[onclick*="'+dropdown.id+'"]')) {
+                        dropdown.classList.add('hidden');
+                        const chevronId = dropdown.id.replace('-dropdown', '-chevron');
+                        const chevron = document.getElementById(chevronId);
+                        if (chevron) chevron.classList.remove('rotate');
+                    }
+                });
+            });
+        }
 
         // Dropdown toggle function
         function toggleDropdown(event, dropdownId, chevronId = null) {
@@ -311,29 +386,37 @@
             event.stopPropagation();
             
             const dropdown = document.getElementById(dropdownId);
+            const isMobile = window.innerWidth < 768;
+            
+            // Close all other dropdowns first on mobile
+            if (isMobile) {
+                document.querySelectorAll('[id$="-dropdown"]').forEach(dd => {
+                    if (dd.id !== dropdownId) {
+                        dd.classList.add('hidden');
+                        const otherChevronId = dd.id.replace('-dropdown', '-chevron');
+                        const otherChevron = document.getElementById(otherChevronId);
+                        if (otherChevron) otherChevron.classList.remove('rotate');
+                    }
+                });
+            }
+            
             dropdown.classList.toggle('hidden');
             
             if (chevronId) {
                 const chevron = document.getElementById(chevronId);
                 chevron.classList.toggle('rotate');
             }
+            
+            // On mobile, prevent body scrolling when dropdown is open
+            if (isMobile) {
+                const hasOpenDropdown = Array.from(document.querySelectorAll('[id$="-dropdown"]'))
+                    .some(dd => !dd.classList.contains('hidden'));
+                document.body.classList.toggle('overflow-hidden', hasOpenDropdown);
+            }
         }
 
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdowns = document.querySelectorAll('[id$="-dropdown"]');
-            dropdowns.forEach(dropdown => {
-                if (!dropdown.contains(event.target) && !event.target.closest('button[onclick*="'+dropdown.id+'"]')) {
-                    dropdown.classList.add('hidden');
-                    const chevronId = dropdown.id.replace('-dropdown', '-chevron');
-                    const chevron = document.getElementById(chevronId);
-                    if (chevron) chevron.classList.remove('rotate');
-                }
-            });
-        });
-
-        // Initialize charts
-        document.addEventListener('DOMContentLoaded', function() {
+        // Chart initialization
+        function initializeCharts() {
             // Revenue Chart
             const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
             if (revenueCtx) {
@@ -427,17 +510,17 @@
                     }
                 });
             }
-        });
+        }
 
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            if (window.innerWidth >= 768) {
-                sidebar.classList.add('active');
-                sidebarBackdrop.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
-            }
-        });
+        // Additional event listeners
+        function setupEventListeners() {
+            // Prevent default behavior for dropdown toggles
+            document.querySelectorAll('[onclick^="toggleDropdown"]').forEach(button => {
+                button.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                });
+            });
+        }
     </script>
 </body>
-
 </html>
