@@ -231,7 +231,7 @@
 
                 <!-- Staff Management -->
                 <li class="mb-1 relative">
-                    <a wire:navigate href="#"
+                    <a wire:navigate href="{{route('admin.staff.management')}}"
                         class="flex items-center justify-between p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
                         <div class="flex items-center">
                             <i class="fas fa-users-cog mr-3 w-5 text-center"></i>
@@ -243,7 +243,7 @@
 
                 <!-- Receptionists -->
                 <li class="mb-1">
-                    <a href="#"
+                    <a wire:navigate href="{{route('admin.receptionst.management')}}"
                         class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
                         <i class="fas fa-user-tie mr-3 w-5 text-center"></i>
                         <span>Receptionists</span>

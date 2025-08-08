@@ -156,15 +156,16 @@
                 <div class="mb-8">
                     <h3 class="text-lg font-medium text-gray-900 mb-4 border-b pb-2">Address Information</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Street -->
+                            <!-- Pincode -->
                         <div>
-                            <label for="street" class="block text-sm font-medium text-gray-700">Street</label>
-                            <input wire:model="street" type="text" id="street"
+                            <label for="pincode" class="block text-sm font-medium text-gray-700">Pincode</label>
+                            <input wire:model="pincode" type="text" id="pincode"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-blue-500 focus:border-blue-500">
-                            @error('street')
+                            @error('pincode')
                                 <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>
+                     
 
                         <!-- City -->
                         <div>
@@ -205,13 +206,12 @@
                                 <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>
-
-                        <!-- Pincode -->
+                           <!-- Street -->
                         <div>
-                            <label for="pincode" class="block text-sm font-medium text-gray-700">Pincode</label>
-                            <input wire:model="pincode" type="text" id="pincode"
+                            <label for="street" class="block text-sm font-medium text-gray-700">Street</label>
+                            <input wire:model="street" type="text" id="street"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border py-2 px-3 focus:ring-blue-500 focus:border-blue-500">
-                            @error('pincode')
+                            @error('street')
                                 <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>

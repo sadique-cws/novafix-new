@@ -25,6 +25,12 @@ class ManageStaff extends Component
 
     protected $queryString = ['search', 'perPage', 'sortField', 'sortDirection'];
 
+    public function delete($id)
+    {
+        Staff::findOrFail($id)->delete();
+    }
+
+  
     public function render()
     {
         $staffMembers = Staff::query()

@@ -20,4 +20,5 @@ class Receptioners extends Authenticatable
         return $this->hasMany(ServiceRequest::class, 'receptioners_id');
     }
     
+    
 }

@@ -28,6 +28,8 @@ class franchises extends Authenticatable
          'id' // Local key on receptioners table
       );
    }
+   
+   
 
    public function payments()
    {
