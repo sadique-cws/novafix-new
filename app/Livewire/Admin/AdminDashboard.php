@@ -7,6 +7,8 @@ use App\Models\Payment;
 use App\Models\Receptioners;
 use App\Models\ServiceRequest;
 use App\Models\Staff;
+use Illuminate\Support\Facades\DB; // Add this line
+
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -36,32 +38,28 @@ class AdminDashboard extends Component
             'totalFranchises' => franchises::count(),
             'activeStaff' => Staff::where('status', 'active')->count(),
             'receptionists' => Receptioners::count(),
-            'monthlyRevenue' => Payment::whereMonth('created_at', now()->month)
-                ->whereYear('created_at', now()->year)
-                ->sum('total_amount'),
+            'monthlyRevenue' => Payment::sum('total_amount'), // Simplified for small data
             'growthRate' => $this->calculateGrowthRate(),
         ];
-
-        $recentActivities = ServiceRequest::with(['technician', 'receptioner'])
+        // Recent Activity - show all available
+        $recentActivities = ServiceRequest::with(['technician', 'receptionist'])
             ->latest()
             ->take(5)
             ->get()
             ->map(function ($request) {
                 return [
-                    'type' => 'Service Request',
-                    'title' => 'New service request',
-                    'description' => $request->product_name . ' from ' . $request->owner_name,
+                    'title' => 'Service Request',
+                    'description' => ($request->product_name ?? 'No product') . ' from ' . ($request->owner_name ?? 'Unknown'),
                     'time' => $request->created_at->diffForHumans(),
                     'icon' => 'fa-tasks',
                     'color' => 'blue'
                 ];
             });
 
-        $topFranchises = franchises::withCount(['serviceRequests as revenue' => function ($query) {
-            $query->select(DB::raw('COALESCE(SUM(payments.total_amount), 0)'))
-                ->join('payments', 'service_requests.id', '=', 'payments.service_request_id');
-        }])
-            ->orderBy('revenue', 'desc')
+
+        // Top Franchises - handle case with only 2 franchises
+        $topFranchises = franchises::withSum(['payments'], 'total_amount')
+            ->orderBy('payments_sum_total_amount', 'desc')
             ->take(5)
             ->get();
 
@@ -79,25 +77,34 @@ class AdminDashboard extends Component
 
         // Revenue data for chart (last 12 months)
         $revenueData = Payment::selectRaw('
-                YEAR(created_at) as year, 
-                MONTH(created_at) as month, 
-                SUM(total_amount) as total
-            ')
-            ->whereBetween('created_at', [now()->subMonths(11), now()])
-            ->groupBy('year', 'month')
-            ->orderBy('year', 'asc')
-            ->orderBy('month', 'asc')
+            DATE_FORMAT(created_at, "%b %Y") as month_year,
+            SUM(total_amount) as total
+        ')
+            ->groupBy('month_year')
+            ->orderByRaw('MIN(created_at)')
             ->get();
+        if ($revenueData->isEmpty()) {
+            $revenueData = collect([
+                (object)['month_year' => now()->format('M Y'), 'total' => 0]
+            ]);
+        }
 
         $revenueChartData = [
-            'labels' => $revenueData->map(function ($item) {
-                return date('M Y', mktime(0, 0, 0, $item->month, 1, $item->year));
-            }),
+            'labels' => $revenueData->pluck('month_year'),
             'data' => $revenueData->pluck('total')
         ];
-
-        // Performance data for chart
-        $performanceData = franchises::withSum(['payments as total_revenue'], 'total_amount')
+        // Replace the performance data collection with this:
+        // Replace the performance data collection with this:
+        $performanceData = DB::table('franchises')
+            ->select(
+                'franchises.id',
+                'franchises.franchise_name',
+                DB::raw('SUM(payments.total_amount) as total_revenue')
+            )
+            ->join('receptioners', 'receptioners.franchise_id', '=', 'franchises.id')
+            ->join('service_requests', 'service_requests.receptioners_id', '=', 'receptioners.id')
+            ->join('payments', 'payments.service_request_id', '=', 'service_requests.id')
+            ->groupBy('franchises.id', 'franchises.franchise_name')
             ->orderBy('total_revenue', 'desc')
             ->take(5)
             ->get();
@@ -106,15 +113,22 @@ class AdminDashboard extends Component
             'labels' => $performanceData->pluck('franchise_name'),
             'data' => $performanceData->pluck('total_revenue')
         ];
-
-        return view('livewire.admin.admin-dashboard', [
-            'stats' => $stats,
-            'recentActivities' => $recentActivities,
-            'topFranchises' => $topFranchises,
+       
+         return view('livewire.admin.admin-dashboard', [
+        'stats' => $stats,
+        'recentActivities' => $recentActivities,
+        'topFranchises' => $topFranchises,
             'franchises' => $franchises,
-            'revenueChartData' => $revenueChartData,
-            'performanceChartData' => $performanceChartData
-        ]);
+
+        'revenueChartData' => [
+            'labels' => $revenueData->pluck('month_year'),
+            'data' => $revenueData->pluck('total')
+        ],
+        'performanceChartData' => [
+            'labels' => $topFranchises->pluck('franchise_name'),
+            'data' => $topFranchises->pluck('payments_sum_total_amount')
+        ]
+    ]);
     }
 
     protected function calculateGrowthRate()

@@ -231,7 +231,7 @@
 
                 <!-- Staff Management -->
                 <li class="mb-1 relative">
-                    <a wire:navigate href="{{route('admin.staff.management')}}"
+                    <a wire:navigate href="{{ route('admin.staff.management') }}"
                         class="flex items-center justify-between p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
                         <div class="flex items-center">
                             <i class="fas fa-users-cog mr-3 w-5 text-center"></i>
@@ -242,7 +242,7 @@
 
                 <!-- Receptionists -->
                 <li class="mb-1">
-                    <a wire:navigate href="{{route('admin.receptionst.management')}}"
+                    <a wire:navigate href="{{ route('admin.receptionst.management') }}"
                         class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
                         <i class="fas fa-user-tie mr-3 w-5 text-center"></i>
                         <span>Receptionists</span>
@@ -338,14 +338,40 @@
             <button id="sidebarToggle" class="text-gray-500 hover:text-gray-700 focus:outline-none">
                 <i class="fas fa-bars text-xl"></i>
             </button>
-            <span>Super Admin</span>
+            <div class="relative">
+                <input type="text" placeholder="Search..."
+                    class="pl-10 pr-4 py-1 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-48 md:w-64 transition-all duration-200">
+                <i class="fas fa-search absolute left-4 top-2 text-gray-400"></i>
+            </div>
             <div class="flex items-center space-x-4">
                 <button class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none relative">
                     <i class="fas fa-bell text-lg"></i>
                     <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                 </button>
-                <img src="https://placehold.co/40x40" alt="User profile"
-                    class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
+                <div class="relative">
+                    <button onclick="toggleDropdown(event, 'navbar-profile-dropdown', 'profile-chevron')"
+                        class="flex items-center space-x-2 focus:outline-none">
+                        <img src="https://www.pngmart.com/files/21/Admin-Profile-Vector-PNG-Clipart.png" alt="User profile"
+                            class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
+                        <span class="font-medium text-gray-700 hidden md:inline whitespace-nowrap">Super
+                            Admin</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500 dropdown-chevron"
+                            id="profile-chevron"></i>
+                    </button>
+
+                    <div id="navbar-profile-dropdown"
+                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 border border-gray-100">
+                        <a href="#"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Profile</a>
+                        <a href="#"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Settings</a>
+                        <div class="border-t border-gray-100"></div>
+                        <a href="#"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-red-500 hover:text-red-600 transition-colors">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -372,7 +398,7 @@
                     <div class="relative">
                         <button onclick="toggleDropdown(event, 'navbar-profile-dropdown', 'profile-chevron')"
                             class="flex items-center space-x-2 focus:outline-none">
-                            <img src="https://placehold.co/40x40" alt="User profile"
+                            <img src="https://www.pngmart.com/files/21/Admin-Profile-Vector-PNG-Clipart.png" alt="User profile"
                                 class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
                             <span class="font-medium text-gray-700 hidden md:inline whitespace-nowrap">Super
                                 Admin</span>
@@ -398,7 +424,7 @@
         </header>
 
         <!-- Content area -->
-        <main class="p-4 sm:p-6">
+        <main class="">
             {{ $slot }}
         </main>
     </div>

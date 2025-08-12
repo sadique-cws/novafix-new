@@ -124,7 +124,7 @@
         <div class="fixed inset-0 z-40 bg-gray-900 bg-opacity-50 hidden transition-opacity duration-300" id="sidebarBackdrop"></div>
 
         <!-- Sidebar -->
-        <div class="sidebar bg-white w-[22%] fixed md:relative h-full border-r border-gray-200" id="sidebar">
+        <div class="sidebar bg-white w-[20%] fixed md:relative h-full border-r border-gray-200" id="sidebar">
             <div class="p-4 border-b border-gray-200 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
@@ -277,7 +277,7 @@
                                 <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Profile</a>
                                 <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Settings</a>
                                 <div class="border-t border-gray-100"></div>
-                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-red-500 hover:text-red-600 transition-colors">
+                                <a wire:navigate href="{{route('franchise.logout')}}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-red-500 hover:text-red-600 transition-colors">
                                     <i class="fas fa-sign-out-alt mr-2"></i> Logout
                                 </a>
                             </div>

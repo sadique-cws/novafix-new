@@ -18,6 +18,19 @@ class StaffManage extends Component
     public $search = '';
     public $franchiseFilter = '';
     public $categoryFilter = '';
+    public $sortField = 'name'; // Add this
+    public $sortDirection = 'asc'; // Add this
+
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+        }
+
+        $this->sortField = $field;
+    }
 
     public function render()
     {
@@ -33,6 +46,9 @@ class StaffManage extends Component
             ->when($this->categoryFilter, function ($query) {
                 $query->where('service_categories_id', $this->categoryFilter);
             })
+            ->when($this->sortField, function ($query) {
+                $query->orderBy($this->sortField, $this->sortDirection);
+            })
             ->with(['franchise', 'serviceCategory'])
             ->paginate(10);
 
@@ -40,7 +56,7 @@ class StaffManage extends Component
         $categories = ServiceCategory::orderBy('name')->get();
 
         return view('livewire.admin.staff-manage', [
-            'staff' => $staff,
+            'staffs' => $staff,
             'franchises' => $franchises,
             'categories' => $categories,
         ]);

@@ -83,6 +83,14 @@ class ManagePayment extends Component
             ->where('status', 'failed')
             ->sum('total_amount');
 
+        // Calculate total payment count for percentages
+        $totalPaymentCount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)->count();
+
+        // Calculate percentages (avoid division by zero)
+        $completedPercentage = $totalPaymentCount > 0 ? round(($completedCount / $totalPaymentCount) * 100) : 0;
+        $pendingPercentage = $totalPaymentCount > 0 ? round(($pendingCount / $totalPaymentCount) * 100) : 0;
+        $failedPercentage = $totalPaymentCount > 0 ? round(($failedCount / $totalPaymentCount) * 100) : 0;
+
         return view('livewire.frontdesk.manage-payment', [
             'payments' => $payments,
             'totalAmount' => $totalAmount,
@@ -93,6 +101,9 @@ class ManagePayment extends Component
             'failedCount' => $failedCount,
             'failedAmount' => $failedAmount,
             'totalPayments' => $payments->total(),
+            'completedPercentage' => $completedPercentage,
+            'pendingPercentage' => $pendingPercentage,
+            'failedPercentage' => $failedPercentage,
         ]);
     }
 }

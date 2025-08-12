@@ -516,22 +516,18 @@
                         @enderror
                     </div>
 
-                    <!-- Date of Delivery -->
-                    <div>
-                        <label for="date_of_delivery" class="block text-sm font-medium text-slate-600">Date of
-                            Delivery</label>
-                        <input type="datetime-local" id="date_of_delivery" wire:model="date_of_delivery"
-                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
-                        @error('date_of_delivery')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
                 </div>
-
-                <div class="pt-4">
+               <div class="pt-4">
                     <button type="submit"
-                        class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition duration-200">
-                        Submit Request
+                        class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition duration-200 flex items-center justify-center"
+                        wire:loading.attr="disabled">
+                         <span wire:loading>
+                            <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </span>
+                        <span wire:loading.remove>Submit Request</span>
                     </button>
                 </div>
             </form>

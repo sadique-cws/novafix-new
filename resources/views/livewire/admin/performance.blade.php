@@ -1,21 +1,37 @@
+
 <div>
-    <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+    <!-- Loading Overlay -->
+    <div wire:loading.flex class="fixed inset-0 bg-white bg-opacity-90 z-50 items-center justify-center transition-opacity duration-200">
+        <div class="text-center">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+            <h3 class="text-lg font-semibold text-gray-800">Loading Franchise Data</h3>
+            <p class="text-gray-600 mt-1">Please wait while we fetch the performance metrics</p>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-8">
         <!-- Header with franchise selector -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-2 md:mb-0">Franchise Performance</h2>
-            <div class="flex flex-col sm:flex-row gap-3">
-                <div class="relative w-full sm:w-64">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+            <div>
+                <h2 class="text-xl font-semibold text-gray-800">Franchise Performance</h2>
+                <p class="text-sm text-gray-500 mt-1">Detailed analytics for selected franchise</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <div class="relative w-full">
                     <select wire:model.live="selectedFranchise"
-                        class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg">
+                        class="block w-full pl-3 pr-10 py-2.5 text-base border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg bg-gray-50 transition">
                         <option value="all">All Franchises</option>
                         @foreach ($franchises as $franchise)
                             <option value="{{ $franchise->id }}">{{ $franchise->franchise_name }}</option>
                         @endforeach
                     </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        
+                    </div>
                 </div>
-                <div class="relative w-full sm:w-48">
+                <div class="relative w-full">
                     <select wire:model.live="timePeriod"
-                        class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg">
+                        class="block w-full pl-3 pr-10 py-2.5 text-base border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg bg-gray-50 transition">
                         <option value="7days">Last 7 Days</option>
                         <option value="30days">Last 30 Days</option>
                         <option value="90days">Last 90 Days</option>
@@ -23,96 +39,127 @@
                         <option value="quarter">This Quarter</option>
                         <option value="year">This Year</option>
                     </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                       
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Key Performance Indicators -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Key Performance Indicators - 2x2 grid on mobile -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-8">
             <!-- Revenue Card -->
-            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Total Revenue</p>
-                        <p class="text-2xl font-semibold text-gray-800 mt-1">
-                            ₹
-                            @if ($metrics['totalRevenue'] >= 10000000)
-                                {{ number_format($metrics['totalRevenue'] / 10000000, 1) }} Cr
-                            @elseif($metrics['totalRevenue'] >= 100000)
-                                {{ number_format($metrics['totalRevenue'] / 100000, 1) }} L
-                            @elseif($metrics['totalRevenue'] >= 1000)
-                                {{ number_format($metrics['totalRevenue'] / 1000, 1) }}k
-                            @else
-                                {{ number_format($metrics['totalRevenue'], 2) }}
-                            @endif
-                        </p>
-                        <div class="flex items-center mt-2">
-                            <span class="text-green-600 text-sm font-medium flex items-center">
-                                <i class="fas fa-arrow-up mr-1"></i> 12.4%
-                            </span>
-                            <span class="text-gray-500 text-sm ml-2">vs last period</span>
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                <div class="flex flex-col">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs sm:text-sm font-medium text-blue-800">Total Revenue</p>
+                            <p class="text-xl sm:text-2xl font-semibold text-gray-800 mt-1">
+                                ₹
+                                @if ($metrics['totalRevenue'] >= 10000000)
+                                    {{ number_format($metrics['totalRevenue'] / 10000000, 1) }} Cr
+                                @elseif($metrics['totalRevenue'] >= 100000)
+                                    {{ number_format($metrics['totalRevenue'] / 100000, 1) }} L
+                                @elseif($metrics['totalRevenue'] >= 1000)
+                                    {{ number_format($metrics['totalRevenue'] / 1000, 1) }}k
+                                @else
+                                    {{ number_format($metrics['totalRevenue'], 2) }}
+                                @endif
+                            </p>
+                        </div>
+                        <div class="bg-blue-200/50 p-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
+                            </svg>
                         </div>
                     </div>
-
-                    <div class="bg-blue-100 p-3 rounded-full">
-                        <i class="fas fa-rupee-sign text-blue-600 text-xl"></i>
+                    <div class="mt-3 flex items-center">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded-full flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+                            </svg>
+                            12.4%
+                        </span>
+                        <span class="text-gray-500 text-xs ml-2">vs last period</span>
                     </div>
                 </div>
             </div>
 
             <!-- Customers Card -->
-            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Customers</p>
-                        <p class="text-2xl font-semibold text-gray-800 mt-1">{{ $metrics['totalCustomers'] }}</p>
-                        <div class="flex items-center mt-2">
-                            <span class="text-green-600 text-sm font-medium flex items-center">
-                                <i class="fas fa-arrow-up mr-1"></i> 8.2%
-                            </span>
-                            <span class="text-gray-500 text-sm ml-2">vs last period</span>
+            <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+                <div class="flex flex-col">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs sm:text-sm font-medium text-green-800">Customers</p>
+                            <p class="text-xl sm:text-2xl font-semibold text-gray-800 mt-1">{{ $metrics['totalCustomers'] }}</p>
+                        </div>
+                        <div class="bg-green-200/50 p-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                            </svg>
                         </div>
                     </div>
-                    <div class="bg-green-100 p-3 rounded-full">
-                        <i class="fas fa-users text-green-600 text-xl"></i>
+                    <div class="mt-3 flex items-center">
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded-full flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+                            </svg>
+                            8.2%
+                        </span>
+                        <span class="text-gray-500 text-xs ml-2">vs last period</span>
                     </div>
                 </div>
             </div>
 
             <!-- Services Card -->
-            <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Services</p>
-                        <p class="text-2xl font-semibold text-gray-800 mt-1">{{ $metrics['completedServices'] }}</p>
-                        <div class="flex items-center mt-2">
-                            <span class="text-green-600 text-sm font-medium flex items-center">
-                                <i class="fas fa-arrow-up mr-1"></i> 15.7%
-                            </span>
-                            <span class="text-gray-500 text-sm ml-2">vs last period</span>
+            <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
+                <div class="flex flex-col">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs sm:text-sm font-medium text-purple-800">Services</p>
+                            <p class="text-xl sm:text-2xl font-semibold text-gray-800 mt-1">{{ $metrics['completedServices'] }}</p>
+                        </div>
+                        <div class="bg-purple-200/50 p-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                            </svg>
                         </div>
                     </div>
-                    <div class="bg-purple-100 p-3 rounded-full">
-                        <i class="fas fa-tools text-purple-600 text-xl"></i>
+                    <div class="mt-3 flex items-center">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-0.5 rounded-full flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+                            </svg>
+                            15.7%
+                        </span>
+                        <span class="text-gray-500 text-xs ml-2">vs last period</span>
                     </div>
                 </div>
             </div>
 
             <!-- Satisfaction Card -->
-            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Satisfaction</p>
-                        <p class="text-2xl font-semibold text-gray-800 mt-1">94%</p>
-                        <div class="flex items-center mt-2">
-                            <span class="text-green-600 text-sm font-medium flex items-center">
-                                <i class="fas fa-arrow-up mr-1"></i> 3.2%
-                            </span>
-                            <span class="text-gray-500 text-sm ml-2">vs last period</span>
+            <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-xl border border-amber-200">
+                <div class="flex flex-col">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs sm:text-sm font-medium text-amber-800">Satisfaction</p>
+                            <p class="text-xl sm:text-2xl font-semibold text-gray-800 mt-1">94%</p>
+                        </div>
+                        <div class="bg-amber-200/50 p-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd" />
+                            </svg>
                         </div>
                     </div>
-                    <div class="bg-yellow-100 p-3 rounded-full">
-                        <i class="fas fa-smile text-yellow-600 text-xl"></i>
+                    <div class="mt-3 flex items-center">
+                        <span class="bg-amber-100 text-amber-800 text-xs font-medium px-2 py-0.5 rounded-full flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+                            </svg>
+                            3.2%
+                        </span>
+                        <span class="text-gray-500 text-xs ml-2">vs last period</span>
                     </div>
                 </div>
             </div>

@@ -1,78 +1,73 @@
 <main class="flex-1 p-4 md:p-6 overflow-auto bg-gray-50">
-
-
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-6 mb-6 text-white">
+              <h2 class="text-xl md:text-2xl font-bold mb-2">Receptionist Dashboard!</h2>
+<p class="opacity-90">Here's what's happening with today.</p>
+            </div>
+    <!-- Stats Cards - Responsive Grid -->
+    <div class="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
         <!-- Today's Services -->
-        <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition duration-300">
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm sm:shadow-md p-3 sm:p-5 hover:shadow-md sm:hover:shadow-lg transition duration-300">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500">Today's Services</p>
-                    <h3 class="text-3xl font-bold text-gray-800">{{ number_format($todayServicesCount) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-500">Today's Services</p>
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">{{ number_format($todayServicesCount) }}</h3>
                 </div>
-                <div class="bg-blue-100 p-3 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                <div class="bg-blue-100 p-2 sm:p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                     </svg>
                 </div>
             </div>
-            <p class="mt-3 text-green-600 text-sm flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            <p class="mt-2 sm:mt-3 text-green-600 text-xs sm:text-sm flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
                 </svg>
-                {{ round(($todayServicesCount / max(1, $todayServicesCount - 5)) * 100) }}% from yesterday
+                {{ round(($todayServicesCount / max(1, $todayServicesCount - 5))) * 100 }}% from yesterday
             </p>
         </div>
 
         <!-- In Progress -->
-        <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition duration-300">
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm sm:shadow-md p-3 sm:p-5 hover:shadow-md sm:hover:shadow-lg transition duration-300">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500">In Progress</p>
-                    <h3 class="text-3xl font-bold text-gray-800">{{ number_format($inProgressCount) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-500">In Progress</p>
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">{{ number_format($inProgressCount) }}</h3>
                 </div>
-                <div class="bg-yellow-100 p-3 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <div class="bg-yellow-100 p-2 sm:p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
             </div>
-            <p class="mt-3 text-blue-600 text-sm">
+            <p class="mt-2 sm:mt-3 text-blue-600 text-xs sm:text-sm">
                 {{ round(($inProgressCount / max(1, $todayServicesCount)) * 100) }}% of today's work
             </p>
         </div>
 
         <!-- Completed -->
-        <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition duration-300">
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm sm:shadow-md p-3 sm:p-5 hover:shadow-md sm:hover:shadow-lg transition duration-300">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500">Completed</p>
-                    <h3 class="text-3xl font-bold text-gray-800">{{ number_format($completedCount) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-500">Completed</p>
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">{{ number_format($completedCount) }}</h3>
                 </div>
-                <div class="bg-green-100 p-3 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
+                <div class="bg-green-100 p-2 sm:p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
             </div>
-            <p class="mt-3 text-green-600 text-sm">
+            <p class="mt-2 sm:mt-3 text-green-600 text-xs sm:text-sm">
                 {{ round(($completedCount / max(1, $todayServicesCount)) * 100) }}% completion rate
             </p>
         </div>
 
         <!-- Revenue -->
-        <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition duration-300">
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm sm:shadow-md p-3 sm:p-5 hover:shadow-md sm:hover:shadow-lg transition duration-300">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500">Today's Revenue</p>
-                    <h3 class="text-3xl font-bold text-gray-800">
+                    <p class="text-xs sm:text-sm text-gray-500">Today's Revenue</p>
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">
                         @php
                             $total = $recentPayments->sum('total_amount');
                             if ($total >= 10000000) {
@@ -87,70 +82,16 @@
                         @endphp
                     </h3>
                 </div>
-                <div class="bg-purple-100 p-3 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                <div class="bg-purple-200 p-2 sm:p-3 rounded-full">
+                   ₹
                 </div>
             </div>
-            <p class="mt-3 text-green-600 text-sm">
+            <p class="mt-2 sm:mt-3 text-green-600 text-xs sm:text-sm">
                 {{ $recentPayments->count() }} payments today
             </p>
         </div>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        <a wire:navigate href="{{ route('frontdesk.servicerequest.create') }}"
-            class="bg-white rounded-xl shadow-md p-4 flex items-center justify-between hover:bg-blue-50 hover:border-blue-200 border border-transparent transition group">
-            <span class="text-sm font-medium text-gray-700 group-hover:text-blue-700">New Service</span>
-            <div class="bg-blue-100 p-2 rounded-full group-hover:bg-blue-200 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-            </div>
-        </a>
-
-        <a wire:navigate href="{{ route('frontdesk.servicerequest.manage') }}"
-            class="bg-white rounded-xl shadow-md p-4 flex items-center justify-between hover:bg-green-50 hover:border-green-200 border border-transparent transition group">
-            <span class="text-sm font-medium text-gray-700 group-hover:text-green-700">Manage Services</span>
-            <div class="bg-green-100 p-2 rounded-full group-hover:bg-green-200 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                </svg>
-            </div>
-        </a>
-
-        <a wire:navigate href="{{ route('frontdesk.servicerequest.completed') }}"
-            class="bg-white rounded-xl shadow-md p-4 flex items-center justify-between hover:bg-purple-50 hover:border-purple-200 border border-transparent transition group">
-            <span class="text-sm font-medium text-gray-700 group-hover:text-purple-700">Complete Task</span>
-            <div class="bg-purple-100 p-2 rounded-full group-hover:bg-purple-200 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-            </div>
-        </a>
-
-        <a wire:navigate href="{{ route('frontdesk.manage.payments') }}"
-            class="bg-white rounded-xl shadow-md p-4 flex items-center justify-between hover:bg-orange-50 hover:border-orange-200 border border-transparent transition group">
-            <span class="text-sm font-medium text-gray-700 group-hover:text-orange-700">Payment Lookup</span>
-            <div class="bg-orange-100 p-2 rounded-full group-hover:bg-orange-200 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </div>
-        </a>
-    </div>
 
     <!-- Main Content Area -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">

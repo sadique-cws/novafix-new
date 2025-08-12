@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\Franchise;
 use App\Models\franchises;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -28,7 +29,7 @@ class AddFranchises extends Component
     public $district;
     public $pincode;
     public $state;
-    public $country;
+    public $country = 'India'; // Default to India
     public $doc;
     public $status = 'active';
 
@@ -60,9 +61,37 @@ class AddFranchises extends Component
         'pincode.digits' => 'Pincode must be 6 digits',
     ];
 
+    public function fetchAddressFromPincode()
+    {
+        if (strlen($this->pincode) === 6) {
+            try {
+                $response = Http::get("https://api.postalpincode.in/pincode/{$this->pincode}");
+
+                if ($response->successful()) {
+                    $data = $response->json();
+
+                    if (isset($data[0]['Status']) && $data[0]['Status'] === 'Success') {
+                        if (isset($data[0]['PostOffice']) && count($data[0]['PostOffice']) > 0) {
+                            $postOffice = $data[0]['PostOffice'][0];
+                            $this->city = $postOffice['District'] ?? '';
+                            $this->district = $postOffice['District'] ?? '';
+                            $this->state = $postOffice['State'] ?? '';
+                            $this->country = $postOffice['Country'] ?? 'India';
+                            return;
+                        }
+                    }
+                }
+
+                $this->dispatch('pincode-error', message: 'Could not fetch address details for this pincode');
+            } catch (\Exception $e) {
+                Log::error("Pincode API error: " . $e->getMessage());
+                $this->dispatch('pincode-error', message: 'Error fetching address details. Please enter manually.');
+            }
+        }
+    }
+
     public function submit()
     {
-       
         $this->validate();
 
         DB::beginTransaction();

@@ -34,13 +34,15 @@
         }
 
         /* Ensure smooth transitions for buttons */
-        button, a {
+        button,
+        a {
             transition: all 0.2s ease-in-out;
         }
 
         /* Optimize title for mobile */
         .title-text {
-            font-size: 1.25rem; /* 20px */
+            font-size: 1.25rem;
+            /* 20px */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -48,7 +50,8 @@
 
         @media (min-width: 640px) {
             .title-text {
-                font-size: 1.5rem; /* 24px */
+                font-size: 1.5rem;
+                /* 24px */
             }
         }
     </style>
@@ -59,22 +62,27 @@
     <header class="fixed top-0 left-0 right-0 py-1 bg-white shadow-sm z-50 border-b border-gray-100">
         <div class="px-4 sm:px-6 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3 sm:gap-4">
-                <button id="mobile-menu-button" class="md:hidden text-gray-500 hover:text-blue-600 focus:outline-none transform hover:scale-110">
+                <button id="mobile-menu-button" aria-label="Toggle Menu"
+                    class="md:hidden text-gray-500 hover:text-blue-600 focus:outline-none transform hover:scale-110">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <div class="h-9 w-9 sm:h-10 sm:w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
+                    <div
+                        class="h-9 w-9 sm:h-10 sm:w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
                         <span class="text-white font-semibold text-base sm:text-lg">NF</span>
                     </div>
-                    <h1 class="title-text font-semibold text-dark-800"><span class="text-blue-600">Receptioners</span></h1>
+                    <h1 class="title-text font-semibold text-dark-800"><span class="text-blue-600">Receptioners</span>
+                    </h1>
                 </div>
             </div>
 
             <div class="flex items-center space-x-3 sm:space-x-5">
                 <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="relative p-1 text-gray-500 hover:text-blue-600 focus:outline-none transform hover:scale-110">
+                    <button @click="open = !open"
+                        class="relative p-1 text-gray-500 hover:text-blue-600 focus:outline-none transform hover:scale-110">
                         <i class="fas fa-bell text-lg sm:text-xl"></i>
-                        <span class="absolute top-0 right-0 h-2.5 w-2.5 sm:h-3 sm:w-3 bg-red-500 rounded-full notification-dot"></span>
+                        <span
+                            class="absolute top-0 right-0 h-2.5 w-2.5 sm:h-3 sm:w-3 bg-red-500 rounded-full notification-dot"></span>
                     </button>
 
                     <div x-show="open" @click.away="open = false" x-transition
@@ -85,7 +93,8 @@
                         <div class="divide-y divide-gray-100">
                             <a href="#" class="block px-4 py-3 hover:bg-gray-50 transition">
                                 <div class="flex items-start">
-                                    <div class="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
+                                    <div
+                                        class="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
                                         <i class="fas fa-tools text-sm sm:text-base"></i>
                                     </div>
                                     <div class="ml-3">
@@ -97,17 +106,20 @@
                             </a>
                         </div>
                         <div class="px-4 py-2 text-center border-t border-gray-100">
-                            <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-700">View all notifications</a>
+                            <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-700">View all
+                                notifications</a>
                         </div>
                     </div>
                 </div>
 
                 <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center gap-1 sm:gap-2 focus:outline-none transform hover:scale-105">
-                        <img src="{{ auth()->user()->profile_photo_url ?? 'https://placehold.co/40x40' }}"
-                            alt="User Profile" class="h-8 w-8 sm:h-9 sm:w-9 rounded-full border-2 border-white shadow-sm">
+                    <button @click="open = !open"
+                        class="flex items-center gap-1 sm:gap-2 focus:outline-none transform hover:scale-105">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3374/3374559.png" alt="User Profile"
+                            class="h-8 w-8 sm:h-9 sm:w-9 rounded-full border border-black shadow-sm">
                         <div class="text-left hidden sm:block">
-                            <p class="text-sm font-medium text-gray-800">{{ Auth::guard('frontdesk')->user()->name }}</p>
+                            <p class="text-sm font-medium text-gray-800">{{ Auth::guard('frontdesk')->user()->name }}
+                            </p>
                             <p class="text-xs text-gray-500">Front Desk</p>
                         </div>
                         <i class="fas fa-chevron-down text-xs text-gray-500"></i>
@@ -134,7 +146,7 @@
         </div>
     </header>
 
-    <div class="flex pt-16 sm:pt-20">
+    <div class="flex pt-14 sm:pt-20">
         <!-- Fixed Sidebar -->
         <aside id="sidebar"
             class="fixed top-16 sm:top-20 left-0 bottom-0 bg-white w-60 sm:w-64 shadow-sm py-4 border-r border-gray-100 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto z-40">
@@ -210,9 +222,10 @@
 
     <!-- Mobile Overlay -->
     <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+<script>
+    document.addEventListener('livewire:init', () => {  
+        // Initialize sidebar functionality
+        function initSidebar() {
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
@@ -222,15 +235,23 @@
                 return;
             }
 
-            function toggleSidebar() {
+            function toggleSidebar(e) {
+                if (e) e.stopPropagation();
                 sidebar.classList.toggle('-translate-x-full');
                 mobileOverlay.classList.toggle('hidden');
                 document.body.classList.toggle('overflow-hidden');
+                mobileMenuButton.setAttribute('aria-expanded', sidebar.classList.contains('-translate-x-full') ? 'false' : 'true');
             }
 
-            mobileMenuButton.addEventListener('click', toggleSidebar);
+            // Clone and replace elements to prevent duplicate event listeners
+            const newButton = mobileMenuButton.cloneNode(true);
+            mobileMenuButton.replaceWith(newButton);
+
+            // Add event listeners to the new button
+            newButton.addEventListener('click', toggleSidebar);
             mobileOverlay.addEventListener('click', toggleSidebar);
 
+            // Close sidebar when clicking nav links on mobile
             document.querySelectorAll('#sidebar nav a').forEach(item => {
                 item.addEventListener('click', function() {
                     if (window.innerWidth < 768) {
@@ -239,20 +260,37 @@
                 });
             });
 
+            // Handle responsive behavior
             function handleResize() {
                 if (window.innerWidth >= 768) {
                     sidebar.classList.remove('-translate-x-full');
                     mobileOverlay.classList.add('hidden');
                     document.body.classList.remove('overflow-hidden');
+                    newButton.setAttribute('aria-expanded', 'true');
                 } else {
                     sidebar.classList.add('-translate-x-full');
                     mobileOverlay.classList.add('hidden');
+                    newButton.setAttribute('aria-expanded', 'false');
                 }
             }
 
+            // Initialize and set up resize listener
             handleResize();
             window.addEventListener('resize', handleResize);
+        }
+
+        // Run initialization
+        initSidebar();
+
+        // Reinitialize after Livewire navigation
+        document.addEventListener('livewire:navigated', initSidebar);
+        
+        // Also reinitialize after DOM updates
+        Livewire.hook('morph.updated', () => {
+            initSidebar();
         });
-    </script>
+    });
+</script>
 </body>
+
 </html>

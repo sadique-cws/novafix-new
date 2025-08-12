@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\franchises;
+use App\Models\ServiceRequest;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,5 +21,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'novafix@gmail.com',
             'password' => 'admin@123',
         ]);
+       
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Livewire\Frontdesk;
-use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\ServiceRequest;
 use App\Models\Staff;
 use Livewire\Attributes\Layout;
@@ -12,13 +12,14 @@ use Livewire\WithPagination;
 #[Layout('components.layouts.frontdesk-layout')]
 class ManageServiceRequest extends Component
 {
-
     use WithPagination;
+
     public $search = '';
     public $statusFilter = '';
     public $perPage = 10;
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
+    public $technicians = [];
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -28,6 +29,11 @@ class ManageServiceRequest extends Component
         'perPage'
     ];
 
+    public function mount()
+    {
+        $this->technicians = Staff::where('id')->get();
+    }
+
     public function sortBy($field)
     {
         if ($this->sortField === $field) {
@@ -35,7 +41,6 @@ class ManageServiceRequest extends Component
         } else {
             $this->sortDirection = 'asc';
         }
-
         $this->sortField = $field;
     }
 
@@ -52,7 +57,7 @@ class ManageServiceRequest extends Component
     public function render()
     {
         $requests = ServiceRequest::query()
-            ->where('receptioners_id', Auth::guard('frontdesk')->user()->id) // Filter by logged-in receptionist
+            ->where('receptioners_id', Auth::guard('frontdesk')->user()->id)
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('service_code', 'like', '%' . $this->search . '%')
@@ -73,15 +78,28 @@ class ManageServiceRequest extends Component
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
 
+        $stats = [
+            'total' => ServiceRequest::where('receptioners_id', Auth::guard('frontdesk')->user()->id)->count(),
+            'pending' => ServiceRequest::where('receptioners_id', Auth::guard('frontdesk')->user()->id)->where('status', 0)->count(),
+            'in_progress' => ServiceRequest::where('receptioners_id', Auth::guard('frontdesk')->user()->id)->where('status', '>', 0)->where('status', '<', 100)->count(),
+            'completed' => ServiceRequest::where('receptioners_id', Auth::guard('frontdesk')->user()->id)->where('status', 100)->count(),
+        ];
+        $total = ServiceRequest::where('receptioners_id', Auth::guard('frontdesk')->user()->id)->count();
+    
+
         return view('livewire.frontdesk.manage-service-request', [
             'requests' => $requests,
+            'stats' => $stats,
+            'technicians' => $this->technicians,
+            'total' => $total,
+
         ]);
     }
 
     public function deleteRequest($id)
     {
         ServiceRequest::destroy($id);
-        session()->flash('message', 'Service request deleted successfully.');
+        $this->dispatch('notify', ['type' => 'success', 'message' => 'Service request deleted successfully.']);
     }
 
     public function updateStatus($id, $status)
@@ -92,7 +110,7 @@ class ManageServiceRequest extends Component
                 'status' => $status,
                 'last_update' => now()
             ]);
-            session()->flash('message', 'Status updated successfully.');
+            $this->dispatch('notify', ['type' => 'success', 'message' => 'Status updated successfully.']);
         }
     }
 
@@ -104,8 +122,7 @@ class ManageServiceRequest extends Component
                 'technician_id' => $technicianId,
                 'last_update' => now()
             ]);
-            session()->flash('message', 'Technician assigned successfully.');
+            $this->dispatch('notify', ['type' => 'success', 'message' => 'Technician assigned successfully.']);
         }
     }
-   
 }

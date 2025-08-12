@@ -31,8 +31,11 @@ use App\Livewire\Frontdesk\ManageServiceRequest as FrontdeskManageServiceRequest
 use App\Livewire\Frontdesk\FrontDashboard;
 use App\Livewire\Frontdesk\FrontDeskLogin;
 use App\Livewire\Frontdesk\ManagePayment;
+use App\Livewire\Frontdesk\EditServiceRequest;
+use App\Livewire\Frontdesk\ForgotPassword;
 use App\Livewire\Frontdesk\OtpSender;
 use App\Livewire\Frontdesk\Profile as FrontdeskProfile;
+use App\Livewire\Frontdesk\ResetPassword;
 use App\Livewire\Frontdesk\ServiceRequestForm;
 use App\Livewire\Frontdesk\ShowCompletedTask;
 use App\Livewire\Frontdesk\SmsSender;
@@ -77,7 +80,7 @@ Route::prefix("franchise")->group(function () {
         Route::get("/login", Login::class)->name("login");
         // Route::middleware(['auth'])->group(function () {
         //logout 
-        Route::post('/logout', function () {
+        Route::get('/logout', function () {
             auth()->guard('franchise')->logout();
             return redirect()->route('franchise.login');
         })->name('logout');
@@ -100,14 +103,22 @@ Route::prefix("franchise")->group(function () {
 
 Route::prefix("frontdesk")->group(function () {
     Route::get("/login", FrontDeskLogin::class)->name("frontdesk.login");
-    Route::post('/logout', function () {
+    Route::get('/logout', function () {
         auth()->guard('frontdesk')->logout();
         return redirect()->route('frontdesk.login');
     })->name('frontdesk.logout');
+    Route::get('/frontdesk/forgot-password', ForgotPassword::class)
+        ->middleware('guest:frontdesk')
+        ->name('frontdesk.password.request');
+
+    Route::get('/frontdesk/reset-password/{token}',ResetPassword::class)
+        ->middleware('guest:frontdesk')
+        ->name('frontdesk.password.reset'); 
     // Route::middleware(['auth'])->group(function () {
-    Route::get("/service-request/create", ServiceRequestForm::class)->name("frontdesk.servicerequest.create");
     Route::get("/dashboard", FrontDashboard::class)->name("frontdesk.dashboard");
+    Route::get("/service-request/create", ServiceRequestForm::class)->name("frontdesk.servicerequest.create");
     Route::get("/manage/service-request", FrontdeskManageServiceRequest::class)->name("frontdesk.servicerequest.manage");
+    Route::get("/service-request/edit/{id}",EditServiceRequest::class)->name('franchise.edit.servicerequest');
     Route::get("/completed/service-request", CompletedTask::class)->name("frontdesk.servicerequest.completed");
     Route::get('/completed/service-request/{requestId}', ShowCompletedTask::class)->name('frontdesk.servicerequest.show');
     Route::get('/view-task/{task}', ViewTask::class)
