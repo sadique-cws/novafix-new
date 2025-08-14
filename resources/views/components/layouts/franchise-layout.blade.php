@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Service Center Franchise Dashboard</title>
+    <title>Franchise Dashboard - Franchise Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary-color: #4361ee;
@@ -14,23 +15,69 @@
             --accent-color: #4895ef;
             --dark-color: #2b2d42;
             --light-color: #f8f9fa;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f5f7fa;
+            overflow-x: hidden;
         }
 
+        /* Sidebar styles */
         .sidebar {
-            transition: all 0.3s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 280px;
             transform: translateX(-100%);
+            transition: transform 0.3s ease;
             z-index: 50;
+            overflow-y: auto;
+            background-color: white;
+            border-right: 1px solid #e5e7eb;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            display: none;
         }
 
         .sidebar.active {
             transform: translateX(0);
         }
 
+        /* Main content area */
+        .main-content {
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Desktop styles */
+        @media (min-width: 768px) {
+            .sidebar {
+                transform: translateX(0);
+                width: 280px;
+            }
+
+            .main-content {
+                margin-left: 280px;
+            }
+        }
+
+        /* Mobile header */
+        .mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background-color: white;
+        }
+
+        /* Cards */
         .card {
             transition: transform 0.2s, box-shadow 0.2s;
         }
@@ -44,10 +91,14 @@
             border-left: 4px solid var(--primary-color);
         }
 
+        /* Charts */
         .chart-container {
+            position: relative;
             height: 300px;
+            width: 100%;
         }
 
+        /* Dropdowns */
         .dropdown-chevron {
             transition: transform 0.2s;
         }
@@ -56,48 +107,85 @@
             transform: rotate(180deg);
         }
 
-        @media (min-width: 768px) {
+        /* Status badges */
+        .status-badge {
+            @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+        }
+
+        .status-active {
+            @apply bg-green-100 text-green-800;
+        }
+
+        .status-inactive {
+            @apply bg-red-100 text-red-800;
+        }
+
+        .status-pending {
+            @apply bg-yellow-100 text-yellow-800;
+        }
+
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Backdrop for mobile sidebar */
+        .sidebar-backdrop {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Mobile specific optimizations */
+        @media (max-width: 767px) {
             .sidebar {
-                transform: translateX(0);
+                width: 80%;
+                max-width: 320px;
+            }
+
+            .main-content {
+                width: 100%;
+            }
+
+            .mobile-search {
+                display: block;
+            }
+
+            .desktop-search {
+                display: none;
             }
         }
 
-        /* Mobile specific styles */
-        @media (max-width: 767px) {
-            header {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                z-index: 40;
-                padding: 0.5rem 1rem;
-            }
-            
-            .mobile-menu-button {
-                z-index: 50;
-            }
-            
-            #sidebar {
-                width: 80%;
-                top: 0;
-                height: 100vh;
-                padding-top: 64px;
-            }
-            
-            #sidebarBackdrop {
-                top: 64px;
-                height: calc(100vh - 64px);
-            }
-            
-            main {
-                margin-top: 64px;
-                padding-top: 1rem;
-                min-height: calc(100vh - 64px);
+        @media (min-width: 768px) {
+            .mobile-search {
+                display: none;
             }
 
-            .sidebar-nav {
-                max-height: calc(100vh - 120px);
-                overflow-y: auto;
+            .desktop-search {
+                display: block;
             }
         }
 
@@ -118,197 +206,198 @@
     </style>
 </head>
 
-<body class="bg-gray-100">
-    <div class="flex h-screen overflow-hidden">
-        <!-- Mobile sidebar toggle -->
-        <div class="fixed inset-0 z-40 bg-gray-900 bg-opacity-50 hidden transition-opacity duration-300" id="sidebarBackdrop"></div>
+<body class="bg-gray-50">
+    <!-- Mobile sidebar toggle -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-        <!-- Sidebar -->
-        <div class="sidebar bg-white w-[20%] fixed md:relative h-full border-r border-gray-200" id="sidebar">
-            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
-                        <span class="text-white font-semibold text-lg">NF</span>
-                    </div>
-                    <h1 class="text-xl md:text-2xl font-semibold text-dark-800">Franchise Dashboard</h1>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
+                    <span class="text-white font-semibold text-lg">NF</span>
                 </div>
-                <button id="sidebarClose" class="md:hidden text-gray-500 hover:text-gray-700 focus:outline-none">
-                    <i class="fas fa-times"></i>
-                </button>
+                <h1 class="text-xl md:text-2xl font-semibold text-gray-800">Franchise Panel</h1>
             </div>
-
-            <nav class="p-4 sidebar-nav" style="max-height: calc(100vh - 64px);">
-                <ul>
-                    <li class="mb-1">
-                        <a wire:navigate href="{{ route('franchise.dashboard') }}"
-                            class="flex items-center p-3 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors">
-                            <i class="fas fa-tachometer-alt mr-3 w-5 text-center"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-
-                    <!-- Staff Section -->
-                    <li class="mb-1 relative">
-                        <a href="#" onclick="toggleDropdown(event, 'staff-dropdown', 'staff-chevron')"
-                            class="flex items-center justify-between p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
-                            <div class="flex items-center">
-                                <i class="fas fa-users-cog mr-3 w-5 text-center"></i>
-                                <span>Staff</span>
-                            </div>
-                            <i class="fas fa-chevron-down text-xs ml-2 dropdown-chevron" id="staff-chevron"></i>
-                        </a>
-                        <ul id="staff-dropdown"
-                            class="hidden pl-2 mt-1 ml-6 border-l-2 border-blue-100 space-y-1">
-                            <li>
-                                <a wire:navigate href="{{ route('franchise.add.staff') }}"
-                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">Add Staff</a>
-                            </li>
-                            <li>
-                                <a wire:navigate href="{{ route('franchise.manage.staff') }}"
-                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">Manage Staff</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="mb-1 relative">
-                        <a href="#" onclick="toggleDropdown(event, 'receptioners-dropdown', 'receptioners-chevron')"
-                            class="flex items-center justify-between p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
-                            <div class="flex items-center">
-                                <i class="fas fa-store mr-3 w-5 text-center"></i>
-                                <span>Receptioners</span>
-                            </div>
-                            <i class="fas fa-chevron-down text-xs ml-2 dropdown-chevron" id="receptioners-chevron"></i>
-                        </a>
-                        <ul id="receptioners-dropdown"
-                            class="hidden pl-2 mt-1 ml-6 border-l-2 border-blue-100 space-y-1">
-                            <li>
-                                <a wire:navigate href="{{ route('franchise.add.receptioners') }}"
-                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">Add Receptioners</a>
-                            </li>
-                            <li>
-                                <a wire:navigate href="{{ route('franchise.manage.receptioners') }}"
-                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">Manage Receptioners</a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <li class="mb-1">
-                        <a wire:navigate href="{{ route('franchise.manage.service') }}"
-                            class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-tags mr-3 w-5 text-center"></i>
-                            <span>Types</span>
-                        </a>
-                    </li>
-                    
-                    <li class="mb-1">
-                        <a href="#"
-                            class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-users mr-3 w-5 text-center"></i>
-                            <span>Customers</span>
-                        </a>
-                    </li>
-                    
-                    <li class="mb-1">
-                        <a href="{{ route('franchise.manage.payments') }}"
-                            class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-file-invoice-dollar mr-3 w-5 text-center"></i>
-                            <span>Manage Payment</span>
-                        </a>
-                    </li>
-                    
-                    <li class="mb-1">
-                        <a href="#"
-                            class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
-                            <span>Reports</span>
-                        </a>
-                    </li>
-                    
-                    <li class="mb-1">
-                        <a href="#"
-                            class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-cog mr-3 w-5 text-center"></i>
-                            <span>Settings</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            <button id="sidebarClose" class="md:hidden text-gray-500 hover:text-gray-700 focus:outline-none">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
 
-        <!-- Main content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Top navigation -->
-            <header class="bg-white shadow-sm sticky top-0 z-30">
-                <div class="flex items-center justify-between px-4 py-3 sm:px-6">
-                    <!-- Mobile menu button -->
-                    <button id="sidebarToggle" class="md:hidden text-gray-500 hover:text-gray-700 focus:outline-none mobile-menu-button">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                    
-                    <div class="flex flex-1 items-center justify-end space-x-4 sm:space-x-6">
-                        <!-- Search bar - hidden on mobile, shown on tablet and up -->
-                        <div class="relative hidden sm:block">
-                            <input type="text" placeholder="Search payments..."
-                                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-48 md:w-64 transition-all duration-200 input-focus">
-                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                        </div>
-                        
-                        <!-- Notification button -->
-                        <div class="relative">
-                            <button class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none relative">
-                                <i class="fas fa-bell text-lg"></i>
-                                <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                            </button>
-                        </div>
-                        
-                        <!-- User dropdown -->
-                        <div class="relative">
-                            <button onclick="toggleDropdown(event, 'navbar-profile-dropdown', 'profile-chevron')"
-                                class="flex items-center space-x-2 focus:outline-none">
-                                <img src="{{ Auth::guard('franchise')->user()->profile_photo_url ?? 'https://placehold.co/40x40' }}"
-                                    alt="User profile" class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
-                                <span class="font-medium text-gray-700 hidden md:inline whitespace-nowrap">
-                                    {{ Auth::guard('franchise')->user()->franchise_name }}
-                                </span>
-                                <i class="fas fa-chevron-down text-xs text-gray-500 dropdown-chevron" id="profile-chevron"></i>
-                            </button>
-                            
-                            <div id="navbar-profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 dropdown-shadow border border-gray-100">
-                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Profile</a>
-                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Settings</a>
-                                <div class="border-t border-gray-100"></div>
-                                <a wire:navigate href="{{route('franchise.logout')}}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-red-500 hover:text-red-600 transition-colors">
-                                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Mobile search bar - shown only on mobile -->
-                <div class="px-4 py-2 border-t border-gray-100 sm:hidden">
-                    <div class="relative">
-                        <input type="text" placeholder="Search..."
-                            class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full input-focus">
-                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                    </div>
-                </div>
-            </header>
 
-            <!-- Main content area -->
-            <main class="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50">
-                {{ $slot }}
-            </main>
-        </div>
+        <nav class="p-4 sidebar-nav" style="max-height: calc(100vh - 64px);">
+            <ul>
+                <li class="mb-1">
+                    <a wire:navigate href="{{ route('franchise.dashboard') }}"
+                        class="flex items-center p-3 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors">
+                        <i class="fas fa-tachometer-alt mr-3 w-5 text-center"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- Staff Section -->
+               
+                  
+                 <li class="mb-1">
+                    <a wire:navigate href="{{ route('franchise.manage.staff') }}"
+                        class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
+                       <i class="fas fa-users-cog mr-3 w-5 text-center"></i>
+                        <span>Manage Staff</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a wire:navigate href="{{ route('franchise.manage.receptioners') }}"
+                        class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
+                      <i class="fas fa-user-tie mr-3 w-5 text-center"></i>
+                        <span>Manage Receptionists</span>
+                    </a>
+                </li>
+                <!-- Receptionists Section -->
+               
+
+                <li class="mb-1">
+                    <a wire:navigate href="{{ route('franchise.manage.service') }}"
+                        class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
+                        <i class="fas fa-tags mr-3 w-5 text-center"></i>
+                        <span>Types</span>
+                    </a>
+                </li>
+
+                <li class="mb-1">
+                    <a href="#"
+                        class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
+                        <i class="fas fa-users mr-3 w-5 text-center"></i>
+                        <span>Customers</span>
+                    </a>
+                </li>
+
+                <li class="mb-1">
+                    <a href="{{ route('franchise.manage.payments') }}"
+                        class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
+                        <i class="fas fa-file-invoice-dollar mr-3 w-5 text-center"></i>
+                        <span>Manage Payment</span>
+                    </a>
+                </li>
+
+                <li class="mb-1">
+                    <a href="#"
+                        class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
+                        <i class="fas fa-chart-line mr-3 w-5 text-center"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li class="mb-1">
+                    <a href="#"
+                        class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
+                        <i class="fas fa-cog mr-3 w-5 text-center"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Main content -->
+    <div class="main-content min-h-screen">
+        <!-- Mobile header -->
+        <div class="mobile-header md:hidden flex items-center justify-between px-4 py-3 bg-white shadow-sm">
+            <button id="sidebarToggle" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <div class="relative mobile-search">
+                <input type="text" placeholder="Search..."
+                    class="pl-10 pr-4 py-1 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-48 transition-all duration-200 input-focus">
+                <i class="fas fa-search absolute left-4 top-2 text-gray-400"></i>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none relative">
+                    <i class="fas fa-bell text-lg"></i>
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+                <div class="relative">
+                    <button onclick="toggleDropdown(event, 'navbar-profile-dropdown', 'profile-chevron')"
+                        class="flex items-center space-x-2 focus:outline-none">
+                        <img src="https://cdn-icons-png.flaticon.com/512/700/700674.png" alt="User profile"
+                            class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
+                        <i class="fas fa-chevron-down text-xs text-gray-500 dropdown-chevron" id="profile-chevron"></i>
+                    </button>
+
+                    <div id="navbar-profile-dropdown"
+                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 border border-gray-100 dropdown-shadow">
+                        <a href="#"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Profile</a>
+                        <a href="#"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Settings</a>
+                        <div class="border-t border-gray-100"></div>
+                        <a href="#"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-red-500 hover:text-red-600 transition-colors">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop header -->
+        <header class="hidden md:block bg-white shadow-sm sticky top-0 z-20">
+            <div class="flex items-center justify-between px-4 py-3 sm:px-6">
+                <div class="flex-1 flex items-center justify-end space-x-4 sm:space-x-6">
+                    <!-- Search bar -->
+                    <div class="relative desktop-search">
+                        <input type="text" placeholder="Search..."
+                            class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64 transition-all duration-200 input-focus">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+
+                    <!-- Notification button -->
+                    <div class="relative">
+                        <button class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none relative">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </button>
+                    </div>
+
+                    <!-- User dropdown -->
+                    <div class="relative">
+                        <button onclick="toggleDropdown(event, 'navbar-profile-dropdown', 'profile-chevron')"
+                            class="flex items-center space-x-2 focus:outline-none">
+                            <img src="https://cdn-icons-png.flaticon.com/512/700/700674.png" alt="User profile"
+                                class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
+                            <span class="font-medium text-gray-700 whitespace-nowrap">Franchise Profile
+                            </span>
+                            <i class="fas fa-chevron-down text-xs text-gray-500 dropdown-chevron"
+                                id="profile-chevron"></i>
+                        </button>
+
+                        <div id="navbar-profile-dropdown"
+                            class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 border border-gray-100 dropdown-shadow">
+                            <a href="#"
+                                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Profile</a>
+                            <a href="#"
+                                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Settings</a>
+                            <div class="border-t border-gray-100"></div>
+                            <a href="#"
+                                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-red-500 hover:text-red-600 transition-colors">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content area -->
+        <main class="p-4 sm:p-6">
+            {{ $slot }}
+        </main>
+    </div>
+
     <script>
-        // Initialize the dashboard when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             initializeSidebar();
             initializeDropdowns();
-            initializeCharts();
             setupEventListeners();
         });
 
@@ -321,34 +410,60 @@
 
             function toggleSidebar() {
                 sidebar.classList.toggle('active');
-                sidebarBackdrop.classList.toggle('hidden');
-                document.body.classList.toggle('overflow-hidden', sidebar.classList.contains('active'));
+                sidebarBackdrop.classList.toggle('active');
+                document.body.classList.toggle('overflow-hidden');
+
+                // Update aria-expanded attribute
+                if (sidebarToggle) {
+                    const isExpanded = sidebar.classList.contains('active');
+                    sidebarToggle.setAttribute('aria-expanded', isExpanded);
+                }
             }
 
-            if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);
-            if (sidebarClose) sidebarClose.addEventListener('click', toggleSidebar);
-            if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleSidebar();
+                });
+            }
 
-            // Close sidebar when clicking outside on mobile
-            document.addEventListener('click', function(event) {
-                const isClickInsideSidebar = sidebar.contains(event.target);
-                const isClickOnToggle = sidebarToggle.contains(event.target);
-                
-                if (!isClickInsideSidebar && !isClickOnToggle && window.innerWidth < 768) {
-                    sidebar.classList.remove('active');
-                    sidebarBackdrop.classList.add('hidden');
-                    document.body.classList.remove('overflow-hidden');
-                }
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleSidebar();
+                });
+            }
+
+            if (sidebarBackdrop) {
+                sidebarBackdrop.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleSidebar();
+                });
+            }
+
+            // Close sidebar when clicking nav links on mobile
+            document.querySelectorAll('#sidebar nav a').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth < 768) {
+                        toggleSidebar();
+                    }
+                });
             });
 
             // Handle window resize
-            window.addEventListener('resize', function() {
+            function handleResize() {
                 if (window.innerWidth >= 768) {
                     sidebar.classList.add('active');
-                    sidebarBackdrop.classList.add('hidden');
+                    sidebarBackdrop.classList.remove('active');
                     document.body.classList.remove('overflow-hidden');
+                } else {
+                    sidebar.classList.remove('active');
+                    sidebarBackdrop.classList.remove('active');
                 }
-            });
+            }
+
+            handleResize();
+            window.addEventListener('resize', handleResize);
         }
 
         // Dropdown functionality
@@ -357,11 +472,14 @@
             document.addEventListener('click', function(event) {
                 const dropdowns = document.querySelectorAll('[id$="-dropdown"]');
                 dropdowns.forEach(dropdown => {
-                    if (!dropdown.contains(event.target) && !event.target.closest('button[onclick*="'+dropdown.id+'"]')) {
+                    if (!dropdown.contains(event.target) &&
+                        !event.target.closest(`[onclick*="${dropdown.id}"]`)) {
                         dropdown.classList.add('hidden');
                         const chevronId = dropdown.id.replace('-dropdown', '-chevron');
                         const chevron = document.getElementById(chevronId);
-                        if (chevron) chevron.classList.remove('rotate');
+                        if (chevron) {
+                            chevron.classList.remove('rotate');
+                        }
                     }
                 });
             });
@@ -370,143 +488,42 @@
             document.addEventListener('touchstart', function(event) {
                 const dropdowns = document.querySelectorAll('[id$="-dropdown"]');
                 dropdowns.forEach(dropdown => {
-                    if (!dropdown.contains(event.target) && !event.target.closest('button[onclick*="'+dropdown.id+'"]')) {
+                    if (!dropdown.contains(event.target) &&
+                        !event.target.closest(`[onclick*="${dropdown.id}"]`)) {
                         dropdown.classList.add('hidden');
                         const chevronId = dropdown.id.replace('-dropdown', '-chevron');
                         const chevron = document.getElementById(chevronId);
-                        if (chevron) chevron.classList.remove('rotate');
+                        if (chevron) {
+                            chevron.classList.remove('rotate');
+                        }
                     }
                 });
             });
         }
 
-        // Dropdown toggle function
+        // Global toggleDropdown function
         function toggleDropdown(event, dropdownId, chevronId = null) {
             event.preventDefault();
             event.stopPropagation();
-            
+
             const dropdown = document.getElementById(dropdownId);
-            const isMobile = window.innerWidth < 768;
-            
-            // Close all other dropdowns first on mobile
-            if (isMobile) {
-                document.querySelectorAll('[id$="-dropdown"]').forEach(dd => {
-                    if (dd.id !== dropdownId) {
-                        dd.classList.add('hidden');
-                        const otherChevronId = dd.id.replace('-dropdown', '-chevron');
-                        const otherChevron = document.getElementById(otherChevronId);
-                        if (otherChevron) otherChevron.classList.remove('rotate');
-                    }
-                });
-            }
-            
             dropdown.classList.toggle('hidden');
-            
+
             if (chevronId) {
                 const chevron = document.getElementById(chevronId);
                 chevron.classList.toggle('rotate');
             }
-            
-            // On mobile, prevent body scrolling when dropdown is open
-            if (isMobile) {
-                const hasOpenDropdown = Array.from(document.querySelectorAll('[id$="-dropdown"]'))
-                    .some(dd => !dd.classList.contains('hidden'));
-                document.body.classList.toggle('overflow-hidden', hasOpenDropdown);
-            }
-        }
 
-        // Chart initialization
-        function initializeCharts() {
-            // Revenue Chart
-            const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
-            if (revenueCtx) {
-                new Chart(revenueCtx, {
-                    type: 'line',
-                    data: {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                        datasets: [{
-                            label: 'Revenue ($)',
-                            data: [12000, 19000, 15000, 23000, 30000, 36000, 42000],
-                            backgroundColor: 'rgba(67, 97, 238, 0.1)',
-                            borderColor: 'rgba(67, 97, 238, 1)',
-                            borderWidth: 2,
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grid: {
-                                    drawBorder: false
-                                }
-                            },
-                            x: {
-                                grid: {
-                                    display: false
-                                }
-                            }
+            // Close other dropdowns on mobile
+            if (window.innerWidth < 768) {
+                document.querySelectorAll('[id$="-dropdown"]').forEach(dd => {
+                    if (dd.id !== dropdownId && !dd.classList.contains('hidden')) {
+                        dd.classList.add('hidden');
+                        const otherChevronId = dd.id.replace('-dropdown', '-chevron');
+                        const otherChevron = document.getElementById(otherChevronId);
+                        if (otherChevron) {
+                            otherChevron.classList.remove('rotate');
                         }
-                    }
-                });
-            }
-
-            // Performance Chart
-            const performanceCtx = document.getElementById('performanceChart')?.getContext('2d');
-            if (performanceCtx) {
-                new Chart(performanceCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['New York', 'Chicago', 'Los Angeles', 'Houston', 'Miami'],
-                        datasets: [{
-                            label: 'Revenue ($)',
-                            data: [32000, 28000, 41000, 25000, 38000],
-                            backgroundColor: [
-                                'rgba(75, 192, 192, 0.7)',
-                                'rgba(54, 162, 235, 0.7)',
-                                'rgba(153, 102, 255, 0.7)',
-                                'rgba(255, 159, 64, 0.7)',
-                                'rgba(255, 99, 132, 0.7)'
-                            ],
-                            borderColor: [
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)',
-                                'rgba(255, 99, 132, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grid: {
-                                    drawBorder: false
-                                }
-                            },
-                            x: {
-                                grid: {
-                                    display: false
-                                }
-                            }
-                        } 
                     }
                 });
             }
@@ -521,6 +538,23 @@
                 });
             });
         }
+
+        // Livewire integration
+        document.addEventListener('livewire:init', () => {
+            initializeSidebar();
+            initializeDropdowns();
+
+            document.addEventListener('livewire:navigated', () => {
+                initializeSidebar();
+                initializeDropdowns();
+            });
+
+            Livewire.hook('morph.updated', () => {
+                initializeSidebar();
+                initializeDropdowns();
+            });
+        });
     </script>
 </body>
+
 </html>

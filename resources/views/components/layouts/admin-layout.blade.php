@@ -351,8 +351,8 @@
                 <div class="relative">
                     <button onclick="toggleDropdown(event, 'navbar-profile-dropdown', 'profile-chevron')"
                         class="flex items-center space-x-2 focus:outline-none">
-                        <img src="https://www.pngmart.com/files/21/Admin-Profile-Vector-PNG-Clipart.png" alt="User profile"
-                            class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
+                        <img src="https://www.pngmart.com/files/21/Admin-Profile-Vector-PNG-Clipart.png"
+                            alt="User profile" class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
                         <span class="font-medium text-gray-700 hidden md:inline whitespace-nowrap">Super
                             Admin</span>
                         <i class="fas fa-chevron-down text-xs text-gray-500 dropdown-chevron"
@@ -398,8 +398,8 @@
                     <div class="relative">
                         <button onclick="toggleDropdown(event, 'navbar-profile-dropdown', 'profile-chevron')"
                             class="flex items-center space-x-2 focus:outline-none">
-                            <img src="https://www.pngmart.com/files/21/Admin-Profile-Vector-PNG-Clipart.png" alt="User profile"
-                                class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
+                            <img src="https://www.pngmart.com/files/21/Admin-Profile-Vector-PNG-Clipart.png"
+                                alt="User profile" class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
                             <span class="font-medium text-gray-700 hidden md:inline whitespace-nowrap">Super
                                 Admin</span>
                             <i class="fas fa-chevron-down text-xs text-gray-500 dropdown-chevron"
@@ -428,72 +428,110 @@
             {{ $slot }}
         </main>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        // Sidebar toggle functionality
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebarClose = document.getElementById('sidebarClose');
-        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+        document.addEventListener('livewire:init', () => {
+            // Initialize sidebar functionality
+            function initSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const sidebarToggle = document.getElementById('sidebarToggle');
+                const sidebarClose = document.getElementById('sidebarClose');
+                const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('active');
-            sidebarBackdrop.classList.toggle('hidden');
-            document.body.classList.toggle('overflow-hidden');
-        }
+                if (!sidebar || !sidebarToggle || !sidebarBackdrop) {
+                    console.error('Sidebar elements not found');
+                    return;
+                }
 
-        sidebarToggle.addEventListener('click', toggleSidebar);
-        sidebarClose.addEventListener('click', toggleSidebar);
-        sidebarBackdrop.addEventListener('click', toggleSidebar);
+                function toggleSidebar(e) {
+                    if (e) e.stopPropagation();
+                    sidebar.classList.toggle('-translate-x-full');
+                    sidebar.classList.toggle('active');
+                    sidebarBackdrop.classList.toggle('hidden');
+                    document.body.classList.toggle('overflow-hidden');
+                }
 
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const isClickInsideSidebar = sidebar.contains(event.target);
-            const isClickOnToggle = sidebarToggle.contains(event.target);
+                const newToggle = sidebarToggle.cloneNode(true);
+                sidebarToggle.replaceWith(newToggle);
 
-            if (!isClickInsideSidebar && !isClickOnToggle && window.innerWidth < 768) {
-                sidebar.classList.remove('active');
-                sidebarBackdrop.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
+                if (sidebarClose) {
+                    const newClose = sidebarClose.cloneNode(true);
+                    sidebarClose.replaceWith(newClose);
+                    newClose.addEventListener('click', toggleSidebar);
+                }
+
+                newToggle.addEventListener('click', toggleSidebar);
+                sidebarBackdrop.addEventListener('click', toggleSidebar);
+
+                document.querySelectorAll('#sidebar nav a').forEach(item => {
+                    item.addEventListener('click', function() {
+                        if (window.innerWidth < 768) {
+                            toggleSidebar();
+                        }
+                    });
+                });
+
+                // Handle dropdown functionality
+                function toggleDropdown(event, dropdownId, chevronId = null) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const dropdown = document.getElementById(dropdownId);
+                    dropdown.classList.toggle('hidden');
+                    if (chevronId) {
+                        const chevron = document.getElementById(chevronId);
+                        chevron.classList.toggle('rotate');
+                    }
+                }
+
+                // Close dropdowns when clicking outside
+                document.addEventListener('click', function(event) {
+                    const dropdowns = document.querySelectorAll('[id$="-dropdown"]');
+                    dropdowns.forEach(dropdown => {
+                        if (!dropdown.contains(event.target) &&
+                            !event.target.closest(`[onclick*="${dropdown.id}"]`)) {
+                            dropdown.classList.add('hidden');
+                            const chevronId = dropdown.id.replace('-dropdown', '-chevron');
+                            const chevron = document.getElementById(chevronId);
+                            if (chevron) {
+                                chevron.classList.remove('rotate');
+                            }
+                        }
+                    });
+                });
+
+                function handleResize() {
+                    if (window.innerWidth >= 768) {
+                        sidebar.classList.remove('-translate-x-full');
+                        sidebar.classList.add('active');
+                        sidebarBackdrop.classList.add('hidden');
+                        document.body.classList.remove('overflow-hidden');
+                    } else {
+                        sidebar.classList.add('-translate-x-full');
+                        sidebar.classList.remove('active');
+                    }
+                }
+
+                handleResize();
+                window.addEventListener('resize', handleResize);
             }
+
+            initSidebar();
+            document.addEventListener('livewire:navigated', initSidebar);
+            Livewire.hook('morph.updated', initSidebar);
         });
 
-        // Dropdown toggle function
+        // Define the global toggleDropdown function for onclick handlers
         function toggleDropdown(event, dropdownId, chevronId = null) {
             event.preventDefault();
             event.stopPropagation();
-
             const dropdown = document.getElementById(dropdownId);
             dropdown.classList.toggle('hidden');
-
             if (chevronId) {
                 const chevron = document.getElementById(chevronId);
                 chevron.classList.toggle('rotate');
             }
         }
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdowns = document.querySelectorAll('[id$="-dropdown"]');
-            dropdowns.forEach(dropdown => {
-                if (!dropdown.contains(event.target) && !event.target.closest('button[onclick*="' + dropdown
-                        .id + '"]')) {
-                    dropdown.classList.add('hidden');
-                    const chevronId = dropdown.id.replace('-dropdown', '-chevron');
-                    const chevron = document.getElementById(chevronId);
-                    if (chevron) chevron.classList.remove('rotate');
-                }
-            });
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            if (window.innerWidth >= 768) {
-                sidebar.classList.add('active');
-                sidebarBackdrop.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
-            }
-        });
     </script>
 </body>
 

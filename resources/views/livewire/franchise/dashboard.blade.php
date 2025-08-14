@@ -1,76 +1,77 @@
 <main class="p-4 sm:p-6">
     <!-- Stats Overview -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
-        <div class="card stat-card bg-white rounded-lg shadow p-4 sm:p-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 mb-6">
+        <!-- Total Receptionists Card -->
+        <div class="card stat-card bg-white rounded-lg shadow p-3 sm:p-4 md:p-5 lg:p-6">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
-                    <i class="fas fa-store text-xl"></i>
+                <div class="p-2 sm:p-3 rounded-full bg-blue-100 text-blue-600 mr-3 sm:mr-4">
+                    <i class="fas fa-user-tie text-lg sm:text-xl"></i>
                 </div>
                 <div>
-                    <p class="text-gray-500 text-sm">Total Receptionists</p>
-                    <h3 class="text-2xl font-bold">{{ $stats['totalReceptionists'] }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-500">Total Receptionists</p>
+                    <h3 class="text-lg sm:text-xl md:text-2xl font-bold">{{ $stats['totalReceptionists'] }}</h3>
                 </div>
             </div>
-            <div class="mt-4">
-                <p class="text-sm text-green-500 font-medium">
+            <div class="mt-2 sm:mt-3 md:mt-4">
+                <p class="text-xs sm:text-sm text-green-500 font-medium">
                     <i class="fas fa-arrow-up mr-1"></i> 12% from last month
                 </p>
             </div>
         </div>
 
-        <div class="card stat-card bg-white rounded-lg shadow p-4 sm:p-6">
+        <!-- Total Customers Card -->
+        <div class="card stat-card bg-white rounded-lg shadow p-3 sm:p-4 md:p-5 lg:p-6">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
-                    <i class="fas fa-users text-xl"></i>
+                <div class="p-2 sm:p-3 rounded-full bg-green-100 text-green-600 mr-3 sm:mr-4">
+                    <i class="fas fa-users text-lg sm:text-xl"></i>
                 </div>
                 <div>
-                    <p class="text-gray-500 text-sm">Total Customers</p>
-                    <h3 class="text-2xl font-bold">{{ number_format($stats['totalCustomers']) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-500">Total Customers</p>
+                    <h3 class="text-lg sm:text-xl md:text-2xl font-bold">{{ number_format($stats['totalCustomers']) }}</h3>
                 </div>
             </div>
-            <div class="mt-4">
-                <p class="text-sm text-green-500 font-medium">
+            <div class="mt-2 sm:mt-3 md:mt-4">
+                <p class="text-xs sm:text-sm text-green-500 font-medium">
                     <i class="fas fa-arrow-up mr-1"></i> 5% from last month
                 </p>
             </div>
         </div>
 
-        <div class="card stat-card bg-white rounded-lg shadow p-4 sm:p-6">
+        <!-- Services Completed Card -->
+        <div class="card stat-card bg-white rounded-lg shadow p-3 sm:p-4 md:p-5 lg:p-6">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
-                    <i class="fas fa-wrench text-xl"></i>
+                <div class="p-2 sm:p-3 rounded-full bg-purple-100 text-purple-600 mr-3 sm:mr-4">
+                    <i class="fas fa-wrench text-lg sm:text-xl"></i>
                 </div>
                 <div>
-                    <p class="text-gray-500 text-sm">Services Completed</p>
-                    <h3 class="text-2xl font-bold">{{ number_format($stats['servicesCompleted']) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-500">Services Completed</p>
+                    <h3 class="text-lg sm:text-xl md:text-2xl font-bold">{{ number_format($stats['servicesCompleted']) }}</h3>
                 </div>
             </div>
-            <div class="mt-4">
-                <p class="text-sm text-red-500 font-medium">
+            <div class="mt-2 sm:mt-3 md:mt-4">
+                <p class="text-xs sm:text-sm text-red-500 font-medium">
                     <i class="fas fa-arrow-down mr-1"></i> 8% from last month
                 </p>
             </div>
         </div>
 
-        <div class="card stat-card bg-white rounded-lg shadow p-4 sm:p-6">
+        <!-- Total Revenue Card -->
+        <div class="card stat-card bg-white rounded-lg shadow p-3 sm:p-4 md:p-5 lg:p-6">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-orange-100 text-orange-600 mr-4">
-                    <i class="fas fa-file-invoice-dollar text-xl"></i>
+                <div class="p-2 sm:p-3 rounded-full bg-orange-100 text-orange-600 mr-3 sm:mr-4">
+                    <i class="fas fa-file-invoice-dollar text-lg sm:text-xl"></i>
                 </div>
                 <div>
-                    <p class="text-gray-500 text-sm">Total Revenue</p>
-                    <h3 class="text-2xl font-bold">₹
+                    <p class="text-xs sm:text-sm text-gray-500">Total Revenue</p>
+                    <h3 class="text-lg sm:text-xl md:text-2xl font-bold">₹
                         @php
                             $revenue = $stats['totalRevenue'];
                             if ($revenue >= 10000000) {
-                                // 1 crore or more
-                                echo number_format($revenue / 10000000, 1) . ' million';
+                                echo number_format($revenue / 10000000, 1) . ' Cr';
                             } elseif ($revenue >= 100000) {
-                                // 1 lakh or more
-                                echo number_format($revenue / 100000, 1) . ' lakh';
+                                echo number_format($revenue / 100000, 1) . ' L';
                             } elseif ($revenue >= 1000) {
-                                // 1 thousand or more
-                                echo number_format($revenue / 1000, 1) . 'k';
+                                echo number_format($revenue / 1000, 1) . 'K';
                             } else {
                                 echo number_format($revenue, 2);
                             }
@@ -78,13 +79,14 @@
                     </h3>
                 </div>
             </div>
-            <div class="mt-4">
-                <p class="text-sm text-green-500 font-medium">
+            <div class="mt-2 sm:mt-3 md:mt-4">
+                <p class="text-xs sm:text-sm text-green-500 font-medium">
                     <i class="fas fa-arrow-up mr-1"></i> 22% from last month
                 </p>
             </div>
         </div>
     </div>
+
 
     <!-- Charts Row -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
