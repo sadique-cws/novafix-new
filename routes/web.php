@@ -11,6 +11,8 @@ use App\Livewire\Admin\ManageStaffs;
 use App\Livewire\Admin\Performance;
 use App\Livewire\Admin\ReceptionstManage;
 use App\Livewire\Admin\ReceptionstView;
+use App\Livewire\Admin\Solution\ManageDevice;
+use App\Livewire\Admin\Solution\ServiceSolution;
 use App\Livewire\Admin\StaffManage;
 use App\Livewire\Admin\StaffView;
 use App\Livewire\Admin\ViewFranchises;
@@ -62,7 +64,7 @@ Route::prefix("admin")->group(function () {
     Route::name("admin.")->group(function () {
         // Route::middleware("auth")->group(function(){
         Route::get('', AdminDashboard::class)->name('dashboard');
-// Route::get('login',Adminlogin::class)->name('login');
+        Route::get('login', Adminlogin::class)->name('login');
         Route::get('add-franchise', AddFranchises::class)->name('add-franchise');
 
 
@@ -71,10 +73,12 @@ Route::prefix("admin")->group(function () {
         Route::get('view-franchises/{id}', ViewFranchises::class)->name('view-franchises');
         Route::get('franchises/edit/{id}', EditFranchise::class)->name('edit-franchise');
         Route::get('Franchise-performance', Performance::class)->name('franchise.performance');
-        Route::get('Receptionst-Management',ReceptionstManage::class)->name('receptionst.management');
+        Route::get('Receptionst-Management', ReceptionstManage::class)->name('receptionst.management');
         Route::get('Staff-Management', StaffManage::class)->name('staff.management');
         Route::get('Staff-Management/{id}', StaffView::class)->name('staff.view');
         Route::get('Receptionst-Management/{id}', ReceptionstView::class)->name('Receptionst.view');
+        Route::get('solution',ServiceSolution::class)->name('solution');
+        Route::get('solution/manage-devices', ManageDevice::class)->name('admin.solution.manage-devices');
     });
 });
 
@@ -113,14 +117,14 @@ Route::prefix("frontdesk")->group(function () {
         ->middleware('guest:frontdesk')
         ->name('frontdesk.password.request');
 
-    Route::get('/frontdesk/reset-password/{token}',ResetPassword::class)
+    Route::get('/frontdesk/reset-password/{token}', ResetPassword::class)
         ->middleware('guest:frontdesk')
-        ->name('frontdesk.password.reset'); 
+        ->name('frontdesk.password.reset');
     // Route::middleware(['auth'])->group(function () {
     Route::get("/dashboard", FrontDashboard::class)->name("frontdesk.dashboard");
     Route::get("/service-request/create", ServiceRequestForm::class)->name("frontdesk.servicerequest.create");
     Route::get("/manage/service-request", FrontdeskManageServiceRequest::class)->name("frontdesk.servicerequest.manage");
-    Route::get("/service-request/edit/{id}",EditServiceRequest::class)->name('franchise.edit.servicerequest');
+    Route::get("/service-request/edit/{id}", EditServiceRequest::class)->name('franchise.edit.servicerequest');
     Route::get("/completed/service-request", CompletedTask::class)->name("frontdesk.servicerequest.completed");
     Route::get('/completed/service-request/{requestId}', ShowCompletedTask::class)->name('frontdesk.servicerequest.show');
     Route::get('/view-task/{task}', ViewTask::class)
