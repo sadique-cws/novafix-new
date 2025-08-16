@@ -76,7 +76,6 @@ Route::prefix("admin")->group(function () {
         Route::get('Staff-Management/{id}', StaffView::class)->name('staff.view');
         Route::get('Receptionst-Management/{id}', ReceptionstView::class)->name('Receptionst.view');
         Route::get('solution',ServiceSolution::class)->name('solution');
-
         Route::get('solution/manage-devices', ManageDevice::class)->name('admin.solution.manage-devices');
     });
 });
