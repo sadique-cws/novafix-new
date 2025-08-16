@@ -11,7 +11,10 @@ use App\Livewire\Admin\ManageStaffs;
 use App\Livewire\Admin\Performance;
 use App\Livewire\Admin\ReceptionstManage;
 use App\Livewire\Admin\ReceptionstView;
+use App\Livewire\Admin\Solution\ManageBrand;
 use App\Livewire\Admin\Solution\ManageDevice;
+use App\Livewire\Admin\Solution\ManageModel;
+use App\Livewire\Admin\Solution\ManageProblam;
 use App\Livewire\Admin\Solution\ServiceSolution;
 use App\Livewire\Admin\StaffManage;
 use App\Livewire\Admin\StaffView;
@@ -75,7 +78,10 @@ Route::prefix("admin")->group(function () {
         Route::get('Staff-Management/{id}', StaffView::class)->name('staff.view');
         Route::get('Receptionst-Management/{id}', ReceptionstView::class)->name('Receptionst.view');
         Route::get('solution',ServiceSolution::class)->name('solution');
-        Route::get('solution/manage-devices', ManageDevice::class)->name('admin.solution.manage-devices');
+        Route::get('solution/manage-devices', ManageDevice::class)->name('solution.manage-devices');
+        Route::get('solution/manage-brands', ManageBrand::class)->name('solution.manage-brands');
+        Route::get('solution/manage-models', ManageModel::class)->name('solution.manage-models');
+        Route::get('solution/manage-problems', ManageProblam::class)->name('solution.manage-problems');
     });
 });
 
