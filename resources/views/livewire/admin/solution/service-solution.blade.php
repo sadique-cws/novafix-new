@@ -87,7 +87,7 @@
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
     <!-- Novafix Diagnosis Content -->
     <div class="tab-content p-6 active" id="novafix-content">
-      <livewire:resources/views/livewire/admin/solution.manage-devivces>
+    
       </div>
     </div>
     
@@ -114,71 +114,21 @@
     
     <!-- Manage Device Content -->
     <div class="tab-content p-6 hidden" id="device-content">
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Manage Devices</h3>
-      <div class="flex justify-end mb-4">
-        <a href="#" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
-          Add New Device
-        </a>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead class="bg-gray-50 dark:bg-gray-700">
-            <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Device Name</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Brand</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">iPhone 13</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Apple</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                <a href="#" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-3">Edit</a>
-                <a href="#" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Delete</a>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Galaxy S22</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Samsung</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                <a href="#" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-3">Edit</a>
-                <a href="#" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Delete</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <livewire:admin.solution.manage-device />
     </div>
     
     <!-- Other tab contents would follow the same pattern -->
     <div class="tab-content p-6 hidden" id="brands-content">
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Manage Brands</h3>
-      <div class="flex justify-end mb-4">
-        <a href="#" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
-          Add New Brand
-        </a>
-      </div>
+     <livewire:admin.solution.manage-brand />
       <!-- Brand management content would go here -->
     </div>
     
     <div class="tab-content p-6 hidden" id="models-content">
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Manage Models</h3>
-      <div class="flex justify-end mb-4">
-        <a href="#" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
-          Add New Model
-        </a>
-      </div>
-      <!-- Model management content would go here -->
+       <livewire:admin.solution.manage-model />
     </div>
     
     <div class="tab-content p-6 hidden" id="problems-content">
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Manage Problems</h3>
-      <div class="flex justify-end mb-4">
-        <a href="#" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
-          Add New Problem
-        </a>
-      </div>
+      <livewire:admin.solution.manage-problam />
       <!-- Problem management content would go here -->
     </div>
     
