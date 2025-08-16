@@ -145,7 +145,7 @@ class ServiceRequestForm extends Component
             DB::commit();
 
             session()->flash('success', 'Service request created successfully!');
-            return redirect()->route('frontdesk.servicerequest.manage');
+            return redirect()->route('reviewServiceRequest',$serviceRequest->id);
         } catch (\Exception $e) {
             DB::rollBack();
             if (isset($imagePath)) {
