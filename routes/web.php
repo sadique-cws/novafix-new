@@ -1,7 +1,6 @@
 <?php
 
 use App\Livewire\Admin\AddFranchises;
-
 use App\Livewire\Admin\EditFranchise; 
 use App\Livewire\Admin\AdminDashboard;
 use App\Livewire\Admin\Adminlogin;
@@ -64,6 +63,7 @@ Route::prefix("admin")->group(function () {
         Route::get('login',Adminlogin::class)->name('login');
         Route::get('add-franchise', AddFranchises::class)->name('add-franchise');
 
+
         Route::get('manage-franchises', ManageFranchises::class)->name('manage-franchises');
         Route::get('manage-staffs', ManageStaffs::class)->name('manage-staffs');
         Route::get('view-franchises/{id}', ViewFranchises::class)->name('view-franchises');
@@ -75,13 +75,10 @@ Route::prefix("admin")->group(function () {
         Route::get('Receptionst-Management/{id}', ReceptionstView::class)->name('Receptionst.view');
     });
 });
-// });
 
 Route::prefix("franchise")->group(function () {
     Route::name("franchise.")->group(function () {
         Route::get("/login", Login::class)->name("login");
-        // Route::middleware(['auth'])->group(function () {
-        //logout 
         Route::get('/logout', function () {
             auth()->guard('franchise')->logout();
             return redirect()->route('franchise.login');
