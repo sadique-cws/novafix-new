@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('problams', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Dead, Display Issue, etc.
-            $table->foreignId('model_id')->constrained()->onDelete('cascade');
+            $table->foreignId('model_id')->constrained('device_models','id')->onDelete('cascade');
             $table->timestamps();
         });
     }

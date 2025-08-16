@@ -11,6 +11,7 @@ use Livewire\Component;
 
 class ManageBrand extends Component
 {
+    public $showFlash = false;
     public $name;
     public $device_id; // New property to hold the device ID
     protected $rules = [
