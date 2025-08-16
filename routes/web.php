@@ -1,9 +1,10 @@
 <?php
-
+use App\Livewire\Auth\Register;
+use App\Livewire\Auth\Login;
 use App\Livewire\Admin\AddFranchises;
 use App\Livewire\Admin\EditFranchise; 
 use App\Livewire\Admin\AdminDashboard;
-use App\Livewire\Admin\Adminlogin;
+// use App\Livewire\Admin\Adminlogin;
 use App\Livewire\Admin\Franchises\Add;
 use App\Livewire\Admin\ManageFranchises;
 use App\Livewire\Admin\ManageStaffs;
@@ -18,7 +19,7 @@ use App\Livewire\Admin\ViewFranchises;
 use App\Livewire\Franchise\AddReceptioners;
 use App\Livewire\Franchise\AddStaff;
 use App\Livewire\Franchise\Dashboard;
-use App\Livewire\Franchise\Login;
+// use App\Livewire\Franchise\Login;
 use App\Livewire\Franchise\ManageReceptioners;
 use App\Livewire\Franchise\ManageService;
 use App\Livewire\Franchise\ManagePayments;
@@ -31,7 +32,7 @@ use App\Livewire\Franchise\ViewStaff;
 use App\Livewire\Frontdesk\CompletedTask;
 use App\Livewire\Frontdesk\ManageServiceRequest as FrontdeskManageServiceRequest;
 use App\Livewire\Frontdesk\FrontDashboard;
-use App\Livewire\Frontdesk\FrontDeskLogin;
+// use App\Livewire\Frontdesk\FrontDeskLogin;
 use App\Livewire\Frontdesk\ManagePayment;
 use App\Livewire\Frontdesk\EditServiceRequest;
 use App\Livewire\Frontdesk\ForgotPassword;
@@ -48,24 +49,22 @@ use App\Livewire\Public\Homepage;
 use App\Livewire\Staff\AssignedTask;
 use App\Livewire\Staff\CompletedTask as StaffCompletedTask;
 use App\Livewire\Staff\Dashboard as StaffDashboard;
-use App\Livewire\Staff\Login as StaffLogin;
+// use App\Livewire\Staff\Login as StaffLogin;
 use App\Livewire\Staff\Profile;
 use App\Livewire\Staff\ShowTask;
 use App\Services\Msg91Service;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/", Homepage::class)->name('homepage');
-
+Route::get('/login', Login::class)->name('login');
+Route::get('/register', Register::class)->name('register');
 
 Route::prefix("admin")->group(function () {
     // admin login route here
     Route::name("admin.")->group(function () {
         // Route::middleware("auth")->group(function(){
         Route::get('', AdminDashboard::class)->name('dashboard');
-        Route::get('login', Adminlogin::class)->name('login');
         Route::get('add-franchise', AddFranchises::class)->name('add-franchise');
-
-
         Route::get('manage-franchises', ManageFranchises::class)->name('manage-franchises');
         Route::get('manage-staffs', ManageStaffs::class)->name('manage-staffs');
         Route::get('view-franchises/{id}', ViewFranchises::class)->name('view-franchises');
@@ -82,7 +81,7 @@ Route::prefix("admin")->group(function () {
 
 Route::prefix("franchise")->group(function () {
     Route::name("franchise.")->group(function () {
-        Route::get("/login", Login::class)->name("login");
+        // Route::get("/login", Login::class)->name("login");
         Route::get('/logout', function () {
             auth()->guard('franchise')->logout();
             return redirect()->route('franchise.login');
@@ -106,18 +105,11 @@ Route::prefix("franchise")->group(function () {
 });
 
 Route::prefix("frontdesk")->group(function () {
-    Route::get("/login", FrontDeskLogin::class)->name("frontdesk.login");
+    // Route::get("/login", FrontDeskLogin::class)->name("frontdesk.login");
     Route::get('/logout', function () {
         auth()->guard('frontdesk')->logout();
         return redirect()->route('frontdesk.login');
     })->name('frontdesk.logout');
-    Route::get('/frontdesk/forgot-password', ForgotPassword::class)
-        ->middleware('guest:frontdesk')
-        ->name('frontdesk.password.request');
-
-    Route::get('/frontdesk/reset-password/{token}', ResetPassword::class)
-        ->middleware('guest:frontdesk')
-        ->name('frontdesk.password.reset');
     // Route::middleware(['auth'])->group(function () {
     Route::get("/dashboard", FrontDashboard::class)->name("frontdesk.dashboard");
     Route::get("/service-request/create", ServiceRequestForm::class)->name("frontdesk.servicerequest.create");
@@ -136,7 +128,7 @@ Route::prefix("frontdesk")->group(function () {
 Route::prefix("staff")->group(
     function () {
         Route::name("staff.")->group(function () {
-            Route::get("/login", StaffLogin::class)->name("login");
+            // Route::get("/login", StaffLogin::class)->name("login");
             Route::get('logout', function () {
                 auth()->guard('staff')->logout();
                 return redirect()->route('staff.login');
