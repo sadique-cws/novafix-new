@@ -11,6 +11,7 @@ use App\Livewire\Admin\ManageStaffs;
 use App\Livewire\Admin\Performance;
 use App\Livewire\Admin\ReceptionstManage;
 use App\Livewire\Admin\ReceptionstView;
+use App\Livewire\Admin\Solution\ManageDevivces;
 use App\Livewire\Admin\StaffManage;
 use App\Livewire\Admin\StaffView;
 use App\Livewire\Admin\ViewFranchises;
@@ -73,6 +74,8 @@ Route::prefix("admin")->group(function () {
         Route::get('Staff-Management', StaffManage::class)->name('staff.management');
         Route::get('Staff-Management/{id}', StaffView::class)->name('staff.view');
         Route::get('Receptionst-Management/{id}', ReceptionstView::class)->name('Receptionst.view');
+
+        Route::get('solution/manage-devices', ManageDevivces::class)->name('admin.solution.manage-devices');
     });
 });
 // });
