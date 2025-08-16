@@ -22,7 +22,7 @@
                 <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
                     <h2 class="text-lg font-medium text-gray-900">Add New Brand</h2>
                 </div>
-                <form class="p-6 space-y-4" wire:submit.prevent="addBrand">
+                <form class="p-6 space-y-4" wire:submit.prevent="{{ $editingId ? 'updateBrand' : 'addBrand' }}">
                     <div class="space-y-2">
                         <label class="block text-sm font-medium text-gray-700">Select Device</label>
                         <select wire:model="device_id"
@@ -37,12 +37,19 @@
                         <label class="block text-sm font-medium text-gray-700">Brand Name</label>
                         <input type="text" wire:model="name" placeholder="Enter brand name"
                             class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500">
+                        @error('name')
+                            <p class="text-red-500 text-sm">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="pt-2">
                         <button type="submit"
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-                            Add Brand
+                            {{ $editingId ? 'Update' : 'create' }}
                         </button>
+                        @if ($editingId)
+                            <button wire:click="resetInput"
+                                class="bg-gray-400 font-semibold text-sm rounded px-2 py-1">Cancel</button>
+                        @endif
                     </div>
                 </form>
             </div>
@@ -80,17 +87,18 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $brand->id }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        {{ $brand->device->name }}</td>
+                                        {{ $brand->device->name }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $brand->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button wire:click="editDevice({{ $brand->id }})"
+                                        <button wire:click="editBrand({{ $brand->id }})"
                                             class="mr-2 text-yellow-600 hover:text-yellow-900">
                                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                                 <path
                                                     d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                             </svg>
                                         </button>
-                                        <button wire:click="deleteBrand({{ $brand->id }})"
+                                        <button wire:click="$dispatch('openConfirmDeleteModal', { id: {{ $brand->id }}})"
                                             class="text-red-600 hover:text-red-900">
                                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
@@ -112,4 +120,7 @@
             </div>
         </div>
     </div>
+    @if ($showDeleteModal)
+        <livewire:admin.components.confirm-delete-modal :idToDelete="$idToDelete" />
+    @endif
 </div>
