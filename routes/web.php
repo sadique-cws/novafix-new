@@ -36,6 +36,7 @@ use App\Livewire\Frontdesk\ForgotPassword;
 use App\Livewire\Frontdesk\OtpSender;
 use App\Livewire\Frontdesk\Profile as FrontdeskProfile;
 use App\Livewire\Frontdesk\ResetPassword;
+use App\Livewire\Frontdesk\ReviewServiceRequest;
 use App\Livewire\Frontdesk\ServiceRequestForm;
 use App\Livewire\Frontdesk\ShowCompletedTask;
 use App\Livewire\Frontdesk\SmsSender;
@@ -127,8 +128,7 @@ Route::prefix("frontdesk")->group(function () {
     Route::get('/manage/payments', ManagePayment::class)->name('frontdesk.manage.payments');
     Route::get('/payment-details/{serviceCode}', ViewPayments::class)
         ->name('frontdesk.payment-details');
-
-    // });
+    Route::get('/reviewServiceRequest/{id}', ReviewServiceRequest::class)->name('reviewServiceRequest');
 });
 Route::prefix("staff")->group(
     function () {
