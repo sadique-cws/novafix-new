@@ -89,7 +89,7 @@
                         class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
                         <span class="text-white font-semibold text-lg">NF</span>
                     </div>
-                    <h1 class="text-xl md:text-2xl font-semibold text-dark-800">NovaFix <span class="text-blue-500">Staff Panel</span></h1>
+                    <h1 class="text-xl hidden md:block md:text-2xl md font-semibold text-dark-800">NovaFix <span class="text-blue-500">Staff Panel</span></h1>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
@@ -273,43 +273,75 @@
     <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
 
     <!-- JS for Sidebar Toggle -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+   <script>
+    document.addEventListener('livewire:init', () => {  
+        // Initialize sidebar functionality
+        function initSidebar() {
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
 
-            mobileMenuButton.addEventListener('click', function() {
+            if (!mobileMenuButton || !sidebar || !mobileOverlay) {
+                console.error('Mobile menu elements not found');
+                return;
+            }
+
+            function toggleSidebar(e) {
+                if (e) e.stopPropagation();
                 sidebar.classList.toggle('-translate-x-full');
                 mobileOverlay.classList.toggle('hidden');
                 document.body.classList.toggle('overflow-hidden');
-            });
+                mobileMenuButton.setAttribute('aria-expanded', sidebar.classList.contains('-translate-x-full') ? 'false' : 'true');
+            }
 
-            mobileOverlay.addEventListener('click', function() {
-                sidebar.classList.add('-translate-x-full');
-                mobileOverlay.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
-            });
+            // Clone and replace elements to prevent duplicate event listeners
+            const newButton = mobileMenuButton.cloneNode(true);
+            mobileMenuButton.replaceWith(newButton);
 
-            document.querySelectorAll('#sidebar nav ul li a').forEach(item => {
+            // Add event listeners to the new button
+            newButton.addEventListener('click', toggleSidebar);
+            mobileOverlay.addEventListener('click', toggleSidebar);
+
+            // Close sidebar when clicking nav links on mobile
+            document.querySelectorAll('#sidebar nav a').forEach(item => {
                 item.addEventListener('click', function() {
                     if (window.innerWidth < 768) {
-                        sidebar.classList.add('-translate-x-full');
-                        mobileOverlay.classList.add('hidden');
-                        document.body.classList.remove('overflow-hidden');
+                        toggleSidebar();
                     }
                 });
             });
 
-            window.addEventListener('resize', () => {
+            // Handle responsive behavior
+            function handleResize() {
                 if (window.innerWidth >= 768) {
                     sidebar.classList.remove('-translate-x-full');
                     mobileOverlay.classList.add('hidden');
                     document.body.classList.remove('overflow-hidden');
+                    newButton.setAttribute('aria-expanded', 'true');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    mobileOverlay.classList.add('hidden');
+                    newButton.setAttribute('aria-expanded', 'false');
                 }
-            });
+            }
+
+            // Initialize and set up resize listener
+            handleResize();
+            window.addEventListener('resize', handleResize);
+        }
+
+        // Run initialization
+        initSidebar();
+
+        // Reinitialize after Livewire navigation
+        document.addEventListener('livewire:navigated', initSidebar);
+        
+        // Also reinitialize after DOM updates
+        Livewire.hook('morph.updated', () => {
+            initSidebar();
         });
-    </script>
+    });
+</script>
 </body>
 
 </html>
