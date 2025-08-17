@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Solution;
 
 use App\Models\Brand;
-use App\Models\DeviceModel;
+use App\Models\Model;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -24,14 +24,14 @@ class ManageModel extends Component
         $this->validate();
 
         if ($this->editingModelId) {
-            $model = DeviceModel::findOrFail($this->editingModelId);
+            $model = Model::findOrFail($this->editingModelId);
             $model->update([
                 'name' => $this->name,
                 'brand_id' => $this->brand_id,
             ]);
             session()->flash('message', 'Model updated successfully');
         } else {
-            DeviceModel::create([
+            Model::create([
                 'name' => $this->name,
                 'brand_id' => $this->brand_id,
             ]);
@@ -43,7 +43,7 @@ class ManageModel extends Component
 
     public function editModel($id)
     {
-        $model = DeviceModel::findOrFail($id);
+        $model = Model::findOrFail($id);
         $this->editingModelId = $model->id;
         $this->name = $model->name;
         $this->brand_id = $model->brand_id;
@@ -51,7 +51,7 @@ class ManageModel extends Component
 
     public function deleteModel($id)
     {
-        DeviceModel::findOrFail($id)->delete();
+        Model::findOrFail($id)->delete();
         session()->flash('message', 'Model deleted successfully');
     }
 
@@ -63,7 +63,7 @@ class ManageModel extends Component
     public function render()
     {
         $brands = Brand::orderBy('name')->get();
-        $models = DeviceModel::with('brand')
+        $models = Model::with('brand')
             ->orderBy('id', 'desc')
             ->paginate(10);
 

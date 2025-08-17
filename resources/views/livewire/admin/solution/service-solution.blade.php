@@ -84,10 +84,10 @@
   </div>
 
   <!-- Tab Content -->
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+  <div class="bg-white  rounded-lg shadow overflow-hidden">
     <!-- Novafix Diagnosis Content -->
-    <div class="tab-content p-6 active" id="novafix-content">
-    
+    <div class="tab-content active" id="novafix-content">
+        <livewire:admin.solution.product-detail/>
       </div>
     </div>
     
@@ -128,7 +128,7 @@
     </div>
     
     <div class="tab-content p-6 hidden" id="problems-content">
-      <livewire:admin.solution.manage-problam />
+      <livewire:admin.solution.manage-Problem />
       <!-- Problem management content would go here -->
     </div>
     
