@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model As BaseModel;
 
-class DeviceModel extends Model
+class Model extends BaseModel
 {
     protected $guarded = [];
     public function brand()

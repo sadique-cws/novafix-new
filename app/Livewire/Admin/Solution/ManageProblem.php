@@ -1,15 +1,14 @@
 <?php
-// App\Livewire\Admin\Solution\ManageProblem.php
-namespace App\Livewire\Admin\Solution;
 
-use App\Models\DeviceModel;
-use App\Models\Problam;
+namespace App\Livewire\Admin\Solution;
+use App\Models\Model;
+use App\Models\Problem;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 #[Layout('components.layouts.admin-layout')]
-class ManageProblam extends Component
+class ManageProblem extends Component
 {
     use WithPagination;
 
@@ -19,13 +18,13 @@ class ManageProblam extends Component
 
     protected $rules = [
         'name' => 'required|string|min:2|max:255',
-        'model_id' => 'required|exists:device_models,id',
+        'model_id' => 'required|exists:models,id',
     ];
 
     public function saveProblem()
     {
         $this->validate();
-        Problam::create([
+        Problem::create([
             'name' => $this->name,
             'model_id' => $this->model_id, // Save the device_id as well
         ]);
@@ -37,7 +36,7 @@ class ManageProblam extends Component
 
     public function deleteProblem($id)
     {
-        Problam::findOrFail($id)->delete();
+        Problem::findOrFail($id)->delete();
         session()->flash('message', 'Problem deleted successfully');
     }
     private function resetForm()
@@ -47,11 +46,9 @@ class ManageProblam extends Component
     }
     public function render()
     {
-        $models = DeviceModel::all();
-
-        $problems = Problam::orderBy('id', 'desc')->get();
-
-        return view('livewire.admin.solution.manage-problam', [
+        $models = Model::all();
+        $problems = Problem::orderBy('id', 'desc')->get();
+        return view('livewire.admin.solution.manage-problem', [
             'models' => $models,
             'problems' => $problems,
         ]);
