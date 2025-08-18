@@ -248,12 +248,39 @@
                         <span>Receptionists</span>
                     </a>
                 </li>
-                <li class="mb-1">
-                    <a href="{{route('admin.solution')}}"
-                        class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
-                        <i class="fas fa-tools mr-3 w-5 text-center"></i> <!-- Changed from fa-cog to fa-tools -->
-                        <span>Solution</span>
+                <!-- Solution -->
+                <li class="mb-1 relative">
+                    <a href="#" onclick="toggleDropdown(event, 'solution-dropdown', 'solution-chevron')"
+                        class="flex items-center justify-between p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
+                        <div class="flex items-center">
+                            <i class="fas fa-store mr-3 w-5 text-center"></i>
+                            <span>Solution</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-xs ml-2 dropdown-chevron" id="solution-chevron"></i>
                     </a>
+                    <ul id="solution-dropdown" class="hidden pl-2 mt-1 ml-6 border-l-2 border-blue-100 space-y-1">
+                        <li>
+                            <a wire:navigate href="{{ route('admin.solution') }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">Novafix
+                                Diagnosis</a>
+                        </li>
+                        <li>
+                            <a wire:navigate href="{{ route('admin.solution.manage-devices') }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">Manage Devices</a>
+                        </li>
+                        <li>
+                            <a wire:navigate href="{{ route('admin.solution.manage-brands') }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">Manage Brands</a>
+                        </li>
+                        <li>
+                            <a wire:navigate href="{{ route('admin.solution.manage-models') }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">Manage Models</a>
+                        </li>
+                        <li>
+                            <a wire:navigate href="{{ route('admin.solution.manage-problems') }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">Manage Problems</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <!-- Customers -->
@@ -362,8 +389,7 @@
                             alt="User profile" class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
                         <span class="font-medium text-gray-700 hidden md:inline whitespace-nowrap">Super
                             Admin</span>
-                        <i class="fas fa-chevron-down text-xs text-gray-500 dropdown-chevron"
-                            id="profile-chevron"></i>
+                        <i class="fas fa-chevron-down text-xs text-gray-500 dropdown-chevron" id="profile-chevron"></i>
                     </button>
 
                     <div id="navbar-profile-dropdown"
@@ -472,7 +498,7 @@
                 sidebarBackdrop.addEventListener('click', toggleSidebar);
 
                 document.querySelectorAll('#sidebar nav a').forEach(item => {
-                    item.addEventListener('click', function() {
+                    item.addEventListener('click', function () {
                         if (window.innerWidth < 768) {
                             toggleSidebar();
                         }
@@ -492,7 +518,7 @@
                 }
 
                 // Close dropdowns when clicking outside
-                document.addEventListener('click', function(event) {
+                document.addEventListener('click', function (event) {
                     const dropdowns = document.querySelectorAll('[id$="-dropdown"]');
                     dropdowns.forEach(dropdown => {
                         if (!dropdown.contains(event.target) &&

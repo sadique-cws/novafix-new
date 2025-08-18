@@ -97,6 +97,12 @@ class ProductDetail extends Component
             $this->newQuestionAnswer = null;
         }
     }
+    public function cancelCreateQuestion()
+    {
+        // Reset all the question creation related properties
+        $this->newQuestionAnswer = null;
+        $this->newQuestionText = '';
+    }
 
     public function createFirstQuestion()
     {
