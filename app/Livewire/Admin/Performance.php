@@ -26,7 +26,7 @@ class Performance extends Component
 
     public function render()
     {
-        $franchises = franchises::orderBy('franchise_name')->get();
+        $franchises = Franchise::orderBy('franchise_name')->get();
         $metrics = $this->calculateMetrics();
         $payments = $this->getPaymentData();
         $activities = $this->getRecentActivities();
