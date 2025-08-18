@@ -22,27 +22,26 @@ class Register extends Component
     ];
 
     public function register()
-    {
-        $this->validate();
-        $this->error = '';
+{
+    $this->validate();
+    $this->error = '';
 
-        try {
-            $user = User::create([
-                'name' => $this->name,
-                'email' => $this->email,
-                'password' => Hash::make($this->password),
-                // Default role for new registrations
-                'is_frontdesk' => true,
-            ]);
+    try {
+        $user = User::create([
+            'name' => $this->name,
+            'email' => $this->email,
+            'password' => Hash::make($this->password),
+            'is_frontdesk' => true, // Default role for new registrations
+        ]);
 
-            // Log in with frontdesk guard
-            Auth::guard('frontdesk')->login($user);
-            return redirect()->route('frontdesk.dashboard');
-            
-        } catch (\Exception $e) {
-            $this->error = 'Registration failed. Please try again.';
-        }
+        // Log in with the appropriate guard
+        Auth::guard('frontdesk')->login($user);
+        return redirect()->route('frontdesk.dashboard');
+        
+    } catch (\Exception $e) {
+        $this->error = 'Registration failed. Please try again.';
     }
+}
 
 
     public function render()

@@ -19,8 +19,7 @@ class AdminSeeder extends Seeder
                 'name' => 'Admin',
                 'email' => 'admin@example.com',
                 'password' => Hash::make('12345678'), // default password
-                'role' => 'admin', // if you have a role column
-            ]
+                'is_admin' => true,]
         );
     }
 }

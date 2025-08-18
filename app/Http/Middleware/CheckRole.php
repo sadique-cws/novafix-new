@@ -12,6 +12,10 @@ class CheckRole
     {
         $user = $request->user();
         
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
         // Check if user has the required role
         $hasRole = match($role) {
             'admin' => $user->is_admin,

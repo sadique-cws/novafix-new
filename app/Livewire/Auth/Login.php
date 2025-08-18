@@ -3,9 +3,7 @@
 namespace App\Livewire\Auth;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Livewire\Component;
-use Illuminate\Support\Facades\Hash;
 
 class Login extends Component
 {
@@ -24,42 +22,38 @@ class Login extends Component
         $this->validate();
         $this->error = '';
 
-        // Find user by email
-        $user = User::where('email', $this->email)->first();
+        // Determine guard based on user role
+        $guard = $this->determineGuard($this->email);
 
-        // Verify credentials and role
-        if (!$user || !Hash::check($this->password, $user->password)) {
-            $this->error = 'Invalid credentials. Please try again.';
+        if (!$guard) {
+            $this->error = 'No valid role found for this user';
             return;
         }
 
-        // Determine guard based on user role
-        $guard = $this->getGuardForUser($user);
-
-        // Attempt authentication with the specific guard
         if (Auth::guard($guard)->attempt([
             'email' => $this->email,
             'password' => $this->password
         ], $this->remember)) {
-            return $this->redirectToDashboard($user);
+            return $this->redirectToDashboard(Auth::guard($guard)->user());
         }
 
-        $this->error = 'Authentication failed. Please try again.';
+        $this->error = 'Invalid credentials. Please try again.';
     }
 
-    private function getGuardForUser($user)
+    private function determineGuard($email)
     {
-        if ($user->is_admin) {
-            return 'admin';
-        } elseif ($user->is_staff) {
-            return 'staff';
-        } elseif ($user->is_franchise) {
-            return 'franchise';
-        } elseif ($user->is_frontdesk) {
-            return 'frontdesk';
-        }
+        // Find user by email to determine their role
+        $user = \App\Models\User::where('email', $email)->first();
         
-        return 'web';
+        if (!$user) return null;
+
+        // Determine guard based on role flags
+        if ($user->is_admin) return 'admin';
+        if ($user->is_staff) return 'staff';
+        if ($user->is_franchise) return 'franchise';
+        if ($user->is_frontdesk) return 'frontdesk';
+        
+        return null;
     }
 
     private function redirectToDashboard($user)

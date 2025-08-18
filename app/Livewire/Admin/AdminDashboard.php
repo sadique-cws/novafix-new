@@ -35,7 +35,7 @@ class AdminDashboard extends Component
     public function render()
     {
         $stats = [
-            'totalFranchises' => franchises::count(),
+            'totalFranchises' => Franchise::count(),
             'activeStaff' => Staff::where('status', 'active')->count(),
             'receptionists' => Receptioners::count(),
             'monthlyRevenue' => Payment::sum('total_amount'), // Simplified for small data
@@ -58,12 +58,12 @@ class AdminDashboard extends Component
 
 
         // Top Franchises - handle case with only 2 franchises
-        $topFranchises = franchises::withSum(['payments'], 'total_amount')
+        $topFranchises = Franchise::withSum(['payments'], 'total_amount')
             ->orderBy('payments_sum_total_amount', 'desc')
             ->take(5)
             ->get();
 
-        $franchises = franchises::query()
+        $franchises = Franchise::query()
             ->when($this->search, function ($query) {
                 $query->where('franchise_name', 'like', '%' . $this->search . '%')
                     ->orWhere('email', 'like', '%' . $this->search . '%')
