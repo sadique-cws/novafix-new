@@ -24,30 +24,6 @@ class Register extends Component
         'role' => 'required|in:staff,franchise,frontdesk',
     ];
 
-    // public function register()
-    // {
-    //     $this->validate();
-    //     $this->error = '';
-
-    //     try {
-    //         $user = User::create([
-    //             'name' => $this->name,
-    //             'email' => $this->email,
-    //             'password' => Hash::make($this->password),
-    //             'role' => $this->role, // Save selected role
-    //         ]);
-
-    //         // Log in with role-specific guard
-    //         Auth::guard($this->role)->login($user);
-            
-    //         // Redirect to role-specific dashboard
-    //         return redirect()->route("{$this->role}.dashboard");
-            
-    //     } catch (\Exception $e) {
-    //         $this->error = 'Registration failed. Please try again.';
-    //     }
-    // }
-
     public function register()
 {
     $this->validate();
