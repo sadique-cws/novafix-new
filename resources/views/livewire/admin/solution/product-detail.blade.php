@@ -217,6 +217,15 @@
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+                <div class="mt-3">
+                    <h2 class="">---------------Or--------------</h2>
+                    <select name="" id="">
+                        <option value="">Select Question</option>
+                        @foreach ($allQuestion as $question)
+                        <option value="{{ $question->id }}">{{ $question->text }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2 items-start">
                     <div class="grid grid-cols-2 gap-2">
                         <div>
