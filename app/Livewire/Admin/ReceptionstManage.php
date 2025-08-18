@@ -31,7 +31,7 @@ class ReceptionstManage extends Component
             ->with('franchise') // assuming you have a relationship defined
             ->paginate(10);
 
-        $franchises = franchises::orderBy('franchise_name')->get();
+        $franchises = Franchise::orderBy('franchise_name')->get();
 
         return view('livewire.admin.receptionst-manage', [
             'receptionists' => $receptionists,

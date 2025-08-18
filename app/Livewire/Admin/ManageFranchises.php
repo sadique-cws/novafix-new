@@ -25,7 +25,7 @@ class ManageFranchises extends Component
     public function render()
     {
 
-        $franchises = franchises::query()
+        $franchises = Franchise::query()
             ->when($this->search, function ($query) {
                 $query->where('franchise_name', 'like', '%' . $this->search . '%')
                     ->orWhere('email', 'like', '%' . $this->search . '%')
