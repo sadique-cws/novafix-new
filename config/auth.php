@@ -47,8 +47,7 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-
-        'franchise' => [  // Add this new guard
+        'franchise' => [
             'driver' => 'session',
             'provider' => 'franchises',
         ],
@@ -61,6 +60,8 @@ return [
             'provider' => 'staff',
         ],
     ],
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -80,31 +81,25 @@ return [
     */
 
     'providers' => [
-        // 'users' => [
-        //     'driver' => 'eloquent',
-        //     'model' => env('AUTH_MODEL', App\Models\User::class),
-        // ],
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
         'admins' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class, // Must exist
+            'model' => App\Models\User::class,
         ],
-
-        'franchises' => [  // Add this new provider
+        'franchises' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Franchise::class, // Make sure this model exists
+            'model' => App\Models\User::class,
         ],
-
         'frontdesks' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Receptioners::class,
+            'model' => App\Models\User::class,
         ],
         'staff' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Staff::class,
-        ],
-        'receptioners' => [
-            'driver' => 'eloquent',
-            'model' => Receptioners::class,
+            'model' => App\Models\User::class,
         ],
     ],
 
@@ -127,21 +122,30 @@ return [
     |
     */
 
+
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 120,
-            'throttle' => 120,
-        ],
-
-        'receptioners' => [  // This is the key configuration
-            'provider' => 'receptioners',
             'table' => 'password_reset_tokens',
             'expire' => 120,
             'throttle' => 120,
-        ]
+        ],
     ],
+    // 'passwords' => [
+    //     'users' => [
+    //         'provider' => 'users',
+    //         'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+    //         'expire' => 120,
+    //         'throttle' => 120,
+    //     ],
+
+    //     'receptioners' => [  // This is the key configuration
+    //         'provider' => 'receptioners',
+    //         'table' => 'password_reset_tokens',
+    //         'expire' => 120,
+    //         'throttle' => 120,
+    //     ]
+    // ],
 
     /*
     |--------------------------------------------------------------------------

@@ -9,60 +9,41 @@ use Livewire\Component;
 
 class Register extends Component
 {
-   public $name = '';
-    public $email = '';
-    public $password = '';
-    public $password_confirmation = '';
-    public $role = 'admin';
+    public $name;
+    public $email;
+    public $password;
+    public $password_confirmation;
+    public $error = '';
 
     protected $rules = [
         'name' => 'required|min:3',
-        'email' => 'required|email|unique:users',
+        'email' => 'required|email|unique:users,email',
         'password' => 'required|min:6|confirmed',
-        'role' => 'required|in:frontdesk,franchise,staff,admin',
     ];
 
     public function register()
     {
         $this->validate();
+        $this->error = '';
 
-        $user = User::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => Hash::make($this->password),
-            'is_admin' => $this->role === 'admin',
-            'is_staff' => $this->role === 'staff',
-            'is_franchise' => $this->role === 'franchise',
-            'is_frontdesk' => $this->role === 'frontdesk',
-        ]);
+        try {
+            $user = User::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'password' => Hash::make($this->password),
+                // Default role for new registrations
+                'is_frontdesk' => true,
+            ]);
 
-        Auth::login($user);
-
-        // Redirect based on role
-        if ($user->is_admin) {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->is_staff) {
-            return redirect()->route('staff.dashboard');
-        } elseif ($user->is_franchise) {
-            return redirect()->route('franchise.dashboard');
-        } else {
+            // Log in with frontdesk guard
+            Auth::guard('frontdesk')->login($user);
             return redirect()->route('frontdesk.dashboard');
+            
+        } catch (\Exception $e) {
+            $this->error = 'Registration failed. Please try again.';
         }
     }
-    // private function redirectToDashboard($user)
-    // {
-    //     if ($user->is_admin) {
-    //         return redirect()->route('admin.dashboard');
-    //     } elseif ($user->is_staff) {
-    //         return redirect()->route('staff.dashboard');
-    //     } elseif ($user->is_franchise) {
-    //         return redirect()->route('franchise.dashboard');
-    //     } elseif ($user->is_frontdesk) {
-    //         return redirect()->route('frontdesk.dashboard');
-    //     }
-        
-    //     return redirect('/');
-    // }
+
 
     public function render()
     {

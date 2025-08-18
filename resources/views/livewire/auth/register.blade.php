@@ -1,107 +1,121 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
-        <div class="text-center">
-            <!-- Application Logo -->
-            <div class="flex justify-center mb-4">
-                <div class="w-16 h-16 bg-indigo-600 rounded-lg flex items-center justify-center">
-                    <svg class="h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd" />
-                    </svg>
-                </div>
+<div class="min-h-screen flex flex-col sm:justify-center items-center sm:pt-0 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class="w-full sm:max-w-md px-6 py-8 bg-white shadow-lg overflow-hidden sm:rounded-lg">
+        @if ($error)
+            <div class="mb-6 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                {{ $error }}
             </div>
-            
-            <h2 class="mt-2 text-3xl font-bold text-gray-900 tracking-tight">
-                Create a New Account
-            </h2>
-            <p class="mt-2 text-sm text-gray-500">
-                Or
-                <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200">
-                    sign in to existing account
-                </a>
-            </p>
-        </div>
+        @endif
 
-        <form class="mt-8 space-y-6" wire:submit.prevent="register">
-            <div class="rounded-md shadow-sm space-y-4">
-                <!-- Name Field -->
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <input id="name" name="name" type="text" autocomplete="name" required
-                        wire:model="name"
-                        class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 sm:text-sm"
-                        placeholder="Full Name">
-                    @error('name')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-                
-                <!-- Email Field -->
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                    <input id="email" name="email" type="email" autocomplete="email" required
-                        wire:model="email"
-                        class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 sm:text-sm"
-                        placeholder="Email address">
-                    @error('email')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-                
-                <!-- Password Field -->
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input id="password" name="password" type="password" autocomplete="new-password" required
-                        wire:model="password"
-                        class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 sm:text-sm"
-                        placeholder="Password (min. 6 characters)">
-                    @error('password')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-                
-                <!-- Confirm Password Field -->
-                <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-                    <input id="password_confirmation" name="password_confirmation" type="password"
-                        autocomplete="new-password" required wire:model="password_confirmation"
-                        class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 sm:text-sm"
-                        placeholder="Confirm Password">
-                </div>
-                
-                <!-- Role Selection -->
-                <div>
-                    <label for="role" class="block text-sm font-medium text-gray-700 mb-1">Account Type</label>
-                    <select wire:model="role" id="role"
-                        class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 sm:text-sm bg-white">
-                        <option value="frontdesk">Front Desk</option>
-                        <option value="franchise">Franchise</option>
-                        <option value="staff">Staff</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                    @error('role')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
+        <h1 class="text-center text-2xl font-bold text-gray-800 mb-2">Create Account</h1>
+        <p class="text-center text-gray-600 mb-8">Get started with your new account</p>
 
-            <div>
-                <button type="submit"
-                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300">
-                    <span wire:loading.remove>Register</span>
-                    <span wire:loading>
-                        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        <form wire:submit.prevent="register">
+            <!-- Name Input -->
+            <div class="mb-5">
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                         </svg>
-                        Creating Account...
-                    </span>
-                </button>
+                    </div>
+                    <input 
+                        id="name" 
+                        type="text" 
+                        wire:model="name" 
+                        required 
+                        autofocus
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="John Doe"
+                    >
+                </div>
+                @error('name') <span class="mt-1 text-sm text-red-600">{{ $message }}</span> @enderror
             </div>
-            
-            <div class="text-center mt-6 pt-4 border-t border-gray-200">
-                <p class="text-sm text-gray-500">
+
+            <!-- Email Input -->
+            <div class="mb-5">
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        </svg>
+                    </div>
+                    <input 
+                        id="email" 
+                        type="email" 
+                        wire:model="email" 
+                        required 
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="you@example.com"
+                    >
+                </div>
+                @error('email') <span class="mt-1 text-sm text-red-600">{{ $message }}</span> @enderror
+            </div>
+
+            <!-- Password Input -->
+            <div class="mb-5">
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <input 
+                        id="password" 
+                        type="password" 
+                        wire:model="password" 
+                        required 
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="••••••••"
+                    >
+                </div>
+                @error('password') <span class="mt-1 text-sm text-red-600">{{ $message }}</span> @enderror
+            </div>
+
+            <!-- Confirm Password Input -->
+            <div class="mb-6">
+                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <input 
+                        id="password_confirmation" 
+                        type="password" 
+                        wire:model="password_confirmation" 
+                        required 
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="••••••••"
+                    >
+                </div>
+            </div>
+
+            <!-- Register Button -->
+            <button 
+                type="submit" 
+                wire:loading.attr="disabled"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300"
+            >
+                <span wire:loading.remove>Create Account</span>
+                <span wire:loading>
+                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Creating...
+                </span>
+            </button>
+
+            <!-- Login Link -->
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
                     Already have an account?
-                    <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200 ml-1">
+                    <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500 ml-1">
                         Sign in
                     </a>
                 </p>

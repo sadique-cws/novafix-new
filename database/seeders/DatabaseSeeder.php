@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-
-        User::factory()->create([
-            'email' => 'novafix@gmail.com',
-            'password' => 'admin@123',
+        
+        $this->call([
+           AdminSeeder::class,
         ]);
+        
        
     }
 }
