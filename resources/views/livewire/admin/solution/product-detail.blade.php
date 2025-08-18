@@ -80,6 +80,67 @@
                         @error('editingQuestionText')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 items-start">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Image (Optional)</label>
+                                    <label
+                                        class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+                                        <input type="file" accept="image/*" wire:model="editingQuestionImage" class="hidden">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        <span class="mt-1 text-xs text-gray-500">Upload</span>
+                                    </label>
+                                    <div wire:loading wire:target="image" class="mt-1 flex items-center text-blue-600 text-xs">
+                                        <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                                stroke-width="4">
+                                            </circle>
+                                            <path class="opacity-75" fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                        </svg>
+                                        Uploading...
+                                    </div>
+                                    @error('image')
+                                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Preview</label>
+                                    @if ($editingQuestionImage)
+                                        <div class="relative inline-block">
+                                            <img src="{{ $editingQuestionImage }}"
+                                                class="h-28 w-full rounded-md border object-cover">
+                                            <button type="button" wire:click="$set('image', null)"
+                                                class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
+                                                aria-label="Remove image">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    @else
+                                        <div
+                                            class="flex items-center justify-center h-28 w-full border border-gray-200 rounded-md bg-gray-50 text-gray-400 text-sm">
+                                            No image
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Description (Optional)</label>
+                                <textarea wire:model="editingQuestionDescription" rows="5"
+                                    class="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                    placeholder="Notes or context..."></textarea>
+                            </div>
+                        </div>
                         <div class="flex space-x-3">
                             <button wire:click="updateQuestion"
                                 class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
@@ -130,7 +191,7 @@
         </div>
     @endif
 
-    <!-- New Question Section -->
+    <!-- New Question Creation -->
     @if($newQuestionAnswer)
         <div class="p-6 bg-white">
             <div class="max-w-3xl mx-auto space-y-4">
@@ -150,11 +211,71 @@
 
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Enter your question:</label>
-                    <textarea wire:model="newQuestionText" rows="3"
-                        class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    <input type="text" wire:model="newQuestionText"
+                        class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                     @error('newQuestionText')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 items-start">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Image (Optional)</label>
+                            <label
+                                class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+                                <input type="file" accept="image/*" wire:model="image" class="hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="mt-1 text-xs text-gray-500">Upload</span>
+                            </label>
+                            <div wire:loading wire:target="image" class="mt-1 flex items-center text-blue-600 text-xs">
+                                <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4">
+                                    </circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                                Uploading...
+                            </div>
+                            @error('image')
+                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Preview</label>
+                            @if ($image)
+                                <div class="relative inline-block">
+                                    <img src="{{ $image->temporaryUrl() }}" class="h-28 w-full rounded-md border object-cover">
+                                    <button type="button" wire:click="$set('image', null)"
+                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
+                                        aria-label="Remove image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            @else
+                                <div
+                                    class="flex items-center justify-center h-28 w-full border border-gray-200 rounded-md bg-gray-50 text-gray-400 text-sm">
+                                    No image
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Description (Optional)</label>
+                        <textarea wire:model="description" rows="5"
+                            class="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            placeholder="Notes or context..."></textarea>
+                    </div>
                 </div>
 
                 <div class="flex justify-between">
@@ -169,26 +290,103 @@
         </div>
     @endif
 
-    <!-- First Question Section -->
+    <!-- First Question Creation -->
     @if (!$currentQuestion && isset($selectedProblem))
-        <div class="p-6 bg-gray-50">
-            <div class="max-w-3xl mx-auto space-y-4">
-                <h1 class="text-xl font-medium text-gray-900">Create the first question for this problem</h1>
+        <div class="p-6 bg-white rounded-lg shadow-md">
+            <div class="max-w-3xl mx-auto space-y-6">
+                <div class="pb-4">
+                    <h1 class="text-2xl font-semibold text-gray-800">Create First Question</h1>
+                </div>
 
                 <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Enter your question:</label>
-                    <textarea wire:model="newQuestionText" rows="3"
-                        class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    <label class="block text-sm font-medium text-gray-700">
+                        Question Text <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" wire:model="newQuestionText" rows="3"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition"
+                        placeholder="Enter your question here...">
                     @error('newQuestionText')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 items-start">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Image (Optional)</label>
+                            <label
+                                class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+                                <input type="file" accept="image/*" wire:model="image" class="hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="mt-1 text-xs text-gray-500">Upload</span>
+                            </label>
+                            <div wire:loading wire:target="image" class="mt-1 flex items-center text-blue-600 text-xs">
+                                <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4">
+                                    </circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                                Uploading...
+                            </div>
+                            @error('image')
+                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Preview</label>
+                            @if ($image)
+                                <div class="relative inline-block">
+                                    <img src="{{ $image->temporaryUrl() }}" class="h-28 w-full rounded-md border object-cover">
+                                    <button type="button" wire:click="$set('image', null)"
+                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
+                                        aria-label="Remove image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            @else
+                                <div
+                                    class="flex items-center justify-center h-28 w-full border border-gray-200 rounded-md bg-gray-50 text-gray-400 text-sm">
+                                    No image
+                                </div>
+                            @endif
+                        </div>
+                    </div>
 
-                <button wire:click="createFirstQuestion"
-                    class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Save First Question
-                </button>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Description (Optional)</label>
+                        <textarea wire:model="description" rows="5"
+                            class="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            placeholder="Notes or context..."></textarea>
+                    </div>
+                </div>
+                <div class="pt-4">
+                    <button wire:click="createFirstQuestion" wire:loading.attr="disabled"
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                        <span wire:loading.remove wire:target="createFirstQuestion">Create Question</span>
+                        <span wire:loading wire:target="createFirstQuestion">
+                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                                </circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                            </svg>
+                            Processing...
+                        </span>
+                    </button>
+                </div>
             </div>
         </div>
     @endif
+
 </div>
