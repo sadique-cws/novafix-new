@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+#[Title('Register')]
 
 class Register extends Component
 {
@@ -23,29 +24,64 @@ class Register extends Component
         'role' => 'required|in:staff,franchise,frontdesk',
     ];
 
+    // public function register()
+    // {
+    //     $this->validate();
+    //     $this->error = '';
+
+    //     try {
+    //         $user = User::create([
+    //             'name' => $this->name,
+    //             'email' => $this->email,
+    //             'password' => Hash::make($this->password),
+    //             'role' => $this->role, // Save selected role
+    //         ]);
+
+    //         // Log in with role-specific guard
+    //         Auth::guard($this->role)->login($user);
+            
+    //         // Redirect to role-specific dashboard
+    //         return redirect()->route("{$this->role}.dashboard");
+            
+    //     } catch (\Exception $e) {
+    //         $this->error = 'Registration failed. Please try again.';
+    //     }
+    // }
+
     public function register()
-    {
-        $this->validate();
-        $this->error = '';
+{
+    $this->validate();
+    $this->error = '';
 
-        try {
-            $user = User::create([
-                'name' => $this->name,
-                'email' => $this->email,
-                'password' => Hash::make($this->password),
-                'role' => $this->role, // Save selected role
-            ]);
+    try {
+        $userData = [
+            'name' => $this->name,
+            'email' => $this->email,
+            'password' => Hash::make($this->password),
+            'role' => $this->role,
+        ];
 
-            // Log in with role-specific guard
-            Auth::guard($this->role)->login($user);
-            
-            // Redirect to role-specific dashboard
-            return redirect()->route("{$this->role}.dashboard");
-            
-        } catch (\Exception $e) {
-            $this->error = 'Registration failed. Please try again.';
+        // Set both role column and boolean flags
+        if ($this->role === 'staff') {
+            $userData['is_staff'] = true;
+        } elseif ($this->role === 'franchise') {
+            $userData['is_franchise'] = true;
+        } elseif ($this->role === 'frontdesk') {
+            $userData['is_frontdesk'] = true;
         }
+
+        $user = User::create($userData);
+
+        // Log in with the specific guard
+        Auth::guard($this->role)->login($user);
+        
+        // Redirect to role-specific dashboard
+        return redirect()->route("{$this->role}.dashboard");
+        
+    } catch (\Exception $e) {
+        $this->error = 'Registration failed. Please try again.';
     }
+}
 
     public function render()
     {
