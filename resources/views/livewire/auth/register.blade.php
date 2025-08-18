@@ -94,6 +94,28 @@
                     >
                 </div>
             </div>
+            <div class="mb-5">
+                <label for="role" class="block text-sm font-medium text-gray-700 mb-1">Register As</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <select 
+                        id="role"
+                        wire:model="role"
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 appearance-none bg-white"
+                    >
+                        <option value="frontdesk">Front Desk (Default)</option>
+                        <option value="staff">Staff</option>
+                        <option value="franchise">Franchise</option>
+                    </select>
+                </div>
+                @error('role') <span class="mt-1 text-sm text-red-600">{{ $message }}</span> @enderror
+            </div>
+
+
 
             <!-- Register Button -->
             <button 

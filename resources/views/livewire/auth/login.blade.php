@@ -16,7 +16,6 @@
             </div>
         @endif
 
-        <!-- Error Messages - FIXED: Replaced session error with component error -->
         @if ($error)
             <div class="mb-6 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
                 {{ $error }}
@@ -48,7 +47,6 @@
                         placeholder="you@example.com"
                     >
                 </div>
-                @error('email') <span class="mt-1 text-sm text-red-600">{{ $message }}</span> @enderror
             </div>
 
             <!-- Password Input -->
@@ -73,7 +71,6 @@
                         placeholder="••••••••"
                     >
                 </div>
-                @error('password') <span class="mt-1 text-sm text-red-600">{{ $message }}</span> @enderror
             </div>
 
             <!-- Remember Me -->

@@ -112,7 +112,7 @@ Route::prefix("frontdesk")->group(function () {
     Route::middleware('auth:frontdesk')->group(function () {
         Route::get('/logout', function () {
             auth()->guard('frontdesk')->logout();
-            return redirect()->route('frontdesk.login');
+            return redirect()->route('login');
         })->name('frontdesk.logout');
         Route::get("/dashboard", FrontDashboard::class)->name("frontdesk.dashboard");
         Route::get("/service-request/create", ServiceRequestForm::class)->name("frontdesk.servicerequest.create");
@@ -134,7 +134,7 @@ Route::prefix("staff")->group(function () {
         Route::name("staff.")->group(function () {
             Route::get('logout', function () {
                 auth()->guard('staff')->logout();
-                return redirect()->route('staff.login');
+                return redirect()->route('login');
             })->name('logout');
             Route::get("/dashboard", StaffDashboard::class)->name("dashboard");
             Route::get("/assigned-task", AssignedTask::class)->name("assigned.task");
