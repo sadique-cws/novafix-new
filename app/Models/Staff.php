@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 class Staff extends Authenticatable
 {
     use HasFactory;
+    use Notifiable;
 
     protected $guarded = [];
 

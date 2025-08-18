@@ -61,8 +61,6 @@ return [
         ],
     ],
 
-
-
     /*
     |--------------------------------------------------------------------------
     | User Providers
@@ -91,15 +89,15 @@ return [
         ],
         'franchises' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Franchise::class,
         ],
         'frontdesks' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Receptioners::class,
         ],
         'staff' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Staff::class,
         ],
     ],
 
