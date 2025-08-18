@@ -1,17 +1,19 @@
-<div class="mx-auto bg-slate-100 rounded-lg">
-    <div class="flex items-center justify-between p-3 bg-slate-300">
-        <h3 class="text-lg font-semibold">Support Diagnosis</h3>
-
-        <!-- Reset Button -->
-        <button wire:click="resetSelection" class="font-semibold text-sm px-2 py-1 bg-red-500 rounded ">Reset</button>
+<div class="mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between p-4 bg-blue-600 text-white">
+        <h3 class="text-xl font-bold">Support Diagnosis</h3>
+        <button wire:click="resetSelection" class="px-3 py-1 bg-white text-blue-600 rounded-md text-sm font-medium hover:bg-blue-50 transition-colors">
+            Reset Selection
+        </button>
     </div>
-    <div class="p-3 grid grid-cols-4 gap-5">
 
-        {{-- Device Selection --}}
+    <!-- Selection Grid -->
+    <div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 border-b">
+        <!-- Device Selection -->
         <div>
-            <label class="block font-medium text-gray-700">Select Device:</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Select Device</label>
             <select wire:model="selectedDevice" wire:change="updateSelectedDevice"
-                class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-400 {{$selectedDevice ? " bg-slate-200 cursor-not-allowed" : ''}}"
+                class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{$selectedDevice ? 'bg-gray-100 cursor-not-allowed' : ''}}"
                 {{ $selectedDevice ? 'disabled' : '' }}>
                 <option value="">Choose Device</option>
                 @foreach($devices as $device)
@@ -19,13 +21,14 @@
                 @endforeach
             </select>
         </div>
-        {{-- Brand Selection --}}
+
+        <!-- Brand Selection -->
         @if($brands)
             <div>
-                <label class="block font-medium text-gray-700">Select Brand:</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Select Brand</label>
                 <select wire:model="selectedBrand" wire:change="updateSelectedBrand"
-                    class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-400 {{$selectedBrand ? " bg-slate-200 cursor-not-allowed" : ''}}"
-                    {{ $selectedBrand ? 'disabled bg-slate-200' : '' }}>
+                    class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{$selectedBrand ? 'bg-gray-100 cursor-not-allowed' : ''}}"
+                    {{ $selectedBrand ? 'disabled' : '' }}>
                     <option value="">Choose Brand</option>
                     @foreach($brands as $brand)
                         <option value="{{ $brand->id }}">{{ $brand->name }}</option>
@@ -33,28 +36,30 @@
                 </select>
             </div>
         @endif
-        {{--Model selection--}}
+
+        <!-- Model Selection -->
         @if($models)
             <div>
-                <label class="block font-medium text-gray-700">Select Model:</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Select Model</label>
                 <select wire:model="selectedModel" wire:change="updateSelectedModel"
-                    class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-400 {{$selectedModel ? " bg-slate-200 cursor-not-allowed" : ''}}"
-                    {{ $selectedModel ? 'disabled bg-slate-200' : '' }}>
-                    <option value="">Choose MOdel</option>
+                    class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{$selectedModel ? 'bg-gray-100 cursor-not-allowed' : ''}}"
+                    {{ $selectedModel ? 'disabled' : '' }}>
+                    <option value="">Choose Model</option>
                     @foreach($models as $model)
                         <option value="{{ $model->id }}">{{ $model->name }}</option>
                     @endforeach
                 </select>
             </div>
         @endif
-        {{--Problem Selection--}}
+
+        <!-- Problem Selection -->
         @if($problems)
             <div>
-                <label class="block font-medium text-gray-700">Select Device problem:</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Select Problem</label>
                 <select wire:model="selectedProblem" wire:change="updateSelectedProblem"
-                    class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-400 {{$selectedProblem ? " bg-slate-200 cursor-not-allowed" : ''}}"
-                    {{ $selectedProblem ? 'disabled bg-slate-200' : '' }}>
-                    <option value="">Choose Device Problem</option>
+                    class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{$selectedProblem ? 'bg-gray-100 cursor-not-allowed' : ''}}"
+                    {{ $selectedProblem ? 'disabled' : '' }}>
+                    <option value="">Choose Problem</option>
                     @foreach($problems as $problem)
                         <option value="{{ $problem->id }}">{{ $problem->name }}</option>
                     @endforeach
@@ -63,79 +68,117 @@
         @endif
     </div>
 
+    <!-- Question Section -->
     @if ($currentQuestion && !isset($newQuestionAnswer))
-        <div class="mt-5 p-5 rounded border shadow-sm">
-            @if ($editingQuestionId === $currentQuestion->id)
-                <div class="flex flex-col space-y-3">
-                    <input type="text" wire:model="editingQuestionText" class="w-full p-3 border rounded-lg">
-                    @error('editingQuestionText')
-                        <span class="text-red-500 font-semibold text-sm">{{ $message }}</span>
-                    @enderror
-                    <div class="flex space-x-3">
-                        <button wire:click="updateQuestion" class="px-3 py-2 rounded bg-green-500 text-white">Save</button>
-                        <button wire:click="cancelEdit" class="px-3 py-2 rounded bg-gray-400 text-white">Cancel</button>
+        <div class="p-6 bg-gray-50 border-b">
+            <div class="max-w-3xl mx-auto">
+                @if ($editingQuestionId === $currentQuestion->id)
+                    <div class="space-y-4">
+                        <textarea wire:model="editingQuestionText" rows="3" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        @error('editingQuestionText')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                        <div class="flex space-x-3">
+                            <button wire:click="updateQuestion" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                                Save Changes
+                            </button>
+                            <button wire:click="cancelEdit" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors">
+                                Cancel
+                            </button>
+                        </div>
                     </div>
-                </div>
-            @else
-                <p class="text-2xl font-semibold text-gray-700 leading-snug">
-                    {{ $currentQuestion->question_text }}
-                </p>
-                <div class="flex flex-col space-y-4 items-center">
-                    <div class="flex space-x-4">
-                        <button wire:click="answerQuestion('yes')"
-                            class="font-semibold p-2 rounded bg-green-600 text-white">Yes</button>
-                        <button wire:click="answerQuestion('no')"
-                            class="font-semibold p-2 rounded bg-red-600 text-white">No</button>
+                @else
+                    <div class="text-center">
+                        <p class="text-xl font-medium text-gray-800 mb-6">
+                            {{ $currentQuestion->question_text }}
+                        </p>
+                        
+                        <div class="flex justify-center space-x-4 mb-6">
+                            <button wire:click="answerQuestion('yes')"
+                                class="px-6 py-2 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 transition-colors">
+                                Yes
+                            </button>
+                            <button wire:click="answerQuestion('no')"
+                                class="px-6 py-2 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition-colors">
+                                No
+                            </button>
+                        </div>
+                        
+                        @if (\App\Models\Question::where('yes_question_id', $currentQuestion->id)
+                            ->orWhere('no_question_id', $currentQuestion->id)->exists())
+                            <button wire:click="previousQuestion" 
+                                class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
+                                ← Previous Question
+                            </button>
+                        @endif
+                        
+                        <div class="mt-4">
+                            <button wire:click="editQuestion({{ $currentQuestion->id }})" 
+                                class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
+                                Edit This Question
+                            </button>
+                        </div>
                     </div>
-                </div>
-                @if (
-                        \App\Models\Question::where('yes_question_id', $currentQuestion->id)
-                            ->orWhere('no_question_id', $currentQuestion->id)->exists()
-                    )
-                    <button wire:click="previousQuestion" class="mt-3 px-3 py-2 text-black font-medium">Previous Question</button>
-
                 @endif
-
-                <button wire:click="editQuestion({{ $currentQuestion->id }})" class="mt-3 text-blue-400 transition-all">Edit
-                    This Question</button>
-            @endif
-        </div>
-    @endif
-
-    @if($newQuestionAnswer)
-        <div class="mt-5 p-6 rounded border shadow-lg">
-            <h3>Create New Question for "{{ ucfirst($newQuestionAnswer) }}"</h3>
-        </div>
-
-        @if ($currentQuestion)
-            <p class="text-sm text-gray-700 rounded-md">
-                <strong>Previous Question:</strong>{{ $currentQuestion->question_text }}
-            </p>
-        @endif
-
-        <div class="mt-4">
-            <label for="" class="font-semibold text-lg text-gray-500">Enter The Question:</label>
-            <input type="text" wire:model="newQuestionText" class="border p-2 rounded shadow-sm text-lg">
-            @error('newQuestionText')
-                <span class="text-red-500 font-semibold">{{ $message }}</span>
-            @enderror
-        </div>
-        <button wire:click="createQuestion" class="mt-5 w-full px-3 py-2 bg-blue-600 text-white">Save
-            {{ ucfirst($newQuestionAnswer) }} Question</button>
-    @endif
-
-    @if (!$currentQuestion && isset($selectedProblem))
-        <div class="bg-gray-400 rounded lg p-5 border font-semibold text-lg">
-            <h1 class="text-2xl font-semibold text-gray-700 mb-4">Create The first Question for this problem</h1>
-            <div class="mt-4">
-                <label for="" class="block font-seibold text-lg mb-2">Enter the first Question:</label>
-                <input type="text" wire:model="newQuestionText" class="bg-gray-100 border px-3 py-2 rounded-lg">
-                @error('newQuestionText')
-                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span>
-                @enderror
             </div>
-            <button wire:click="createFirstQuestion" class="mt-5 w-full px-3 py-2 rounded border">Save First
-                Question</button>
+        </div>
+    @endif
+
+    <!-- New Question Section -->
+    @if($newQuestionAnswer)
+        <div class="p-6 bg-white">
+            <div class="max-w-3xl mx-auto space-y-4">
+                <h3 class="text-lg font-medium text-gray-900">
+                    Create new question for 
+                    <span class="font-semibold text-blue-600">"{{ ucfirst($newQuestionAnswer) }}"</span> answer
+                </h3>
+                
+                @if ($currentQuestion)
+                    <div class="bg-gray-50 p-3 rounded-md">
+                        <p class="text-sm text-gray-600">
+                            <span class="font-medium">Previous question:</span> 
+                            {{ $currentQuestion->question_text }}
+                        </p>
+                    </div>
+                @endif
+                
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Enter your question:</label>
+                    <textarea wire:model="newQuestionText" rows="3" 
+                        class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    @error('newQuestionText')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                
+                <button wire:click="createQuestion" 
+                    class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Save {{ ucfirst($newQuestionAnswer) }} Question
+                </button>
+            </div>
+        </div>
+    @endif
+
+    <!-- First Question Section -->
+    @if (!$currentQuestion && isset($selectedProblem))
+        <div class="p-6 bg-gray-50">
+            <div class="max-w-3xl mx-auto space-y-4">
+                <h1 class="text-xl font-medium text-gray-900">Create the first question for this problem</h1>
+                
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Enter your question:</label>
+                    <textarea wire:model="newQuestionText" rows="3" 
+                        class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    @error('newQuestionText')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                
+                <button wire:click="createFirstQuestion" 
+                    class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Save First Question
+                </button>
+            </div>
         </div>
     @endif
 </div>
