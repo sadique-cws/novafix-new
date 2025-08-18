@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Franchise;
 use App\Models\franchises;
 
 use Illuminate\Support\Facades\DB;
@@ -35,7 +36,7 @@ class EditFranchise extends Component
 
     public function mount($id)
     {
-        $this->franchise = franchises::findOrFail($id);
+        $this->franchise = Franchise::findOrFail($id);
 
         // Set all the properties from the franchise model
         $this->franchise_name = $this->franchise->franchise_name;

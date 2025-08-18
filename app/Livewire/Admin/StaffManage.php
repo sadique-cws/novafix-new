@@ -51,7 +51,7 @@ class StaffManage extends Component
             ->with(['franchise', 'serviceCategory'])
             ->paginate(10);
 
-        $franchises = franchises::orderBy('franchise_name')->get();
+        $franchises = Franchise::orderBy('franchise_name')->get();
         $categories = ServiceCategory::orderBy('name')->get();
 
         return view('livewire.admin.staff-manage', [
