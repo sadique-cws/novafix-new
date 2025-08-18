@@ -3,7 +3,6 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Franchise;
-use App\Models\franchises;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 

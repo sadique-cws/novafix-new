@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\franchises;
+use App\Models\Franchise;
 use App\Models\ServiceRequest;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;

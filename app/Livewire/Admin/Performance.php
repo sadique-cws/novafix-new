@@ -5,7 +5,6 @@ namespace App\Livewire\Admin;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Franchise;
-use App\Models\franchises;
 use App\Models\Payment;
 use App\Models\ServiceRequest;
 use App\Models\ServiceCategory;

@@ -5,7 +5,6 @@ namespace App\Livewire\Admin;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Franchise;
-use App\Models\franchises;
 use App\Models\Receptioner;
 use App\Models\Receptioners;
 use Livewire\WithPagination;

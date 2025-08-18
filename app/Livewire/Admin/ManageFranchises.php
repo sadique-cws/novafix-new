@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\franchises;
+use App\Models\Franchise;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 

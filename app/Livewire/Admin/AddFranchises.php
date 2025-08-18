@@ -3,7 +3,6 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Franchise;
-use App\Models\franchises;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
@@ -97,7 +96,7 @@ class AddFranchises extends Component
         DB::beginTransaction();
 
         try {
-            franchises::create([
+            Franchise::create([
                 'franchise_name' => $this->franchise_name,
                 'contact_no' => $this->contact_no,
                 'email' => $this->email,

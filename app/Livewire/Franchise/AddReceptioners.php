@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Franchise;
 
-use App\Models\franchises;
+use App\Models\Franchise;
 use App\Models\Receptioners;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;

@@ -28,7 +28,7 @@ class Payment extends Model
 
     public function franchise()
     {
-        return $this->belongsTo(franchises::class);
+        return $this->belongsTo(Franchise::class);
     }
     public function receivedBy()
     {

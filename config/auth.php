@@ -36,16 +36,16 @@ return [
     | Supported: "session"
     |
     */
+    
 
     'guards' => [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
-            'hash' => false,
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
         ],
 
         'franchise' => [  // Add this new guard
@@ -80,20 +80,20 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        // 'users' => [
+        //     'driver' => 'eloquent',
+        //     'model' => env('AUTH_MODEL', App\Models\User::class),
+        // ],
+        'admins' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\User::class, // Must exist
         ],
-
 
         'franchises' => [  // Add this new provider
             'driver' => 'eloquent',
-            'model' => App\Models\franchises::class, // Make sure this model exists
+            'model' => App\Models\Franchise::class, // Make sure this model exists
         ],
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+
         'frontdesks' => [
             'driver' => 'eloquent',
             'model' => App\Models\Receptioners::class,

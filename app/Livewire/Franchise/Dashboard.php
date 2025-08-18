@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Franchise;
 
-use App\Models\Franchises;
+use App\Models\Franchise;
 use App\Models\Payment;
 use App\Models\Receptioners;
 use App\Models\ServiceRequest;

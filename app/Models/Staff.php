@@ -17,7 +17,7 @@ class Staff extends Authenticatable
 
     public function franchise()
     {
-        return $this->belongsTo(Franchises::class, 'franchise_id');
+        return $this->belongsTo(Franchise::class, 'franchise_id');
     }
 
     public function serviceCategory()

@@ -4,10 +4,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 use Illuminate\Database\Eloquent\Model;
 
-class franchises extends Authenticatable
+class Franchise extends Model
 {
+    //
+
    use HasFactory, Notifiable;
 
    protected $guarded = [];
@@ -55,11 +58,4 @@ class franchises extends Authenticatable
    //       'id' // Local key on service_requests table
    //    );
    // }
-   
-   
 }
-
-
-
-
- 
