@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
            AdminSeeder::class,
            DeviceSeeder::class,
            BrandSeeder::class,
+           ModelSeeder::class,
+           ProblemSeeder::class,
+           QuestionSeeder::class,
         ]);
         
        
