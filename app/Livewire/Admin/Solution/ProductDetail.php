@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Solution;
 
+use App\Helpers\ImageKitHelper;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\Model;
@@ -10,9 +11,13 @@ use App\Models\Question;
 use App\Models\userAnswer;
 use Auth;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class ProductDetail extends Component
 {
+    use WithFileUploads;
+    public $image;
+    public $description;
     public $devices;
     public $brands = [];
     public $models = [];
@@ -27,6 +32,8 @@ class ProductDetail extends Component
     public $newQuestionAnswer;
     public $editingQuestionId = null;
     public $editingQuestionText = '';
+    public $editingQuestionImage = null;
+    public $editingQuestionDescription = '';
 
 
     public function mount()
@@ -74,12 +81,31 @@ class ProductDetail extends Component
 
     public function createQuestion()
     {
-        $this->validate(['newQuestionText' => 'required|string']);
+        $this->validate([
+            'newQuestionText' => 'required|string',
+            'image' => 'nullable|image|max:1024',
+            'description' => 'nullable|string'
+        ]);
 
-        $newQuestion = Question::create([
+        $newQuestionData = [
             'problem_id' => $this->selectedProblem,
             'question_text' => $this->newQuestionText,
-        ]);
+            'description' => $this->description
+        ];
+        if ($this->image) {
+            $imageData = ImageKitHelper::uploadImage($this->image, '/Novafix/Question_image');
+
+            if ($imageData) {
+                $newQuestionData['image_url'] = $imageData['url'];
+                $newQuestionData['image_file_id'] = $imageData['fileId'];
+            } else {
+                session()->flash('error', 'failed to upload image, please try again');
+                return;
+            }
+        }
+        $newQuestion = Question::create($newQuestionData);
+        $this->description = '';
+        $this->image = null;
 
         if ($this->newQuestionAnswer === 'yes') {
             $this->currentQuestion->yes_question_id = $newQuestion->id;
@@ -106,11 +132,29 @@ class ProductDetail extends Component
 
     public function createFirstQuestion()
     {
-        $this->validate(['newQuestionText' => 'required|min:3']);
-        $this->currentQuestion = Question::create([
+        $this->validate([
+            'newQuestionText' => 'required|min:3',
+            'image' => 'nullable|image|max:1024',
+            'description' => 'nullable|string'
+        ]);
+        $questionData = [
             'problem_id' => $this->selectedProblem,
             'question_text' => $this->newQuestionText,
-        ]);
+            'description' => $this->description,
+        ];
+
+        if ($this->image) {
+            $imageData = ImageKitHelper::uploadImage($this->image, '/Novafix/Question_image');
+
+            if ($imageData) {
+                $questionData['image_url'] = $imageData['url'];
+                $questionData['image_file_id'] = $imageData['fileId'];
+            } else {
+                session()->flash('error', 'failed to upload image, please try again');
+                return;
+            }
+        }
+        $this->currentQuestion = Question::create($questionData);
         $this->newQuestionText = '';
     }
     public function editQuestion($questionId)
@@ -119,24 +163,57 @@ class ProductDetail extends Component
         if ($question) {
             $this->editingQuestionId = $questionId;
             $this->editingQuestionText = $question->question_text;
+            $this->editingQuestionImage = $question->image_url;
+            $this->editingQuestionDescription = $question->description;
         }
     }
     public function updateQuestion()
     {
-        $this->validate(['editingQuestionText' => 'required|min:3']);
+        $this->validate([
+            'editingQuestionText' => 'required|min:3',
+            'image' => 'nullable|image|max:1024',
+            'description' => 'nullable|string'
+        ]);
 
         $question = Question::find($this->editingQuestionId);
         if (!$question) {
             session()->flash('error', 'Question not found');
             return;
         }
-        $question->update(['question_text' => $this->editingQuestionText]);
+        $updateData = [
+            'question_text' => $this->editingQuestionText,
+            'description' => $this->editingQuestionDescription,
+        ];
+        // Handle image upload if a new image was provided
+        if ($this->image) {
+            $imageData = ImageKitHelper::uploadImage($this->image, '/Novafix/Question_image');
+
+            if ($imageData) {
+                // Delete old image from ImageKit if it exists
+                if ($question->image_file_id) {
+                    ImageKitHelper::deleteImage($question->image_file_id);
+                }
+
+                $updateData['image_url'] = $imageData['url'];
+                $updateData['image_file_id'] = $imageData['fileId'];
+            } else {
+                session()->flash('error', 'Failed to upload image, please try again');
+                return;
+            }
+        }
+
+
+
+        $question->update($updateData);
         $this->editingQuestionId = null;
         $this->editingQuestionText = '';
+        $this->editingQuestionImage = null;
+        $this->editingQuestionDescription = '';
         $this->currentQuestion = $question;
 
         session()->flash('message', 'question Updated Successfully');
     }
+   
     public function cancelEdit()
     {
         $this->editingQuestionId = null;
@@ -185,6 +262,8 @@ class ProductDetail extends Component
         $this->currentQuestion = null;
         $this->newQuestionText = null;
         $this->newQuestionAnswer = null;
+        $this->description = '';
+        $this->image = null;
 
         // reload devices
         $this->devices = Device::all();

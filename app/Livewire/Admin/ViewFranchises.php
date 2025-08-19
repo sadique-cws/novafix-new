@@ -15,7 +15,7 @@ class ViewFranchises extends Component
     public function mount($id = null)
     {
         if ($id) {
-            $this->franchise = franchises::find($id);
+            $this->franchise = Franchise::find($id);
         }
     }
 
