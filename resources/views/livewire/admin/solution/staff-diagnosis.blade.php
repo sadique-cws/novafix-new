@@ -69,42 +69,47 @@
         @endif
     </div>
     @if($currentQuestion)
-    <div class="mt-4 bg-white p-4 rounded border max-w-4xl mx-auto">
-        <div class="flex flex-col md:flex-row gap-4">
-            {{-- Text Content --}}
-            <div class="md:w-1/2 p-2">
-                <p class="text-2xl text-gray-800 mb-3">
-                    {{ $currentQuestion->question_text }}
-                </p>
-                
-                @if ($currentQuestion->description)
-                    <p class="text-lg text-gray-600 mb-4">
-                        {{ $currentQuestion->description }}
+        <div class="mt-4 bg-white p-4 rounded border max-w-4xl mx-auto">
+            <div class="flex flex-col md:flex-row gap-4">
+                {{-- Text Content --}}
+                <div class="md:w-1/2 p-2">
+                    <p class="text-2xl text-gray-800 mb-3">
+                        {{ $currentQuestion->question_text }}
                     </p>
+
+                    @if ($currentQuestion->description)
+                        <p class="text-lg text-gray-600 mb-4">
+                            {{ $currentQuestion->description }}
+                        </p>
+                    @endif
+
+                    <div class="flex space-x-4 mt-4">
+                        <button class="text-xl bg-blue-500 text-white px-4 py-2 rounded" wire:click="answerQuestion('yes')">
+                            Yes
+                        </button>
+                        <button class="text-xl bg-red-500 text-white px-4 py-2 rounded" wire:click="answerQuestion('no')">
+                            No
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Image --}}
+                @if ($currentQuestion->image_url)
+                    <div class="md:w-1/2 p-2 flex flex-col items-center justify-center">
+                        <p class="text-gray-600 mb-2">Have you seen like this?</p>
+                        <img src="{{ $currentQuestion->image_url }}" class="max-h-64 w-auto rounded border" alt="Related image">
+                    </div>
                 @endif
-                
-                <div class="flex space-x-4 mt-4">
-                    <button class="text-xl bg-blue-500 text-white px-4 py-2 rounded"
-                            wire:click="answerQuestion('yes')">
-                        Yes
-                    </button>
-                    <button class="text-xl bg-red-500 text-white px-4 py-2 rounded"
-                            wire:click="answerQuestion('no')">
-                        No
-                    </button>
-                </div>
             </div>
-            
-            {{-- Image --}}
-            @if ($currentQuestion->image_url)
-                <div class="md:w-1/2 p-2 flex flex-col items-center justify-center">
-                    <p class="text-gray-600 mb-2">Have you seen like this?</p>
-                    <img src="{{ $currentQuestion->image_url }}" 
-                         class="max-h-64 w-auto rounded border" 
-                         alt="Related image">
-                </div>
+            @if (
+                    \App\Models\Question::where('yes_question_id', $currentQuestion->id)
+                        ->orWhere('no_question_id', $currentQuestion->id)->exists()
+                )
+                <button wire:click="previousQuestion"
+                    class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
+                    ← Previous Question
+                </button>
             @endif
         </div>
-    </div>
-@endif
+    @endif
 </div>

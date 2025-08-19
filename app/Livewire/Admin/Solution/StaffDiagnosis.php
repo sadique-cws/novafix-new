@@ -73,6 +73,15 @@ class StaffDiagnosis extends Component
             'no' => $question->no_question_id ? $this->buildTree(Question::find($question->no_question_id)) : null,
         ];
     }
+    public function previousQuestion(){
+        $parentQuestion  = Question::where('yes_question_id',$this->currentQuestion->id)
+        ->orWhere('no_question_id',$this->currentQuestion->id)
+        ->first();
+
+        if($parentQuestion){
+            $this->currentQuestion = $parentQuestion;
+        }
+    }
     public function answerQuestion($answer){
         if(!$this->currentQuestion){
             return;
