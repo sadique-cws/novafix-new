@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
            ReceptionerSeeder::class,
            DeviceSeeder::class,
            BrandSeeder::class,
+           ModelSeeder::class,
+           ProblemSeeder::class,
+           QuestionSeeder::class,
         ]);
         
        
