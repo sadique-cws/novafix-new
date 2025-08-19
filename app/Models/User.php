@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\CustomResetPassword;
 
 class User extends Authenticatable
 {
@@ -35,6 +36,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        
     ];
 
     /**
@@ -47,6 +49,51 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
+            'is_staff' => 'boolean',
+            'is_franchise' => 'boolean',
+            'is_frontdesk' => 'boolean',
         ];
     }
+    // app/Models/User.php
+public function franchise()
+{
+    return $this->hasOne(Franchise::class);
+}
+
+public function receptioner()
+{
+    return $this->hasOne(Receptioners::class);
+}
+
+public function staff()
+{
+    return $this->hasOne(Staff::class);
+}
+// app/Models/User.php
+public function isAdmin()
+{
+    return $this->is_admin;
+}
+
+public function isFranchise()
+{
+    return $this->is_franchise;
+}
+
+public function isStaff()
+{
+    return $this->is_staff;
+}
+
+public function isFrontdesk()
+{
+    return $this->is_frontdesk;
+}
+
+public function sendPasswordResetNotification($token)
+{
+    $this->notify(new CustomResetPassword($token));
+}
+
 }

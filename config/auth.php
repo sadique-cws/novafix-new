@@ -63,6 +63,12 @@ return [
         'driver' => 'session',
         'provider' => 'receptioners',
     ],
+    
+    // Frontdesk guard (maps to users provider where `is_frontdesk` flag is stored)
+    'frontdesk' => [
+        'driver' => 'session',
+    'provider' => 'receptioners',
+    ],
 ],
 
 

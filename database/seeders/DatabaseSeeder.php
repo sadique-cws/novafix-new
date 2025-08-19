@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
            AdminSeeder::class,
            FranchiseSeeder::class,
            ReceptionerSeeder::class,
+           StaffSeeder::class,
            DeviceSeeder::class,
            BrandSeeder::class,
            ModelSeeder::class,
