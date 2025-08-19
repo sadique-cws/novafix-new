@@ -3,8 +3,14 @@
 namespace App\Livewire\Auth;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Livewire\Component;
 use App\Models\User;
+use App\Models\Franchise;
+use App\Models\Staff;
+use App\Models\Receptioners;
 
 class Login extends Component
 {
@@ -23,53 +29,73 @@ class Login extends Component
         $this->validate();
         $this->error = '';
 
-        // Find user by email
-        $user = User::where('email', $this->email)->first();
+        // Try all user types
+        $userTypes = [
+            'admin' => User::class,
+            'franchise' => Franchise::class,
+            'staff' => Staff::class,
+            'receptioner' => Receptioners::class,
+        ];
 
-        if (!$user) {
-            $this->error = 'Invalid credentials. Please try again.';
-            return;
-        }
+        foreach ($userTypes as $guard => $model) {
+            $user = $model::where('email', $this->email)->first();
+            
+            if (!$user) {
+                Log::debug("No user found for guard: $guard with email: {$this->email}");
+                continue;
+            }
 
-        // Determine the guard based on user's role
-        $guard = $this->determineGuard($user);
+            // Check password
+            if (Hash::check($this->password, $user->password)) {
+                // Check if the user is active (if applicable)
+                if (property_exists($user, 'status') && $user->status !== 'active') {
+                    $this->error = 'Your account is not active. Please contact administrator.';
+                    Log::debug("User found but not active: {$user->id}");
+                    return;
+                }
 
-        if (!$guard) {
-            $this->error = 'No valid role found for this user';
-            return;
-        }
-
-        // Attempt login with the specific guard
-        if (Auth::guard($guard)->attempt([
-            'email' => $this->email,
-            'password' => $this->password
-        ], $this->remember)) {
-            return $this->redirectToDashboard($user, $guard);
+                Log::debug("User found and password correct: {$user->id}, guard: $guard");
+                
+                // Use custom session login
+                $this->customLogin($user, $guard);
+                return $this->redirectToDashboard($guard);
+            } else {
+                Log::debug("Password incorrect for user: {$user->id}");
+            }
         }
 
         $this->error = 'Invalid credentials. Please try again.';
+        Log::debug("Login failed for email: {$this->email}");
     }
 
-    private function determineGuard($user)
+    private function customLogin($user, $guard)
     {
-        // First check if role column exists and is set
-        if (isset($user->role) && !empty($user->role)) {
-            return $user->role;
+        // Store authentication details in session
+        session([
+            'authenticated' => true,
+            'user_id' => $user->id,
+            'user_type' => get_class($user),
+            'guard' => $guard,
+            'user_data' => $user->toArray() // Store user data for easy access
+        ]);
+
+        Log::debug("Session set for user: {$user->id}, guard: $guard");
+    }
+
+    private function redirectToDashboard($guard)
+    {
+        $routeName = "{$guard}.dashboard";
+        
+        // Check if the route exists before redirecting
+        if (Route::has($routeName)) {
+            Log::debug("Redirecting to: {$routeName}");
+            return redirect()->route($routeName);
+        } else {
+            // Fallback to a generic dashboard or show an error
+            Log::error("Route {$routeName} not defined");
+            $this->error = "Dashboard route not configured. Please contact administrator.";
+            return;
         }
-        
-        // Fallback to boolean flags
-        if ($user->is_admin) return 'admin';
-        if ($user->is_staff) return 'staff';
-        if ($user->is_franchise) return 'franchise';
-        if ($user->is_frontdesk) return 'frontdesk';
-        
-        return null;
-    }
-
-    private function redirectToDashboard($user, $guard)
-    {
-        // Redirect using the guard name
-        return redirect()->route("{$guard}.dashboard");
     }
 
     public function render()

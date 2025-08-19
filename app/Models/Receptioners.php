@@ -2,22 +2,34 @@
 
 namespace App\Models;
 
-use App\Notifications\ReceptionersResetPasswordNotification;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+
 class Receptioners extends Authenticatable
-
 {
-    use Notifiable;
+    use HasFactory, Notifiable;
+    
     protected $guarded = [];
-
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
 
     public function franchise()
     {

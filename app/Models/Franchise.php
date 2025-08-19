@@ -9,12 +9,57 @@ use Illuminate\Database\Eloquent\Model;
 
 class Franchise extends Model
 {
-    //
-
    use HasFactory, Notifiable;
 
    protected $guarded = [];
-   
+
+   protected $hidden = [
+       'password',
+       'remember_token',
+   ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
+public function getAuthIdentifierName()
+    {
+        return 'id';
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->{$this->getAuthIdentifierName()};
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
+
+    public function getRememberToken()
+    {
+        return $this->remember_token;
+    }
+
+    public function setRememberToken($value)
+    {
+        $this->remember_token = $value;
+    }
+
+    public function getRememberTokenName()
+    {
+        return 'remember_token';
+    }
+
+
    public function receptioners()
    {
       return $this->hasMany(Receptioners::class);
