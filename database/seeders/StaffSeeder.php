@@ -8,6 +8,7 @@ use App\Models\Staff;
 use App\Models\Franchise;
 use App\Models\ServiceCategory;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class StaffSeeder extends Seeder
 {
@@ -34,23 +35,14 @@ class StaffSeeder extends Seeder
 
         $serviceCategories = ServiceCategory::all();
         if ($serviceCategories->isEmpty()) {
-            // Create service categories manually instead of using factory
+            // First, let's check what columns exist in the service_categories table
+            $columns = DB::getSchemaBuilder()->getColumnListing('service_categories');
+            
+            // Create service categories with only the fields that exist in your table
             $serviceCategories = [
-                ServiceCategory::create([
-                    'name' => 'AC Repair',
-                    'description' => 'Air conditioner repair and maintenance services',
-                    'status' => 'active'
-                ]),
-                ServiceCategory::create([
-                    'name' => 'Plumbing',
-                    'description' => 'Plumbing services and repairs',
-                    'status' => 'active'
-                ]),
-                ServiceCategory::create([
-                    'name' => 'Electrical',
-                    'description' => 'Electrical services and repairs',
-                    'status' => 'active'
-                ])
+                ServiceCategory::create($this->getServiceCategoryData('AC Repair', $columns)),
+                ServiceCategory::create($this->getServiceCategoryData('Plumbing', $columns)),
+                ServiceCategory::create($this->getServiceCategoryData('Electrical', $columns))
             ];
         }
 
@@ -102,5 +94,24 @@ class StaffSeeder extends Seeder
         }
 
         $this->command->info('Staff members seeded successfully!');
+    }
+
+    /**
+     * Get service category data based on available columns
+     */
+    private function getServiceCategoryData($name, $columns)
+    {
+        $data = ['name' => $name];
+        
+        // Only include these fields if they exist in the table
+        if (in_array('description', $columns)) {
+            $data['description'] = "$name services";
+        }
+        
+        if (in_array('status', $columns)) {
+            $data['status'] = 'active';
+        }
+        
+        return $data;
     }
 }
