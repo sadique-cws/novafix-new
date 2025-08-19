@@ -101,16 +101,6 @@
                     Authenticating...
                 </span>
             </button>
-
-            <!-- Registration Link -->
-            <div class="mt-6 text-center">
-                <p class="text-sm text-gray-600">
-                    Don't have an account?
-                    <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500 ml-1">
-                        Create one
-                    </a>
-                </p>
-            </div>
         </form>
     </div>
 </div>
