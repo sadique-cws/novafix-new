@@ -1,6 +1,5 @@
 <?php
-use App\Livewire\Auth\Register;
-use App\Livewire\Auth\Login;
+use App\Livewire\Auth\{Login,ForgotPassword, ResetPassword};
 use App\Livewire\Admin\AddFranchises;
 use App\Livewire\Admin\EditFranchise; 
 use App\Livewire\Admin\AdminDashboard;
@@ -35,10 +34,8 @@ use App\Livewire\Frontdesk\ManageServiceRequest as FrontdeskManageServiceRequest
 use App\Livewire\Frontdesk\FrontDashboard;
 use App\Livewire\Frontdesk\ManagePayment;
 use App\Livewire\Frontdesk\EditServiceRequest;
-use App\Livewire\Frontdesk\ForgotPassword;
 use App\Livewire\Frontdesk\OtpSender;
 use App\Livewire\Frontdesk\Profile as FrontdeskProfile;
-use App\Livewire\Frontdesk\ResetPassword;
 use App\Livewire\Frontdesk\ReviewServiceRequest;
 use App\Livewire\Frontdesk\ServiceRequestForm;
 use App\Livewire\Frontdesk\ShowCompletedTask;
@@ -57,7 +54,8 @@ use Illuminate\Support\Facades\Route;
 // Public Routes
 Route::get("/", Homepage::class)->name('homepage');
 Route::get('/login', Login::class)->name('login');
-Route::get('/register', Register::class)->name('register');
+Route::get('/forgot-password', ForgotPassword::class)->name('password.request');
+Route::get('/reset-password/{token}', ResetPassword::class)->name('password.reset');
 
 // Admin Routes (protected by 'auth:admin' middleware)
 Route::prefix("admin")->group(function () {
