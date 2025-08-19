@@ -15,23 +15,23 @@ class ProblemSeeder extends Seeder
     {
            $problems = [
             [
-                'name' => 'ip30',
+                'name' => 'Not open',
                 'model_id' => 1
             ],
             [
-                'name' => 'i3',
+                'name' => 'Display Lack',
                 'model_id' => 2
             ],
             [
-                'name' => 'S 22',
+                'name' => 'Power Failure',
                 'model_id' => 3
             ],
             [
-                'name' => 'victus',
+                'name' => 'Call Remove',
                 'model_id' => 4
             ],
             [
-                'name' => 'Stroam call 2',
+                'name' => 'Something Else',
                 'model_id' => 5
             ],
         ];

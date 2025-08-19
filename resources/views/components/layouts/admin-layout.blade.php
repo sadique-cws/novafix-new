@@ -265,6 +265,11 @@
                                 Diagnosis</a>
                         </li>
                         <li>
+                            <a wire:navigate href="{{ route('admin.solution.staff-diagnosis') }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">Staff
+                                Diagnosis</a>
+                        </li>
+                        <li>
                             <a wire:navigate href="{{ route('admin.solution.manage-devices') }}"
                                 class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">Manage Devices</a>
                         </li>
