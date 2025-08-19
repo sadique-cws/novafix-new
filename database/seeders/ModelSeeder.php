@@ -2,45 +2,46 @@
 
 namespace Database\Seeders;
 
-use App\Models\Problem;
+use App\Models\Model;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ProblemSeeder extends Seeder
+class ModelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-           $problems = [
+        $models = [
             [
                 'name' => 'ip30',
-                'model_id' => 1
+                'brand_id' => 1
             ],
             [
                 'name' => 'i3',
-                'model_id' => 2
+                'brand_id' => 2
             ],
             [
                 'name' => 'S 22',
-                'model_id' => 3
+                'brand_id' => 3
             ],
             [
                 'name' => 'victus',
-                'model_id' => 4
+                'brand_id' => 4
             ],
             [
                 'name' => 'Stroam call 2',
-                'model_id' => 5
+                'brand_id' => 5
             ],
         ];
 
-        foreach ($problems as $problem) {
-            Problem::updateOrCreate(
-                ['name' => $problem['name'], 'model_id' => $problem['model_id']],
-                $problem
+        foreach ($models as $model) {
+            Model::updateOrCreate(
+                ['name' => $model['name'], 'brand_id' => $model['brand_id']],
+                $model
             );
         }
     }
+
 }

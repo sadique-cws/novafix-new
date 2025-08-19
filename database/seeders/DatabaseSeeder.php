@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
            AdminSeeder::class,
            FranchiseSeeder::class,
            ReceptionerSeeder::class,
+           DeviceSeeder::class,
+           BrandSeeder::class,
         ]);
         
        

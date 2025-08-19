@@ -35,12 +35,10 @@ class ProductDetail extends Component
     public $editingQuestionImage = null;
     public $editingQuestionDescription = '';
 
-
     public function mount()
     {
         $this->devices = Device::all();
     }
-
     public function updateSelectedDevice()
     {
         $this->brands = Brand::where('device_id', $this->selectedDevice)->get();
@@ -66,7 +64,6 @@ class ProductDetail extends Component
     {
         $this->questionTree = $this->buildTree($this->currentQuestion);
     }
-
     private function buildTree($question)
     {
         if (!$question)
@@ -78,7 +75,6 @@ class ProductDetail extends Component
             'no' => $question->no_question_id ? $this->buildTree(Question::find($question->no_question_id)) : null,
         ];
     }
-
     public function createQuestion()
     {
         $this->validate([
@@ -129,7 +125,6 @@ class ProductDetail extends Component
         $this->newQuestionAnswer = null;
         $this->newQuestionText = '';
     }
-
     public function createFirstQuestion()
     {
         $this->validate([
@@ -280,9 +275,11 @@ class ProductDetail extends Component
     }
     public function render()
     {
+        $allQuestion = Question::all();
         return view('livewire.admin.solution.product-detail', [
             'showCreateFirst' => !$this->currentQuestion,
             'showAddQuestion' => $this->currentQuestion && (!$this->currentQuestion->yes_question_id || !$this->currentQuestion->no_question_id),
+            'allQuestion' => $allQuestion,
         ]);
     }
 }
