@@ -90,6 +90,7 @@ class ProductDetail extends Component
             return;
         }
         $this->allQuestion = Question::where('question_text', 'like', '%' . $this->search . '%')
+        ->whereNot('id',$this->currentQuestion->id)
             ->take(5)
             ->get();
     }
