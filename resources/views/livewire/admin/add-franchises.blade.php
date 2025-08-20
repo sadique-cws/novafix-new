@@ -67,7 +67,7 @@
                 <div class="bg-gradient-to-r from-blue-700 to-indigo-800 px-8 py-6">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
-                            <h2 class="text-2xl font-bold text-white">Register New Franchise</h2>
+                            <h2 class="text-2xl  text-white">Register New Franchise</h2>
                         </div>
                         <a href="{{ route('admin.manage-franchises') }}"
                             class="flex items-center px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg text-white text-sm font-medium transition-colors">

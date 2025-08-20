@@ -22,7 +22,7 @@
             </div>
         @endif
 
-        <h1 class="text-center text-2xl font-bold text-gray-800 mb-2">Welcome Back</h1>
+        <h1 class="text-center text-2xl  text-gray-800 mb-2">Welcome Back</h1>
         <p class="text-center text-gray-600 mb-8">Sign in to access your account</p>
 
         <form wire:submit.prevent="login">

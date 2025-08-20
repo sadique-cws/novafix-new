@@ -4,7 +4,7 @@
         <!-- Header with Logo and Receipt Info -->
         <div class="flex justify-between items-start border-b pb-4 mb-6">
             <div>
-                <h1 class="text-2xl font-bold text-gray-800">Service Request Receipt</h1>
+                <h1 class="text-2xl  text-gray-800">Service Request Receipt</h1>
                 <div class="flex items-center space-x-4 mt-2">
                     <p class="text-gray-600">Request #: {{ $serviceRequest->id }}</p>
                     <p class="text-gray-600">Date: {{ $serviceRequest->created_at->format('M d, Y h:i A') }}</p>

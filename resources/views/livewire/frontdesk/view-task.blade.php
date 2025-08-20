@@ -8,7 +8,7 @@
                     <i class="fas fa-arrow-left text-gray-600 text-base sm:text-lg"></i>
                 </a>
                 <div>
-                    <h1 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">Service Request Details</h1>
+                    <h1 class="text-lg sm:text-xl md:text-2xl  text-gray-900">Service Request Details</h1>
                     <div class="flex flex-wrap items-center mt-2 space-x-2 sm:space-x-3">
                         <span class="text-xs sm:text-sm font-medium text-gray-600 bg-gray-200 px-2.5 sm:px-3 py-1 rounded-full">SR-{{ $task->service_code }}</span>
                         @if ($paymentCompleted)
@@ -389,7 +389,7 @@
                                 <div class="flex justify-between items-start">
                                     <div>
                                         <span
-                                            class="font-bold text-sm sm:text-base text-gray-900">₹{{ number_format($payment->total_amount, 2) }}</span>
+                                            class=" text-sm sm:text-base text-gray-900">₹{{ number_format($payment->total_amount, 2) }}</span>
                                         <div class="mt-1 text-xs sm:text-sm">
                                             <span
                                                 class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium 

@@ -15,7 +15,7 @@
         <!-- Header Section -->
         <div class="px-6 py-5 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-                <h2 class="text-2xl font-bold text-gray-900">Service Categories</h2>
+                <h2 class="text-2xl  text-gray-900">Service Categories</h2>
                 <p class="text-gray-500 mt-1 text-sm">Manage your service categories</p>
             </div>
             <button wire:click="$dispatch('startAdd')"

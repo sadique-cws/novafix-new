@@ -6,7 +6,7 @@
             </div>
         </div>
 
-        <h1 class="text-center text-2xl font-bold text-gray-800 mb-2">Reset Your Password</h1>
+        <h1 class="text-center text-2xl  text-gray-800 mb-2">Reset Your Password</h1>
         <p class="text-center text-gray-600 mb-8">Enter your email to receive a password reset link</p>
 
         @if ($success)

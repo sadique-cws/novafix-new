@@ -2,7 +2,7 @@
     <!-- Header Section -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
-            <h2 class="text-2xl font-bold text-gray-800">Payment Management</h2>
+            <h2 class="text-2xl  text-gray-800">Payment Management</h2>
             <p class="text-gray-600">View and manage all payment transactions</p>
         </div>
         <div class="mt-4 md:mt-0 flex space-x-2">
@@ -67,7 +67,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500">Total Payments</p>
-                    <p class="text-2xl font-bold text-blue-600">₹{{ number_format($totalAmount, 2) }}</p>
+                    <p class="text-2xl  text-blue-600">₹{{ number_format($totalAmount, 2) }}</p>
                 </div>
                 <div class="p-3 rounded-full bg-blue-100 text-blue-600">
                     <i class="fas fa-wallet text-xl"></i>
@@ -79,7 +79,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500">Today's Collection</p>
-                    <p class="text-2xl font-bold text-green-600">₹{{ number_format($todayAmount, 2) }}</p>
+                    <p class="text-2xl  text-green-600">₹{{ number_format($todayAmount, 2) }}</p>
                 </div>
                 <div class="p-3 rounded-full bg-green-100 text-green-600">
                     <i class="fas fa-calendar-day text-xl"></i>
@@ -91,7 +91,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500">Completed Payments</p>
-                    <p class="text-2xl font-bold text-purple-600">{{ $payments->where('status', 'completed')->count() }}</p>
+                    <p class="text-2xl  text-purple-600">{{ $payments->where('status', 'completed')->count() }}</p>
                 </div>
                 <div class="p-3 rounded-full bg-purple-100 text-purple-600">
                     <i class="fas fa-check-circle text-xl"></i>
@@ -164,7 +164,7 @@
                             <div class="text-sm text-gray-900">{{ $payment->serviceRequest->owner_name }}</div>
                             <div class="text-sm text-gray-500">{{ $payment->serviceRequest->contact }}</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-blue-600">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm  text-blue-600">
                             ₹{{ number_format($payment->total_amount, 2) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

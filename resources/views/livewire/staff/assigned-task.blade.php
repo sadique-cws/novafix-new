@@ -2,7 +2,7 @@
     <!-- Header Section with Search/Filter -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
         <div>
-            <h2 class="text-2xl font-bold text-gray-800 ">Assigned Tasks</h2>
+            <h2 class="text-2xl  text-gray-800 ">Assigned Tasks</h2>
             <p class="text-gray-600 dark:text-gray-300">Tasks assigned to you by receptionists</p>
         </div>
         <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">

@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
         <div>
-            <h2 class="text-2xl font-bold text-gray-800">Payment Details</h2>
+            <h2 class="text-2xl  text-gray-800">Payment Details</h2>
             <p class="text-gray-600">Service Code: {{ $payment->serviceRequest->service_code }}</p>
         </div>
         <a wire:navigate href="{{ route('franchise.manage.payments') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
@@ -131,7 +131,7 @@
                         </div>
                         <div class="flex justify-between border-t border-gray-200 pt-2">
                             <p class="text-gray-800 font-semibold">Total Amount:</p>
-                            <p class="text-blue-600 font-bold">₹{{ number_format($payment->total_amount, 2) }}</p>
+                            <p class="text-blue-600 ">₹{{ number_format($payment->total_amount, 2) }}</p>
                         </div>
                     </div>
                 </div>

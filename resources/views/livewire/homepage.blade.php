@@ -4,7 +4,7 @@
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="relative max-w-7xl mx-auto px-4 h-full flex items-center">
             <div class="text-white space-y-6">
-                <h1 class="text-5xl md:text-6xl font-bold leading-tight">
+                <h1 class="text-5xl md:text-6xl  leading-tight">
                     Your Trusted Partner<br>
                     <span class="text-orange-400">For Electronic Repairs</span>
                 </h1>
@@ -24,7 +24,7 @@
     <!-- Services Section -->
     <div id="services" class="py-20 max-w-7xl mx-auto px-4">
         <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Our Services</h2>
+            <h2 class="text-3xl md:text-4xl  text-gray-800">Our Services</h2>
             <div class="w-24 h-1 bg-orange-500 mx-auto mt-4"></div>
         </div>
 
@@ -35,7 +35,7 @@
                         <div class="w-16 h-16 bg-pink-100 rounded-lg flex items-center justify-center mb-6">
                             <img src="{{ asset('images/laptop.png') }}" alt="Laptop" class="w-10 h-10">
                         </div>
-                        <h3 class="text-xl font-bold mb-4">Laptop Repair</h3>
+                        <h3 class="text-xl  mb-4">Laptop Repair</h3>
                         <ul class="space-y-2 text-gray-600">
                             <li>• Hardware Repairs</li>
                             <li>• Software Issues</li>
@@ -52,7 +52,7 @@
                         <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
                             <img src="{{ asset('images/desktop.png') }}" alt="Desktop" class="w-10 h-10">
                         </div>
-                        <h3 class="text-xl font-bold mb-4">Desktop Repair</h3>
+                        <h3 class="text-xl  mb-4">Desktop Repair</h3>
                         <ul class="space-y-2 text-gray-600">
                             <li>• Hardware Upgrades</li>
                             <li>• OS Installation</li>
@@ -69,7 +69,7 @@
                         <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
                             <img src="{{ asset('images/mobile.png') }}" alt="Mobile" class="w-10 h-10">
                         </div>
-                        <h3 class="text-xl font-bold mb-4">Mobile Repair</h3>
+                        <h3 class="text-xl  mb-4">Mobile Repair</h3>
                         <ul class="space-y-2 text-gray-600">
                             <li>• Screen Repairs</li>
                             <li>• Battery Replacement</li>
@@ -87,19 +87,19 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-orange-500">5000+</div>
+                    <div class="text-4xl  text-orange-500">5000+</div>
                     <div class="text-gray-600 mt-2">Repairs Completed</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-orange-500">98%</div>
+                    <div class="text-4xl  text-orange-500">98%</div>
                     <div class="text-gray-600 mt-2">Satisfied Customers</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-orange-500">50+</div>
+                    <div class="text-4xl  text-orange-500">50+</div>
                     <div class="text-gray-600 mt-2">Expert Technicians</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-orange-500">24/7</div>
+                    <div class="text-4xl  text-orange-500">24/7</div>
                     <div class="text-gray-600 mt-2">Support Available</div>
                 </div>
             </div>

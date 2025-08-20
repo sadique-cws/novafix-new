@@ -3,7 +3,7 @@
         <!-- Header Section -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Receptionist Profile</h1>
+                <h1 class="text-2xl sm:text-3xl  text-gray-900">Receptionist Profile</h1>
                 <p class="text-sm text-gray-500 mt-1">Detailed professional information</p>
             </div>
             <a wire:navigate href="{{ route('admin.receptionst.management') }}" 
@@ -27,7 +27,7 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="text-xl font-bold text-gray-800">{{ $receptionist->name }}</h2>
+                        <h2 class="text-xl  text-gray-800">{{ $receptionist->name }}</h2>
                         <div class="flex items-center mt-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

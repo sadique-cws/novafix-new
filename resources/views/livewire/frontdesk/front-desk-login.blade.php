@@ -32,7 +32,7 @@
 
          <div class="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
             <div class="text-center md:text-left mb-8">
-                <h1 class="text-2xl md:text-4xl text-center font-bold text-gray-800 mb-2">Welcome Reception</h1>
+                <h1 class="text-2xl md:text-4xl text-center  text-gray-800 mb-2">Welcome Reception</h1>
                 <p class="text-gray-600 text-center">Sign in to access your account</p>
             </div>
             

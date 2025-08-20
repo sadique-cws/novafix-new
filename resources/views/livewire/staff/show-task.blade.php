@@ -11,7 +11,7 @@
                             <i class="fas fa-arrow-left text-lg"></i>
                         </button>
                         <div>
-                            <h1 class="text-2xl font-bold text-gray-800 leading-tight">Service Request Details</h1>
+                            <h1 class="text-2xl  text-gray-800 leading-tight">Service Request Details</h1>
                             <div class="flex items-center mt-1 space-x-3">
                                 <span class="text-sm font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">SR-{{ $task->service_code }}</span>
                                 @if ($paymentCompleted)
@@ -415,7 +415,7 @@
                                         <div class="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
                                             <div class="flex justify-between items-start">
                                                 <div>
-                                                    <span class="font-bold text-gray-900">₹{{ number_format($payment->total_amount, 2) }}</span>
+                                                    <span class=" text-gray-900">₹{{ number_format($payment->total_amount, 2) }}</span>
                                                     <div class="text-xs text-gray-500 mt-1">
                                                         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium 
                                                             @if($payment->payment_method === 'cash') bg-blue-100 text-blue-800

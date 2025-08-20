@@ -1,5 +1,5 @@
 <div class="max-w-4xl mx-auto p-4 md:p-6 bg-white rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">
-    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center md:text-left">Add New Receptionist</h2>
+    <h2 class="text-2xl md:text-3xl  text-gray-800 mb-6 text-center md:text-left">Add New Receptionist</h2>
 
     @if(session()->has('success'))
         <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg border border-green-200 flex items-center">

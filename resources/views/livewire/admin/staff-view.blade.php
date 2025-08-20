@@ -3,7 +3,7 @@
         <!-- Header with back button -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
             <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Staff Profile</h1>
+                <h1 class="text-2xl sm:text-3xl  text-gray-900">Staff Profile</h1>
                 <p class="text-sm text-gray-500 mt-1">Detailed information about the staff member</p>
             </div>
             <a wire:navigate href="" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -31,7 +31,7 @@
                         </div>
                     @endif
                     <div class="text-center sm:text-left">
-                        <h2 class="text-xl sm:text-2xl font-bold text-gray-800">{{ $staff->name }}</h2>
+                        <h2 class="text-xl sm:text-2xl  text-gray-800">{{ $staff->name }}</h2>
                         <p class="text-gray-600 flex items-center justify-center sm:justify-start mt-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

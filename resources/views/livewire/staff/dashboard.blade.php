@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
             <div>
-                <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Staff Dashboard</h1>
+                <h1 class="text-2xl md:text-3xl  text-gray-800">Staff Dashboard</h1>
             </div>
             <div class="mt-4 md:mt-0 flex space-x-3">
                 <button class="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:opacity-90 transition flex items-center shadow-md hover:shadow-lg">
@@ -27,7 +27,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Pending Tasks</p>
-                        <p class="text-2xl font-bold text-gray-800 mt-1">{{ $pendingTasksCount }}</p>
+                        <p class="text-2xl  text-gray-800 mt-1">{{ $pendingTasksCount }}</p>
                         <p class="text-xs text-gray-500 mt-1">+2 from yesterday</p>
                     </div>
                     <div class="p-3 rounded-full bg-purple-50 text-purple-600">
@@ -42,7 +42,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">In Progress</p>
-                        <p class="text-2xl font-bold text-gray-800 mt-1">{{ $inProgressTasksCount }}</p>
+                        <p class="text-2xl  text-gray-800 mt-1">{{ $inProgressTasksCount }}</p>
                         <p class="text-xs text-gray-500 mt-1">5 completed today</p>
                     </div>
                     <div class="p-3 rounded-full bg-blue-50 text-blue-600">
@@ -57,7 +57,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Completed Today</p>
-                        <p class="text-2xl font-bold text-gray-800 mt-1">{{ $completedTodayCount }}</p>
+                        <p class="text-2xl  text-gray-800 mt-1">{{ $completedTodayCount }}</p>
                         <p class="text-xs text-gray-500 mt-1">+20% this week</p>
                     </div>
                     <div class="p-3 rounded-full bg-green-50 text-green-600">

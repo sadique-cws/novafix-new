@@ -97,7 +97,7 @@
                     class="relative p-2 text-dark-400 hover:text-dark-600 focus:outline-none transition-colors group">
                     <i class="fas fa-bell text-xl"></i>
                     <span
-                        class="absolute top-0 right-0 px-1.5 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full transform translate-x-1 -translate-y-1">3</span>
+                        class="absolute top-0 right-0 px-1.5 py-0.5 text-xs  text-white bg-red-500 rounded-full transform translate-x-1 -translate-y-1">3</span>
                     <div
                         class="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-soft-lg py-2 z-50 hidden group-hover:block">
                         <div class="px-4 py-2 border-b border-gray-100">

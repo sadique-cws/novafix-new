@@ -3,7 +3,7 @@
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
         <!-- Form Header -->
         <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-4">
-            <h2 class="text-2xl font-bold text-white">Add New Staff Member</h2>
+            <h2 class="text-2xl  text-white">Add New Staff Member</h2>
         </div>
 
         <!-- Success/Error Messages -->

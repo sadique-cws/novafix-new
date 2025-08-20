@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl p-6 mb-6 shadow-lg">
         <div class="flex flex-col space-y-2">
-            <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Manage Payment</h2>
+            <h2 class="text-2xl sm:text-3xl  text-white tracking-tight">Manage Payment</h2>
             <p class="text-sm text-blue-100 opacity-90">View and manage all service payments</p>
         </div>
     </div>
@@ -58,7 +58,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-medium text-gray-500">Total Payments</p>
-                    <p class="text-lg font-bold text-blue-600 mt-1">₹{{ number_format($totalAmount, 2) }}</p>
+                    <p class="text-lg  text-blue-600 mt-1">₹{{ number_format($totalAmount, 2) }}</p>
                 </div>
                 <div class="p-2 rounded-full bg-blue-100 text-blue-600">
                    ₹
@@ -72,7 +72,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-medium text-gray-500">Completed</p>
-                    <p class="text-lg font-bold text-green-600 mt-1">{{ $completedCount }}</p>
+                    <p class="text-lg  text-green-600 mt-1">{{ $completedCount }}</p>
                 </div>
                 <div class="p-2 rounded-full bg-green-100 text-green-600">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -88,7 +88,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-medium text-gray-500">Pending</p>
-                    <p class="text-lg font-bold text-amber-600 mt-1">{{ $pendingCount }}</p>
+                    <p class="text-lg  text-amber-600 mt-1">{{ $pendingCount }}</p>
                 </div>
                 <div class="p-2 rounded-full bg-amber-100 text-amber-600">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -104,7 +104,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-medium text-gray-500">Failed</p>
-                    <p class="text-lg font-bold text-red-600 mt-1">{{ $failedCount }}</p>
+                    <p class="text-lg  text-red-600 mt-1">{{ $failedCount }}</p>
                 </div>
                 <div class="p-2 rounded-full bg-red-100 text-red-600">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -124,9 +124,9 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-sm font-medium text-blue-100 opacity-90">Total Payments</p>
-                        <p class="text-2xl font-bold text-white mt-1">₹{{ number_format($totalAmount, 2) }}</p>
+                        <p class="text-2xl  text-white mt-1">₹{{ number_format($totalAmount, 2) }}</p>
                     </div>
-                    <div class="p-3 rounded-full text-white font-bold bg-white/20 backdrop-blur-sm">
+                    <div class="p-3 rounded-full text-white  bg-white/20 backdrop-blur-sm">
                         ₹
                     </div>
                 </div>
@@ -145,7 +145,7 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-sm font-medium text-green-100 opacity-90">Completed</p>
-                        <p class="text-2xl font-bold text-white mt-1">{{ $completedCount }}</p>
+                        <p class="text-2xl  text-white mt-1">{{ $completedCount }}</p>
                     </div>
                     <div class="p-3 rounded-full bg-white/20 backdrop-blur-sm">
                         <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,7 +165,7 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-sm font-medium text-amber-100 opacity-90">Pending</p>
-                        <p class="text-2xl font-bold text-white mt-1">{{ $pendingCount }}</p>
+                        <p class="text-2xl  text-white mt-1">{{ $pendingCount }}</p>
                     </div>
                     <div class="p-3 rounded-full bg-white/20 backdrop-blur-sm">
                         <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -185,7 +185,7 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-sm font-medium text-red-100 opacity-90">Failed</p>
-                        <p class="text-2xl font-bold text-white mt-1">{{ $failedCount }}</p>
+                        <p class="text-2xl  text-white mt-1">{{ $failedCount }}</p>
                     </div>
                     <div class="p-3 rounded-full bg-white/20 backdrop-blur-sm">
                         <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -279,7 +279,7 @@
 
                                     <!-- Amount -->
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-bold text-blue-600">
+                                        <div class="text-sm  text-blue-600">
                                             ₹{{ number_format($payment->total_amount, 2) }}</div>
                                     </td>
 
@@ -446,7 +446,7 @@
                                         </div>
                                         <div>
                                             <p class="text-xs text-gray-500">Amount</p>
-                                            <p class="text-sm font-bold text-blue-600">
+                                            <p class="text-sm  text-blue-600">
                                                 ₹{{ number_format($payment->total_amount, 2) }}</p>
                                         </div>
                                         <div>

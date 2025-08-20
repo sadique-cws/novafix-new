@@ -9,13 +9,13 @@
                             <img src="{{ asset('storage/'.$receptionist->photo_path) }}" 
                                  class="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 border-white shadow-md">
                         @else
-                            <div class="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-blue-400 flex items-center justify-center text-2xl sm:text-3xl font-bold text-white border-2 border-white shadow-md">
+                            <div class="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-blue-400 flex items-center justify-center text-2xl sm:text-3xl  text-white border-2 border-white shadow-md">
                                 {{ strtoupper(substr($receptionist->name, 0, 1)) }}
                             </div>
                         @endif
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-bold">{{ $receptionist->name }}</h1>
+                        <h1 class="text-xl sm:text-2xl ">{{ $receptionist->name }}</h1>
                         <p class="text-blue-100 text-sm sm:text-base">{{ $receptionist->email }}</p>
                         <div class="mt-1 sm:hidden">
                             <span class="px-2 py-1 rounded-full text-xs font-semibold {{ $receptionist->status == '1' ? 'bg-green-500' : 'bg-red-500' }}">

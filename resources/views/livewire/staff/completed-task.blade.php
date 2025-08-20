@@ -2,7 +2,7 @@
     <main class="flex-1 p-3 sm:p-4 md:p-6 overflow-auto">
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6">
-            <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Completed Service Requests</h2>
+            <h2 class="text-xl sm:text-2xl  text-gray-800">Completed Service Requests</h2>
             <p class="text-sm sm:text-base text-gray-500 mt-1 sm:mt-0">{{ $requests->total() }} completed requests</p>
         </div>
 

@@ -5,7 +5,7 @@
         <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-5">
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-2xl font-bold text-white">Staff Profile</h2>
+                    <h2 class="text-2xl  text-white">Staff Profile</h2>
                     <p class="mt-1 text-blue-100">Manage your personal and professional information</p>
                 </div>
                 <div class="flex-shrink-0">

@@ -4,7 +4,7 @@
         <main class="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50">
             <!-- Dashboard Overview -->
             <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-6 mb-6 text-white">
-                <h2 class="text-xl md:text-2xl font-bold mb-2">Dashboard !</h2>
+                <h2 class="text-xl md:text-2xl  mb-2">Dashboard !</h2>
                 <p class="opacity-90">Here's what's happening with your franchises today.</p>
             </div>
 
@@ -16,7 +16,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Total Franchises</p>
-                            <p class="text-xl font-bold text-gray-800 mt-1"> {{ $stats['totalFranchises'] }}</p>
+                            <p class="text-xl  text-gray-800 mt-1"> {{ $stats['totalFranchises'] }}</p>
                             <p class="text-xs text-green-600 mt-2">
                                 <i class="fas fa-arrow-up mr-1"></i>
                                 <span class="font-medium">+{{ round(($stats['totalFranchises'] / 10) * 100) }}%</span>
@@ -34,7 +34,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Active Staff</p>
-                            <p class="text-xl font-bold text-gray-800 mt-1">{{ $stats['activeStaff'] }}</p>
+                            <p class="text-xl  text-gray-800 mt-1">{{ $stats['activeStaff'] }}</p>
                             <p class="text-xs text-green-600 mt-2">
                                 <i class="fas fa-arrow-up mr-1"></i>
                                 <span class="font-medium">+{{ round(($stats['activeStaff'] / 20) * 100) }}%</span> from
@@ -50,7 +50,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Receptionists</p>
-                            <p class="text-xl font-bold text-gray-800 mt-1">{{ $stats['receptionists'] }}</p>
+                            <p class="text-xl  text-gray-800 mt-1">{{ $stats['receptionists'] }}</p>
                             <p class="text-xs text-green-600 mt-2">
                                 <i class="fas fa-arrow-up mr-1"></i>
                                 <span class="font-medium">+{{ round(($stats['receptionists'] / 5) * 100) }}%</span> from
@@ -84,7 +84,7 @@
                                     $formattedRevenue = '₹' . number_format($revenue, 2);
                                 }
                             @endphp
-                            <p class="text-xl font-bold text-gray-800 mt-1">{{ $formattedRevenue }}</p>
+                            <p class="text-xl  text-gray-800 mt-1">{{ $formattedRevenue }}</p>
                             <p class="text-xs text-green-600 mt-2">
                                 <i class="fas fa-arrow-up mr-1"></i>
                                 <span

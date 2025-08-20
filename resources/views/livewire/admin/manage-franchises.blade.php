@@ -3,7 +3,7 @@
         <div class=" overflow-hidden">
             <!-- Header -->
             <div class="px-4 sm:px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Franchise Management</h2>
+                <h2 class="text-xl sm:text-2xl  text-gray-800">Franchise Management</h2>
                 <div class="w-full sm:w-auto flex justify-end">
                     <a wire:navigate href="{{route('admin.add-franchise')}}" class="btn-primary w-full flex justify-center text-white font-semibold rounded-lg bg-blue-500 p-2 sm:w-auto text-center transition-transform duration-200 hover:scale-105">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
