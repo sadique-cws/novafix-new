@@ -208,27 +208,7 @@
                         </p>
                     </div>
                 @endif
-
-                {{-- <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Enter your question:</label>
-                    <input type="text" wire:model="newQuestionText"
-                        class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    @error('newQuestionText')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="mt-3">
-                    <h2 class="">---------------Or--------------</h2>
-                    <select name="" id="">
-                        <option value="">Select Question</option>
-                        @foreach ($allQuestion as $question)
-                        <option value="{{ $question->id }}">{{ $question->question_text }}</option>
-                        @endforeach
-                    </select>
-                </div> --}}
-
                 {{-- enter Search by Question Text --}}
-
                 <div class="p-6 space-y-5">
                     <!-- Search Section -->
                     <div class="relative">
@@ -256,6 +236,11 @@
                                             d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
+                            @elseif($search && count($allQuestion) === 0 && !$selectedQuestion)
+                                    <button wire:click="createNewQuestion"
+                                        class="mt-3 px-2 py-1 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 ">
+                                        Create New Question
+                                    </button>
                             @else
                                 <div wire:loading.delay.shortest wire:target="search">
                                     <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg"
@@ -271,7 +256,6 @@
                         </div>
                     </div>
 
-                    <!-- Search Results -->
                     @if ($search && count($allQuestion) > 0 && !$selectedQuestion)
                         <div
                             class="mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto divide-y divide-gray-100">
@@ -296,21 +280,6 @@
                                     </svg>
                                 </div>
                             @endforeach
-                        </div>
-                    @elseif($search && count($allQuestion) === 0 && !$selectedQuestion)
-                        <div class="mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-center">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <h4 class="mt-2 text-sm font-medium text-gray-700">No Question found</h4>
-                            <p class="mt-1 text-xs text-gray-500">We couldn't find any Question matching
-                                "{{ $search }}"</p>
-                            <button wire:click="createNewQuestion"
-                                class="mt-3 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                Create New Question
-                            </button>
                         </div>
                     @endif
 

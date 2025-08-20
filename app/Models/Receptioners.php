@@ -25,7 +25,7 @@ class Receptioners extends Authenticatable
 
     public function franchise()
     {
-        return $this->belongsTo(franchises::class);
+        return $this->belongsTo(Franchise::class);
     }
 
     public function serviceRequests()

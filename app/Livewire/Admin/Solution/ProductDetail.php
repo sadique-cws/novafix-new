@@ -42,9 +42,6 @@ class ProductDetail extends Component
     public $selectedQuestion;
     public $creatingNew = false;
     public $allQuestion = [];
-
-
-
     public function mount()
     {
         $this->devices = Device::all();
@@ -70,50 +67,6 @@ class ProductDetail extends Component
             $this->loadQuestionTree();
         }
     }
-
-    // {{--enter Search by Question Text-- }}
-
-    public function updatedSearch()
-    {
-        if (empty($this->search)) {
-            $this->allQuestion = [];
-            return;
-        }
-
-        $this->allQuestion = Question::where('question_text', 'like', '%' . $this->search . '%')
-            ->take(5)
-            ->get();
-    }
-
-    public function selectQuestion($questionId)
-    {
-        $this->selectedQuestion = Question::find($questionId);
-        $this->creatingNew = false;
-        $this->search = '';
-        $this->allQuestion = [];
-    }
-
-    public function clearSelection()
-    {
-        $this->selectedQuestion = null;
-        $this->creatingNew = false;
-        $this->search = '';
-        $this->reset(['image', 'description']);
-    }
-
-    public function createNewQuestion()
-    {
-        $this->creatingNew = true;
-        $this->selectedQuestion = null;
-        $this->reset(['image', 'description', 'newQuestionText']);
-    }
-
-    public function cancelCreate()
-    {
-        $this->creatingNew = false;
-        $this->reset(['image', 'description', 'newQuestionText']);
-    }
-
     public function loadQuestionTree()
     {
         $this->questionTree = $this->buildTree($this->currentQuestion);
@@ -129,32 +82,54 @@ class ProductDetail extends Component
             'no' => $question->no_question_id ? $this->buildTree(Question::find($question->no_question_id)) : null,
         ];
     }
-
-    public function check(){
-        dd($this->selectedQuestion);
+    // {{--enter Search by Question Text-- }}
+    public function updatedSearch()
+    {
+        if (empty($this->search)) {
+            $this->allQuestion = [];
+            return;
+        }
+        $this->allQuestion = Question::where('question_text', 'like', '%' . $this->search . '%')
+            ->take(5)
+            ->get();
+    }
+    public function selectQuestion($questionId)
+    {
+        $this->selectedQuestion = Question::find($questionId);
+        $this->creatingNew = false;
+        $this->search = '';
+        $this->allQuestion = [];
+    }
+    public function clearSelection()
+    {
+        $this->selectedQuestion = null;
+        $this->creatingNew = false;
+        $this->search = '';
+        $this->reset(['image', 'description']);
+    }
+    public function createNewQuestion()
+    {
+        $this->creatingNew = true;
+        $this->selectedQuestion = null;
+        $this->reset(['image', 'description', 'newQuestionText']);
+    }
+    public function cancelCreate()
+    {
+        $this->creatingNew = false;
+        $this->reset(['image', 'description', 'newQuestionText']);
     }
     public function createQuestion()
     {
-       
-      
-      
-
         // If we have a selected question from search, update it instead of creating new
         if ($this->selectedQuestion) {
-          
-
-
-            // Update id of selected question
-
-                  
             // Update the relationship in the current question
             if ($this->newQuestionAnswer === 'yes') {
                 $this->currentQuestion->yes_question_id = $this->selectedQuestion->id;
             } else {
                 $this->currentQuestion->no_question_id = $this->selectedQuestion->id;
             }
-
             $this->currentQuestion->save();
+
         } else {
             $this->validate([
                 'newQuestionText' => 'required|min:3',
@@ -204,6 +179,8 @@ class ProductDetail extends Component
 
         // Reset selected question after processing
         $this->selectedQuestion = null;
+        $this->search = '';
+        $this->creatingNew = false;
     }
     public function cancelCreateQuestion()
     {
@@ -306,7 +283,7 @@ class ProductDetail extends Component
             return;
 
         userAnswer::create([
-            'user_id' => 1,
+            'user_id' => Auth::id(),
             'question_id' => $this->currentQuestion->id,
             'device_id' => $this->selectedDevice,
             'brand_id' => $this->selectedBrand,
