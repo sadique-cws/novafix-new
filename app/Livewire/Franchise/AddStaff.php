@@ -9,8 +9,9 @@ use App\Models\Staff;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
-
+#[Title('Add Staff')]
 #[Layout('components.layouts.franchise-layout')]
+
 class AddStaff extends Component
 {
     use WithFileUploads;

@@ -5,13 +5,11 @@ namespace App\Livewire\Admin;
 use App\Models\Franchise;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+#[Title('Add Franchise')]
+#[Layout('components.layouts.admin-layout')]
 
 class ManageFranchises extends Component
-
 {
-    #[Layout('components.layouts.admin-layout')]
-
-
     public $search = '';
     public $statusFilter = '';
     public $sortField = 'created_at';

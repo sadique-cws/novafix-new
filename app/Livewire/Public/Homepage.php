@@ -3,6 +3,7 @@
 namespace App\Livewire\Public;
 
 use Livewire\Component;
+#[Title('Homepage')]
 
 class Homepage extends Component
 {

@@ -5,8 +5,9 @@ namespace App\Livewire\Franchise;
 use Livewire\Component;
 use App\Models\ServiceRequest;
 use Livewire\Attributes\Layout;
-
+#[Title('Manage Service Requests')]
 #[Layout('components.layouts.franchise-layout')]
+
 class ManageServiceRequest extends Component
 {
     public $serviceRequests;

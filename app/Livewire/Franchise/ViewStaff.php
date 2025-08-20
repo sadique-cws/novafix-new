@@ -7,8 +7,9 @@ use App\Models\Staff;
 use App\Models\ServiceRequest;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
-
+#[Title('View Staff')]
 #[Layout('components.layouts.franchise-layout')]
+
 class ViewStaff extends Component
 {
     public $staffId;

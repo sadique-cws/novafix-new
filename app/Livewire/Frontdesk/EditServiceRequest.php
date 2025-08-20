@@ -12,8 +12,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
-
+#[Title('Edit Service Request')]
 #[Layout('components.layouts.frontdesk-layout')]
+
 class EditServiceRequest extends Component
 {
     use WithFileUploads;

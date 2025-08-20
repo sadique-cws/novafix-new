@@ -7,8 +7,9 @@ use App\Models\Staff;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-
+#[Title('Staff Edit')]
 #[Layout('components.layouts.franchise-layout')]
+
 class StaffEdit extends Component
 {
     use WithFileUploads;

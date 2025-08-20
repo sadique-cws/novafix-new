@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\DB; // Add this line
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-
+#[Title('Admin Dashboard')]
 #[Layout('components.layouts.admin-layout')]
+
 class AdminDashboard extends Component
 {
     public $sortField = 'created_at';

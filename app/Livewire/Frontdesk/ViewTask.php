@@ -9,8 +9,9 @@ use App\Models\ServiceRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
-
+#[Title('View Task')]
 #[Layout('components.layouts.frontdesk-layout')]
+
 class ViewTask extends Component
 {
     public ServiceRequest $task;

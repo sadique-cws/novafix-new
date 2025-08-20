@@ -6,7 +6,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Receptioner;
 use App\Models\Receptioners;
-
+#[Title('View Receptionist')]
 #[Layout('components.layouts.admin-layout')]
 class ReceptionstView extends Component
 {

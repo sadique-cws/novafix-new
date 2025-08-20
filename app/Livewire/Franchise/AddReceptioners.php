@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-
+#[Title('Add Receptionist')]
 #[Layout('components.layouts.franchise-layout')]
 class AddReceptioners extends Component
 {

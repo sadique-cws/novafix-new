@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Request;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
-
+#[Title('Manage Receptionists')]
 #[Layout('components.layouts.franchise-layout')]
+
 class ManageReceptioners extends Component
 {
     use WithPagination;

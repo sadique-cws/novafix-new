@@ -8,6 +8,8 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
 #[Layout('components.layouts.staff-layout')]
+#[Title('Dashboard')]
+
 class Dashboard extends Component
 {
     public $recentTaskLimit = 5;

@@ -9,6 +9,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 #[Layout('components.layouts.staff-layout')]
+#[Title('Completed Tasks')]
 
 class CompletedTask extends Component
 {

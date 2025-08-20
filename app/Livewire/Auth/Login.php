@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Staff;
 use App\Models\Franchise;
 use App\Models\Receptioners;
+#[Title('Forgot Password')]
+
 
 class Login extends Component
 {

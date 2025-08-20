@@ -7,8 +7,7 @@ use App\Models\Staff;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
-
-
+#[Title('Manage Staffs')]
 #[Layout('components.layouts.admin-layout')]
 
 class ManageStaffs extends Component

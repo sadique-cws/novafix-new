@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\ServiceRequest;
 use App\Models\ServiceCategory;
 use App\Models\Technician;
+#[Title('Review Service Request')]
 #[Layout('components.layouts.frontdesk-layout')]
 
 class ReviewServiceRequest extends Component

@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
-
+#[Title('Add Franchise')]
 #[Layout('components.layouts.admin-layout')]
+
 class AddFranchises extends Component
 {
     public $franchise_name;

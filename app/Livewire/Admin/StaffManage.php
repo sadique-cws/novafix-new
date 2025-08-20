@@ -8,8 +8,9 @@ use App\Models\Franchise;
 use App\Models\Staff;
 use App\Models\ServiceCategory;
 use Livewire\WithPagination;
-
+#[Title('Manage Staff')]
 #[Layout('components.layouts.admin-layout')]
+
 class StaffManage extends Component
 {
     use WithPagination;

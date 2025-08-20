@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
-
+#[Title('Service Request Form')]
 #[Layout('components.layouts.frontdesk-layout')]
 
 class ServiceRequestForm extends Component

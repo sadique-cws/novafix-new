@@ -11,6 +11,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 
+#[Title('Edit Franchise')]
 #[Layout('components.layouts.admin-layout')]
 class EditFranchise extends Component
 {

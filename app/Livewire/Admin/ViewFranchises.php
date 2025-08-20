@@ -5,11 +5,11 @@ namespace App\Livewire\Admin;
 use App\Models\Franchise;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+#[Title('Add Franchise')]
+#[Layout('components.layouts.admin-layout')]
 
 class ViewFranchises extends Component
 {
-    #[Layout('components.layouts.admin-layout')]
-
     public $franchise;
 
     public function mount($id = null)

@@ -13,8 +13,9 @@ use App\Models\Staff;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
+#[Title('Forgot Password')]
+#[Layout('components.layouts.staff-layout')]
 
-#[Layout('components.layouts.staff-layout', ['title' => 'Staff Profile'])]
 class Profile extends Component
 {
     use WithFileUploads;
