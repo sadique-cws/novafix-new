@@ -23,9 +23,6 @@ class User extends Authenticatable
         'email',
         'password',
         'is_admin',
-        'is_staff',
-        'is_franchise',
-        'is_frontdesk',
     ];
 
     /**
@@ -50,9 +47,6 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
-            'is_staff' => 'boolean',
-            'is_franchise' => 'boolean',
-            'is_frontdesk' => 'boolean',
         ];
     }
     // app/Models/User.php
