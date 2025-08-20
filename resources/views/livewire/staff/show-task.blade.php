@@ -59,7 +59,7 @@
                     <!-- Customer & Product Info Card -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                         <div class="px-6 py-4 bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-gray-100">
-                            <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                            <h2 class="text-lg  text-gray-800 flex items-center">
                                 <i class="fas fa-user-tag text-purple-600 mr-3"></i>
                                 Customer & Product Information
                             </h2>
@@ -72,7 +72,7 @@
                                         <div class="bg-purple-100 p-2 rounded-lg mr-3">
                                             <i class="fas fa-user-circle text-purple-600 text-lg"></i>
                                         </div>
-                                        <h3 class="text-md font-semibold text-gray-700">Customer Details</h3>
+                                        <h3 class="text-md  text-gray-700">Customer Details</h3>
                                     </div>
                                     <div class="space-y-4 pl-11">
                                         <div>
@@ -96,7 +96,7 @@
                                         <div class="bg-indigo-100 p-2 rounded-lg mr-3">
                                             <i class="fas fa-box-open text-indigo-600 text-lg"></i>
                                         </div>
-                                        <h3 class="text-md font-semibold text-gray-700">Product Details</h3>
+                                        <h3 class="text-md  text-gray-700">Product Details</h3>
                                     </div>
                                     <div class="space-y-4 pl-11">
                                         <div>
@@ -122,7 +122,7 @@
                                         <div class="bg-blue-100 p-2 rounded-lg mr-3">
                                             <i class="fas fa-camera text-blue-600 text-lg"></i>
                                         </div>
-                                        <h3 class="text-md font-semibold text-gray-700">Product Image</h3>
+                                        <h3 class="text-md  text-gray-700">Product Image</h3>
                                     </div>
                                     <div class="pl-11">
                                         <div class="relative w-full h-56 bg-gray-50 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
@@ -142,7 +142,7 @@
                     <!-- Problem Details Card -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                         <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-cyan-50 border-b border-gray-100">
-                            <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                            <h2 class="text-lg  text-gray-800 flex items-center">
                                 <i class="fas fa-bug text-blue-600 mr-3"></i>
                                 Problem Details
                             </h2>
@@ -150,7 +150,7 @@
                         <div class="p-6">
                             <div class="space-y-6">
                                 <div>
-                                    <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-2">Reported Problem</h3>
+                                    <h3 class="text-sm  text-gray-700 uppercase tracking-wider mb-2">Reported Problem</h3>
                                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                                         <p class="text-gray-800 whitespace-pre-line">{{ $task->problem }}</p>
                                     </div>
@@ -158,7 +158,7 @@
 
                                 @if ($task->technician_notes)
                                     <div class="pt-4 border-t border-gray-100">
-                                        <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-2">Technician Notes</h3>
+                                        <h3 class="text-sm  text-gray-700 uppercase tracking-wider mb-2">Technician Notes</h3>
                                         <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
                                             <p class="text-gray-800 whitespace-pre-line">{{ $task->technician_notes }}</p>
                                         </div>
@@ -167,7 +167,7 @@
 
                                 @if ($task->remark)
                                     <div class="pt-4 border-t border-gray-100">
-                                        <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-2">Rejection Reason</h3>
+                                        <h3 class="text-sm  text-gray-700 uppercase tracking-wider mb-2">Rejection Reason</h3>
                                         <div class="bg-red-50 p-4 rounded-lg border border-red-200">
                                             <p class="text-red-800">{{ $task->remark }}</p>
                                         </div>
@@ -183,7 +183,7 @@
                     <!-- Service Info Card -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                         <div class="px-6 py-4 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-100">
-                            <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                            <h2 class="text-lg  text-gray-800 flex items-center">
                                 <i class="fas fa-info-circle text-gray-600 mr-3"></i>
                                 Service Information
                             </h2>
@@ -233,7 +233,7 @@
                     <!-- Status Update Card -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                         <div class="px-6 py-4 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-100">
-                            <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                            <h2 class="text-lg  text-gray-800 flex items-center">
                                 <i class="fas fa-tasks text-indigo-600 mr-3"></i>
                                 Task Status
                             </h2>
@@ -274,7 +274,7 @@
                                 <!-- Payment Section (shown only when completing) -->
                                 @if ($showPaymentSection)
                                     <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                                        <h3 class="text-md font-semibold text-gray-700 mb-4 flex items-center">
+                                        <h3 class="text-md  text-gray-700 mb-4 flex items-center">
                                             <i class="fas fa-rupee-sign text-blue-600 mr-2"></i>
                                             Complete Task Payment
                                         </h3>
@@ -345,7 +345,7 @@
                                             <i class="fas fa-times-circle text-red-500 text-xl mt-1"></i>
                                         </div>
                                         <div class="ml-3">
-                                            <h3 class="text-lg font-semibold text-red-800">Task Rejected</h3>
+                                            <h3 class="text-lg  text-red-800">Task Rejected</h3>
                                             <div class="mt-2 text-sm text-red-700">
                                                 <p class="flex items-center">
                                                     <i class="far fa-calendar-times mr-1.5"></i>
@@ -369,7 +369,7 @@
                                             <i class="fas fa-check-circle text-green-500 text-xl mt-1"></i>
                                         </div>
                                         <div class="ml-3">
-                                            <h3 class="text-lg font-semibold text-green-800">Task Completed</h3>
+                                            <h3 class="text-lg  text-green-800">Task Completed</h3>
                                             <div class="mt-2 text-sm text-green-700">
                                                 <p class="flex items-center">
                                                     <i class="far fa-calendar-check mr-1.5"></i>
@@ -383,7 +383,7 @@
                                                     <p class="mt-1 flex items-center">
                                                         <i class="fas fa-info-circle mr-1.5"></i>
                                                         <span>Status: 
-                                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                                            <span class="px-2 inline-flex text-xs leading-5  rounded-full 
                                                                 @if($task->payments->first()->status === 'completed') bg-green-100 text-green-800
                                                                 @elseif($task->payments->first()->status === 'pending') bg-yellow-100 text-yellow-800
                                                                 @else bg-red-100 text-red-800 @endif">
@@ -404,7 +404,7 @@
                     @if ($task->payments->count() > 0)
                         <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                             <div class="px-6 py-4 bg-gradient-to-r from-green-50 to-teal-50 border-b border-gray-100">
-                                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                                <h2 class="text-lg  text-gray-800 flex items-center">
                                     <i class="fas fa-receipt text-green-600 mr-3"></i>
                                     Payment History
                                 </h2>

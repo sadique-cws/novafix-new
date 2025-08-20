@@ -78,7 +78,7 @@
                                 <div>
                                     <p class="text-xs font-medium text-gray-500 uppercase">Email Address</p>
                                     <p class="mt-1 text-sm sm:text-base text-gray-900 font-medium truncate">{{ $task->email ?? 'Not provided' }}</p>
-                                </div>
+                                </div>font-semibol
                             </div>
                         </div>
                         <!-- Product Info -->
