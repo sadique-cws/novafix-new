@@ -1,4 +1,5 @@
-<div class="mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+<div>
+    <div class="mx-auto bg-white rounded-lg shadow-md overflow-hidden">
     <!-- Header Section -->
     <div class="flex items-center justify-between p-4 bg-blue-600 text-white">
         <h3 class="text-xl font-bold">Support Diagnosis</h3>
@@ -14,24 +15,24 @@
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Select Device</label>
             <select wire:model="selectedDevice" wire:change="updateSelectedDevice"
-                class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{$selectedDevice ? 'bg-gray-100 cursor-not-allowed' : ''}}"
+                class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{ $selectedDevice ? 'bg-gray-100 cursor-not-allowed' : '' }}"
                 {{ $selectedDevice ? 'disabled' : '' }}>
                 <option value="">Choose Device</option>
-                @foreach($devices as $device)
+                @foreach ($devices as $device)
                     <option value="{{ $device->id }}">{{ $device->name }}</option>
                 @endforeach
             </select>
         </div>
 
         <!-- Brand Selection -->
-        @if($brands)
+        @if ($brands)
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Select Brand</label>
                 <select wire:model="selectedBrand" wire:change="updateSelectedBrand"
-                    class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{$selectedBrand ? 'bg-gray-100 cursor-not-allowed' : ''}}"
+                    class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{ $selectedBrand ? 'bg-gray-100 cursor-not-allowed' : '' }}"
                     {{ $selectedBrand ? 'disabled' : '' }}>
                     <option value="">Choose Brand</option>
-                    @foreach($brands as $brand)
+                    @foreach ($brands as $brand)
                         <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                     @endforeach
                 </select>
@@ -39,14 +40,14 @@
         @endif
 
         <!-- Model Selection -->
-        @if($models)
+        @if ($models)
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Select Model</label>
                 <select wire:model="selectedModel" wire:change="updateSelectedModel"
-                    class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{$selectedModel ? 'bg-gray-100 cursor-not-allowed' : ''}}"
+                    class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{ $selectedModel ? 'bg-gray-100 cursor-not-allowed' : '' }}"
                     {{ $selectedModel ? 'disabled' : '' }}>
                     <option value="">Choose Model</option>
-                    @foreach($models as $model)
+                    @foreach ($models as $model)
                         <option value="{{ $model->id }}">{{ $model->name }}</option>
                     @endforeach
                 </select>
@@ -54,14 +55,14 @@
         @endif
 
         <!-- Problem Selection -->
-        @if($problems)
+        @if ($problems)
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Select Problem</label>
                 <select wire:model="selectedProblem" wire:change="updateSelectedProblem"
-                    class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{$selectedProblem ? 'bg-gray-100 cursor-not-allowed' : ''}}"
+                    class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{ $selectedProblem ? 'bg-gray-100 cursor-not-allowed' : '' }}"
                     {{ $selectedProblem ? 'disabled' : '' }}>
                     <option value="">Choose Problem</option>
-                    @foreach($problems as $problem)
+                    @foreach ($problems as $problem)
                         <option value="{{ $problem->id }}">{{ $problem->name }}</option>
                     @endforeach
                 </select>
@@ -86,19 +87,21 @@
                                     <label class="block text-sm font-medium text-gray-700">Image (Optional)</label>
                                     <label
                                         class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
-                                        <input type="file" accept="image/*" wire:model="editingQuestionImage" class="hidden">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
+                                        <input type="file" accept="image/*" wire:model="editingQuestionImage"
+                                            class="hidden">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
                                         <span class="mt-1 text-xs text-gray-500">Upload</span>
                                     </label>
-                                    <div wire:loading wire:target="image" class="mt-1 flex items-center text-blue-600 text-xs">
+                                    <div wire:loading wire:target="image"
+                                        class="mt-1 flex items-center text-blue-600 text-xs">
                                         <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                                stroke-width="4">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                stroke="currentColor" stroke-width="4">
                                             </circle>
                                             <path class="opacity-75" fill="currentColor"
                                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -120,8 +123,8 @@
                                                 aria-label="Remove image">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M6 18L18 6M6 6l12 12" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
@@ -169,10 +172,7 @@
                             </button>
                         </div>
 
-                        @if (
-                                \App\Models\Question::where('yes_question_id', $currentQuestion->id)
-                                    ->orWhere('no_question_id', $currentQuestion->id)->exists()
-                            )
+                        @if (\App\Models\Question::where('yes_question_id', $currentQuestion->id)->orWhere('no_question_id', $currentQuestion->id)->exists())
                             <button wire:click="previousQuestion"
                                 class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
                                 ← Previous Question
@@ -192,7 +192,7 @@
     @endif
 
     <!-- New Question Creation -->
-    @if($newQuestionAnswer)
+    @if ($newQuestionAnswer)
         <div class="p-6 bg-white">
             <div class="max-w-3xl mx-auto space-y-4">
                 <h3 class="text-lg font-medium text-gray-900">
@@ -209,7 +209,7 @@
                     </div>
                 @endif
 
-                <div class="space-y-2">
+                {{-- <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Enter your question:</label>
                     <input type="text" wire:model="newQuestionText"
                         class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
@@ -222,76 +222,231 @@
                     <select name="" id="">
                         <option value="">Select Question</option>
                         @foreach ($allQuestion as $question)
-                        <option value="{{ $question->id }}">{{ $question->text }}</option>
+                        <option value="{{ $question->id }}">{{ $question->question_text }}</option>
                         @endforeach
                     </select>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 items-start">
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Image (Optional)</label>
-                            <label
-                                class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
-                                <input type="file" accept="image/*" wire:model="image" class="hidden">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span class="mt-1 text-xs text-gray-500">Upload</span>
-                            </label>
-                            <div wire:loading wire:target="image" class="mt-1 flex items-center text-blue-600 text-xs">
-                                <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4">
-                                    </circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                                </svg>
-                                Uploading...
-                            </div>
-                            @error('image')
-                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                            @enderror
+                </div> --}}
+
+                {{-- enter Search by Question Text --}}
+
+                <div class="p-6 space-y-5">
+                    <!-- Search Section -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Preview</label>
-                            @if ($image)
-                                <div class="relative inline-block">
-                                    <img src="{{ $image->temporaryUrl() }}" class="h-28 w-full rounded-md border object-cover">
-                                    <button type="button" wire:click="$set('image', null)"
-                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
-                                        aria-label="Remove image">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </div>
+                        <input type="text" wire:model.live.debounce.300ms="search"
+                            placeholder="{{ $selectedQuestion ? 'Search different question...' : 'Search by question_text ...' }}"
+                            class="block w-full pl-10 pr-12 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        @error('selectedQuestion')
+                            <p class="font-semibold text-red-500">{{ $message }}</p>
+                        @enderror
+
+                        <!-- Clear/Loading Indicators -->
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            @if ($selectedQuestion)
+                                <button wire:click="clearSelection"
+                                    class="text-gray-400 hover:text-red-500 transition-colors">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
                             @else
-                                <div
-                                    class="flex items-center justify-center h-28 w-full border border-gray-200 rounded-md bg-gray-50 text-gray-400 text-sm">
-                                    No image
+                                <div wire:loading.delay.shortest wire:target="search">
+                                    <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
                                 </div>
                             @endif
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Description (Optional)</label>
-                        <textarea wire:model="description" rows="5"
-                            class="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
-                            placeholder="Notes or context..."></textarea>
-                    </div>
-                </div>
+                    <!-- Search Results -->
+                    @if ($search && count($allQuestion) > 0 && !$selectedQuestion)
+                        <div
+                            class="mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto divide-y divide-gray-100">
+                            @foreach ($allQuestion as $question)
+                                <div wire:click="selectQuestion({{ $question->id }})"
+                                    class="p-3 hover:bg-blue-50 cursor-pointer flex justify-between items-center transition-colors duration-150">
+                                    <div class="flex items-center">
+                                        <div
+                                            class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">
+                                            {{ substr($question->question_text, 0, 1) }}
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium text-gray-900">
+                                                {{ $question->question_text }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            @endforeach
+                        </div>
+                    @elseif($search && count($allQuestion) === 0 && !$selectedQuestion)
+                        <div class="mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <h4 class="mt-2 text-sm font-medium text-gray-700">No Question found</h4>
+                            <p class="mt-1 text-xs text-gray-500">We couldn't find any Question matching
+                                "{{ $search }}"</p>
+                            <button wire:click="createNewQuestion"
+                                class="mt-3 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Create New Question
+                            </button>
+                        </div>
+                    @endif
 
+                    <!-- Selected Question Details or Create New Form -->
+                    @if ($selectedQuestion || $creatingNew)
+                        <div class="mt-4 bg-white rounded-lg border border-green-100 overflow-hidden shadow-sm">
+                            <div class="bg-green-50 px-4 py-2 border-b border-green-100">
+                                <h4 class="text-sm font-medium text-green-800 flex items-center">
+                                    <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    {{ $selectedQuestion ? 'Selected Question Details' : 'Create New Question' }}
+                                </h4>
+                            </div>
+                            <div class="p-4">
+                                @if ($selectedQuestion)
+                                    <div class="flex items-start">
+                                        <div
+                                            class="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium text-lg">
+                                            {{ substr($selectedQuestion->question_text, 0, 1) }}
+                                        </div>
+                                        <div class="ml-4">
+                                            <h4 class="text-base font-semibold text-gray-900">
+                                                {{ $selectedQuestion->question_text }}
+                                            </h4>
+                                            @if ($selectedQuestion->description)
+                                                <p class="mt-1 text-sm text-gray-600">
+                                                    {{ $selectedQuestion->description }}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    @if ($selectedQuestion->image_url)
+                                        <div class="mt-4">
+                                            <label class="block text-sm font-medium text-gray-700">Image</label>
+                                            <img src="{{ $selectedQuestion->image_url }}"
+                                                class="mt-2 h-40 rounded-md border object-contain">
+                                        </div>
+                                    @endif
+                                @else
+                                    <!-- New Question Form -->
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">Question
+                                                Text</label>
+                                            <input type="text" wire:model="newQuestionText"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            @error('newQuestionText')
+                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700">Image
+                                                    (Optional)</label>
+                                                <label
+                                                    class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+                                                    <input type="file" accept="image/*" wire:model="image"
+                                                        class="hidden">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="h-6 w-6 text-gray-400" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                    </svg>
+                                                    <span class="mt-1 text-xs text-gray-500">Upload</span>
+                                                </label>
+                                                <div wire:loading wire:target="image"
+                                                    class="mt-1 flex items-center text-blue-600 text-xs">
+                                                    <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24">
+                                                        <circle class="opacity-25" cx="12" cy="12"
+                                                            r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                        <path class="opacity-75" fill="currentColor"
+                                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                                        </path>
+                                                    </svg>
+                                                    Uploading...
+                                                </div>
+                                                @error('image')
+                                                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700">Preview</label>
+                                                @if ($image)
+                                                    <div class="relative inline-block">
+                                                        <img src="{{ $image->temporaryUrl() }}"
+                                                            class="h-28 w-full rounded-md border object-cover">
+                                                        <button type="button" wire:click="$set('image', null)"
+                                                            class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
+                                                            aria-label="Remove image">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
+                                                                fill="none" viewBox="0 0 24 24"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                @else
+                                                    <div
+                                                        class="flex items-center justify-center h-28 w-full border border-gray-200 rounded-md bg-gray-50 text-gray-400 text-sm">
+                                                        No image selected
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">Description
+                                                (Optional)</label>
+                                            <textarea wire:model="description" rows="3"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                placeholder="Add any additional details..."></textarea>
+                                        </div>
+
+                                      
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                </div>
                 <div class="flex justify-between">
                     <button wire:click="createQuestion"
                         class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         Save {{ ucfirst($newQuestionAnswer) }} Question
                     </button>
+                   
                     <button wire:click="cancelCreateQuestion"
                         class="bg-gray-400 text-white px-2 py-1 rounded ">Back</button>
                 </div>
@@ -332,11 +487,12 @@
                                 </svg>
                                 <span class="mt-1 text-xs text-gray-500">Upload</span>
                             </label>
-                            <div wire:loading wire:target="image" class="mt-1 flex items-center text-blue-600 text-xs">
+                            <div wire:loading wire:target="image"
+                                class="mt-1 flex items-center text-blue-600 text-xs">
                                 <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                        stroke="currentColor" stroke-width="4">
                                     </circle>
                                     <path class="opacity-75" fill="currentColor"
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -351,12 +507,13 @@
                             <label class="block text-sm font-medium text-gray-700">Preview</label>
                             @if ($image)
                                 <div class="relative inline-block">
-                                    <img src="{{ $image->temporaryUrl() }}" class="h-28 w-full rounded-md border object-cover">
+                                    <img src="{{ $image->temporaryUrl() }}"
+                                        class="h-28 w-full rounded-md border object-cover">
                                     <button type="button" wire:click="$set('image', null)"
                                         class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
                                         aria-label="Remove image">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M6 18L18 6M6 6l12 12" />
                                         </svg>
@@ -385,7 +542,8 @@
                         <span wire:loading wire:target="createFirstQuestion">
                             <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4">
                                 </circle>
                                 <path class="opacity-75" fill="currentColor"
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -397,5 +555,7 @@
             </div>
         </div>
     @endif
+
+</div>
 
 </div>

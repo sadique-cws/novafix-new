@@ -10,6 +10,8 @@ use App\Models\Problem;
 use App\Models\Question;
 use App\Models\userAnswer;
 use Auth;
+use Illuminate\Container\Attributes\Auth as AttributesAuth;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -34,6 +36,14 @@ class ProductDetail extends Component
     public $editingQuestionText = '';
     public $editingQuestionImage = null;
     public $editingQuestionDescription = '';
+    public $search = '';
+    public $isSearching = false;
+    public $question = [];
+    public $selectedQuestion;
+    public $creatingNew = false;
+    public $allQuestion = [];
+
+
 
     public function mount()
     {
@@ -60,6 +70,50 @@ class ProductDetail extends Component
             $this->loadQuestionTree();
         }
     }
+
+    // {{--enter Search by Question Text-- }}
+
+    public function updatedSearch()
+    {
+        if (empty($this->search)) {
+            $this->allQuestion = [];
+            return;
+        }
+
+        $this->allQuestion = Question::where('question_text', 'like', '%' . $this->search . '%')
+            ->take(5)
+            ->get();
+    }
+
+    public function selectQuestion($questionId)
+    {
+        $this->selectedQuestion = Question::find($questionId);
+        $this->creatingNew = false;
+        $this->search = '';
+        $this->allQuestion = [];
+    }
+
+    public function clearSelection()
+    {
+        $this->selectedQuestion = null;
+        $this->creatingNew = false;
+        $this->search = '';
+        $this->reset(['image', 'description']);
+    }
+
+    public function createNewQuestion()
+    {
+        $this->creatingNew = true;
+        $this->selectedQuestion = null;
+        $this->reset(['image', 'description', 'newQuestionText']);
+    }
+
+    public function cancelCreate()
+    {
+        $this->creatingNew = false;
+        $this->reset(['image', 'description', 'newQuestionText']);
+    }
+
     public function loadQuestionTree()
     {
         $this->questionTree = $this->buildTree($this->currentQuestion);
@@ -75,41 +129,70 @@ class ProductDetail extends Component
             'no' => $question->no_question_id ? $this->buildTree(Question::find($question->no_question_id)) : null,
         ];
     }
+
+    public function check(){
+        dd($this->selectedQuestion);
+    }
     public function createQuestion()
     {
-        $this->validate([
-            'newQuestionText' => 'required|string',
-            'image' => 'nullable|image|max:1024',
-            'description' => 'nullable|string'
-        ]);
+       
+      
+      
 
-        $newQuestionData = [
-            'problem_id' => $this->selectedProblem,
-            'question_text' => $this->newQuestionText,
-            'description' => $this->description
-        ];
-        if ($this->image) {
-            $imageData = ImageKitHelper::uploadImage($this->image, '/Novafix/Question_image');
+        // If we have a selected question from search, update it instead of creating new
+        if ($this->selectedQuestion) {
+          
 
-            if ($imageData) {
-                $newQuestionData['image_url'] = $imageData['url'];
-                $newQuestionData['image_file_id'] = $imageData['fileId'];
+
+            // Update id of selected question
+
+                  
+            // Update the relationship in the current question
+            if ($this->newQuestionAnswer === 'yes') {
+                $this->currentQuestion->yes_question_id = $this->selectedQuestion->id;
             } else {
-                session()->flash('error', 'failed to upload image, please try again');
-                return;
+                $this->currentQuestion->no_question_id = $this->selectedQuestion->id;
             }
+
+            $this->currentQuestion->save();
+        } else {
+            $this->validate([
+                'newQuestionText' => 'required|min:3',
+                'image' => 'nullable|image|max:1024',
+                'description' => 'nullable|string'
+            ]);
+            // Original logic for creating a new question
+            $newQuestionData = [
+                'problem_id' => $this->selectedProblem,
+                'question_text' => $this->newQuestionText,
+                'description' => $this->description
+            ];
+
+            if ($this->image) {
+                $imageData = ImageKitHelper::uploadImage($this->image, '/Novafix/Question_image');
+
+                if ($imageData) {
+                    $newQuestionData['image_url'] = $imageData['url'];
+                    $newQuestionData['image_file_id'] = $imageData['fileId'];
+                } else {
+                    session()->flash('error', 'Failed to upload image, please try again');
+                    return;
+                }
+            }
+
+            $newQuestion = Question::create($newQuestionData);
+
+            if ($this->newQuestionAnswer === 'yes') {
+                $this->currentQuestion->yes_question_id = $newQuestion->id;
+            } else {
+                $this->currentQuestion->no_question_id = $newQuestion->id;
+            }
+
+            $this->currentQuestion->save();
         }
-        $newQuestion = Question::create($newQuestionData);
+
         $this->description = '';
         $this->image = null;
-
-        if ($this->newQuestionAnswer === 'yes') {
-            $this->currentQuestion->yes_question_id = $newQuestion->id;
-        } else {
-            $this->currentQuestion->no_question_id = $newQuestion->id;
-        }
-
-        $this->currentQuestion->save();
 
         if (!$this->currentQuestion->yes_question_id || !$this->currentQuestion->no_question_id) {
             $this->newQuestionAnswer = $this->newQuestionAnswer === 'yes' ? 'no' : null;
@@ -118,6 +201,9 @@ class ProductDetail extends Component
             $this->currentQuestion = Question::find($this->currentQuestion->id);
             $this->newQuestionAnswer = null;
         }
+
+        // Reset selected question after processing
+        $this->selectedQuestion = null;
     }
     public function cancelCreateQuestion()
     {
@@ -208,7 +294,7 @@ class ProductDetail extends Component
 
         session()->flash('message', 'question Updated Successfully');
     }
-   
+
     public function cancelEdit()
     {
         $this->editingQuestionId = null;
