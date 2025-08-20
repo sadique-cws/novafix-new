@@ -2,7 +2,7 @@
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
         <!-- Header Section -->
         <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-4 flex flex-col md:flex-row justify-between items-center">
-            <h2 class="text-2xl font-bold text-white mb-4 md:mb-0">Staff Management</h2>
+            <h2 class="text-2xl  text-white mb-4 md:mb-0">Staff Management</h2>
             <div class="flex items-center space-x-3">
                 <a wire:navigate href="{{ route('franchise.add.staff') }}"
                     class="flex items-center px-4 py-2 bg-white text-blue-700 rounded-lg hover:bg-blue-50 transition-all duration-300 shadow-sm">

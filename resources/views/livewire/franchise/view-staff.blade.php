@@ -11,7 +11,7 @@
                             alt="{{ $staff->name }}" class="h-full w-full object-cover">
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-bold text-white">{{ $staff->name }}</h1>
+                        <h1 class="text-xl sm:text-2xl  text-white">{{ $staff->name }}</h1>
                         <div class="flex flex-wrap items-center gap-2 mt-1">
                             <span
                                 class="px-2 py-1 rounded-full text-xs sm:text-sm font-medium bg-white bg-opacity-20 text-white">

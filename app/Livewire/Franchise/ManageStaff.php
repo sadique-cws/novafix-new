@@ -8,7 +8,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Staff;
 use Illuminate\Support\Facades\Auth;
-
+#[Title('Manage Staff')]
 #[Layout('components.layouts.franchise-layout')]
 
 class ManageStaff extends Component

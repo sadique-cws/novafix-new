@@ -9,6 +9,8 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('components.layouts.staff-layout')]
+#[Title('Show Task')]
+
 class ShowTask extends Component
 {
     public ServiceRequest $task;

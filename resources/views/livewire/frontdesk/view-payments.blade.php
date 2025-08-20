@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6">
         <div>
-            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">Payment Details</h2>
+            <h2 class="text-lg sm:text-xl md:text-2xl  text-gray-800">Payment Details</h2>
             <p class="text-xs sm:text-sm text-gray-600 mt-1">Service Code: {{ $serviceRequest->service_code }}</p>
         </div>
         <a wire:navigate href="{{ route('frontdesk.manage.payments') }}"
@@ -134,7 +134,7 @@
                             </div>
                             <div class="flex justify-between border-t border-gray-200 pt-2">
                                 <p class="text-sm sm:text-base text-gray-800 font-semibold">Total Amount:</p>
-                                <p class="text-sm sm:text-base text-blue-600 font-bold">₹{{ number_format($payment->total_amount, 2) }}</p>
+                                <p class="text-sm sm:text-base text-blue-600 ">₹{{ number_format($payment->total_amount, 2) }}</p>
                             </div>
                         </div>
                     </div>

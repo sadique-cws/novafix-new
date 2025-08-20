@@ -6,7 +6,7 @@
             <div class="bg-gradient-to-r from-indigo-600 to-blue-700 px-6 py-4 sm:px-8 sm:py-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
                     <div>
-                        <h2 class="text-2xl font-bold text-white">Receptionist Management</h2>
+                        <h2 class="text-2xl  text-white">Receptionist Management</h2>
                         <p class="mt-1 text-sm text-blue-100">Manage all your receptionists in one place</p>
                     </div>
                     <a wire:navigate href="{{route('franchise.add.receptioners')}}" 

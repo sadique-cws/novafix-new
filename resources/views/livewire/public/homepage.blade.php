@@ -1,7 +1,7 @@
 <div>
     <!-- Hero Section -->
     <section class="bg-orange-500 text-white py-16 px-4 flex flex-col items-center">
-        <h1 class="text-4xl font-bold mb-2">All Services Under One Roof</h1>
+        <h1 class="text-4xl  mb-2">All Services Under One Roof</h1>
         <p class="mb-6 text-lg">Get all services for your electronics</p>
         <img src="technician-image.png" alt="Technician" class="h-40 w-auto rounded-full border-4 border-white mb-4"
             onerror="this.onerror=null;this.src='https://placehold.co/200x200?text=Technician';">

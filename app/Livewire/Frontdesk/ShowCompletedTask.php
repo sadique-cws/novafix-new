@@ -8,8 +8,9 @@ use App\Services\Msg91Service;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-
+#[Title('Show Completed Task')]
 #[Layout('components.layouts.frontdesk-layout')]
+
 class ShowCompletedTask extends Component
 {
     public $requestId;

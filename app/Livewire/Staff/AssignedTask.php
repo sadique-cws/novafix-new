@@ -9,6 +9,8 @@ use App\Models\ServiceRequest;
 use Illuminate\Support\Facades\Auth;
 
 #[Layout('components.layouts.staff-layout')]
+#[Title('Assigned Tasks')]
+
 class AssignedTask extends Component
 {
     use WithPagination;

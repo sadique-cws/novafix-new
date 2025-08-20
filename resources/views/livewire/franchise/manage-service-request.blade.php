@@ -1,5 +1,5 @@
 <div>
-    <h1 class="text-2xl font-bold mb-4">Manage Service Requests</h1>
+    <h1 class="text-2xl  mb-4">Manage Service Requests</h1>
 
     <form wire:submit.prevent="createServiceRequest" class="mb-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -47,7 +47,7 @@
         <button type="submit" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md">Create Service Request</button>
     </form>
 
-    <h2 class="text-xl font-bold mb-4">Service Requests List</h2>
+    <h2 class="text-xl  mb-4">Service Requests List</h2>
     <table class="min-w-full bg-white border border-gray-300">
         <thead>
             <tr>

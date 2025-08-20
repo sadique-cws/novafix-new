@@ -10,8 +10,9 @@ use App\Models\Staff;
 use App\Models\Receptioners;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-
+#[Title('Front Desk Dashboard')]
 #[Layout('components.layouts.frontdesk-layout')]
+
 class FrontDashboard extends Component
 {
     public $todayServicesCount;

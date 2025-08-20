@@ -8,7 +8,7 @@ use App\Models\Franchise;
 use App\Models\Receptioner;
 use App\Models\Receptioners;
 use Livewire\WithPagination;
-
+#[Title('Manage Receptionists')]
 #[Layout('components.layouts.admin-layout')]
 class ReceptionstManage extends Component
 {

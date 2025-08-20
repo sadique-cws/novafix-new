@@ -8,8 +8,9 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
-
+#[Title('Manage Payments')]
 #[Layout('components.layouts.franchise-layout')]
+
 class ManagePayments extends Component
 {
     use WithPagination;

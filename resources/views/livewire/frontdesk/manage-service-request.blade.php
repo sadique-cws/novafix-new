@@ -4,7 +4,7 @@
         <div class="sticky top-0 z-20 bg-gradient-to-r from-gray-50 to-gray-100 pb-4 pt-2 backdrop-blur-sm">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
+                    <h2 class="text-2xl md:text-3xl  text-gray-800 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 mr-3" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -84,7 +84,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Total Requests</p>
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mt-1">{{$stats['total']}}</h3>
+                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{$stats['total']}}</h3>
                     </div>
                     <div class="p-2 sm:p-3 rounded-full bg-blue-50 text-blue-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"
@@ -103,7 +103,7 @@
                     <div>
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Pending</p>
                         
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mt-1">{{$stats['pending']}}</h3>
+                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{$stats['pending']}}</h3>
                       
                     </div>
                     <div class="p-2 sm:p-3 rounded-full bg-yellow-50 text-yellow-600">
@@ -122,7 +122,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-xs sm:text-sm font-medium text-gray-500">In Progress</p>
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mt-1">{{$stats['in_progress']}}</h3>
+                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{$stats['in_progress']}}</h3>
                     </div>
                     <div class="p-2 sm:p-3 rounded-full bg-purple-50 text-purple-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"
@@ -140,7 +140,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Completed</p>
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mt-1">{{$stats['completed']}}</h3>
+                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{$stats['completed']}}</h3>
                     </div>
                     <div class="p-2 sm:p-3 rounded-full bg-green-50 text-green-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"

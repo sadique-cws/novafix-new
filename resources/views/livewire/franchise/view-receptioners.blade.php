@@ -16,7 +16,7 @@
         <div
             class="px-6 py-5 sm:px-8 sm:py-6 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">Receptionist Details</h2>
+                <h2 class="text-2xl sm:text-3xl  text-gray-900 leading-tight">Receptionist Details</h2>
                 <p class="text-gray-500 mt-1">ID: {{ $receptionist->id }}</p>
             </div>
             <a wire:navigate href="{{ route('franchise.manage.receptioners') }}"
@@ -104,7 +104,7 @@
                     <div class="divide-y divide-gray-200">
                         <div class="px-6 py-4">
                             <div class="text-sm font-medium text-gray-500">Monthly Salary</div>
-                            <div class="mt-1 text-2xl font-bold text-indigo-600">
+                            <div class="mt-1 text-2xl  text-indigo-600">
                                 ₹{{ number_format($receptionist->salary, 2) }}
                             </div>
                         </div>
@@ -197,7 +197,7 @@
                     <!-- Modal header with sticky positioning -->
                     <div
                         class="sticky top-0 bg-white z-10 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                        <h3 class="text-xl font-bold text-gray-900">
+                        <h3 class="text-xl  text-gray-900">
                             Edit Receptionist
                         </h3>
                         <button wire:click="$toggle('showEditModal')"

@@ -4,7 +4,7 @@
         <div class="mb-6 md:mb-8">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
+                    <h2 class="text-2xl md:text-3xl  text-gray-800 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600 mr-3" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -38,7 +38,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Total Completed</p>
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mt-1">{{ $totalCompleted }}</h3>
+                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{ $totalCompleted }}</h3>
                     </div>
                     <div class="p-2 sm:p-3 rounded-full bg-green-50 text-green-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"
@@ -55,7 +55,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-xs sm:text-sm font-medium text-gray-500">This Week</p>
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mt-1">{{ $thisWeekCount }}</h3>
+                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{ $thisWeekCount }}</h3>
                     </div>
                     <div class="p-2 sm:p-3 rounded-full bg-blue-50 text-blue-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"
@@ -73,7 +73,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Top Technician</p>
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mt-1 truncate">
+                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1 truncate">
                             {{ $topTechnician->name ?? 'N/A' }}</h3>
                     </div>
                     <div class="p-2 sm:p-3 rounded-full bg-purple-50 text-purple-600">
@@ -92,7 +92,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Avg. Resolution</p>
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mt-1">{{ $averageResolutionDays }} days
+                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{ $averageResolutionDays }} days
                         </h3>
                     </div>
                     <div class="p-2 sm:p-3 rounded-full bg-yellow-50 text-yellow-600">

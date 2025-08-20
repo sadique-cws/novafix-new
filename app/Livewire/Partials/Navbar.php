@@ -3,6 +3,7 @@
 namespace App\Livewire\Partials;
 
 use Livewire\Component;
+#[Title('Navbar')]
 
 class Navbar extends Component
 {

@@ -1,7 +1,7 @@
 <div>
     <div class="bg-white rounded-lg shadow-xl max-w-4xl mx-auto p-6">
         <div class="flex justify-between items-start mb-6">
-            <h3 class="text-xl font-bold">Service Request Details</h3>
+            <h3 class="text-xl ">Service Request Details</h3>
             <button wire:click="$dispatch('closeModal')" class="text-gray-500 hover:text-gray-700">
                 <i class="fas fa-times"></i>
             </button>
@@ -109,7 +109,7 @@
                         </div>
                         <div class="text-right">
                             <p class="text-sm font-medium text-gray-700">Total Amount:</p>
-                            <p class="text-lg font-bold text-blue-600">
+                            <p class="text-lg  text-blue-600">
                                 {{ number_format($request->payments->last()->total_amount, 2) }}
                             </p>
                         </div>

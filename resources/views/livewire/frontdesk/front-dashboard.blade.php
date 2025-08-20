@@ -1,6 +1,6 @@
 <main class="flex-1 p-4 md:p-6 overflow-auto bg-gray-50">
     <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-6 mb-6 text-white">
-              <h2 class="text-xl md:text-2xl font-bold mb-2">Receptionist Dashboard!</h2>
+              <h2 class="text-xl md:text-2xl  mb-2">Receptionist Dashboard!</h2>
 <p class="opacity-90">Here's what's happening with today.</p>
             </div>
     <!-- Stats Cards - Responsive Grid -->
@@ -10,7 +10,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs sm:text-sm text-gray-500">Today's Services</p>
-                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">{{ number_format($todayServicesCount) }}</h3>
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl  text-gray-800">{{ number_format($todayServicesCount) }}</h3>
                 </div>
                 <div class="bg-blue-100 p-2 sm:p-3 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,7 +31,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs sm:text-sm text-gray-500">In Progress</p>
-                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">{{ number_format($inProgressCount) }}</h3>
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl  text-gray-800">{{ number_format($inProgressCount) }}</h3>
                 </div>
                 <div class="bg-yellow-100 p-2 sm:p-3 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -49,7 +49,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs sm:text-sm text-gray-500">Completed</p>
-                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">{{ number_format($completedCount) }}</h3>
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl  text-gray-800">{{ number_format($completedCount) }}</h3>
                 </div>
                 <div class="bg-green-100 p-2 sm:p-3 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -67,7 +67,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs sm:text-sm text-gray-500">Today's Revenue</p>
-                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl  text-gray-800">
                         @php
                             $total = $recentPayments->sum('total_amount');
                             if ($total >= 10000000) {

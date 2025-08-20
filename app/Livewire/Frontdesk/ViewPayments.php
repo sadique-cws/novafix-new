@@ -6,7 +6,7 @@ use App\Models\Payment;
 use App\Models\ServiceRequest;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-
+#[Title('View Payments')]
 #[Layout('components.layouts.frontdesk-layout')]
 
 class ViewPayments extends Component

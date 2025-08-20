@@ -41,7 +41,7 @@
         <!-- Card Header -->
         <div class="bg-gradient-to-r from-indigo-600 to-indigo-800 px-6 py-5 sm:px-8">
             <div class="flex items-center justify-between">
-                <h2 class="text-xl sm:text-2xl font-bold text-white">Edit Staff Member</h2>
+                <h2 class="text-xl sm:text-2xl  text-white">Edit Staff Member</h2>
                 <div class="hidden sm:block bg-indigo-500 text-white text-sm font-medium px-3 py-1 rounded-full">
                     ID: {{ $staff->id }}
                 </div>

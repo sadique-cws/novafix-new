@@ -6,8 +6,9 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\ServiceCategory;
-
+#[Title('Manage Services')]
 #[Layout('components.layouts.franchise-layout')]
+
 class ManageService extends Component
 {
     public $showAddModal = false;

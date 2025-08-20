@@ -5,8 +5,9 @@ namespace App\Livewire\Admin;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Staff;
-
+#[Title('View Staff')]
 #[Layout('components.layouts.admin-layout')]
+
 class StaffView extends Component
 {
     public Staff $staff;

@@ -7,8 +7,9 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
-
+#[Title('Profile')]
 #[Layout('components.layouts.frontdesk-layout')]
+
 class Profile extends Component
 {
     public Receptioners $receptionist;

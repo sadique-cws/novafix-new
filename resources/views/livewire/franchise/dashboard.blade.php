@@ -9,7 +9,7 @@
                 </div>
                 <div>
                     <p class="text-xs sm:text-sm text-gray-500">Total Receptionists</p>
-                    <h3 class="text-lg sm:text-xl md:text-2xl font-bold">{{ $stats['totalReceptionists'] }}</h3>
+                    <h3 class="text-lg sm:text-xl md:text-2xl ">{{ $stats['totalReceptionists'] }}</h3>
                 </div>
             </div>
             <div class="mt-2 sm:mt-3 md:mt-4">
@@ -27,7 +27,7 @@
                 </div>
                 <div>
                     <p class="text-xs sm:text-sm text-gray-500">Total Customers</p>
-                    <h3 class="text-lg sm:text-xl md:text-2xl font-bold">{{ number_format($stats['totalCustomers']) }}</h3>
+                    <h3 class="text-lg sm:text-xl md:text-2xl ">{{ number_format($stats['totalCustomers']) }}</h3>
                 </div>
             </div>
             <div class="mt-2 sm:mt-3 md:mt-4">
@@ -45,7 +45,7 @@
                 </div>
                 <div>
                     <p class="text-xs sm:text-sm text-gray-500">Services Completed</p>
-                    <h3 class="text-lg sm:text-xl md:text-2xl font-bold">{{ number_format($stats['servicesCompleted']) }}</h3>
+                    <h3 class="text-lg sm:text-xl md:text-2xl ">{{ number_format($stats['servicesCompleted']) }}</h3>
                 </div>
             </div>
             <div class="mt-2 sm:mt-3 md:mt-4">
@@ -63,7 +63,7 @@
                 </div>
                 <div>
                     <p class="text-xs sm:text-sm text-gray-500">Total Revenue</p>
-                    <h3 class="text-lg sm:text-xl md:text-2xl font-bold">₹
+                    <h3 class="text-lg sm:text-xl md:text-2xl ">₹
                         @php
                             $revenue = $stats['totalRevenue'];
                             if ($revenue >= 10000000) {

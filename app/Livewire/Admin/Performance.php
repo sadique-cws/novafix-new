@@ -10,8 +10,9 @@ use App\Models\ServiceRequest;
 use App\Models\ServiceCategory;
 use Carbon\Carbon;
 use Livewire\WithPagination;
-
+#[Title('Performance')]
 #[Layout('components.layouts.admin-layout')]
+
 class Performance extends Component
 {
     use WithPagination;

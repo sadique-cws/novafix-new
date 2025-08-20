@@ -2,7 +2,7 @@
     <!-- Header Section -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Receptionists Management</h1>
+            <h1 class="text-2xl md:text-3xl  text-gray-800">Receptionists Management</h1>
             <p class="text-sm text-gray-500 mt-1">Manage all receptionists across franchises</p>
         </div>
        

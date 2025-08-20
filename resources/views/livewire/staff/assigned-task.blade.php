@@ -2,7 +2,7 @@
     <!-- Header Section with Search/Filter -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
         <div>
-            <h2 class="text-2xl font-bold text-gray-800 ">Assigned Tasks</h2>
+            <h2 class="text-2xl  text-gray-800 ">Assigned Tasks</h2>
             <p class="text-gray-600 dark:text-gray-300">Tasks assigned to you by receptionists</p>
         </div>
         <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
@@ -100,23 +100,23 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if ($request->status == '0')
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                                <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                                     Pending
                                 </span>
                             @elseif ($request->status == '25')
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                                     In Progress
                                 </span>
                             @elseif ($request->status == '50')
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+                                <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
                                     In Repair
                                 </span>
                             @elseif ($request->status == '90')
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
                                     Rejected
                                 </span>
                             @elseif ($request->status == '100')
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                                     Completed
                                 </span>
                             @endif
@@ -186,23 +186,23 @@
                 </span>
                 
                 @if ($request->status == '0')
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                    <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                         Pending
                     </span>
                 @elseif ($request->status == '25')
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                    <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                         In Progress
                     </span>
                 @elseif ($request->status == '50')
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+                    <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
                         In Repair
                     </span>
                 @elseif ($request->status == '90')
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                    <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
                         Rejected
                     </span>
                 @elseif ($request->status == '100')
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                    <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                         Completed
                     </span>
                 @endif

@@ -12,8 +12,9 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-
+#[Title('Dashboard')]
 #[Layout('components.layouts.franchise-layout')]
+
 class Dashboard extends Component
 {
     public $franchiseId;

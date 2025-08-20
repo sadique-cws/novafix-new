@@ -10,8 +10,9 @@ use Carbon\Carbon;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
-
+#[Title('Completed Tasks')]
 #[Layout('components.layouts.frontdesk-layout')]
+
 class CompletedTask extends Component
 {
     use WithPagination;

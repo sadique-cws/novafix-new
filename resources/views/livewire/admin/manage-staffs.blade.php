@@ -5,7 +5,7 @@
 
     <div class="flex space-x-4 mb-4">
         <div class="w-1/4">
-            <label for="franchise_id" class="block text-gray-700 text-sm font-bold mb-2">Franchise:</label>
+            <label for="franchise_id" class="block text-gray-700 text-sm  mb-2">Franchise:</label>
             <select wire:model.live="franchise_id" id="franchise_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 <option value="">All Franchises</option>
                 @foreach($franchises as $franchise)
@@ -15,7 +15,7 @@
         </div>
 
         <div class="w-1/4">
-            <label for="status" class="block text-gray-700 text-sm font-bold mb-2">Status:</label>
+            <label for="status" class="block text-gray-700 text-sm  mb-2">Status:</label>
             <select wire:model.live="status" id="status" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 <option value="">All Status</option>
                 <option value="active">Active</option>
@@ -25,7 +25,7 @@
         </div>
 
         <div class="w-1/4">
-            <label for="search" class="block text-gray-700 text-sm font-bold mb-2">Search:</label>
+            <label for="search" class="block text-gray-700 text-sm  mb-2">Search:</label>
             <input type="text" wire:model.live.debounce.300ms="search" id="search" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Search...">
         </div>
     </div>

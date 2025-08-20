@@ -14,7 +14,7 @@
                 <div class="flex justify-between h-16">
                     <div class="flex">
                         <div class="flex-shrink-0 flex items-center">
-                            <a href="/" class="text-2xl font-bold text-orange-500">Novafix</a>
+                            <a href="/" class="text-2xl  text-orange-500">Novafix</a>
                         </div>
                     </div>
                     <div class="flex items-center">
