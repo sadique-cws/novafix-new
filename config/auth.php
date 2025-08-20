@@ -39,27 +39,38 @@ return [
     
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'admins',
-        ],
-        'franchise' => [
-            'driver' => 'session',
-            'provider' => 'franchises',
-        ],
-        'frontdesk' => [
-            'driver' => 'session',
-            'provider' => 'frontdesks',
-        ],
-        'staff' => [
-            'driver' => 'session',
-            'provider' => 'staff',
-        ],
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
+    
+    'admin' => [
+        'driver' => 'session',
+        'provider' => 'users',
+    ],
+    
+    'franchise' => [
+        'driver' => 'session',
+        'provider' => 'franchises',
+    ],
+    
+    'staff' => [
+        'driver' => 'session',
+        'provider' => 'staff',
+    ],
+    
+    'receptioner' => [
+        'driver' => 'session',
+        'provider' => 'receptioners',
+    ],
+    
+    // Frontdesk guard (maps to users provider where `is_frontdesk` flag is stored)
+    'frontdesk' => [
+        'driver' => 'session',
+    'provider' => 'receptioners',
+    ],
+],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -79,27 +90,26 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
-        'admins' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
-        'franchises' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Franchise::class,
-        ],
-        'frontdesks' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Receptioners::class,
-        ],
-        'staff' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Staff::class,
-        ],
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\User::class,
     ],
+    
+    'franchises' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Franchise::class,
+    ],
+    
+    'staff' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Staff::class,
+    ],
+    
+    'receptioners' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Receptioners::class,
+    ],
+],
 
     /*
     |--------------------------------------------------------------------------
@@ -129,21 +139,6 @@ return [
             'throttle' => 120,
         ],
     ],
-    // 'passwords' => [
-    //     'users' => [
-    //         'provider' => 'users',
-    //         'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-    //         'expire' => 120,
-    //         'throttle' => 120,
-    //     ],
-
-    //     'receptioners' => [  // This is the key configuration
-    //         'provider' => 'receptioners',
-    //         'table' => 'password_reset_tokens',
-    //         'expire' => 120,
-    //         'throttle' => 120,
-    //     ]
-    // ],
 
     /*
     |--------------------------------------------------------------------------
