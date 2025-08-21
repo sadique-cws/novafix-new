@@ -116,17 +116,24 @@
                                         <label class="block text-sm font-medium text-gray-700">Preview</label>
                                         @if ($editingQuestionImage)
                                             <div class="relative inline-block">
-                                                <img src="{{ $editingQuestionImage }}"
-                                                    class="h-28 w-full rounded-md border object-cover">
-                                                <button type="button" wire:click="$set('image', null)"
-                                                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
-                                                    aria-label="Remove image">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
-                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M6 18L18 6M6 6l12 12" />
-                                                    </svg>
-                                                </button>
+                                                @if (is_string($editingQuestionImage))
+                                                    <img src="{{ $editingQuestionImage }}"
+                                                        class="h-28 w-full rounded-md border object-cover">
+                                                @else
+                                                    <img src="{{ $editingQuestionImage->temporaryUrl() }}"
+                                                        class="h-28 w-full rounded-md border object-cover">
+                                                @endif
+                                                <div class="absolute -top-2 -right-2 flex space-x-2">
+                                                    <button type="button" wire:click.prevent="$set('editingQuestionImage', null)"
+                                                        class="bg-yellow-500 text-white rounded-full p-1 hover:bg-yellow-600 transition"
+                                                        aria-label="Clear selection">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
                                             </div>
                                         @else
                                             <div
