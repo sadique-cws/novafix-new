@@ -59,15 +59,5 @@ class Franchise extends Authenticatable
          $query->where('franchise_id', $this->id);
       });
    }
-   // public function payments()
-   // {
-   //    return $this->hasManyThrough(
-   //       Payment::class,
-   //       ServiceRequest::class,
-   //       'receptioners_id', // Foreign key on service_requests table
-   //       'service_request_id', // Foreign key on payments table
-   //       'id', // Local key on franchises table
-   //       'id' // Local key on service_requests table
-   //    );
-   // }
+
 }

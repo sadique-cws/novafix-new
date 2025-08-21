@@ -8,6 +8,8 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Staff;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Title;
+
 #[Title('Manage Staff')]
 #[Layout('components.layouts.franchise-layout')]
 

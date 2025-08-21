@@ -414,7 +414,7 @@
         </div>
 
         <!-- Desktop header -->
-        <header class="hidden md:block bg-white shadow-sm sticky top-0 z-20">
+        <header class="hidden md:block fixed top-0 left-0  right-0 bg-white shadow-sm m-0 p-0">
             <div class="flex items-center justify-between px-4 py-3 sm:px-6">
                 <div class="flex-1 flex items-center justify-end space-x-4 sm:space-x-6">
                     <!-- Search bar -->
@@ -462,7 +462,7 @@
         </header>
 
         <!-- Content area -->
-        <main class="">
+        <main class="mt-16">
             {{ $slot }}
         </main>
     </div>
