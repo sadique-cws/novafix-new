@@ -1,5 +1,6 @@
 <div class="p-10 mx-auto bg-white rounded-lg shadow-md overflow-hidden">
     <!-- Header Section -->
+    <livewire:admin.components.navigation />
     <div class="flex items-center justify-between p-4 bg-blue-600 text-white">
         <h3 class="text-xl ">Support Diagnosis</h3>
         <button wire:click="resetSelection"
