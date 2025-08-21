@@ -42,6 +42,23 @@ class ProductDetail extends Component
     public $selectedQuestion;
     public $creatingNew = false;
     public $allQuestion = [];
+    // filter
+    public $selectedFilterBrand;
+    public $selectedFilterModel;
+    public $selectedFilterProblem;
+    public $filterModels = [];
+    public $filterProblems = [];
+    public $filterQuestions = [];
+    public function updateSelectedFilterBrand()
+    {
+        $this->filterModels = Model::where('brand_id', $this->selectedFilterBrand)->get();
+    }
+    public function updateSelectedFilterModel(){
+        $this->filterProblems = Problem::where('model_id',$this->selectedFilterModel)->get();
+    }
+    public function updateSelectedFilterProblem(){
+        $this->filterQuestions = Question::where('problem_id',$this->selectedFilterProblem)->get();
+    }
     public function mount()
     {
         $this->devices = Device::all();
@@ -90,7 +107,7 @@ class ProductDetail extends Component
             return;
         }
         $this->allQuestion = Question::where('question_text', 'like', '%' . $this->search . '%')
-        ->whereNot('id',$this->currentQuestion->id)
+            ->whereNot('id', $this->currentQuestion->id)
             ->take(5)
             ->get();
     }
@@ -182,6 +199,12 @@ class ProductDetail extends Component
         $this->selectedQuestion = null;
         $this->search = '';
         $this->creatingNew = false;
+        $this->selectedFilterBrand = null;
+        $this->selectedFilterModel =  null;
+        $this->selectedFilterProblem =  null;
+        $this->filterModels = [];
+        $this->filterProblems = [];
+        $this->filterQuestions = [];
     }
     public function cancelCreateQuestion()
     {

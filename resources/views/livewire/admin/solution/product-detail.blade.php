@@ -211,6 +211,61 @@
 
                     <div class="flex gap-6 items-start">
                         <div class="flex-1 space-y-6">
+                           <!-- filter question section -->
+                            <div class="grid grid-cols-4 gap-2">
+                              <!-- Brand Selection -->
+                              @if ($brands)
+                                  <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Brand</label>
+                                      <select wire:model="selectedFilterBrand" wire:change="updateSelectedFilterBrand"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Brand</option>
+                                          @foreach ($brands as $brand)
+                                              <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
+                               <!-- Model Selection -->
+                              @if ($filterModels)
+                                  <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Model</label>
+                                      <select wire:model="selectedFilterModel" wire:change="updateSelectedFilterModel"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Model</option>
+                                          @foreach ($filterModels as $model)
+                                              <option value="{{ $model->id }}">{{ $model->name }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
+                              <!-- Problem Selection -->
+                              @if ($filterProblems)
+                                  <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Problem</label>
+                                      <select wire:model="selectedFilterProblem" wire:change="updateSelectedFilterProblem"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Problem</option>
+                                          @foreach ($filterProblems as $problem)
+                                              <option value="{{ $problem->id }}">{{ $problem->name }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
+                              <!-- filtered question -->
+                              @if ($filterQuestions)
+                              <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Question</label>
+                                      <select wire:model="selectedQuestion" wire:change="selectQuestion($event.target.value)"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Problem</option>
+                                          @foreach ($filterQuestions as $question)
+                                              <option value="{{ $question->id }}">{{ $question->question_text }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
+                            </div>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -223,12 +278,6 @@
                                 @enderror
 
                                 <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                    @if($search && count($allQuestion) === 0 && !$selectedQuestion)
-                                        <button wire:click="createNewQuestion"
-                                            class="px-1 py-0.5 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
-                                            Create +
-                                        </button>
-                                    @else
                                         <div wire:loading.delay.shortest wire:target="search">
                                             <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 24 24">
@@ -239,7 +288,6 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                    @endif
                                 </div>
                             </div>
 
