@@ -35,19 +35,19 @@
                     </div>
 
                     <!-- Technician Dropdown -->
-                    <div>
-                        <label for="technician_id" class="block text-sm font-medium text-slate-600">Technician</label>
-                        <select id="technician_id" wire:model="technician_id"
-                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
-                            <option value="">Select Technician</option>
-                            @foreach ($technicians as $tech)
-                                <option value="{{ $tech->id }}">{{ $tech->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('technician_id')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
+                  <div>
+    <label for="technician_id" class="block text-sm font-medium text-slate-600">Technician</label>
+    <select id="technician_id" wire:model="technician_id"
+        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+        <option value="">Select Technician</option>
+        @foreach ($technicians as $tech)
+            <option value="{{ $tech->id }}">{{ $tech->name }}</option>
+        @endforeach
+    </select>
+    @error('technician_id')
+        <span class="text-red-500 text-xs">{{ $message }}</span>
+    @enderror
+</div>
 
                     <!-- Service Code -->
                     <div>

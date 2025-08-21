@@ -7,10 +7,10 @@ use App\Models\Payment;
 use App\Services\Msg91Service;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 #[Title('Show Completed Task')]
 #[Layout('components.layouts.frontdesk-layout')]
-
 class ShowCompletedTask extends Component
 {
     public $requestId;
@@ -133,6 +133,13 @@ class ShowCompletedTask extends Component
         $this->request->refresh();
         $this->loadLatestPayment();
         session()->flash('payment-success', $message);
+    }
+    public function directDelivery()
+    {
+        $this->request->update([
+            'delivery_status' => 1,
+            'delivered_by' => auth('frontdesk')->id(),
+        ]);
     }
 
     public function initiateDelivery(Msg91Service $msg91Service)

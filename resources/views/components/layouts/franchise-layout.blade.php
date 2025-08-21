@@ -265,7 +265,7 @@
                 </li>
 
                 <li class="mb-1">
-                    <a href="#"
+                    <a href="{{route('franchise.manage.customer')}}"
                         class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-colors">
                         <i class="fas fa-users mr-3 w-5 text-center"></i>
                         <span>Customers</span>

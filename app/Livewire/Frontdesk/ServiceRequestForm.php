@@ -17,12 +17,11 @@ use Livewire\Attributes\Title;
 
 #[Title('Service Request Form')]
 #[Layout('components.layouts.frontdesk-layout')]
-
 class ServiceRequestForm extends Component
 {
     use WithFileUploads;
 
-    // Form fields - updated to match database
+    // Form fields
     public $receptioners_id;
     public $technician_id;
     public $service_categories_id;
@@ -46,6 +45,7 @@ class ServiceRequestForm extends Component
     public $image;
     public $capturedImage;
     public $cameraError;
+    public $technician;
 
     protected function rules()
     {
@@ -72,16 +72,17 @@ class ServiceRequestForm extends Component
     {
         $this->receptioners_id = Auth::guard('frontdesk')->user()->id;
         $this->last_update = now();
-        $this->estimate_delivery = Carbon::now()->addDays(3);
+        $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d\TH:i');
         $this->generateServiceCode();
-      
     }
+
     public function updatedImage()
     {
         $this->validate([
-            'image' => 'image', // 1MB Max
+            'image' => 'image', // Max 1MB
         ]);
     }
+
     public function setCapturedImage($imageData)
     {
         $this->capturedImage = $imageData;
@@ -90,17 +91,13 @@ class ServiceRequestForm extends Component
 
     protected function generateServiceCode()
     {
-    
+        // Get last service request from DB
+        $lastRequest = ServiceRequest::orderBy('id', 'desc')->first();
 
-        // Get last service code from DB
-        $lastCode = ('service_code');
-
-        if ($lastCode) {
-            // Extract the last 5 digits from service code
-            $lastNumber = (int) substr($lastCode, -5);
+        if ($lastRequest && $lastRequest->service_code) {
+            $lastNumber = (int) substr($lastRequest->service_code, -5);
             $newNumber = str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
         } else {
-            // First code will start from 00001
             $newNumber = '00001';
         }
 
@@ -112,7 +109,6 @@ class ServiceRequestForm extends Component
     {
         $this->reset('image', 'capturedImage');
     }
-
 
     public function save()
     {
@@ -154,7 +150,7 @@ class ServiceRequestForm extends Component
             DB::commit();
 
             session()->flash('success', 'Service request created successfully!');
-            return redirect()->route('reviewServiceRequest',$serviceRequest->id);
+            return redirect()->route('reviewServiceRequest', $serviceRequest->id);
         } catch (\Exception $e) {
             DB::rollBack();
             if (isset($imagePath)) {
@@ -164,7 +160,6 @@ class ServiceRequestForm extends Component
             logger()->error('Service Request Error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
         }
     }
-
 
     protected function storeCapturedImage()
     {
@@ -203,13 +198,15 @@ class ServiceRequestForm extends Component
         $this->resetExcept(['technicians', 'categories']);
         $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d\TH:i');
         $this->generateServiceCode();
-        $this->generateSerialNumber();
     }
 
     public function render()
     {
+        // Franchise ID from current login
+        $franchiseId = auth('franchise')->id();
+
         return view('livewire.frontdesk.service-request-form', [
-            'technicians' => Staff::all(),
+            'technicians' => Staff::where('franchise_id', $franchiseId)->get(),
             'categories' => ServiceCategory::all(),
         ]);
     }

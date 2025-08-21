@@ -8,6 +8,7 @@ use App\Models\Staff;
 use App\Models\Technician;
 use Carbon\Carbon;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 #[Title('Completed Tasks')]

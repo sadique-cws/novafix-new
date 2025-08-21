@@ -249,8 +249,12 @@
                     @if ($request->payments->where('status', 'completed')->count() > 0 && $request->status == '100')
                         <button wire:click="initiateDelivery"
                             class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-                            <i class="fas fa-truck mr-2"></i> Mark as Delivered
+                            <i class="fas fa-truck mr-2"></i> Otp as Delivered
                         </button>
+                         <button wire:click="directDelivery"
+                                    class="mt-3 ml-2 sm:mt-0 px-3 sm:px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-all duration-200 transform hover:scale-105">
+                                    <i class="fas fa-truck mr-2"></i>Direct Delivered
+                                </button>
                     @endif
                 @endif
             </div>

@@ -8,6 +8,7 @@ use App\Models\Payment;
 use App\Models\ServiceRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 #[Title('View Task')]
 #[Layout('components.layouts.frontdesk-layout')]
@@ -168,6 +169,12 @@ class ViewTask extends Component
             message: 'Payment of ₹' . number_format($totalAmount, 2) . ' recorded (pending verification)',
             duration: 5000
         );
+    }
+    public function directDelivery(){
+        $this->task->update([
+            'delivery_status' => 1,
+            'delivered_by' => auth('frontdesk')->id(),
+        ]);
     }
 
     public function initiateDelivery()

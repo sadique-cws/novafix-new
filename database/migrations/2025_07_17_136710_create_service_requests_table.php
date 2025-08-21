@@ -22,8 +22,6 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('contact');
             $table->string('brand');
-            $table->string('serial_no')->nullable();
-            $table->string('MAC')->nullable();
             $table->string('color');
             $table->decimal('service_amount', 8, 2)->nullable();
             $table->string('problem');
@@ -33,7 +31,6 @@ return new class extends Migration
             $table->string('delivered_by')->nullable();
             $table->boolean('delivery_status')->default(false);
             $table->dateTime('estimate_delivery')->nullable();
-            $table->dateTime('date_of_delivery')->nullable();
             $table->timestamps(); // created_at and updated_at
             $table->string('image')->nullable();
         });

@@ -74,4 +74,5 @@ class Staff extends Authenticatable
             ->orWhere('email', 'like', '%'.$search.'%')
             ->orWhere('contact', 'like', '%'.$search.'%');
     }
+    
 }

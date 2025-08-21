@@ -74,8 +74,8 @@
                         </div>
                         
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between">
-                            <p class="text-xs sm:text-sm text-gray-500">Franchise ID</p>
-                            <p class="font-medium text-sm sm:text-base">{{ $receptionist->franchise_id ?? 'Not assigned' }}</p>
+                            <p class="text-xs sm:text-sm text-gray-500">Franchise Name</p>
+                            <p class="font-medium text-sm sm:text-base">{{ $receptionist->franchise->franchise_name ?? 'Not assigned' }}</p>
                         </div>
                     </div>
                 </div>
