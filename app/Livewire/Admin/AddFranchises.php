@@ -70,22 +70,21 @@ class AddFranchises extends Component
                 if ($response->successful()) {
                     $data = $response->json();
 
-                    if (isset($data[0]['Status']) && $data[0]['Status'] === 'Success') {
-                        if (isset($data[0]['PostOffice']) && count($data[0]['PostOffice']) > 0) {
-                            $postOffice = $data[0]['PostOffice'][0];
-                            $this->city = $postOffice['District'] ?? '';
-                            $this->district = $postOffice['District'] ?? '';
-                            $this->state = $postOffice['State'] ?? '';
-                            $this->country = $postOffice['Country'] ?? 'India';
-                            return;
-                        }
+                    if (isset($data[0]['Status']) && $data[0]['Status'] === 'Success' && isset($data[0]['PostOffice']) && count($data[0]['PostOffice']) > 0) {
+                        $postOffice = $data[0]['PostOffice'][0];
+                        $this->city = $postOffice['District'] ?? '';
+                        $this->district = $postOffice['District'] ?? '';
+                        $this->state = $postOffice['State'] ?? '';
+                        $this->country = $postOffice['Country'] ?? 'India';
+                        return;
                     }
                 }
 
-                $this->dispatch('pincode-error', message: 'Could not fetch address details for this pincode');
+                // dispatch Livewire browser event so blade listener can show the error
+                $this->dispatch('pincode-error', ['message' => 'Could not fetch address details for this pincode']);
             } catch (\Exception $e) {
                 Log::error("Pincode API error: " . $e->getMessage());
-                $this->dispatch('pincode-error', message: 'Error fetching address details. Please enter manually.');
+                $this->dispatch('pincode-error', ['message' => 'Error fetching address details. Please enter manually.']);
             }
         }
     }

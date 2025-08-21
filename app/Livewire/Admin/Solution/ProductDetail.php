@@ -14,6 +14,7 @@ use Illuminate\Container\Attributes\Auth as AttributesAuth;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Http\UploadedFile;
 
 class ProductDetail extends Component
 {
@@ -36,12 +37,30 @@ class ProductDetail extends Component
     public $editingQuestionText = '';
     public $editingQuestionImage = null;
     public $editingQuestionDescription = '';
+    public $removeEditingImage = false;
     public $search = '';
     public $isSearching = false;
     public $question = [];
     public $selectedQuestion;
     public $creatingNew = false;
     public $allQuestion = [];
+    // filter
+    public $selectedFilterBrand;
+    public $selectedFilterModel;
+    public $selectedFilterProblem;
+    public $filterModels = [];
+    public $filterProblems = [];
+    public $filterQuestions = [];
+    public function updateSelectedFilterBrand()
+    {
+        $this->filterModels = Model::where('brand_id', $this->selectedFilterBrand)->get();
+    }
+    public function updateSelectedFilterModel(){
+        $this->filterProblems = Problem::where('model_id',$this->selectedFilterModel)->get();
+    }
+    public function updateSelectedFilterProblem(){
+        $this->filterQuestions = Question::where('problem_id',$this->selectedFilterProblem)->get();
+    }
     public function mount()
     {
         $this->devices = Device::all();
@@ -90,7 +109,7 @@ class ProductDetail extends Component
             return;
         }
         $this->allQuestion = Question::where('question_text', 'like', '%' . $this->search . '%')
-        ->whereNot('id',$this->currentQuestion->id)
+            ->whereNot('id', $this->currentQuestion->id)
             ->take(5)
             ->get();
     }
@@ -182,6 +201,12 @@ class ProductDetail extends Component
         $this->selectedQuestion = null;
         $this->search = '';
         $this->creatingNew = false;
+        $this->selectedFilterBrand = null;
+        $this->selectedFilterModel =  null;
+        $this->selectedFilterProblem =  null;
+        $this->filterModels = [];
+        $this->filterProblems = [];
+        $this->filterQuestions = [];
     }
     public function cancelCreateQuestion()
     {
@@ -222,7 +247,9 @@ class ProductDetail extends Component
         if ($question) {
             $this->editingQuestionId = $questionId;
             $this->editingQuestionText = $question->question_text;
+            // Set existing image URL (string) so preview can show it. If user uploads a new file, it will be a UploadedFile instance
             $this->editingQuestionImage = $question->image_url;
+            $this->removeEditingImage = false;
             $this->editingQuestionDescription = $question->description;
         }
     }
@@ -230,8 +257,8 @@ class ProductDetail extends Component
     {
         $this->validate([
             'editingQuestionText' => 'required|min:3',
-            'image' => 'nullable|image|max:1024',
-            'description' => 'nullable|string'
+            'editingQuestionImage' => 'nullable|image|max:1024',
+            'editingQuestionDescription' => 'nullable|string'
         ]);
 
         $question = Question::find($this->editingQuestionId);
@@ -244,8 +271,19 @@ class ProductDetail extends Component
             'description' => $this->editingQuestionDescription,
         ];
         // Handle image upload if a new image was provided
-        if ($this->image) {
-            $imageData = ImageKitHelper::uploadImage($this->image, '/Novafix/Question_image');
+        // If user marked image for removal
+        if ($this->removeEditingImage) {
+            if ($question->image_file_id) {
+                ImageKitHelper::deleteImage($question->image_file_id);
+            }
+            $updateData['image_url'] = null;
+            $updateData['image_file_id'] = null;
+        }
+
+        // If a new image file was uploaded via editingQuestionImage
+        if ($this->editingQuestionImage && !is_string($this->editingQuestionImage)) {
+            // it's a temporary uploaded file
+            $imageData = ImageKitHelper::uploadImage($this->editingQuestionImage, '/Novafix/Question_image');
 
             if ($imageData) {
                 // Delete old image from ImageKit if it exists

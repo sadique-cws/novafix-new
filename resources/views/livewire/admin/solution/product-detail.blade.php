@@ -116,17 +116,24 @@
                                         <label class="block text-sm font-medium text-gray-700">Preview</label>
                                         @if ($editingQuestionImage)
                                             <div class="relative inline-block">
-                                                <img src="{{ $editingQuestionImage }}"
-                                                    class="h-28 w-full rounded-md border object-cover">
-                                                <button type="button" wire:click="$set('image', null)"
-                                                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
-                                                    aria-label="Remove image">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
-                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M6 18L18 6M6 6l12 12" />
-                                                    </svg>
-                                                </button>
+                                                @if (is_string($editingQuestionImage))
+                                                    <img src="{{ $editingQuestionImage }}"
+                                                        class="h-28 w-full rounded-md border object-cover">
+                                                @else
+                                                    <img src="{{ $editingQuestionImage->temporaryUrl() }}"
+                                                        class="h-28 w-full rounded-md border object-cover">
+                                                @endif
+                                                <div class="absolute -top-2 -right-2 flex space-x-2">
+                                                    <button type="button" wire:click.prevent="$set('editingQuestionImage', null)"
+                                                        class="bg-yellow-500 text-white rounded-full p-1 hover:bg-yellow-600 transition"
+                                                        aria-label="Clear selection">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
                                             </div>
                                         @else
                                             <div
@@ -211,6 +218,61 @@
 
                     <div class="flex gap-6 items-start">
                         <div class="flex-1 space-y-6">
+                           <!-- filter question section -->
+                            <div class="grid grid-cols-4 gap-2">
+                              <!-- Brand Selection -->
+                              @if ($brands)
+                                  <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Brand</label>
+                                      <select wire:model="selectedFilterBrand" wire:change="updateSelectedFilterBrand"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Brand</option>
+                                          @foreach ($brands as $brand)
+                                              <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
+                               <!-- Model Selection -->
+                              @if ($filterModels)
+                                  <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Model</label>
+                                      <select wire:model="selectedFilterModel" wire:change="updateSelectedFilterModel"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Model</option>
+                                          @foreach ($filterModels as $model)
+                                              <option value="{{ $model->id }}">{{ $model->name }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
+                              <!-- Problem Selection -->
+                              @if ($filterProblems)
+                                  <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Problem</label>
+                                      <select wire:model="selectedFilterProblem" wire:change="updateSelectedFilterProblem"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Problem</option>
+                                          @foreach ($filterProblems as $problem)
+                                              <option value="{{ $problem->id }}">{{ $problem->name }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
+                              <!-- filtered question -->
+                              @if ($filterQuestions)
+                              <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Question</label>
+                                      <select wire:model="selectedQuestion" wire:change="selectQuestion($event.target.value)"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Problem</option>
+                                          @foreach ($filterQuestions as $question)
+                                              <option value="{{ $question->id }}">{{ $question->question_text }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
+                            </div>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -223,12 +285,6 @@
                                 @enderror
 
                                 <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                    @if($search && count($allQuestion) === 0 && !$selectedQuestion)
-                                        <button wire:click="createNewQuestion"
-                                            class="px-1 py-0.5 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
-                                            Create +
-                                        </button>
-                                    @else
                                         <div wire:loading.delay.shortest wire:target="search">
                                             <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 24 24">
@@ -239,7 +295,6 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                    @endif
                                 </div>
                             </div>
 
