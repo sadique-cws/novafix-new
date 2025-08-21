@@ -180,7 +180,7 @@
         <div class="p-4 border-b border-gray-200 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div
-                    class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-pink-500 flex items-center justify-center">
+                    class="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
                     <span class="text-white font-semibold text-lg">NF</span>
                 </div>
                 <h1 class="text-xl md:text-2xl font-semibold text-gray-800">Super Admin</h1>
@@ -434,7 +434,7 @@
 
                     <!-- User dropdown -->
                     <div class="relative">
-                        <button onclick="toggleDropdown(event, 'navbar-profile-dropdown', 'profile-chevron')"
+                        <button onclick="toggleDropdown1(event, 'navbar-profile-dropdown', 'profile-chevron')"
                             class="flex items-center space-x-2 focus:outline-none">
                             <img src="https://www.pngmart.com/files/21/Admin-Profile-Vector-PNG-Clipart.png"
                                 alt="User profile" class="rounded-full w-8 h-8 object-cover border-2 border-gray-200">
@@ -512,6 +512,16 @@
 
                 // Handle dropdown functionality
                 function toggleDropdown(event, dropdownId, chevronId = null) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const dropdown = document.getElementById(dropdownId);
+                    dropdown.classList.toggle('hidden');
+                    if (chevronId) {
+                        const chevron = document.getElementById(chevronId);
+                        chevron.classList.toggle('rotate');
+                    }
+                }
+                 function toggleDropdown1(event, dropdownId, chevronId = null) {
                     event.preventDefault();
                     event.stopPropagation();
                     const dropdown = document.getElementById(dropdownId);
