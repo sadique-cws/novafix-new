@@ -5,6 +5,7 @@ namespace App\Livewire\Staff;
 use App\Models\ServiceRequest;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -46,7 +47,7 @@ class CompletedTask extends Component
     public function render()
     {
         $requests = ServiceRequest::query()
-            ->where('receptioners_id', Auth::guard('staff')->user()->id)
+            ->where('technician_id', Auth::guard('staff')->user()->id)
             ->where('status', 100) // Only completed tasks
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {

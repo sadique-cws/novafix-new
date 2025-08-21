@@ -6,6 +6,7 @@ use App\Models\Receptioners;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 #[Title('Manage Receptionists')]
@@ -36,7 +37,7 @@ class ManageReceptioners extends Component
     public function render()
     {
         return view('livewire.franchise.manage-receptioners', [
-            'receptionists' => Receptioners::query()
+            'receptionists' => Receptioners::query()->where('franchise_id', Auth::guard('franchise')->user()->id)
                 ->when($this->search, function ($query) {
                     $query->where('name', 'like', '%' . $this->search . '%')
                         ->orWhere('email', 'like', '%' . $this->search . '%')

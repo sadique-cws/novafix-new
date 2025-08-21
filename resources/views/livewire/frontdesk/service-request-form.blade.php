@@ -109,25 +109,9 @@
                         @enderror
                     </div>
 
-                    <!-- Serial No -->
-                    <div>
-                        <label for="serial_no" class="block text-sm font-medium text-slate-600">Serial No</label>
-                        <input type="text" id="serial_no" wire:model="serial_no"
-                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
-                        @error('serial_no')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
+                   
+                   
 
-                    <!-- MAC Address -->
-                    <div>
-                        <label for="MAC" class="block text-sm font-medium text-slate-600">MAC Address</label>
-                        <input type="text" id="MAC" wire:model="MAC"
-                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
-                        @error('MAC')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
 
                     <!-- Color -->
                     <div>

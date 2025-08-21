@@ -12,6 +12,8 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Title;
+
 #[Title('Dashboard')]
 #[Layout('components.layouts.franchise-layout')]
 
@@ -73,7 +75,7 @@ class Dashboard extends Component
 
         $customerPercentageChange = $previousMonthCustomers > 0
             ? round((($currentMonthCustomers - $previousMonthCustomers) / $previousMonthCustomers) * 100, 2)
-            : 100;
+            : ($currentMonthCustomers > 0 ? 100 : 0);
 
         // Services completed (current month)
         $currentMonthServices = ServiceRequest::whereIn('receptioners_id', $receptionerIds)
@@ -89,7 +91,7 @@ class Dashboard extends Component
 
         $servicesPercentageChange = $previousMonthServices > 0
             ? round((($currentMonthServices - $previousMonthServices) / $previousMonthServices) * 100, 2)
-            : 100;
+            : ($currentMonthServices > 0 ? 100 : 0);
 
         // Total revenue (current month)
         $currentMonthRevenue = Payment::whereHas('serviceRequest', function ($query) use ($receptionerIds, $currentMonthStart, $currentMonthEnd) {
@@ -109,7 +111,20 @@ class Dashboard extends Component
 
         $revenuePercentageChange = $previousMonthRevenue > 0
             ? round((($currentMonthRevenue - $previousMonthRevenue) / $previousMonthRevenue) * 100, 2)
-            : 100;
+            : ($currentMonthRevenue > 0 ? 100 : 0);
+
+        // Receptionist count change
+        $currentMonthReceptionists = Receptioners::where('franchise_id', $franchiseId)
+            ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
+            ->count();
+
+        $previousMonthReceptionists = Receptioners::where('franchise_id', $franchiseId)
+            ->whereBetween('created_at', [$previousMonthStart, $previousMonthEnd])
+            ->count();
+
+        $receptionistsPercentageChange = $previousMonthReceptionists > 0
+            ? round((($currentMonthReceptionists - $previousMonthReceptionists) / $previousMonthReceptionists) * 100, 2)
+            : ($currentMonthReceptionists > 0 ? 100 : 0);
 
         // Total receptionists
         $totalReceptionists = Receptioners::where('franchise_id', $franchiseId)->count();
@@ -130,6 +145,7 @@ class Dashboard extends Component
             'customerPercentageChange' => $customerPercentageChange,
             'servicesPercentageChange' => $servicesPercentageChange,
             'revenuePercentageChange' => $revenuePercentageChange,
+            'receptionistsPercentageChange' => $receptionistsPercentageChange,
             'currentMonthRevenue' => $currentMonthRevenue,
         ];
     }

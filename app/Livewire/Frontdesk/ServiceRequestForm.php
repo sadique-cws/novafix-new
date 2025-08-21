@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+
 #[Title('Service Request Form')]
 #[Layout('components.layouts.frontdesk-layout')]
 
@@ -72,7 +74,7 @@ class ServiceRequestForm extends Component
         $this->last_update = now();
         $this->estimate_delivery = Carbon::now()->addDays(3);
         $this->generateServiceCode();
-        $this->generateSerialNumber();
+      
     }
     public function updatedImage()
     {
@@ -88,22 +90,29 @@ class ServiceRequestForm extends Component
 
     protected function generateServiceCode()
     {
-        $datePart = now()->format('Ymd');
-        $randomPart = Str::upper(Str::random(4));
-        $this->service_code = "SR-{$datePart}-{$randomPart}";
+    
+
+        // Get last service code from DB
+        $lastCode = ('service_code');
+
+        if ($lastCode) {
+            // Extract the last 5 digits from service code
+            $lastNumber = (int) substr($lastCode, -5);
+            $newNumber = str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
+        } else {
+            // First code will start from 00001
+            $newNumber = '00001';
+        }
+
+        $this->service_code = "NFSR-{$newNumber}";
+        $this->estimate_delivery = now()->addDays(3)->format('Y-m-d\TH:i');
     }
+
     public function removeImage()
     {
         $this->reset('image', 'capturedImage');
     }
 
-    protected function generateSerialNumber()
-    {
-        $lastRequest = ServiceRequest::orderBy('id', 'desc')->first();
-        $lastSerial = $lastRequest ? intval(preg_replace('/[^0-9]/', '', $lastRequest->serial_no)) : 0;
-        $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d\TH:i');
-        $this->serial_no = 'SN-' . str_pad($lastSerial + 1, 6, '0', STR_PAD_LEFT);
-    }
 
     public function save()
     {

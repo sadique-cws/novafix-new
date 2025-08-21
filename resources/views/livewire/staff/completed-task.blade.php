@@ -114,7 +114,7 @@
                                 <!-- Actions -->
                                 <td class="px-3 sm:px-4 md:px-6 py-4 whitespace-nowrap">
                                     <div class="flex space-x-2">
-                                        <a href="{{ route('frontdesk.servicerequest.show', $request->id) }}"
+                                        <a href="{{ route('staff.task.show', $request->id) }}"
                                             class="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                             title="View Details">
                                             <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

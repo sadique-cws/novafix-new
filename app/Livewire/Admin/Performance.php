@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Livewire\Admin;
-
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Franchise;
@@ -10,6 +9,8 @@ use App\Models\ServiceRequest;
 use App\Models\ServiceCategory;
 use Carbon\Carbon;
 use Livewire\WithPagination;
+use Livewire\Attributes\Title;
+
 #[Title('Performance')]
 #[Layout('components.layouts.admin-layout')]
 

@@ -13,8 +13,9 @@
                 </div>
             </div>
             <div class="mt-2 sm:mt-3 md:mt-4">
-                <p class="text-xs sm:text-sm text-green-500 font-medium">
-                    <i class="fas fa-arrow-up mr-1"></i> 12% from last month
+                <p class="text-xs sm:text-sm {{ $stats['receptionistsPercentageChange'] >= 0 ? 'text-green-500' : 'text-red-500' }} font-medium">
+                    <i class="fas {{ $stats['receptionistsPercentageChange'] >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }} mr-1"></i> 
+                    {{ abs($stats['receptionistsPercentageChange']) }}% from last month
                 </p>
             </div>
         </div>
@@ -31,8 +32,9 @@
                 </div>
             </div>
             <div class="mt-2 sm:mt-3 md:mt-4">
-                <p class="text-xs sm:text-sm text-green-500 font-medium">
-                    <i class="fas fa-arrow-up mr-1"></i> 5% from last month
+                <p class="text-xs sm:text-sm {{ $stats['customerPercentageChange'] >= 0 ? 'text-green-500' : 'text-red-500' }} font-medium">
+                    <i class="fas {{ $stats['customerPercentageChange'] >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }} mr-1"></i> 
+                    {{ abs($stats['customerPercentageChange']) }}% from last month
                 </p>
             </div>
         </div>
@@ -49,8 +51,9 @@
                 </div>
             </div>
             <div class="mt-2 sm:mt-3 md:mt-4">
-                <p class="text-xs sm:text-sm text-red-500 font-medium">
-                    <i class="fas fa-arrow-down mr-1"></i> 8% from last month
+                <p class="text-xs sm:text-sm {{ $stats['servicesPercentageChange'] >= 0 ? 'text-green-500' : 'text-red-500' }} font-medium">
+                    <i class="fas {{ $stats['servicesPercentageChange'] >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }} mr-1"></i> 
+                    {{ abs($stats['servicesPercentageChange']) }}% from last month
                 </p>
             </div>
         </div>
@@ -80,22 +83,28 @@
                 </div>
             </div>
             <div class="mt-2 sm:mt-3 md:mt-4">
-                <p class="text-xs sm:text-sm text-green-500 font-medium">
-                    <i class="fas fa-arrow-up mr-1"></i> 22% from last month
+                <p class="text-xs sm:text-sm {{ $stats['revenuePercentageChange'] >= 0 ? 'text-green-500' : 'text-red-500' }} font-medium">
+                    <i class="fas {{ $stats['revenuePercentageChange'] >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }} mr-1"></i> 
+                    {{ abs($stats['revenuePercentageChange']) }}% from last month
                 </p>
             </div>
         </div>
     </div>
 
-
     <!-- Charts Row -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
         <div class="card bg-white rounded-lg shadow p-4 sm:p-6">
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
                 <h2 class="text-lg font-semibold text-gray-800">Revenue Growth</h2>
-                <div class="flex">
+                <div class="flex flex-wrap gap-2">
+                    <select wire:model="selectedYear" wire:change="updateSelectedYear($event.target.value)"
+                        class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        @foreach($years as $year)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                        @endforeach
+                    </select>
                     <button wire:click="updateTimeRange('monthly')"
-                        class="px-3 py-1 text-sm {{ $timeRange === 'monthly' ? 'bg-blue-50 text-blue-600' : 'text-gray-500 hover:bg-gray-100' }} rounded mr-2">
+                        class="px-3 py-1 text-sm {{ $timeRange === 'monthly' ? 'bg-blue-50 text-blue-600' : 'text-gray-500 hover:bg-gray-100' }} rounded">
                         Monthly
                     </button>
                     <button wire:click="updateTimeRange('yearly')"
@@ -113,7 +122,7 @@
                             data: {
                                 labels: @js($revenueData['labels']),
                                 datasets: [{
-                                    label: 'Revenue ($)',
+                                    label: 'Revenue (₹)',
                                     data: @js($revenueData['values']),
                                     backgroundColor: 'rgba(59, 130, 246, 0.05)',
                                     borderColor: 'rgba(59, 130, 246, 1)',
@@ -132,7 +141,19 @@
                                 },
                                 scales: {
                                     y: {
-                                        beginAtZero: true
+                                        beginAtZero: true,
+                                        ticks: {
+                                            callback: function(value) {
+                                                if (value >= 10000000) {
+                                                    return '₹' + (value / 10000000).toFixed(1) + ' Cr';
+                                                } else if (value >= 100000) {
+                                                    return '₹' + (value / 100000).toFixed(1) + ' L';
+                                                } else if (value >= 1000) {
+                                                    return '₹' + (value / 1000).toFixed(1) + 'K';
+                                                }
+                                                return '₹' + value;
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -149,7 +170,7 @@
         </div>
 
         <div class="card bg-white rounded-lg shadow p-4 sm:p-6">
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
                 <h2 class="text-lg font-semibold text-gray-800">Service Performance</h2>
                 <select wire:model="performanceFilter" wire:change="updatePerformanceFilter($event.target.value)"
                     class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -167,7 +188,7 @@
                             data: {
                                 labels: @js($performanceData['labels']),
                                 datasets: [{
-                                    label: 'Revenue ($)',
+                                    label: 'Revenue (₹)',
                                     data: @js($performanceData['values']),
                                     backgroundColor: [
                                         'rgba(124, 58, 237, 0.7)',
@@ -190,7 +211,19 @@
                                 },
                                 scales: {
                                     y: {
-                                        beginAtZero: true
+                                        beginAtZero: true,
+                                        ticks: {
+                                            callback: function(value) {
+                                                if (value >= 10000000) {
+                                                    return '₹' + (value / 10000000).toFixed(1) + ' Cr';
+                                                } else if (value >= 100000) {
+                                                    return '₹' + (value / 100000).toFixed(1) + ' L';
+                                                } else if (value >= 1000) {
+                                                    return '₹' + (value / 1000).toFixed(1) + 'K';
+                                                }
+                                                return '₹' + value;
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -219,38 +252,43 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th
-                                class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Order ID</th>
-                            <th
-                                class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Customer</th>
-                            <th
-                                class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Service</th>
-                            <th
-                                class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status</th>
-                            <th
-                                class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Amount</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Order ID
+                            </th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Customer
+                            </th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Service
+                            </th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Amount
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach ($recentOrders as $order)
                             <tr>
                                 <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ $order['id'] }}</td>
-                                <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $order['customer'] }}</td>
-                                <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $order['service'] }}</td>
-                                <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
-                                    <span
-                                        class="px-2 py-1 text-xs rounded-full {{ $order['status']['class'] }}">{{ $order['status']['text'] }}</span>
+                                    {{ $order['id'] }}
                                 </td>
                                 <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    ${{ number_format($order['amount'], 2) }}</td>
+                                    {{ $order['customer'] }}
+                                </td>
+                                <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $order['service'] }}
+                                </td>
+                                <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                                    <span class="px-2 py-1 text-xs rounded-full {{ $order['status']['class'] }}">
+                                        {{ $order['status']['text'] }}
+                                    </span>
+                                </td>
+                                <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    ₹{{ number_format($order['amount'], 2) }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -262,22 +300,22 @@
             <h2 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h2>
             <div class="space-y-3 sm:space-y-4">
                 <a wire:navigate href="{{ route('franchise.add.staff') }}"
-                    class="block w-full flex items-center justify-between p-3 sm:p-4 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100">
+                    class="block w-full flex items-center justify-between p-3 sm:p-4 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
                     <span>Add New Staff</span>
                     <i class="fas fa-user-plus"></i>
                 </a>
-                <a href=""
-                    class="block w-full flex items-center justify-between p-3 sm:p-4 bg-green-50 text-green-600 rounded-lg hover:bg-green-100">
+                <a wire:navigate href=""
+                    class="block w-full flex items-center justify-between p-3 sm:p-4 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors">
                     <span>Create Invoice</span>
                     <i class="fas fa-file-invoice"></i>
                 </a>
-                <a href=""
-                    class="block w-full flex items-center justify-between p-3 sm:p-4 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100">
+                <a wire:navigate href=""
+                    class="block w-full flex items-center justify-between p-3 sm:p-4 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition-colors">
                     <span>Schedule Service</span>
                     <i class="fas fa-calendar-alt"></i>
                 </a>
-                <a href=""
-                    class="block w-full flex items-center justify-between p-3 sm:p-4 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-100">
+                <a wire:navigate href=""
+                    class="block w-full flex items-center justify-between p-3 sm:p-4 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-100 transition-colors">
                     <span>Generate Report</span>
                     <i class="fas fa-chart-pie"></i>
                 </a>
