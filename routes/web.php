@@ -62,6 +62,10 @@ Route::get('/reset-password/{token}', ResetPassword::class)->name('password.rese
 Route::prefix("admin")->group(function () {
     Route::middleware('auth:admin')->group(function () {
         Route::name("admin.")->group(function () {
+            Route::get('/logout', function () {
+                auth()->guard('admin')->logout();
+                return redirect()->route('login');
+            })->name('logout');
             Route::get('', AdminDashboard::class)->name('dashboard');
             Route::get('add-franchise', AddFranchises::class)->name('add-franchise');
             Route::get('manage-franchises', ManageFranchises::class)->name('manage-franchises');

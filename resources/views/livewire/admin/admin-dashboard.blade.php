@@ -1,5 +1,4 @@
 <div>
-    <div>
         <!-- Main content area -->
         <main class="flex-1  p-4 sm:p-6 bg-gray-50">
             <!-- Dashboard Overview -->
@@ -332,6 +331,4 @@
                     {{ $franchises->links() }}
                 </div>
             </div>
-        </main>
-    </div>
-</div>
+        </main></div>
