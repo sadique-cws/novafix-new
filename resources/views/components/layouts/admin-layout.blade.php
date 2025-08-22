@@ -48,19 +48,19 @@
         <!-- Sidebar -->
         <div class="fixed top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 z-50 transform transition-transform duration-300"
             :class="isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
-            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-
-                <h2 class="text-lg font-semibold md:text-2xl text-gray-800">Novafix | Admin</h2>
+            <div class="pt-4 pb-2 px-4 border-b border-gray-200 flex items-center justify-start gap-2">
+                <div class="py-1 px-2 rounded-lg bg-[#1E40AF] text-xl font-medium text-[#F9FAFB]">NF</div>
+                <h2 class="text-lg font-medium md:text-xl text-[#111827]">Super Admin</h2>
                 <button @click="isMobileSidebarOpen = false" class="lg:hidden text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
 
-            <nav class="p-4 overflow-y-auto" style="max-height: calc(100vh - 64px)">
+            <nav class="p-4 overflow-y-auto" style="max-height: calc(100vh - 64px)" x-data="dashboard()">
                 <ul>
                     <li class="mb-1">
                         <a wire:navigate href="{{ route('admin.dashboard') }}"
-                            class="flex items-center p-3 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100">
+                            class="flex items-center font-medium p-3 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-100' }}">
                             <i class="fas fa-tachometer-alt mr-3 w-5 text-center"></i>
                             <span>Dashboard</span>
                         </a>
@@ -70,7 +70,7 @@
                     <li class="mb-1 relative">
                         <a href="#" @click="toggleDropdown('franchise')"
                             class="flex items-center justify-between p-3 text-gray-700 rounded-lg hover:bg-blue-50">
-                            <div class="flex items-center">
+                            <div class="flex font-medium items-center">
                                 <i class="fas fa-store mr-3 w-5 text-center"></i>
                                 <span>Franchises</span>
                             </div>
@@ -81,16 +81,15 @@
                             class="pl-2 mt-1 ml-6 border-l-2 border-blue-100 space-y-1">
                             <li>
                                 <a wire:navigate href="{{ route('admin.manage-franchises') }}"
-                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors">All
-                                    Franchises</a>
+                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors font-medium {{ request()->routeIs('admin.manage-franchises') ? 'bg-blue-50 text-blue-600' : '' }}">All Franchises</a>
                             </li>
                             <li>
                                 <a wire:navigate href="{{ route('admin.add-franchise') }}"
-                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded">Add New</a>
+                                    class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.add-franchise') ? 'bg-blue-50 text-blue-600' : '' }}">Add New</a>
                             </li>
                             <li>
                                 <a wire:navigate href="{{ route('admin.franchise.performance') }}"
-                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded">Performance</a>
+                                    class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.franchise.performance') ? 'bg-blue-50 text-blue-600' : '' }}">Performance</a>
                             </li>
                         </ul>
                     </li>
@@ -98,7 +97,7 @@
                     <!-- Staff Management -->
                     <li class="mb-1">
                         <a wire:navigate href="{{ route('admin.staff.management') }}"
-                            class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                            class="flex font-medium items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 {{ request()->routeIs('admin.staff.management') ? 'bg-blue-50 text-blue-600' : '' }}">
                             <i class="fas fa-users-cog mr-3 w-5 text-center"></i>
                             <span>Staff Management</span>
                         </a>
@@ -107,37 +106,68 @@
                     <!-- Receptionists -->
                     <li class="mb-1">
                         <a wire:navigate href="{{ route('admin.receptionst.management') }}"
-                            class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                            class="flex font-medium items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 {{ request()->routeIs('admin.receptionst.management') ? 'bg-blue-50 text-blue-600' : '' }}">
                             <i class="fas fa-user-tie mr-3 w-5 text-center"></i>
                             <span>Receptionists</span>
                         </a>
                     </li>
 
+                    <!-- Solution (Conditional: Link for md/lg, Dropdown for sm) -->
                     <li class="mb-1">
-                        <a wire:navigate href="{{ route('admin.solution') }}"
-                            class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
-                            <i class="fas fa-user-tie mr-3 w-5 text-center"></i>
-                            <span>Solution</span>
-                        </a>
+                        <div x-show="!isMobile" class="md:block hidden">
+                            <a wire:navigate href="{{ route('admin.solution') }}"
+                                class="flex font-medium items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 {{ request()->routeIs('admin.solution') ? 'bg-blue-50 text-blue-600' : '' }}">
+                                <i class="fas fa-user-tie mr-3 w-5 text-center"></i>
+                                <span>Solution</span>
+                            </a>
+                        </div>
+                        <div x-show="isMobile" class="sm:block md:hidden">
+                            <a href="#" @click="toggleDropdown('solution')"
+                                class="flex items-center justify-between p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                                <div class="flex font-medium items-center">
+                                    <i class="fas fa-user-tie mr-3 w-5 text-center"></i>
+                                    <span>Solution</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs ml-2 transition-transform"
+                                    :class="openDropdowns.solution ? 'rotate-180' : ''"></i>
+                            </a>
+                            <ul x-show="openDropdowns.solution" x-transition
+                                class="pl-2 mt-1 ml-6 border-l-2 border-blue-100 space-y-1">
+                                <li>
+                                    <a wire:navigate href="{{ route('admin.solution.manage-devices') }}"
+                                        class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors font-medium {{ request()->routeIs('admin.solution.manage-devices') ? 'bg-blue-50 text-blue-600' : '' }}">Devices</a>
+                                </li>
+                                <li>
+                                    <a wire:navigate href="{{ route('admin.solution.manage-brands') }}"
+                                        class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.solution.manage-brands') ? 'bg-blue-50 text-blue-600' : '' }}">Brands</a>
+                                </li>
+                                <li>
+                                    <a wire:navigate href="{{ route('admin.solution.manage-models') }}"
+                                        class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.solution.manage-models') ? 'bg-blue-50 text-blue-600' : '' }}">Models</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
 
                     <!-- Customers -->
                     <li class="mb-1">
-                        <a href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="#" class="font-medium flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-users mr-3 w-5 text-center"></i>
                             <span>Customers</span>
                         </a>
                     </li>
 
+                    <!-- Settings -->
                     <li class="mb-1">
-                        <a href="#" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="#" class="font-medium flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-cog mr-3 w-5 text-center"></i>
                             <span>Settings</span>
                         </a>
                     </li>
+                    <!-- Logout -->
                     <li class="mb-1">
                         <a wire:navigate href="{{ route('admin.logout') }}"
-                            class="flex items-center p-3 gap-2 bg-red-500 rounded-lg hover:bg-red-600 text-white font-medium">
+                            class="flex items-center p-3 gap-2 bg-red-600 rounded-lg hover:bg-red-700 text-white font-medium">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>
                             <span>Logout</span>
                         </a>
@@ -191,14 +221,19 @@
                     finance: false,
                     reports: false
                 },
+                isMobile: window.innerWidth < 640,
                 toggleDropdown(dropdown) {
                     this.openDropdowns[dropdown] = !this.openDropdowns[dropdown];
-
                     // Close other dropdowns
                     Object.keys(this.openDropdowns).forEach(key => {
                         if (key !== dropdown) {
                             this.openDropdowns[key] = false;
                         }
+                    });
+                },
+                init() {
+                    window.addEventListener('resize', () => {
+                        this.isMobile = window.innerWidth < 640;
                     });
                 }
             }
