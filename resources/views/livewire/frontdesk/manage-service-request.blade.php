@@ -1,7 +1,5 @@
-<div class="max-w-7xl">
-    <main class="flex-1 w-full bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
-        <!-- Sticky Header -->
-        <div class="sticky top-0 z-20 bg-gradient-to-r from-gray-50 to-gray-100 pb-4 pt-2 backdrop-blur-sm">
+<div class="">
+    <div class="sticky top-0 z-20 bg-gradient-to-r from-gray-50 to-gray-100 pb-4 pt-2 backdrop-blur-sm">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                     <h2 class="text-2xl md:text-3xl  text-gray-800 flex items-center">
@@ -519,5 +517,4 @@
                 <span>{{ session('message') }}</span>
             </div>
         @endif
-    </main>
 </div>
