@@ -1,4 +1,4 @@
-<div class="grid grid-cols-7 gap-2  mx-auto">
+<div class="md:grid md:block hidden md:grid-cols-7 gap-2  mx-auto">
     <x-nav-link :href="route('admin.solution.staff-diagnosis')"
         :active="request()->routeIs('admin.solution.staff-diagnosis')" wire:navigate>
         {{ __('Novafix Diagnosis') }}

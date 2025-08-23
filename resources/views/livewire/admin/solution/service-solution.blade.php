@@ -3,7 +3,7 @@
     <div class="mx-auto mt-5 bg-white rounded-lg shadow-md overflow-hidden">
         <!-- Header Section -->
         <div class="flex items-center justify-between px-4 py-3 bg-[#1E40AF] text-[#F9FAFB]">
-            <h3 class="text-xl font-bold">Admin Diagnosis</h3>
+            <h3 class="text-xl font-medium">Admin Diagnosis</h3>
             <button wire:click="resetSelection"
                 class="px-3 py-1 bg-[#F9FAFB] text-[#1E40AF] rounded-md text-sm font-medium hover:bg-blue-50 transition-colors">
                 Reset Selection
