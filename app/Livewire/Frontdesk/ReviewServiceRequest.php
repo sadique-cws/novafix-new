@@ -7,6 +7,8 @@ use Livewire\Component;
 use App\Models\ServiceRequest;
 use App\Models\ServiceCategory;
 use App\Models\Technician;
+use Livewire\Attributes\Title;
+
 #[Title('Review Service Request')]
 #[Layout('components.layouts.frontdesk-layout')]
 

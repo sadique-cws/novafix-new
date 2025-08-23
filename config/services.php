@@ -40,6 +40,11 @@ return [
         'route' => env('MSG91_ROUTE', 4), // 4 for transactional route
         'template_id' => env('MSG91_TEMPLATE_ID'),
     ],
+    'imagekit' => [
+        'public_key' => env('IMAGEKIT_PUBLIC_KEY'),
+        'private_key' => env('IMAGEKIT_PRIVATE_KEY'),
+        'url_endpoint' => env('IMAGEKIT_URL_ENDPOINT'),
+    ],
     
 
 ];
