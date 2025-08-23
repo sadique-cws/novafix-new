@@ -10,9 +10,10 @@ use App\Models\Staff;
 use App\Models\Receptioners;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 #[Title('Front Desk Dashboard')]
 #[Layout('components.layouts.frontdesk-layout')]
-
 class FrontDashboard extends Component
 {
     public $todayServicesCount;
@@ -41,63 +42,74 @@ class FrontDashboard extends Component
 
     public function loadData()
     {
-        // Today's services for this franchise's receptionists
-        $this->todayServicesCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->whereDate('created_at', Carbon::today())
-            ->count();
+        // Get all data in minimal queries
+        $this->loadServiceCounts();
+        $this->loadRecentServices();
+        $this->loadStatusAndDeviceBreakdown();
+        $this->loadRecentPayments();
+        $this->loadTopTechnicians();
+    }
 
-        // In progress services for this franchise (status between 0.1 and 0.99)
-        $this->inProgressCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->where('status', '>', 0)
-            ->where('status', '<', 1)
-            ->count();
+    protected function loadServiceCounts()
+    {
+        // Get today's, in-progress, and completed counts in a single query
+        $counts = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
+            ->selectRaw('
+                COUNT(*) as total,
+                SUM(CASE WHEN DATE(created_at) = CURDATE() THEN 1 ELSE 0 END) as today_count,
+                SUM(CASE WHEN status > 0 AND status < 1 THEN 1 ELSE 0 END) as in_progress_count,
+                SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) as completed_count
+            ')
+            ->first();
 
-        // Completed services for this franchise (status = 1)
-        $this->completedCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->where('status', 1)
-            ->count();
+        $this->todayServicesCount = $counts->today_count;
+        $this->inProgressCount = $counts->in_progress_count;
+        $this->completedCount = $counts->completed_count;
+    }
 
+    protected function loadRecentServices()
+    {
         // Recent services (last 5) for this franchise
         $this->recentServices = ServiceRequest::with(['serviceCategory', 'technician'])
             ->whereIn('receptioners_id', $this->receptionerIds)
             ->latest()
             ->take(5)
             ->get();
+    }
 
-        // Status breakdown for this franchise
+    protected function loadStatusAndDeviceBreakdown()
+    {
+        // Get status and device breakdown in a single query
+        $breakdown = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
+            ->selectRaw('
+                SUM(CASE WHEN status < 0.25 THEN 1 ELSE 0 END) as diagnosis,
+                SUM(CASE WHEN status >= 0.25 AND status < 0.75 THEN 1 ELSE 0 END) as repair,
+                SUM(CASE WHEN status >= 0.75 AND status < 1 THEN 1 ELSE 0 END) as quality_check,
+                SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) as ready_for_pickup,
+                SUM(CASE WHEN product_name LIKE "%laptop%" THEN 1 ELSE 0 END) as laptops,
+                SUM(CASE WHEN product_name LIKE "%phone%" THEN 1 ELSE 0 END) as smartphones,
+                SUM(CASE WHEN product_name LIKE "%tablet%" THEN 1 ELSE 0 END) as tablets,
+                SUM(CASE WHEN product_name NOT LIKE "%laptop%" AND product_name NOT LIKE "%phone%" AND product_name NOT LIKE "%tablet%" THEN 1 ELSE 0 END) as others
+            ')
+            ->first();
+
         $this->statusBreakdown = [
-            'Diagnosis' => ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-                ->where('status', '<', 0.25)
-                ->count(),
-            'Repair' => ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-                ->where('status', '>=', 0.25)
-                ->where('status', '<', 0.75)
-                ->count(),
-            'Quality Check' => ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-                ->where('status', '>=', 0.75)
-                ->where('status', '<', 1)
-                ->count(),
-            'Ready for Pickup' => ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-                ->where('status', 1)
-                ->count()
+            'Diagnosis' => $breakdown->diagnosis,
+            'Repair' => $breakdown->repair,
+            'Quality Check' => $breakdown->quality_check,
+            'Ready for Pickup' => $breakdown->ready_for_pickup
         ];
 
-        // Device breakdown for this franchise
         $this->deviceBreakdown = [
-            'Laptops' => ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-                ->where('product_name', 'like', '%laptop%')
-                ->count(),
-            'Smartphones' => ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-                ->where('product_name', 'like', '%phone%')
-                ->count(),
-            'Tablets' => ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-                ->where('product_name', 'like', '%tablet%')
-                ->count(),
-            'Others' => ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-                ->whereNotIn('product_name', ['%laptop%', '%phone%', '%tablet%'])
-                ->count()
+            'Laptops' => $breakdown->laptops,
+            'Smartphones' => $breakdown->smartphones,
+            'Tablets' => $breakdown->tablets,
+            'Others' => $breakdown->others
         ];
+    }
 
+    protected function loadRecentPayments()
+    {
         // Recent payments for this franchise
         $this->recentPayments = Payment::with(['serviceRequest', 'staff', 'receivedBy'])
             ->whereHas('serviceRequest', function ($query) {
@@ -106,7 +118,10 @@ class FrontDashboard extends Component
             ->latest()
             ->take(5)
             ->get();
+    }
 
+    protected function loadTopTechnicians()
+    {
         // Top technicians for this franchise
         $this->topTechnicians = Staff::where('franchise_id', $this->franchiseId)
             ->withCount(['serviceRequests as completed_services' => function ($query) {

@@ -1,11 +1,10 @@
 <div>
-    <livewire:admin.components.navigation />
-    <div class="mx-auto mt-5 bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="mx-auto bg-white rounded-lg shadow-md overflow-hidden">
         <!-- Header Section -->
-        <div class="flex items-center justify-between px-4 py-3 bg-[#1E40AF] text-[#F9FAFB]">
-            <h3 class="text-xl font-medium">Admin Diagnosis</h3>
+        <div class="flex items-center justify-between p-4 bg-blue-600 text-white">
+            <h3 class="text-xl font-bold">Support Diagnosis</h3>
             <button wire:click="resetSelection"
-                class="px-3 py-1 bg-[#F9FAFB] text-[#1E40AF] rounded-md text-sm font-medium hover:bg-blue-50 transition-colors">
+                class="px-3 py-1 bg-white text-blue-600 rounded-md text-sm font-medium hover:bg-blue-50 transition-colors">
                 Reset Selection
             </button>
         </div>
@@ -219,60 +218,60 @@
 
                     <div class="flex gap-6 items-start">
                         <div class="flex-1 space-y-6">
-                            <!-- filter question section -->
+                           <!-- filter question section -->
                             <div class="grid grid-cols-4 gap-2">
-                                <!-- Brand Selection -->
-                                @if ($brands)
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Select Brand</label>
-                                        <select wire:model="selectedFilterBrand" wire:change="updateSelectedFilterBrand"
-                                            class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
-                                            <option value="">Choose Brand</option>
-                                            @foreach ($brands as $brand)
-                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @endif
-                                <!-- Model Selection -->
-                                @if ($filterModels)
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Select Model</label>
-                                        <select wire:model="selectedFilterModel" wire:change="updateSelectedFilterModel"
-                                            class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
-                                            <option value="">Choose Model</option>
-                                            @foreach ($filterModels as $model)
-                                                <option value="{{ $model->id }}">{{ $model->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @endif
-                                <!-- Problem Selection -->
-                                @if ($filterProblems)
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Select Problem</label>
-                                        <select wire:model="selectedFilterProblem" wire:change="updateSelectedFilterProblem"
-                                            class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
-                                            <option value="">Choose Problem</option>
-                                            @foreach ($filterProblems as $problem)
-                                                <option value="{{ $problem->id }}">{{ $problem->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @endif
-                                <!-- filtered question -->
-                                @if ($filterQuestions)
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Select Question</label>
-                                        <select wire:model="selectedQuestion" wire:change="selectQuestion($event.target.value)"
-                                            class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
-                                            <option value="">Choose Problem</option>
-                                            @foreach ($filterQuestions as $question)
-                                                <option value="{{ $question->id }}">{{ $question->question_text }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @endif
+                              <!-- Brand Selection -->
+                              @if ($brands)
+                                  <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Brand</label>
+                                      <select wire:model="selectedFilterBrand" wire:change="updateSelectedFilterBrand"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Brand</option>
+                                          @foreach ($brands as $brand)
+                                              <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
+                               <!-- Model Selection -->
+                              @if ($filterModels)
+                                  <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Model</label>
+                                      <select wire:model="selectedFilterModel" wire:change="updateSelectedFilterModel"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Model</option>
+                                          @foreach ($filterModels as $model)
+                                              <option value="{{ $model->id }}">{{ $model->name }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
+                              <!-- Problem Selection -->
+                              @if ($filterProblems)
+                                  <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Problem</label>
+                                      <select wire:model="selectedFilterProblem" wire:change="updateSelectedFilterProblem"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Problem</option>
+                                          @foreach ($filterProblems as $problem)
+                                              <option value="{{ $problem->id }}">{{ $problem->name }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
+                              <!-- filtered question -->
+                              @if ($filterQuestions)
+                              <div>
+                                      <label class="block text-sm font-medium text-gray-700 mb-1">Select Question</label>
+                                      <select wire:model="selectedQuestion" wire:change="selectQuestion($event.target.value)"
+                                          class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
+                                          <option value="">Choose Problem</option>
+                                          @foreach ($filterQuestions as $question)
+                                              <option value="{{ $question->id }}">{{ $question->question_text }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              @endif
                             </div>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -286,16 +285,16 @@
                                 @enderror
 
                                 <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                    <div wire:loading.delay.shortest wire:target="search">
-                                        <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                                stroke-width="4"></circle>
-                                            <path class="opacity-75" fill="currentColor"
-                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                            </path>
-                                        </svg>
-                                    </div>
+                                        <div wire:loading.delay.shortest wire:target="search">
+                                            <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                                    stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                                </path>
+                                            </svg>
+                                        </div>
                                 </div>
                             </div>
 

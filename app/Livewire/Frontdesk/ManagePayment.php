@@ -36,8 +36,31 @@ class ManagePayment extends Component
 
     public function render()
     {
+        $userId = Auth::guard('frontdesk')->user()->id;
+        
+        // Get all statistics in a single query
+        $summary = Payment::where('received_by', $userId)
+            ->selectRaw('
+                COUNT(*) as total_count,
+                SUM(total_amount) as total_amount,
+                SUM(CASE WHEN status = "completed" THEN 1 ELSE 0 END) as completed_count,
+                SUM(CASE WHEN status = "completed" THEN total_amount ELSE 0 END) as completed_amount,
+                SUM(CASE WHEN status = "pending" THEN 1 ELSE 0 END) as pending_count,
+                SUM(CASE WHEN status = "pending" THEN total_amount ELSE 0 END) as pending_amount,
+                SUM(CASE WHEN status = "failed" THEN 1 ELSE 0 END) as failed_count,
+                SUM(CASE WHEN status = "failed" THEN total_amount ELSE 0 END) as failed_amount
+            ')
+            ->first();
+
+        // Calculate percentages
+        $totalPaymentCount = $summary->total_count ?? 0;
+        $completedPercentage = $totalPaymentCount > 0 ? round(($summary->completed_count / $totalPaymentCount) * 100) : 0;
+        $pendingPercentage = $totalPaymentCount > 0 ? round(($summary->pending_count / $totalPaymentCount) * 100) : 0;
+        $failedPercentage = $totalPaymentCount > 0 ? round(($summary->failed_count / $totalPaymentCount) * 100) : 0;
+
+        // Get paginated results
         $payments = Payment::with('service')
-            ->where('received_by', Auth::guard('frontdesk')->user()->id)
+            ->where('received_by', $userId)
             ->when($this->search, function ($query) {
                 $query->whereHas('service', function ($q) {
                     $q->where('service_code', 'like', '%' . $this->search . '%')
@@ -56,51 +79,15 @@ class ManagePayment extends Component
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        // Calculate summary statistics
-        $totalAmount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
-            ->sum('total_amount');
-
-        $completedCount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
-            ->where('status', 'completed')
-            ->count();
-
-        $completedAmount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
-            ->where('status', 'completed')
-            ->sum('total_amount');
-
-        $pendingCount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
-            ->where('status', 'pending')
-            ->count();
-
-        $pendingAmount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
-            ->where('status', 'pending')
-            ->sum('total_amount');
-
-        $failedCount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
-            ->where('status', 'failed')
-            ->count();
-
-        $failedAmount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)
-            ->where('status', 'failed')
-            ->sum('total_amount');
-
-        // Calculate total payment count for percentages
-        $totalPaymentCount = Payment::where('received_by', Auth::guard('frontdesk')->user()->id)->count();
-
-        // Calculate percentages (avoid division by zero)
-        $completedPercentage = $totalPaymentCount > 0 ? round(($completedCount / $totalPaymentCount) * 100) : 0;
-        $pendingPercentage = $totalPaymentCount > 0 ? round(($pendingCount / $totalPaymentCount) * 100) : 0;
-        $failedPercentage = $totalPaymentCount > 0 ? round(($failedCount / $totalPaymentCount) * 100) : 0;
-
         return view('livewire.frontdesk.manage-payment', [
             'payments' => $payments,
-            'totalAmount' => $totalAmount,
-            'completedCount' => $completedCount,
-            'completedAmount' => $completedAmount,
-            'pendingCount' => $pendingCount,
-            'pendingAmount' => $pendingAmount,
-            'failedCount' => $failedCount,
-            'failedAmount' => $failedAmount,
+            'totalAmount' => $summary->total_amount ?? 0,
+            'completedCount' => $summary->completed_count ?? 0,
+            'completedAmount' => $summary->completed_amount ?? 0,
+            'pendingCount' => $summary->pending_count ?? 0,
+            'pendingAmount' => $summary->pending_amount ?? 0,
+            'failedCount' => $summary->failed_count ?? 0,
+            'failedAmount' => $summary->failed_amount ?? 0,
             'totalPayments' => $payments->total(),
             'completedPercentage' => $completedPercentage,
             'pendingPercentage' => $pendingPercentage,

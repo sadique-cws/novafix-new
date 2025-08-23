@@ -1,5 +1,5 @@
 
-<div class="max-w-7xl mx-auto pt-4 sm:py-6 px-3 sm:px-6 lg:px-8">
+<div class="">
     <!-- Header -->
     <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl p-6 mb-6 shadow-lg">
         <div class="flex flex-col space-y-2">

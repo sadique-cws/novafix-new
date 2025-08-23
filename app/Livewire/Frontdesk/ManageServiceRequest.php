@@ -6,11 +6,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ServiceRequest;
 use App\Models\Staff;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
+
 #[Title('Manage Service Request')]
 #[Layout('components.layouts.frontdesk-layout')]
-
 class ManageServiceRequest extends Component
 {
     use WithPagination;
@@ -21,6 +22,9 @@ class ManageServiceRequest extends Component
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
     public $technicians = [];
+    public $stats = [];
+    
+    protected $receptionistId;
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -32,7 +36,29 @@ class ManageServiceRequest extends Component
 
     public function mount()
     {
-        $this->technicians = Staff::where('id')->get();
+        $this->receptionistId = Auth::guard('frontdesk')->user()->id;
+        $this->loadInitialData();
+    }
+
+    public function loadInitialData()
+    {
+        // Load technicians once
+        $this->technicians = Staff::all();
+        
+        // Calculate all stats in a single query
+        $statsData = ServiceRequest::where('receptioners_id', $this->receptionistId)
+            ->selectRaw('COUNT(*) as total')
+            ->selectRaw('SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) as pending')
+            ->selectRaw('SUM(CASE WHEN status > 0 AND status < 100 THEN 1 ELSE 0 END) as in_progress')
+            ->selectRaw('SUM(CASE WHEN status = 100 THEN 1 ELSE 0 END) as completed')
+            ->first();
+            
+        $this->stats = [
+            'total' => $statsData->total ?? 0,
+            'pending' => $statsData->pending ?? 0,
+            'in_progress' => $statsData->in_progress ?? 0,
+            'completed' => $statsData->completed ?? 0,
+        ];
     }
 
     public function sortBy($field)
@@ -58,7 +84,7 @@ class ManageServiceRequest extends Component
     public function render()
     {
         $requests = ServiceRequest::query()
-            ->where('receptioners_id', Auth::guard('frontdesk')->user()->id)
+            ->where('receptioners_id', $this->receptionistId)
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('service_code', 'like', '%' . $this->search . '%')
@@ -79,27 +105,18 @@ class ManageServiceRequest extends Component
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
 
-        $stats = [
-            'total' => ServiceRequest::where('receptioners_id', Auth::guard('frontdesk')->user()->id)->count(),
-            'pending' => ServiceRequest::where('receptioners_id', Auth::guard('frontdesk')->user()->id)->where('status', 0)->count(),
-            'in_progress' => ServiceRequest::where('receptioners_id', Auth::guard('frontdesk')->user()->id)->where('status', '>', 0)->where('status', '<', 100)->count(),
-            'completed' => ServiceRequest::where('receptioners_id', Auth::guard('frontdesk')->user()->id)->where('status', 100)->count(),
-        ];
-        $total = ServiceRequest::where('receptioners_id', Auth::guard('frontdesk')->user()->id)->count();
-    
-
         return view('livewire.frontdesk.manage-service-request', [
             'requests' => $requests,
-            'stats' => $stats,
+            'stats' => $this->stats,
             'technicians' => $this->technicians,
-            'total' => $total,
-
+            'total' => $this->stats['total'],
         ]);
     }
 
     public function deleteRequest($id)
     {
         ServiceRequest::destroy($id);
+        $this->loadInitialData(); // Refresh all data
         $this->dispatch('notify', ['type' => 'success', 'message' => 'Service request deleted successfully.']);
     }
 
@@ -111,6 +128,7 @@ class ManageServiceRequest extends Component
                 'status' => $status,
                 'last_update' => now()
             ]);
+            $this->loadInitialData(); // Refresh all data
             $this->dispatch('notify', ['type' => 'success', 'message' => 'Status updated successfully.']);
         }
     }
