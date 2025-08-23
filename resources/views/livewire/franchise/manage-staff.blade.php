@@ -77,7 +77,6 @@
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900">{{ $staff->name }}</div>
-                                        <div class="text-sm text-gray-500">{{ $staff->serviceCategory->name ?? 'N/A' }}</div>
                                     </div>
                                 </div>
                             </td>

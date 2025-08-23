@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Models\ServiceRequest;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\Attributes\Title;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 #[Title('Manage Payments')]

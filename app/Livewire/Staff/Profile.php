@@ -13,7 +13,9 @@ use App\Models\Staff;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
-#[Title('Forgot Password')]
+use Livewire\Attributes\Title;
+
+#[Title('staff profile')]
 #[Layout('components.layouts.staff-layout')]
 
 class Profile extends Component
@@ -69,7 +71,7 @@ class Profile extends Component
         $this->currentImage = $staff->image_url;
 
         // Load dropdown options
-        $this->franchises = franchises::all();
+        $this->franchises = Franchise::all();
         $this->serviceCategories = ServiceCategory::all();
     }
 

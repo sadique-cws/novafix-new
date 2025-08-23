@@ -5,7 +5,6 @@
             {{ session('success') }}
         </div>
     @endif
-
     {{-- Franchise Profile Card --}}
     <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 mb-8 border border-[#F1F5F9]">
         <h2 class="text-2xl font-bold text-[#1E40AF] mb-6">Franchise Profile</h2>

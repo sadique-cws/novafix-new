@@ -11,6 +11,7 @@ use App\Models\Receptioners;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Title;
 
 #[Title('Front Desk Dashboard')]
 #[Layout('components.layouts.frontdesk-layout')]

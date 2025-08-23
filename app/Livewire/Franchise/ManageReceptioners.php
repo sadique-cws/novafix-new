@@ -47,6 +47,11 @@ class ManageReceptioners extends Component
                 ->paginate($this->perPage)
         ]);
     }
+
+    public function confirmDelete($id)
+    {
+        Receptioners::destroy($id);
+    }
     public function logout()
     {
         Auth::guard('franchise')->logout();

@@ -1,13 +1,18 @@
 <div class="p-6 bg-gray-50 min-h-screen">
-    <h1 class="text-2xl text-blue-800 mb-6">Manage Customers</h1>
+   <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
+    <!-- Title -->
+    <h1 class="text-2xl text-blue-800">Manage Customers</h1>
 
     <!-- Search -->
-    <div class="mb-5">
+    <div class="relative w-full md:w-72">
         <input type="text" wire:model.live="search" 
                placeholder="Search by name, contact, or email"
-               class="w-full md:w-1/3 border border-gray-300 rounded-lg px-4 py-2 
-                      focus:outline-none focus:ring-2 focus:ring-blue-500">
+               class="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 text-sm
+                      focus:outline-none focus:ring-1 focus:ring-blue-500">
+        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
     </div>
+</div>
+
 
     <!-- Customers Table -->
     <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
