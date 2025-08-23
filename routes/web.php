@@ -1,4 +1,5 @@
 <?php
+use App\Livewire\Admin\Solution\StaffAnswers;
 use App\Livewire\Auth\{Login,ForgotPassword, ResetPassword};
 use App\Livewire\Admin\AddFranchises;
 use App\Livewire\Admin\EditFranchise; 
@@ -87,6 +88,7 @@ Route::prefix("admin")->group(function () {
             Route::get('solution/manage-models', ManageModel::class)->name('solution.manage-models');
             Route::get('solution/manage-problems', ManageProblem::class)->name('solution.manage-problems');
             Route::get('solution/staff-diagnosis',StaffDiagnosis::class)->name('solution.staff-diagnosis');
+             Route::get('solution/staff-answers',StaffAnswers::class)->name('solution.staff-answers');
         });
     });
 });

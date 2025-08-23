@@ -63,6 +63,51 @@ class ServiceSolution extends Component
     }
     public function updateSelectedFilterProblem(){
         $this->filterQuestions = Question::where('problem_id',$this->selectedFilterProblem)->get();
+        // If we have results, auto-select the first question to improve UX
+        if ($this->filterQuestions->isNotEmpty()) {
+            $first = $this->filterQuestions->first();
+            // Use selectQuestion so selection logic (clearing search, etc.) runs
+            $this->selectQuestion($first->id);
+        } else {
+            $this->selectedQuestion = null;
+        }
+    }
+
+    /**
+     * Remove the existing (persisted) image for the question being edited.
+     * This deletes the image from ImageKit and clears DB fields immediately.
+     */
+    public function removeEditingImageNow()
+    {
+        if (!$this->editingQuestionId) {
+            return;
+        }
+
+        $question = Question::find($this->editingQuestionId);
+        if (!$question) {
+            session()->flash('error', 'Question not found');
+            return;
+        }
+
+        if ($question->image_file_id) {
+            // delete from image provider
+            ImageKitHelper::deleteImage($question->image_file_id);
+        }
+
+        // clear DB fields
+        $question->update([
+            'image_url' => null,
+            'image_file_id' => null,
+        ]);
+
+        // reset editing state
+        $this->editingQuestionImage = null;
+        $this->removeEditingImage = false;
+
+        // refresh current question (so UI shows updated data)
+        $this->currentQuestion = Question::find($this->currentQuestion->id);
+
+        session()->flash('message', 'Image removed successfully');
     }
     public function mount()
     {
@@ -250,7 +295,6 @@ class ServiceSolution extends Component
         if ($question) {
             $this->editingQuestionId = $questionId;
             $this->editingQuestionText = $question->question_text;
-            // Set existing image URL (string) so preview can show it. If user uploads a new file, it will be a UploadedFile instance
             $this->editingQuestionImage = $question->image_url;
             $this->removeEditingImage = false;
             $this->editingQuestionDescription = $question->description;
