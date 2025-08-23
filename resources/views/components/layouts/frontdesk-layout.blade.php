@@ -100,8 +100,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('frontdesk.logout') }}" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg transition duration-150">
-                            <i class="fas fa-sign-out-alt mr-2 text-gray-500"></i> Logout
+                        <a href="{{ route('frontdesk.logout') }}" class="sidebar-link flex items-center hover:text-red-500 px-4 py-3 text-white bg-red-600 rounded-lg transition duration-150">
+                            <i class="fas fa-sign-out-alt mr-2 text-white"></i> Logout
                         </a>
                     </li>
                 </ul>
