@@ -101,9 +101,8 @@
                         </a>
                     </li>
                     <li>
-                        <a wire:navigate href="{{ route('frontdesk.logout') }}" 
-                           class="sidebar-link flex items-center bg-red-600  px-4 py-3 rounded-lg text-white">
-                            <i class="fas fa-sign-out-alt mr-2 text-gray-400"></i> Logout
+                        <a href="{{ route('frontdesk.logout') }}" class="sidebar-link flex items-center hover:text-red-500 px-4 py-3 text-white bg-red-600 rounded-lg transition duration-150">
+                            <i class="fas fa-sign-out-alt mr-2 text-white"></i> Logout
                         </a>
                     </li>
                 </ul>
