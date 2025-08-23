@@ -6,6 +6,8 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\ServiceCategory;
+use Livewire\Attributes\Title;
+
 #[Title('Manage Services')]
 #[Layout('components.layouts.franchise-layout')]
 

@@ -31,8 +31,6 @@ class ServiceRequestForm extends Component
     public $email;
     public $contact;
     public $brand;
-    public $serial_no;
-    public $MAC;
     public $color;
     public $service_amount;
     public $problem;
@@ -41,7 +39,6 @@ class ServiceRequestForm extends Component
     public $delivered_by;
     public $delivery_status = false;
     public $estimate_delivery;
-    public $date_of_delivery;
     public $image;
     public $capturedImage;
     public $cameraError;
@@ -57,13 +54,10 @@ class ServiceRequestForm extends Component
             'email' => 'nullable|email|max:255',
             'contact' => 'required|string|max:20',
             'brand' => 'required|string|max:255',
-            'serial_no' => 'nullable|string|max:255',
-            'MAC' => 'nullable|string|max:255',
             'color' => 'required|string|max:100',
             'service_amount' => 'nullable|numeric|min:0',
             'problem' => 'required|string',
             'estimate_delivery' => 'required|date',
-            'date_of_delivery' => 'nullable|date|after_or_equal:estimate_delivery',
             'image' => 'nullable|image',
         ];
     }
@@ -133,8 +127,6 @@ class ServiceRequestForm extends Component
                 'email' => $this->email,
                 'contact' => $this->contact,
                 'brand' => $this->brand,
-                'serial_no' => $this->serial_no,
-                'MAC' => $this->MAC,
                 'color' => $this->color,
                 'service_amount' => $this->service_amount,
                 'problem' => $this->problem,
@@ -143,7 +135,6 @@ class ServiceRequestForm extends Component
                 'delivered_by' => $this->delivered_by,
                 'delivery_status' => $this->delivery_status,
                 'estimate_delivery' => $this->estimate_delivery,
-                'date_of_delivery' => $this->date_of_delivery,
                 'image' => $imagePath
             ]);
 
