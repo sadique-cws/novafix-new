@@ -12,8 +12,6 @@ class ManageFranchises extends Component
 {
     public $search = '';
     public $statusFilter = '';
-    public $sortField = 'created_at';
-    public $sortDirection = 'desc';
     public $perPage = 10;
   
     public function edit($id){
@@ -32,7 +30,6 @@ class ManageFranchises extends Component
             ->when($this->statusFilter, function ($query) {
                 $query->where('status', $this->statusFilter);
             })
-            ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
 
         return view('livewire.admin.manage-franchises', [

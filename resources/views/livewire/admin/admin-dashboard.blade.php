@@ -1,12 +1,6 @@
 <div>
         <!-- Main content area -->
         <main class="flex-1  p-4 sm:p-6 bg-gray-50">
-            <!-- Dashboard Overview -->
-            <div class="bg-blue-500 rounded-xl p-6 mb-6 text-white">
-                <h2 class="text-xl md:text-2xl  mb-2">Dashboard !</h2>
-                <p class="opacity-90">Here's what's happening with your franchises today.</p>
-            </div>
-
             <!-- Stats Cards -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <!-- Total Franchises -->
@@ -14,12 +8,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Total Franchises</p>
-                            <p class="text-xl  text-gray-800 mt-1"> {{ $stats['totalFranchises'] }}</p>
-                            <p class="text-xs text-green-600 mt-2">
-                                <i class="fas fa-arrow-up mr-1"></i>
-                                <span class="font-medium">+{{ round(($stats['totalFranchises'] / 10) * 100) }}%</span>
-                                from last month
-                            </p>
+                            <p class="text-xl  text-gray-800 mt-1"> {{ $totalFranchises }}</p>
                         </div>
                         <div class="bg-blue-100 p-2 rounded-full">
                             <i class="fas fa-store text-blue-600 text-sm"></i>
@@ -32,12 +21,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Active Staff</p>
-                            <p class="text-xl  text-gray-800 mt-1">{{ $stats['activeStaff'] }}</p>
-                            <p class="text-xs text-green-600 mt-2">
-                                <i class="fas fa-arrow-up mr-1"></i>
-                                <span class="font-medium">+{{ round(($stats['activeStaff'] / 20) * 100) }}%</span> from
-                                last month
-                            </p>
+                            <p class="text-xl  text-gray-800 mt-1">{{ $totalstaff }}</p>
                         </div>
                         <div class="bg-green-100 p-2 rounded-full">
                             <i class="fas fa-users text-green-600 text-sm"></i>
@@ -51,11 +35,6 @@
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Receptionists</p>
                             <p class="text-xl  text-gray-800 mt-1">{{ $stats['receptionists'] }}</p>
-                            <p class="text-xs text-green-600 mt-2">
-                                <i class="fas fa-arrow-up mr-1"></i>
-                                <span class="font-medium">+{{ round(($stats['receptionists'] / 5) * 100) }}%</span> from
-                                last month
-                            </p>
                         </div>
                         <div class="bg-amber-100 p-2 rounded-full">
                             <i class="fas fa-user-tie text-yellow-600 text-sm"></i>
@@ -84,12 +63,6 @@
                                 }
                             @endphp
                             <p class="text-xl  text-gray-800 mt-1">{{ $formattedRevenue }}</p>
-                            <p class="text-xs text-green-600 mt-2">
-                                <i class="fas fa-arrow-up mr-1"></i>
-                                <span
-                                    class="font-medium">{{ $stats['growthRate'] >= 0 ? '+' : '' }}{{ $stats['growthRate'] }}%</span>
-                                from last month
-                            </p>
                         </div>
                         <div class="bg-purple-100 p-2 rounded-full">
                             <i class="fas fa-rupee-sign text-purple-600 text-sm"></i>
@@ -97,73 +70,9 @@
                     </div>
                 </div>
             </div>
-          
-            <!-- Dynamic Data Row -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                <!-- Recent Payments -->
-                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm">
-                    <h2 class="text-base sm:text-lg font-semibold text-gray-800 mb-4">Recent Payments</h2>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Franchise</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse($recentPayments as $payment)
-                                    <tr>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $payment->serviceRequest->receptionist->franchise->franchise_name ?? 'N/A' }}
-                                        </td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            ₹{{ number_format($payment->total_amount, 2) }}
-                                        </td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $payment->created_at->format('M d, Y') }}
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="3" class="px-4 py-4 text-center text-sm text-gray-500">
-                                            No recent payments found
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-             
-            </div>
 
             <!-- Recent Activity & Top Franchises -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                <!-- Recent Activity -->
-                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm lg:col-span-2">
-                    <h2 class="text-base sm:text-lg font-semibold text-gray-800 mb-4">Recent Activity</h2>
-                    <div class="space-y-4">
-                        @forelse($recentActivities as $activity)
-                            <div class="flex items-start">
-                                <div class="bg-{{ $activity['color'] }}-100 p-2 sm:p-2.5 rounded-full mr-3">
-                                    <i class="fas {{ $activity['icon'] }} text-{{ $activity['color'] }}-600 text-xs sm:text-sm"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-sm font-medium text-gray-800">{{ $activity['title'] }}</p>
-                                    <p class="text-xs sm:text-sm text-gray-500">{{ $activity['description'] }}</p>
-                                    <p class="text-xs text-gray-500">Franchise: {{ $activity['franchise'] }}</p>
-                                    <p class="text-xs text-gray-400 mt-1">{{ $activity['time'] }}</p>
-                                </div>
-                            </div>
-                        @empty
-                            <p class="text-sm text-gray-500">No recent activities</p>
-                        @endforelse
-                    </div>
-                </div>
-
                 <!-- Top Franchises -->
                 <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm">
                     <h2 class="text-base sm:text-lg font-semibold text-gray-800 mb-4">Top Franchises</h2>

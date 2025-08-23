@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\Receptioners;
 use App\Models\ServiceRequest;
 use App\Models\Staff;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -24,6 +25,10 @@ class AdminDashboard extends Component
     public $search = '';
     public $statusFilter = '';
 
+    public $totalFranchises;
+
+    public $totalstaff;
+
     public function sortBy($field)
     {
         if ($this->sortField === $field) {
@@ -32,6 +37,18 @@ class AdminDashboard extends Component
             $this->sortDirection = 'asc';
         }
         $this->sortField = $field;
+    }
+
+    public function mount(){
+          $this->totalFranchises=Cache::remember('total_Franchises',1800,function(){
+              return Franchise::count();
+            });
+
+            $this->totalstaff=cache::remember('total_staff',now()->addMinutes(30),function(){
+                return Staff::where('status', 'active')->count();
+            });
+
+            
     }
 
     public function render()
@@ -52,28 +69,16 @@ class AdminDashboard extends Component
             ->keyBy('id');
 
         $stats = [
-            'totalFranchises' => Franchise::count(),
-            'activeStaff' => Staff::where('status', 'active')->count(),
+          
+           
+            //  'totalFranchises' => Franchise::count(),
+            // 'activeStaff' => Staff::where('status', 'active')->count(),
             'receptionists' => Receptioners::count(),
             'monthlyRevenue' => $franchiseRevenues->sum('monthly_revenue'),
             'growthRate' => $this->calculateGrowthRate(),
         ];
 
-        // Recent Activity
-        $recentActivities = ServiceRequest::with(['technician', 'receptionist.franchise'])
-            ->latest()
-            ->take(5)
-            ->get()
-            ->map(function ($request) {
-                return [
-                    'title' => 'Service Request',
-                    'description' => ($request->product_name ?? 'No product') . ' from ' . ($request->owner_name ?? 'Unknown'),
-                    'franchise' => $request->receptionist->franchise->franchise_name ?? 'N/A',
-                    'time' => $request->created_at->diffForHumans(),
-                    'icon' => 'fa-tasks',
-                    'color' => 'blue'
-                ];
-            });
+        
 
         // Top Franchises by revenue
         $topFranchises = $franchiseRevenues->sortByDesc('total_revenue')->take(5);
@@ -105,12 +110,6 @@ class AdminDashboard extends Component
             return $franchise;
         });
 
-        // Recent payments data
-        $recentPayments = Payment::with(['serviceRequest.receptionist.franchise'])
-            ->latest()
-            ->take(5)
-            ->get();
-
         // Service request status breakdown
         $serviceStatuses = ServiceRequest::select('status', DB::raw('count(*) as count'))
             ->groupBy('status')
@@ -121,10 +120,8 @@ class AdminDashboard extends Component
 
         return view('livewire.admin.admin-dashboard', [
             'stats' => $stats,
-            'recentActivities' => $recentActivities,
             'topFranchises' => $topFranchises,
             'franchises' => $franchises,
-            'recentPayments' => $recentPayments,
             'serviceStatuses' => $serviceStatuses,
         ]);
     }
