@@ -20,7 +20,7 @@
      <x-nav-link :href="route('admin.solution.manage-problems')" :active="request()->routeIs('admin.solution.manage-problems')" wire:navigate>
             {{ __('Problems') }}
         </x-nav-link>
-    <div class="p-1 border bg-gray-200 flex items-center justify-center font-medium rounded">
-        <h2 class="text-lg">User Answers</h2>
-    </div>
+   <x-nav-link :href="route('admin.solution.staff-answers')" :active="request()->routeIs('admin.solution.staff-answers')" wire:navigate>
+            {{ __('Staff Answers') }}
+        </x-nav-link>
 </div>
