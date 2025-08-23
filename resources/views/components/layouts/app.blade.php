@@ -100,7 +100,7 @@
 
     <header>
         <img src="novafix-logo.png" alt="NovaFix Logo" style="height: 50px;"
-            onerror="this.onerror=null;this.src='https://placehold.co/150x50?text=NovaFix+Logo';">
+            onerror="this.onerror=null;this.src='https://placehold.co/150x50?text=NovaFix+Logo'">
         <nav>
             <a href="#contact">Contact</a>
             <a href="#learn">Learn</a>
@@ -112,13 +112,13 @@
         {{ $slot }}
     </main>
 
-    <footer>
+    {{-- <footer>
         <p>NovaFix | +91 7885802002 | NovaFix@gmail.com</p>
         <p>2nd Floor, Near 80ft Road, Pune (India) | 411030</p>
         <p><a href="#warranty-policy">Warranty Policy</a> | <a href="#terms">Terms</a> | <a href="#our-team">Our
                 Team</a></p>
         <p>Copyright © All rights reserved.</p>
-    </footer>
+    </footer> --}}
 
 
 </body>

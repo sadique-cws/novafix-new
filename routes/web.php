@@ -21,6 +21,7 @@ use App\Livewire\Admin\ViewFranchises;
 use App\Livewire\Franchise\AddReceptioners;
 use App\Livewire\Franchise\AddStaff;
 use App\Livewire\Franchise\Dashboard;
+use App\Livewire\Franchise\ManageCustomer;
 use App\Livewire\Franchise\ManageReceptioners;
 use App\Livewire\Franchise\ManageService;
 use App\Livewire\Franchise\ManagePayments;
@@ -51,12 +52,15 @@ use App\Livewire\Staff\Profile;
 use App\Livewire\Staff\ShowTask;
 use App\Services\Msg91Service;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Types\Relations\Role;
 
 // Public Routes
 Route::get("/", Homepage::class)->name('homepage');
 Route::get('/login', Login::class)->name('login');
-Route::get('/forgot-password', ForgotPassword::class)->name('password.request');
-Route::get('/reset-password/{token}', ResetPassword::class)->name('password.reset');
+// Password reset routes
+// Password reset routes
+Route::get('/forgot-password', App\Livewire\Auth\ForgotPassword::class)->name('password.request');
+Route::get('/reset-password/{token}', App\Livewire\Auth\ResetPassword::class)->name('password.reset');
 
 // Admin Routes (protected by 'auth:admin' middleware)
 Route::prefix("admin")->group(function () {
@@ -93,8 +97,9 @@ Route::prefix("franchise")->group(function () {
         Route::name("franchise.")->group(function () {
             Route::get('/logout', function () {
                 auth()->guard('franchise')->logout();
-                return redirect()->route('franchise.login');
+                return redirect()->route('login');
             })->name('logout');
+            Route::get("/profile", App\Livewire\Franchise\FranchiseProfile::class)->name("profile");
             Route::get("/dashboard", Dashboard::class)->name("dashboard");
             Route::get("/manage/request", ManageServiceRequest::class)->name("manage.request");
             Route::get('/add-receptioners', AddReceptioners::class)->name('add.receptioners');
@@ -107,6 +112,7 @@ Route::prefix("franchise")->group(function () {
             Route::get('/manage-service', ManageService::class)->name('manage.service');
             Route::get('/manage-payments', ManagePayments::class)->name('manage.payments');
             Route::get('/manage-payments/{paymentId}', ViewCustomerPayment::class)->name('payments.view');
+            Route::get('/manage-customers', ManageCustomer::class)->name('manage.customer');
         });
     });
 });

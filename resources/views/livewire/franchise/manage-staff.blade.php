@@ -1,5 +1,5 @@
-<div class="container mx-auto  py-2">
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+<div class="container mx-auto p-2 mt-2 py-2">
+    <div class="bg-white rounded border  overflow-hidden">
         <!-- Header Section -->
         <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-4 flex flex-col md:flex-row justify-between items-center">
             <h2 class="text-2xl  text-white mb-4 md:mb-0">Staff Management</h2>

@@ -1,33 +1,37 @@
-<div class="min-h-screen flex flex-col sm:justify-center items-center sm:pt-0 bg-gradient-to-br from-blue-50 to-indigo-100">
-    <div class="w-full sm:max-w-md px-6 py-8 bg-white shadow-lg overflow-hidden sm:rounded-lg">
-        <!-- Application Logo -->
+<div class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 px-4 sm:px-6 lg:px-8">
+    <div class="w-full sm:max-w-md bg-white shadow-2xl rounded-2xl p-8 sm:p-10 transition-transform transform hover:scale-[1.01]">
+        
+        <!-- Logo -->
         <div class="flex justify-center mb-8">
-            <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center">
+            <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
             </div>
         </div>
 
-        <!-- Session Status -->
+        <!-- Status Messages -->
         @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
+            <div class="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm text-center">
                 {{ session('status') }}
             </div>
         @endif
 
         @if ($error)
-            <div class="mb-6 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+            <div class="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm text-center">
                 {{ $error }}
             </div>
         @endif
 
-        <h1 class="text-center text-2xl  text-gray-800 mb-2">Welcome Back</h1>
-        <p class="text-center text-gray-600 mb-8">Sign in to access your account</p>
+        <!-- Heading -->
+        <h1 class="text-center text-2xl font-bold text-gray-800 mb-2">Welcome Back 👋</h1>
+        <p class="text-center text-gray-600 mb-8">Sign in to continue to your account</p>
 
-        <form wire:submit.prevent="login">
-            <!-- Email Input -->
-            <div class="mb-5">
+        <!-- Form -->
+        <form wire:submit.prevent="login" class="space-y-5">
+            
+            <!-- Email -->
+            <div>
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -42,18 +46,17 @@
                         wire:model="email" 
                         required 
                         autocomplete="email"
-                        autofocus
-                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-400"
                         placeholder="you@example.com"
                     >
                 </div>
             </div>
 
-            <!-- Password Input -->
-            <div class="mb-5">
+            <!-- Password -->
+            <div>
                 <div class="flex items-center justify-between mb-1">
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <a href="#" class="text-sm text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                    <a href="{{ route('password.request') }}" class="text-sm text-indigo-600 hover:text-indigo-500">Forgot password?</a>
                 </div>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -67,14 +70,14 @@
                         wire:model="password" 
                         required 
                         autocomplete="current-password"
-                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-400"
                         placeholder="••••••••"
                     >
                 </div>
             </div>
 
             <!-- Remember Me -->
-            <div class="mb-6 flex items-center">
+            <div class="flex items-center">
                 <input 
                     id="remember" 
                     type="checkbox" 
@@ -86,21 +89,26 @@
                 </label>
             </div>
 
-            <!-- Login Button -->
+            <!-- Submit Button -->
             <button 
                 type="submit" 
                 wire:loading.attr="disabled"
-                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300"
+                class="w-full flex justify-center items-center py-3 px-4 rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 shadow-md transition duration-300 ease-in-out transform hover:-translate-y-0.5"
             >
                 <span wire:loading.remove>Sign In</span>
                 <span wire:loading>
-                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Authenticating...
+                   
                 </span>
             </button>
         </form>
+
+        <!-- Divider -->
+        <div class="mt-8 border-t border-gray-200"></div>
+
+      
     </div>
 </div>

@@ -1,58 +1,63 @@
-<div class="min-h-screen flex flex-col sm:justify-center items-center sm:pt-0 bg-gradient-to-br from-blue-50 to-indigo-100">
-    <div class="w-full sm:max-w-md px-6 py-8 bg-white shadow-lg overflow-hidden sm:rounded-lg">
-        <div class="flex justify-center mb-8">
-            <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center">
-                <!-- SVG Icon -->
+<div>
+    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full bg-white shadow-xl rounded-2xl p-8 space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-gray-900">
+                    Forgot Password
+                </h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Enter your email address and we'll send you a link to reset your password.
+                </p>
             </div>
-        </div>
 
-        <h1 class="text-center text-2xl  text-gray-800 mb-2">Reset Your Password</h1>
-        <p class="text-center text-gray-600 mb-8">Enter your email to receive a password reset link</p>
-
-        @if ($success)
-            <div class="mb-6 p-3 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm">
-                Password reset link has been sent to your email.
-            </div>
-        @endif
-
-        @if ($error)
-            <div class="mb-6 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
-                {{ $error }}
-            </div>
-        @endif
-
-        <form wire:submit.prevent="sendResetLink">
-            <!-- Email Input -->
-            <div class="mb-5">
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                <div class="relative">
-                    <input 
-                        id="email" 
-                        type="email" 
-                        wire:model="email" 
-                        required 
-                        autofocus
-                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="you@example.com"
-                    >
+            {{-- Success message --}}
+            @if ($message)
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg text-sm" role="alert">
+                    {{ $message }}
                 </div>
-            </div>
+            @endif
 
-            <!-- Submit Button -->
-            <button 
-                type="submit" 
-                wire:loading.attr="disabled"
-                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300"
-            >
-                Send Password Reset Link
-            </button>
+            {{-- Error message (optional) --}}
+            {{-- 
+            @if ($error)
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-sm" role="alert">
+                    {{ $error }}
+                </div>
+            @endif 
+            --}}
 
-            <!-- Back to Login -->
-            <div class="mt-6 text-center">
-                <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                    Back to Login
-                </a>
-            </div>
-        </form>
+            <form class="mt-6 space-y-6" wire:submit.prevent="sendResetLink">
+                <div>
+                    <label for="email" class="sr-only">Email address</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required
+                           class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                           placeholder="Email address" wire:model="email">
+                    @error('email') 
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> 
+                    @enderror
+                </div>
+
+                <div>
+                    <button type="submit"
+                            class="relative w-full flex items-center justify-center py-4  px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition duration-200 ease-in-out">
+                        <span wire:loading.remove>Send Reset Link</span>
+
+                        <!-- Loader spinner -->
+                        <svg wire:loading class="animate-spin h-7 w-7 text-white absolute" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" 
+                                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="text-center">
+                    <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                        Back to Login
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
