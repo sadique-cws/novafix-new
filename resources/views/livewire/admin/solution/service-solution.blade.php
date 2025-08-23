@@ -93,8 +93,8 @@
                                             class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
                                             <input type="file" accept="image/*" wire:model="editingQuestionImage"
                                                 class="hidden">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
@@ -104,8 +104,8 @@
                                             class="mt-1 flex items-center text-blue-600 text-xs">
                                             <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
                                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                                    stroke-width="4">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                    stroke="currentColor" stroke-width="4">
                                                 </circle>
                                                 <path class="opacity-75" fill="currentColor"
                                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -128,15 +128,33 @@
                                                         class="h-28 w-full rounded-md border object-cover">
                                                 @endif
                                                 <div class="absolute -top-2 -right-2 flex space-x-2">
-                                                    <button type="button" wire:click.prevent="$set('editingQuestionImage', null)"
-                                                        class="bg-yellow-500 text-white rounded-full p-1 hover:bg-yellow-600 transition"
-                                                        aria-label="Clear selection">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                d="M6 18L18 6M6 6l12 12" />
-                                                        </svg>
-                                                    </button>
+                                                    @if (is_string($editingQuestionImage))
+                                                        {{-- Persisted image: remove from DB/provider --}}
+                                                        <button type="button"
+                                                            wire:click.prevent="removeEditingImageNow"
+                                                            class="bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
+                                                            aria-label="Remove persisted image">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
+                                                                fill="none" viewBox="0 0 24 24"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                            </svg>
+                                                        </button>
+                                                    @else
+                                                        {{-- Temporary uploaded file: just clear the selection --}}
+                                                        <button type="button"
+                                                            wire:click.prevent="$set('editingQuestionImage', null)"
+                                                            class="bg-yellow-500 text-white rounded-full p-1 hover:bg-yellow-600 transition"
+                                                            aria-label="Clear selection">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
+                                                                fill="none" viewBox="0 0 24 24"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                            </svg>
+                                                        </button>
+                                                    @endif
                                                 </div>
                                             </div>
                                         @else
@@ -149,7 +167,8 @@
                                 </div>
 
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700">Description (Optional)</label>
+                                    <label class="block text-sm font-medium text-gray-700">Description
+                                        (Optional)</label>
                                     <textarea wire:model="editingQuestionDescription" rows="5"
                                         class="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
                                         placeholder="Notes or context..."></textarea>
@@ -189,10 +208,7 @@
                                     </button>
                                 </div>
 
-                                @if (
-                                        \App\Models\Question::where('yes_question_id', $currentQuestion->id)
-                                            ->orWhere('no_question_id', $currentQuestion->id)->exists()
-                                    )
+                                @if (\App\Models\Question::where('yes_question_id', $currentQuestion->id)->orWhere('no_question_id', $currentQuestion->id)->exists())
                                     <button wire:click="previousQuestion"
                                         class="text-[#111827] text-lg bg-gray-300 rounded py-1 px-3 font-medium transition-colors">
                                         <i class="fa-solid text-[#111827] fa-arrow-left"></i>
@@ -210,26 +226,28 @@
                             </div>
 
                             <!-- Extra Section (Image + Description) -->
-                            @if($currentQuestion->image_url || $currentQuestion->description)
-                                <div class="flex flex-col items-center md:items-start gap-3 md:w-1/3 text-center md:text-left">
-                                    @if($currentQuestion->image_url)
+                            @if ($currentQuestion->image_url || $currentQuestion->description)
+                                <div
+                                    class="flex flex-col items-center md:items-start gap-3 md:w-1/3 text-center md:text-left">
+                                    @if ($currentQuestion->image_url)
                                         <div class="flex flex-col gap-1">
                                             <p
                                                 class=" text-gray-700
                                                                                                                                                                                              font-medium">
                                                 Related Image
                                                 :-</p>
-                                            <img src="{{ $currentQuestion->image_url }}" class="h-32 w-64 object-fit rounded shadow"
-                                                alt="Question Image">
+                                            <img src="{{ $currentQuestion->image_url }}"
+                                                class="h-32 w-64 object-fit rounded shadow" alt="Question Image">
                                         </div>
                                     @endif
-                                    @if($currentQuestion->description)
+                                    @if ($currentQuestion->description)
                                         <div class="flex flex-col gap-1">
                                             <label for=""
                                                 class="text-gray-700
                                                                                                                                                                                              font-medium">Explanation
                                                 :-</label>
-                                            <p class="text-gray-700 text-base leading-relaxed">{{ $currentQuestion->description }}</p>
+                                            <p class="text-gray-700 text-base leading-relaxed">
+                                                {{ $currentQuestion->description }}</p>
                                         </div>
                                     @endif
                                 </div>
@@ -243,269 +261,236 @@
 
         <!-- create new question -->
         @if ($newQuestionAnswer)
-            <div class="p-6 bg-gray-50">
-                <div class="max-w-4xl mx-auto space-y-3">
-                    <h3 class="text-xl font-medium text-gray-900">
+            <div class="p-6 bg-gray-50 min-h-screen">
+                <div class="max-w-5xl mx-auto space-y-6">
+
+                    <!-- Heading -->
+                    <h3 class="text-2xl font-semibold text-gray-900">
                         Create new question for
-                        <span class="font-semibold text-blue-600">"{{ ucfirst($newQuestionAnswer) }}"</span> answer
+                        <span class="font-bold text-blue-600">"{{ ucfirst($newQuestionAnswer) }}"</span> answer
                     </h3>
 
+                    <!-- Previous Question -->
                     @if ($currentQuestion)
-                        <div class="bg-white p-3 rounded-md">
-                            <p class="text-sm text-gray-800">
-                                <span class="font-medium">Previous question: </span>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border">
+                            <p class="text-sm text-gray-700">
+                                <span class="font-medium text-gray-900">Previous question:</span>
                                 {{ $currentQuestion->question_text }}
                             </p>
                         </div>
                     @endif
+
+                    <!-- Create New Question Btn -->
                     <button wire:click="createNewQuestion"
-                        class="px-4 py-2 w-full bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 whitespace-nowrap">
-                        Create New Question
+                        class="px-6 py-3 w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white text-sm font-medium rounded-lg shadow-md hover:from-blue-700 hover:to-blue-600 transition">
+                        + Create New Question
                     </button>
 
-                    <div class="flex gap-6 items-start">
-                        <div class="flex-1 space-y-6">
-                            <!-- filter question section -->
-                            <div class="flex items-center bg-red-200 justify-between">
-                                <div class="grid grid-cols-4 gap-2">
-                                    <!-- Brand Selection -->
-                                    @if ($brands)
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Select Brand</label>
-                                            <select wire:model="selectedFilterBrand" wire:change="updateSelectedFilterBrand"
-                                                class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
-                                                <option value="">Choose Brand</option>
-                                                @foreach ($brands as $brand)
-                                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
-                                    <!-- Model Selection -->
-                                    @if ($filterModels)
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Select Model</label>
-                                            <select wire:model="selectedFilterModel" wire:change="updateSelectedFilterModel"
-                                                class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
-                                                <option value="">Choose Model</option>
-                                                @foreach ($filterModels as $model)
-                                                    <option value="{{ $model->id }}">{{ $model->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
-                                    <!-- Problem Selection -->
-                                    @if ($filterProblems)
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Select Problem</label>
-                                            <select wire:model="selectedFilterProblem" wire:change="updateSelectedFilterProblem"
-                                                class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
-                                                <option value="">Choose Problem</option>
-                                                @foreach ($filterProblems as $problem)
-                                                    <option value="{{ $problem->id }}">{{ $problem->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
-                                    <!-- filtered question -->
-                                    @if ($filterQuestions)
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Select Question</label>
-                                            <select wire:model="selectedQuestion"
-                                                wire:change="selectQuestion($event.target.value)"
-                                                class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ">
-                                                <option value="">Choose Problem</option>
-                                                @foreach ($filterQuestions as $question)
-                                                    <option value="{{ $question->id }}">{{ $question->question_text }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
-                                </div>
+                    <!-- Filters Section -->
+                    <div class="bg-white p-4 rounded-lg shadow border">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <!-- Brand -->
+                            @if ($brands)
                                 <div>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <i class="fa-solid fa-magnifying-glass"></i>
-                                        </div>
-                                        <input type="text" wire:model.live.debounce.300ms="search"
-                                            placeholder="{{ $selectedQuestion ? 'Search different question...' : 'Search by question_text ...' }}"
-                                            class="block w-full pl-10 pr-12 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
-                                        @error('selectedQuestion')
-                                            <p class="font-semibold text-red-500 mt-1">{{ $message }}</p>
-                                        @enderror
-
-                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                            <div wire:loading.delay.shortest wire:target="search">
-                                                <svg class="animate-spin h-5 w-5 text-blue-500"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                                        stroke-width="4"></circle>
-                                                    <path class="opacity-75" fill="currentColor"
-                                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                                    </path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+                                    <select wire:model="selectedFilterBrand" wire:change="updateSelectedFilterBrand"
+                                        class="w-full p-2.5 text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                        <option value="">Choose Brand</option>
+                                        @foreach ($brands as $brand)
+                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
+                            @endif
 
-                            </div>
+                            <!-- Model -->
+                            @if ($filterModels)
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Model</label>
+                                    <select wire:model="selectedFilterModel" wire:change="updateSelectedFilterModel"
+                                        class="w-full p-2.5 text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                        <option value="">Choose Model</option>
+                                        @foreach ($filterModels as $model)
+                                            <option value="{{ $model->id }}">{{ $model->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
 
-                            @if ($selectedQuestion || $creatingNew)
-                                <div class="mt-4 bg-white rounded-lg border border-green-100 overflow-hidden shadow-sm">
-                                    <div class="bg-green-50 px-4 py-3 border-b border-green-100">
-                                        <div class="flex justify-between items-center">
-                                            <h4 class="text-sm font-medium text-green-800 flex items-center">
-                                                <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M5 13l4 4L19 7" />
-                                                </svg>
-                                                {{ $selectedQuestion ? 'Selected Question Details' : 'Create New Question' }}
-                                            </h4>
-                                            @if ($selectedQuestion)
-                                                <button wire:click="clearSelection"
-                                                    class="text-gray-400 hover:text-red-500 transition-colors">
-                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M6 18L18 6M6 6l12 12" />
-                                                    </svg>
-                                                </button>
-                                            @else
-                                                <button wire:click="cancelCreate"
-                                                    class="text-gray-400 hover:text-red-500 transition-colors">
-                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M6 18L18 6M6 6l12 12" />
-                                                    </svg>
-                                                </button>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="p-4">
-                                        @if ($selectedQuestion)
-                                            <div class="flex items-start">
-                                                <div
-                                                    class="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium text-lg">
-                                                    {{ substr($selectedQuestion->question_text, 0, 1) }}
-                                                </div>
-                                                <div class="ml-4">
-                                                    <h4 class="text-base font-semibold text-gray-900">
-                                                        {{ $selectedQuestion->question_text }}
-                                                    </h4>
-                                                    @if ($selectedQuestion->description)
-                                                        <p class="mt-1 text-sm text-gray-600">
-                                                            {{ $selectedQuestion->description }}
-                                                        </p>
-                                                    @endif
-                                                </div>
-                                            </div>
+                            <!-- Problem -->
+                            @if ($filterProblems)
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
+                                    <select wire:model="selectedFilterProblem"
+                                        wire:change="updateSelectedFilterProblem"
+                                        class="w-full p-2.5 text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                        <option value="">Choose Problem</option>
+                                        @foreach ($filterProblems as $problem)
+                                            <option value="{{ $problem->id }}">{{ $problem->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
 
-                                            @if ($selectedQuestion->image_url)
-                                                <div class="mt-4">
-                                                    <label class="block text-sm font-medium text-gray-700">Image</label>
-                                                    <img src="{{ $selectedQuestion->image_url }}"
-                                                        class="mt-2 h-40 rounded-md border object-contain">
-                                                </div>
-                                            @endif
-                                        @else
-                                            <div class="space-y-4">
-                                                <div>
-                                                    <label class="block text-sm font-medium text-gray-700">Question Text</label>
-                                                    <input type="text" wire:model="newQuestionText"
-                                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                                    @error('newQuestionText')
-                                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                                    @enderror
-                                                </div>
-
-                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                    <div>
-                                                        <label class="block text-sm font-medium text-gray-700">Image
-                                                            (Optional)</label>
-                                                        <label
-                                                            class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
-                                                            <input type="file" accept="image/*" wire:model="image" class="hidden">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
-                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2"
-                                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                            </svg>
-                                                            <span class="mt-1 text-xs text-gray-500">Upload</span>
-                                                        </label>
-                                                        <div wire:loading wire:target="image"
-                                                            class="mt-1 flex items-center text-blue-600 text-xs">
-                                                            <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
-                                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                                <circle class="opacity-25" cx="12" cy="12" r="10"
-                                                                    stroke="currentColor" stroke-width="4"></circle>
-                                                                <path class="opacity-75" fill="currentColor"
-                                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                                                </path>
-                                                            </svg>
-                                                            Uploading...
-                                                        </div>
-                                                        @error('image')
-                                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                                                        @enderror
-                                                    </div>
-
-                                                    <div>
-                                                        <label class="block text-sm font-medium text-gray-700">Preview</label>
-                                                        @if ($image)
-                                                            <div class="relative inline-block">
-                                                                <img src="{{ $image->temporaryUrl() }}"
-                                                                    class="h-28 w-full rounded-md border object-cover">
-                                                                <button type="button" wire:click="$set('image', null)"
-                                                                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
-                                                                    aria-label="Remove image">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
-                                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                                            stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                                                    </svg>
-                                                                </button>
-                                                            </div>
-                                                        @else
-                                                            <div
-                                                                class="flex items-center justify-center h-28 w-full border border-gray-200 rounded-md bg-gray-50 text-gray-400 text-sm">
-                                                                No image selected
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-
-                                                <div>
-                                                    <label class="block text-sm font-medium text-gray-700">Description
-                                                        (Optional)</label>
-                                                    <textarea wire:model="description" rows="3"
-                                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                                        placeholder="Add any additional details..."></textarea>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
+                            <!-- Question -->
+                            @if ($filterQuestions)
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
+                                    <select wire:model="selectedQuestion"
+                                        wire:change="selectQuestion($event.target.value)"
+                                        class="w-full p-2.5 text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                        <option value="">Choose Question</option>
+                                        @foreach ($filterQuestions as $question)
+                                            <option value="{{ $question->id }}">{{ $question->question_text }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             @endif
                         </div>
 
-
+                        <!-- Search -->
+                        <div class="mt-4 relative">
+                            <span class="absolute left-3 top-3 text-gray-400">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                            <input type="text" wire:model.live.debounce.300ms="search"
+                                placeholder="{{ $selectedQuestion ? 'Search different question...' : 'Search by question text...' }}"
+                                class="w-full pl-10 pr-12 py-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <div class="absolute right-3 top-2.5" wire:loading.delay.shortest wire:target="search">
+                                <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                        stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
                     </div>
 
+                    <!-- Question Details / Create New -->
+                    @if ($selectedQuestion || $creatingNew)
+                        <div class="bg-white rounded-xl border shadow p-6">
+                            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                                <h4 class="text-lg font-semibold text-green-700 flex items-center gap-2">
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    {{ $selectedQuestion ? 'Selected Question' : 'Create New Question' }}
+                                </h4>
+                                <button wire:click="{{ $selectedQuestion ? 'clearSelection' : 'cancelCreate' }}"
+                                    class="text-gray-400 hover:text-red-500">
+                                    <i class="fa-solid fa-xmark text-lg"></i>
+                                </button>
+                            </div>
+
+                            @if ($selectedQuestion)
+                                <!-- Selected Question View -->
+                                <div class="flex items-start gap-4">
+                                    <div
+                                        class="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
+                                        {{ substr($selectedQuestion->question_text, 0, 1) }}
+                                    </div>
+                                    <div>
+                                        <h4 class="text-base font-semibold text-gray-900">
+                                            {{ $selectedQuestion->question_text }}</h4>
+                                        @if ($selectedQuestion->description)
+                                            <p class="mt-1 text-sm text-gray-600">{{ $selectedQuestion->description }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                @if ($selectedQuestion->image_url)
+                                    <div class="mt-4">
+                                        <label class="block text-sm font-medium text-gray-700">Image</label>
+                                        <img src="{{ $selectedQuestion->image_url }}"
+                                            class="mt-2 h-40 rounded-md border object-contain">
+                                    </div>
+                                @endif
+                            @else
+                                <!-- Create Form -->
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700">Question Text</label>
+                                        <input type="text" wire:model="newQuestionText"
+                                            class="mt-1 block w-full border rounded-md py-2 px-3 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                        @error('newQuestionText')
+                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Upload + Preview -->
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">Image
+                                                (Optional)</label>
+                                            <label
+                                                class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+                                                <input type="file" accept="image/*" wire:model="image"
+                                                    class="hidden">
+                                                <i class="fa-solid fa-upload text-gray-400 text-xl"></i>
+                                                <span class="mt-1 text-xs text-gray-500">Upload</span>
+                                            </label>
+                                            <div wire:loading wire:target="image"
+                                                class="mt-1 text-xs text-blue-600 flex items-center gap-1">
+                                                <i class="fa-solid fa-spinner animate-spin"></i> Uploading...
+                                            </div>
+                                            @error('image')
+                                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">Preview</label>
+                                            @if ($image)
+                                                <div class="relative inline-block">
+                                                    <img src="{{ $image->temporaryUrl() }}"
+                                                        class="h-28 w-full rounded-md border object-cover">
+                                                    <button type="button" wire:click="$set('image', null)"
+                                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="flex items-center justify-center h-28 w-full border rounded-md bg-gray-50 text-gray-400 text-sm">
+                                                    No image selected
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700">Description
+                                            (Optional)</label>
+                                        <textarea wire:model="description" rows="3"
+                                            class="mt-1 block w-full border rounded-md py-2 px-3 text-sm focus:ring-blue-500 focus:border-blue-500"
+                                            placeholder="Add additional details..."></textarea>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
+                    <!-- Action Buttons -->
                     <div class="flex justify-between pt-4">
                         <button wire:click="createQuestion"
-                            class="py-2 px-6 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-md text-sm">
                             Save {{ ucfirst($newQuestionAnswer) }} Question
                         </button>
-
                         <button wire:click="cancelCreateQuestion"
-                            class="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500">
+                            class="px-6 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded-lg text-sm">
                             Back
                         </button>
                     </div>
                 </div>
             </div>
         @endif
+
 
         <!-- First Question Creation -->
         @if (!$currentQuestion && isset($selectedProblem))
@@ -533,18 +518,19 @@
                                 <label
                                     class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
                                     <input type="file" accept="image/*" wire:model="image" class="hidden">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     <span class="mt-1 text-xs text-gray-500">Upload</span>
                                 </label>
-                                <div wire:loading wire:target="image" class="mt-1 flex items-center text-blue-600 text-xs">
+                                <div wire:loading wire:target="image"
+                                    class="mt-1 flex items-center text-blue-600 text-xs">
                                     <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                            stroke-width="4">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4">
                                         </circle>
                                         <path class="opacity-75" fill="currentColor"
                                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -592,10 +578,10 @@
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
                             <span wire:loading.remove wire:target="createFirstQuestion">Create Question</span>
                             <span wire:loading wire:target="createFirstQuestion">
-                                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4">
+                                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                        stroke="currentColor" stroke-width="4">
                                     </circle>
                                     <path class="opacity-75" fill="currentColor"
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
