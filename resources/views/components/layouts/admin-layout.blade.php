@@ -51,8 +51,8 @@
             <div class="pt-4 pb-2 px-4 border-b border-gray-200 flex items-center justify-start gap-2">
                 <div class="py-1 px-2 rounded-lg bg-[#1E40AF] text-xl font-medium text-[#F9FAFB]">NF</div>
                 <h2 class="text-lg font-medium md:text-xl text-[#111827]">Super Admin</h2>
-                <button @click="isMobileSidebarOpen = false" class="lg:hidden text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
+                <button @click="isMobileSidebarOpen = false" class="lg:hidden ml-10 text-gray-500 hover:text-gray-700">
+                    <i class="fas text-lg fa-times"></i>
                 </button>
             </div>
 
