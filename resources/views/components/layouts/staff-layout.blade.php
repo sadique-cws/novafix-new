@@ -97,7 +97,7 @@
                     alt="User" class="w-10 h-10 rounded-full border">
                 <div>
                     <p class="text-gray-800">Staff Profile</p>
-                    <a wire:navigate href="{{ route('franchise.profile') }}"
+                    <a wire:navigate href="{{ route('staff.profile') }}"
                         class="text-xs text-secondary hover:underline">View Profile</a>
                 </div>
             </div>

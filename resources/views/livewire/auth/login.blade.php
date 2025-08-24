@@ -1,6 +1,5 @@
-<div class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 px-4 sm:px-6 lg:px-8">
-    <div class="w-full sm:max-w-md bg-white shadow-2xl rounded-2xl p-8 sm:p-10 transition-transform transform hover:scale-[1.01]">
-        
+<div class="h-[50vh] flex flex-col justify-center items-center bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 px-4 sm:px-6 lg:px-8">
+    <div class="w-full m-16 sm:max-w-md bg-white shadow-2xl rounded-2xl p-8 sm:p-10 transition-transform transform hover:scale-[1.01]">
         <!-- Logo -->
         <div class="flex justify-center mb-8">
             <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center shadow-md">

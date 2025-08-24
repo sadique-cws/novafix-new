@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use App\Helpers\ImageKitHelper;
 
 #[Title('Service Request Form')]
 #[Layout('components.layouts.frontdesk-layout')]
@@ -43,6 +44,8 @@ class ServiceRequestForm extends Component
     public $capturedImage;
     public $cameraError;
     public $technician;
+    public $imagekit_url;
+    public $uploadProgress = 0;
 
     protected function rules()
     {
@@ -58,7 +61,7 @@ class ServiceRequestForm extends Component
             'service_amount' => 'nullable|numeric|min:0',
             'problem' => 'required|string',
             'estimate_delivery' => 'required|date',
-            'image' => 'nullable|image',
+            'image' => 'nullable|image|max:5120',
         ];
     }
 
@@ -73,19 +76,22 @@ class ServiceRequestForm extends Component
     public function updatedImage()
     {
         $this->validate([
-            'image' => 'image', // Max 1MB
+            'image' => 'image|max:5120',
         ]);
+
+        $this->capturedImage = null;
+        $this->imagekit_url = null;
     }
 
     public function setCapturedImage($imageData)
     {
         $this->capturedImage = $imageData;
-        $this->image = null; // Clear file upload if exists
+        $this->image = null;
+        $this->imagekit_url = null;
     }
 
     protected function generateServiceCode()
     {
-        // Get last service request from DB
         $lastRequest = ServiceRequest::orderBy('id', 'desc')->first();
 
         if ($lastRequest && $lastRequest->service_code) {
@@ -101,7 +107,7 @@ class ServiceRequestForm extends Component
 
     public function removeImage()
     {
-        $this->reset('image', 'capturedImage');
+        $this->reset('image', 'capturedImage', 'imagekit_url', 'uploadProgress');
     }
 
     public function save()
@@ -111,10 +117,18 @@ class ServiceRequestForm extends Component
         DB::beginTransaction();
         try {
             $imagePath = null;
-            if ($this->capturedImage) {
-                $imagePath = $this->storeCapturedImage();
-            } elseif ($this->image) {
-                $imagePath = $this->image->store('service-requests', 'public');
+
+            // Upload to ImageKit if image exists
+            if ($this->capturedImage || $this->image) {
+                $this->uploadProgress = 10;
+                $imagekitData = $this->uploadToImageKit();
+                $this->uploadProgress = 100;
+
+                if ($imagekitData && isset($imagekitData['url'])) {
+                    $imagePath = $imagekitData['url'];
+                } else {
+                    throw new \Exception('Failed to upload image to ImageKit');
+                }
             }
 
             $serviceRequest = ServiceRequest::create([
@@ -135,7 +149,8 @@ class ServiceRequestForm extends Component
                 'delivered_by' => $this->delivered_by,
                 'delivery_status' => $this->delivery_status,
                 'estimate_delivery' => $this->estimate_delivery,
-                'image' => $imagePath
+                'image' => $imagePath,
+                // Removed the imagekit_data field as it doesn't exist in the database
             ]);
 
             DB::commit();
@@ -144,44 +159,58 @@ class ServiceRequestForm extends Component
             return redirect()->route('reviewServiceRequest', $serviceRequest->id);
         } catch (\Exception $e) {
             DB::rollBack();
-            if (isset($imagePath)) {
-                Storage::disk('public')->delete($imagePath);
-            }
+            $this->uploadProgress = 0;
             session()->flash('error', 'Failed to create service request: ' . $e->getMessage());
             logger()->error('Service Request Error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
         }
     }
 
-    protected function storeCapturedImage()
+    protected function uploadToImageKit()
     {
         try {
-            if (!Str::startsWith($this->capturedImage, 'data:image/jpeg;base64,')) {
-                throw new \Exception('Invalid image format');
+            // Handle captured image (from webcam)
+            if ($this->capturedImage) {
+                $this->uploadProgress = 30;
+
+                // Convert base64 image to a temporary file
+                $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $this->capturedImage));
+                $tempFilePath = tempnam(sys_get_temp_dir(), 'img');
+                file_put_contents($tempFilePath, $imageData);
+
+                // Create UploadedFile instance
+                $uploadedFile = new \Illuminate\Http\UploadedFile(
+                    $tempFilePath,
+                    'webcam_capture.jpg',
+                    'image/jpeg',
+                    null,
+                    true
+                );
+
+                // Upload using ImageKitHelper
+                $result = ImageKitHelper::uploadImage($uploadedFile, '/Novafix/service-requests');
+
+                // Clean up temporary file
+                unlink($tempFilePath);
+
+                return $result;
+            }
+            // Handle file upload
+            elseif ($this->image) {
+                $this->uploadProgress = 30;
+                return ImageKitHelper::uploadImage($this->image, 'service-requests');
             }
 
-            $imageData = base64_decode(preg_replace('#^data:image/jpeg;base64,#i', '', $this->capturedImage));
-
-            if (!$imageData) {
-                throw new \Exception('Failed to decode image');
-            }
-
-            $fileName = 'captured_' . time() . '.jpg';
-            $path = 'service-requests/' . $fileName;
-
-            if (!Storage::disk('public')->put($path, $imageData)) {
-                throw new \Exception('Failed to store image');
-            }
-
-            return $path;
+            return null;
         } catch (\Exception $e) {
             $this->cameraError = $e->getMessage();
+            $this->uploadProgress = 0;
             throw $e;
         }
     }
 
     public function clearImage()
     {
-        $this->reset('image', 'capturedImage', 'cameraError');
+        $this->reset('image', 'capturedImage', 'cameraError', 'imagekit_url', 'uploadProgress');
     }
 
     public function resetForm()
@@ -193,7 +222,6 @@ class ServiceRequestForm extends Component
 
     public function render()
     {
-        // Franchise ID from current login
         $franchiseId = auth('franchise')->id();
 
         return view('livewire.frontdesk.service-request-form', [

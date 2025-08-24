@@ -61,28 +61,28 @@
                 <ul class="space-y-1 text-sm">
                     <li>
                         <a wire:navigate href="{{ route('frontdesk.dashboard') }}" 
-                              class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('frontdesk.dashboard') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+                              class="flex items-center gap-3 px-3 py-2 mb-2 rounded {{ request()->routeIs('frontdesk.dashboard') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
                             <i class="fas fa-tachometer-alt mr-3 text-gray-400"></i>
                             Dashboard
                         </a>
                     </li>
                     <li>
                         <a wire:navigate href="{{ route('frontdesk.servicerequest.create') }}" 
-                          class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('frontdesk.servicerequest.create') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+                          class="flex items-center gap-3 px-3 py-2 mb-2 rounded {{ request()->routeIs('frontdesk.servicerequest.create') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
                             <i class="fas fa-plus-circle mr-3 text-gray-400"></i>
                             New Service Request
                         </a>
                     </li>
                     <li>
                         <a wire:navigate href="{{ route('frontdesk.servicerequest.manage') }}" 
-                         class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('frontdesk.servicerequest.manage') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+                         class="flex items-center gap-3 px-3 py-2 mb-2 rounded {{ request()->routeIs('frontdesk.servicerequest.manage') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
                             <i class="fas fa-tasks mr-3 text-gray-400"></i>
                             Service Queue
                         </a>
                     </li>
                     <li>
                         <a wire:navigate href="{{ route('frontdesk.servicerequest.completed') }}" 
-                          class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('frontdesk.servicerequest.completed') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+                          class="flex items-center gap-3 px-3 py-2 mb-2 rounded {{ request()->routeIs('frontdesk.servicerequest.completed') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
                             <i class="fas fa-check-circle mr-3 text-gray-400"></i>
                             Completed Services
                         </a>

@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Log;
 use ImageKit\ImageKit;
 class ImageKitHelper
 {
@@ -32,7 +33,7 @@ class ImageKitHelper
             ];
         }
 
-        \Log::error('ImageKit upload failed: ' . json_encode($upload->error ?? 'Unknown error'));
+        Log::error('ImageKit upload failed: ' . json_encode($upload->error ?? 'Unknown error'));
         return null;
     }
 
@@ -50,7 +51,7 @@ class ImageKitHelper
 
         $result = $imageKit->deleteFile($fileId);
         if (isset($result->error)) {
-            \Log::error('ImageKit deletion failed for fileId ' . $fileId . ': ' . json_encode($result->error));
+            Log::error('ImageKit deletion failed for fileId ' . $fileId . ': ' . json_encode($result->error));
         }
     }
 }
