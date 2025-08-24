@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Staff;
 use App\Models\Franchise;
 use App\Models\Receptioners;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
 #[Title('Forgot Password')]

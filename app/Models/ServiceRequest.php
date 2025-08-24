@@ -40,22 +40,17 @@ class ServiceRequest extends Model
     {
         return $this->hasOne(Payment::class, 'service_request_id');
     }
-
-    /**
-     * Relationship with ServiceCategory
-     */
-  
-
-    /**
-     * Relationship with Receptioner
-     */
-  
-
-    /**
-     * Relationship with Technician (Staff)
-     */
-   
-
-  
+    public function franchise()
+    {
+        return $this->belongsTo(Franchise::class, 'franchise_id');
+    }
+    public function category()
+    {
+        return $this->belongsTo(ServiceCategory::class, 'service_categories_id');
+    }
    
 }
+
+  
+   
+

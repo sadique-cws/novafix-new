@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Public;
 
+use Livewire\Attributes\Title;
 use Livewire\Component;
 #[Title('Homepage')]
 

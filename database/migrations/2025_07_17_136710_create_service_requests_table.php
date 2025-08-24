@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('receptioners_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('technician_id')->nullable()->constrained("staff")->onDelete('cascade');
+            $table->foreignId('franchise_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('service_categories_id')->constrained()->onDelete('cascade');
             $table->string('service_code');
             $table->string('owner_name');

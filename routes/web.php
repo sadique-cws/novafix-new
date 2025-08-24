@@ -46,6 +46,8 @@ use App\Livewire\Frontdesk\SmsSender;
 use App\Livewire\Frontdesk\ViewPayments;
 use App\Livewire\Frontdesk\ViewTask;
 use App\Livewire\Public\Homepage;
+use App\Livewire\Public\UserServiceRequest;
+use App\Livewire\Public\ServiceTracker;
 use App\Livewire\Staff\AssignedTask;
 use App\Livewire\Staff\CompletedTask as StaffCompletedTask;
 use App\Livewire\Staff\Dashboard as StaffDashboard;
@@ -57,6 +59,9 @@ use Illuminate\Types\Relations\Role;
 
 // Public Routes
 Route::get("/", Homepage::class)->name('homepage');
+Route::get('/ServiceRequest', UserServiceRequest::class)->name('user.service.request');
+// routes/web.php
+Route::get('/track-service', ServiceTracker::class)->name('track.service');
 Route::get('/login', Login::class)->name('login');
 // Password reset routes
 // Password reset routes
