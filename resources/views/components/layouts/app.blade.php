@@ -60,9 +60,9 @@
         <div id="mobileMenu" class="hidden md:hidden bg-white py-4 px-4 absolute w-full shadow-lg">
             <a href="#" class="block py-2 text-gray-700 hover:text-blue-600">Home</a>
             <a href="#services" class="block py-2 text-gray-700 hover:text-blue-600">Services</a>   
-            <a href="#track-status" class="block py-2 text-gray-700 hover:text-blue-600">Track Status</a>
+            <a  href="{{route('track.service')}}" class="block py-2 text-gray-700 hover:text-blue-600">Track Status</a>
             <a href="#contact" class="block py-2 text-gray-700 hover:text-blue-600">Contact</a>
-            <a href="#request-repair" class="block mt-2 bg-blue-600 text-white px-4 py-2 rounded-md text-center hover:bg-blue-700">Request For Repair</a>
+            <a  href="{{route('user.service.request')}}" class="block mt-2 bg-blue-600 text-white px-4 py-2 rounded-md text-center hover:bg-blue-700">Request For Repair</a>
         </div>
     </header>
     <main class="pt-8">
