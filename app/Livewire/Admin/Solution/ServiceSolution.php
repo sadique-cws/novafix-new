@@ -367,17 +367,6 @@ class ServiceSolution extends Component
     {
         if (!$this->currentQuestion)
             return;
-
-        userAnswer::create([
-            'user_id' => Auth::id(),
-            'question_id' => $this->currentQuestion->id,
-            'device_id' => $this->selectedDevice,
-            'brand_id' => $this->selectedBrand,
-            'model_id' => $this->selectedModel,
-            'problem_id' => $this->selectedProblem,
-            'selected_answer' => $answer
-        ]);
-
         if ($answer === 'yes' && $this->currentQuestion->yes_question_id) {
             $this->currentQuestion = Question::find($this->currentQuestion->yes_question_id);
         } elseif ($answer === 'no' && $this->currentQuestion->no_question_id) {

@@ -49,6 +49,7 @@ use App\Livewire\Public\Homepage;
 use App\Livewire\Staff\AssignedTask;
 use App\Livewire\Staff\CompletedTask as StaffCompletedTask;
 use App\Livewire\Staff\Dashboard as StaffDashboard;
+use App\Livewire\Staff\NovafixDiagnosis;
 use App\Livewire\Staff\Profile;
 use App\Livewire\Staff\ShowTask;
 use App\Services\Msg91Service;
@@ -149,6 +150,7 @@ Route::prefix("staff")->group(function () {
                 return redirect()->route('login');
             })->name('logout');
             Route::get("/dashboard", StaffDashboard::class)->name("dashboard");
+            Route::get('/novafix-diagnosis', NovafixDiagnosis::class)->name('novafix-diagnosis');
             Route::get("/assigned-task", AssignedTask::class)->name("assigned.task");
             Route::get("/task/{task}", ShowTask::class)->name("task.show");
             Route::get("/completed-task", StaffCompletedTask::class)->name("completed.task");
