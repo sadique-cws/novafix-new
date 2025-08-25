@@ -82,12 +82,6 @@
                             <span class="ml-2">Completed Tasks</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="#" class="flex items-center px-3 py-2 rounded hover:bg-gray-50 text-gray-700">
-                            <i class="fas fa-cog w-5 text-gray-500"></i>
-                            <span class="ml-2">Settings</span>
-                        </a>
-                    </li>
                 </ul>
             </nav>
 

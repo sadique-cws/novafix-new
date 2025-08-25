@@ -272,7 +272,10 @@
                                 @if ($existingImage && !$image && !$capturedImage)
                                     <div class="mb-4">
                                         <p class="text-sm font-medium text-gray-700 mb-2">Current Image</p>
-                                        <img src="{{ asset('storage/' . $existingImage) }}" alt="Product Image"
+                                        @php
+                                            $isExternal = preg_match('/^https?:\/\//', $existingImage);
+                                        @endphp
+                                        <img src="{{ $isExternal ? $existingImage : asset('storage/' . $existingImage) }}" alt="Product Image"
                                             class="h-32 rounded-lg object-cover border border-gray-200">
                                     </div>
                                 @endif

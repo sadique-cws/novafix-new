@@ -117,28 +117,20 @@
 
                             <!-- Product Image -->
                             @if ($task->image)
-                                <div class="mt-8 pt-6 border-t border-gray-100">
-                                    <div class="flex items-center mb-4">
-                                        <div class="bg-blue-100 p-2 rounded-lg mr-3">
-                                            <i class="fas fa-camera text-blue-600 text-lg"></i>
-                                        </div>
-                                        <h3 class="text-md  text-gray-700">Product Image</h3>
-                                    </div>
-                                    <div class="pl-11">
-                                        <div class="relative w-full h-56 bg-gray-50 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-                                            <img src="{{ asset('storage/' . $task->image) }}" alt="Product Image"
-                                                class="w-full h-full object-contain p-2">
-                                            <a href="{{ asset('storage/' . $task->image) }}" target="_blank"
-                                                class="absolute bottom-3 right-3 bg-white p-2 rounded-lg shadow-md hover:bg-gray-100 transition duration-150 ease-in-out">
-                                                <i class="fas fa-expand text-gray-600"></i>
+                                    <div class="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-100">
+                                        <h3 class="text-sm font-medium text-gray-600 mb-3">Product Image</h3>
+                                        <div class="flex items-center gap-4">
+                                            <a href="{{ $task->image }}" target="_blank" rel="noopener noreferrer">
+                                                <img src="{{ $task->image }}" alt="Product Image" class="w-48 h-48 object-cover rounded-md shadow-sm border border-gray-100">
                                             </a>
+                                            <div>
+                                                <p class="text-sm text-gray-600">Uploaded image (click to view full size)</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             @endif
                         </div>
                     </div>
-
                     <!-- Problem Details Card -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                         <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-cyan-50 border-b border-gray-100">

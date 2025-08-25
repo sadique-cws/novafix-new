@@ -50,14 +50,12 @@ class EditServiceRequest extends Component
             'email' => 'nullable|email|max:255',
             'contact' => 'required|string|max:20',
             'brand' => 'required|string|max:255',
-            'serial_no' => 'nullable|string|max:255',
-            'MAC' => 'nullable|string|max:255',
+            // serial_no and MAC columns do not exist on service_requests table
             'color' => 'required|string|max:100',
             'service_amount' => 'nullable|numeric|min:0',
             'problem' => 'required|string',
             'status' => 'required|numeric',
             'estimate_delivery' => 'required|date',
-            'date_of_delivery' => 'nullable|date|after_or_equal:estimate_delivery',
             'image' => 'nullable|image',
         ];
     }
@@ -128,6 +126,7 @@ class EditServiceRequest extends Component
                 $this->deleteOldImage();
             }
 
+            // Only update columns that actually exist on the service_requests table
             $this->serviceRequest->update([
                 'technician_id' => $this->technician_id,
                 'service_categories_id' => $this->service_categories_id,
@@ -136,14 +135,11 @@ class EditServiceRequest extends Component
                 'email' => $this->email,
                 'contact' => $this->contact,
                 'brand' => $this->brand,
-                'serial_no' => $this->serial_no,
-                'MAC' => $this->MAC,
                 'color' => $this->color,
                 'service_amount' => $this->service_amount,
                 'problem' => $this->problem,
                 'status' => $this->status,
                 'estimate_delivery' => $this->estimate_delivery,
-                'date_of_delivery' => $this->date_of_delivery,
                 'image' => $imagePath,
                 'last_update' => now(),
             ]);

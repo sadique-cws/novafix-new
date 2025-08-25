@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gray-50">
-    <div class="container mx-auto  py-2 sm:px-6 lg:px-8">
+    <div class="container  py-2 sm:px-6 lg:px-8">
         <!-- Main Card -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="bg-white rounded overflow-hidden">
             <!-- Header with Gradient Background -->
             <div class="bg-gradient-to-r from-indigo-600 to-blue-700 px-6 py-4 sm:px-8 sm:py-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">

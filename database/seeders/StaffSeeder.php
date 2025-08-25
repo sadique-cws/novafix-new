@@ -27,7 +27,7 @@ class StaffSeeder extends Seeder
                 'address' => '123 Main Street',
                 'city' => 'Mumbai',
                 'state' => 'Maharashtra',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'status' => 'active'
             ]);
             $franchises = collect([$franchise]);
@@ -57,7 +57,7 @@ class StaffSeeder extends Seeder
                 'aadhar' => '1234-5678-9012',
                 'pan' => 'ABCDE1234F',
                 'address' => '456 Tech Street, Mumbai',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'franchise_id' => $franchises->first()->id,
                 'service_categories_id' => $serviceCategories[0]->id,
             ],
@@ -83,7 +83,7 @@ class StaffSeeder extends Seeder
                 'aadhar' => '3456-7890-1234',
                 'pan' => 'CDEFG3456H',
                 'address' => '321 Worker Colony, Bangalore',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'franchise_id' => $franchises->first()->id,
                 'service_categories_id' => $serviceCategories[2]->id,
             ]

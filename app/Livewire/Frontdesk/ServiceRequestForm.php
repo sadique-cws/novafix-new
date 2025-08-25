@@ -222,10 +222,24 @@ class ServiceRequestForm extends Component
 
     public function render()
     {
-        $franchiseId = auth('franchise')->id();
+        // Determine franchise id from the authenticated frontdesk (receptioner) user first.
+        $franchiseId = null;
+
+        if (Auth::guard('frontdesk')->check()) {
+            $frontdeskUser = Auth::guard('frontdesk')->user();
+            // Receptioners model stores franchise_id
+            $franchiseId = $frontdeskUser->franchise_id ?? null;
+        } elseif (auth('franchise')->check()) {
+            // If a franchise is logged in, use its id
+            $franchiseId = auth('franchise')->id();
+        }
+
+        // Only return technicians belonging to the determined franchise.
+        // If franchiseId cannot be determined, return an empty collection to avoid showing unrelated staff.
+        $technicians = $franchiseId ? Staff::where('franchise_id', $franchiseId)->get() : collect();
 
         return view('livewire.frontdesk.service-request-form', [
-            'technicians' => Staff::where('franchise_id', $franchiseId)->get(),
+            'technicians' => $technicians,
             'categories' => ServiceCategory::all(),
         ]);
     }
