@@ -36,7 +36,7 @@
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
-    <header class="bg-white shadow-md fixed w-full z-50">
+    <header class="bg-white  fixed w-full z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
                 <div class="text-2xl font-bold text-blue-600"><span class="text-orange-500">Nova</span>Fix</div>
@@ -65,7 +65,7 @@
             <a href="#request-repair" class="block mt-2 bg-blue-600 text-white px-4 py-2 rounded-md text-center hover:bg-blue-700">Request For Repair</a>
         </div>
     </header>
-    <main>
+    <main class="pt-8">
         {{ $slot }}
     </main>
 

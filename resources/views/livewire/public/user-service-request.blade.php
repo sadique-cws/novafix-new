@@ -1,7 +1,7 @@
-<div class="min-h-screen bg-gray-50 py-10 px-4">
+<div class="min-h-screen  bg-gray-50 py-10 px-4">
     @if (!$submitted)
-        <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-3">
+        <div class="max-w-4xl mx-auto bg-white rounded border border-gray-400 p-8">
+            <h2 class="text-2xl text-center  text-green-600 font-semibold underline mb-6 border-b pb-3">
                 Service Request Form
             </h2>
 
@@ -17,7 +17,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Franchise *</label>
                     <select wire:model="franchise_id"
-                            class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                            class="w-full rounded-lg border py-1 px-2 border-gray-500">
                         <option value="">Select Franchise</option>
                         @foreach($franchises as $franchise)
                             <option value="{{ $franchise->id }}">{{ $franchise->franchise_name }}</option>
@@ -32,7 +32,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Service Category *</label>
                     <select wire:model="service_categories_id"
-                            class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                            class="w-full rounded-lg  border py-1 px-2 border-gray-500">
                         <option value="">Select Category</option>
                         @foreach($serviceCategories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -48,14 +48,14 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Owner Name *</label>
                         <input type="text" wire:model="owner_name"
-                               class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                               class="w-full rounded-lg  border py-1 px-2 border-gray-500">
                         @error('owner_name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Email (optional)</label>
                         <input type="email" wire:model="email"
-                               class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                               class="w-full rounded-lg  border py-1 px-2 border-gray-500">
                         @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Contact *</label>
                     <input type="text" wire:model="contact"
-                           class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                           class="w-full rounded-lg  border py-1 px-2 border-gray-500">
                     @error('contact') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -73,13 +73,13 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Product Name *</label>
                         <input type="text" wire:model="product_name"
-                               class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                               class="w-full rounded-lg border py-1 px-2 border-gray-500">
                         @error('product_name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Brand *</label>
                         <input type="text" wire:model="brand"
-                               class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                               class="w-full rounded-lg  border py-1 px-2 border-gray-500">
                         @error('brand') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
@@ -88,7 +88,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Color *</label>
                     <input type="text" wire:model="color"
-                           class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                           class="w-full rounded-lg  border py-1 px-2 border-gray-500">
                     @error('color') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -96,7 +96,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Problem Description *</label>
                     <textarea wire:model="problem" rows="4"
-                              class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                              class="w-full rounded-lg  border py-1 px-2 border-gray-500"></textarea>
                     @error('problem') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
