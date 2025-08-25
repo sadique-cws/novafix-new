@@ -68,6 +68,13 @@
                             <span class="ml-2">Dashboard</span>
                         </a>
                     </li>
+                     <li>
+                        <a wire:navigate href="{{ route('staff.novafix-diagnosis') }}"
+                            class="flex items-center px-3 py-2 rounded hover:bg-gray-50 text-gray-700">
+                            <i class="fas fa-tachometer-alt w-5 text-primary"></i>
+                            <span class="ml-2">Solution</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="{{ route('staff.assigned.task') }}"
                             class="flex items-center px-3 py-2 rounded bg-primary/10 text-primary">
