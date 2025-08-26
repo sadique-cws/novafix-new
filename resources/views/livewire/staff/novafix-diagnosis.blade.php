@@ -104,7 +104,7 @@
                             <div class="flex flex-col gap-1">
                                 <p
                                     class=" text-gray-700
-                                                                                                                                                                                                                                                                                                                                             font-medium">
+                                                                                                                                                                                                                                                                                                                                                                                                         font-medium">
                                     Related Image
                                     :-</p>
                                 <img src="{{ $currentQuestion->image_url }}" class="h-32 w-64 object-fit rounded shadow"
@@ -115,7 +115,7 @@
                             <div class="flex flex-col gap-1">
                                 <label for=""
                                     class="text-gray-700
-                                                                                                                                                                                                                                                                                                                                             font-medium">Explanation
+                                                                                                                                                                                                                                                                                                                                                                                                         font-medium">Explanation
                                     :-</label>
                                 <p class="text-gray-700 text-base leading-relaxed">
                                     {{ $currentQuestion->description }}
@@ -125,7 +125,34 @@
                     </div>
                 @endif
             </div>
-        @endif
+        @elseif($showMessageForm)
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center p-6 md:p-10 gap-6">
+                <div class="flex-1 text-center md:text-center">
+                    @if (session()->has('message'))
+                        <div class="p-4 bg-green-100 text-green-800 rounded mb-4">
+                            {{ session('message') }}
+                        </div>
+                    @endif
 
+                    <h2 class="text-2xl font-semibold mb-6 text-gray-900">Send Us a Message</h2>
+
+                    <form wire:submit.prevent="submitMessage" class="space-y-4 max-w-lg mx-auto">
+                        <div>
+                            <label class="block text-gray-700 mb-1 font-medium">Message</label>
+                            <textarea wire:model="staffMessage"
+                                class="w-full border rounded p-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                rows="4"></textarea>
+                            @error('staffMessage')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <button type="submit"
+                            class="px-6 py-2 bg-blue-600 text-white text-lg rounded-md font-medium hover:bg-blue-700 transition-colors">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        @endif
     </div>
 </div>
