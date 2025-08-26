@@ -145,6 +145,14 @@
                                     <a wire:navigate href="{{ route('admin.solution.manage-models') }}"
                                         class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.solution.manage-models') ? 'bg-blue-50 text-blue-600' : '' }}">Models</a>
                                 </li>
+                                 <li>
+                                    <a wire:navigate href="{{ route('admin.solution.manage-problems') }}"
+                                        class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.solution.manage-problems') ? 'bg-blue-50 text-blue-600' : '' }}">Problems</a>
+                                </li>
+                                <li>
+                                    <a wire:navigate href="{{ route('admin.solution.staff-answers') }}"
+                                        class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.solution.staff-answers') ? 'bg-blue-50 text-blue-600' : '' }}">Staff Answers</a>
+                                </li>
                             </ul>
                         </div>
                     </li>
