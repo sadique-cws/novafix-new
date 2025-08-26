@@ -25,6 +25,9 @@ class StaffDiagnosis extends Component
     public $selectedModel;
     public $selectedProblem;
     public $currentQuestion;
+    public $showMessageForm = false;
+    public $userMessage = '';
+    public $userContact = '';
 
     public function mount()
     {
@@ -103,8 +106,9 @@ class StaffDiagnosis extends Component
         } elseif ($answer === 'no' && $this->currentQuestion->no_question_id){
             $this->currentQuestion = Question::find($this->currentQuestion->no_question_id);
         } else{
-            // no next question stop here
+            // no next question, show message form
             $this->currentQuestion = null;
+            $this->showMessageForm = true;
         }
     }
     public function resetSelection()
@@ -119,6 +123,21 @@ class StaffDiagnosis extends Component
         $this->brands = [];
         $this->models = [];
         $this->problems = [];
+    }
+    public function submitMessage()
+    {
+        $this->validate([
+            'userMessage' => 'required|string|min:5',
+            'userContact' => 'required|string|min:5',
+        ]);
+
+        // Save or send the message as needed (e.g., to a table or email)
+        // Example: Message::create([...]);
+
+
+        // Reset form and show a thank you message (optional)
+        $this->reset(['userMessage', 'userContact', 'showMessageForm']);
+        session()->flash('message', 'Your message has been sent. Thank you!');
     }
     public function render()
     {

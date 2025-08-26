@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Staff;
 
+use App\Models\StaffEnquiry;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use App\Models\Brand;
@@ -28,6 +29,9 @@ class NovafixDiagnosis extends Component
     public $selectedProblem;
     public $currentQuestion;
     public $enquiry;
+    
+    public $showMessageForm = false;
+    public $staffMessage = '';
 
     public function mount()
     {
@@ -108,6 +112,7 @@ class NovafixDiagnosis extends Component
         } else{
             // no next question stop here
             $this->currentQuestion = null;
+            $this->showMessageForm = true;
         }
     }
     public function resetSelection()
@@ -116,12 +121,27 @@ class NovafixDiagnosis extends Component
         $this->selectedBrand = null;
         $this->selectedModel = null;
         $this->selectedProblem = null;
+        $this->showMessageForm = false;
 
         // reload device
         $this->devices = Device::all();
         $this->brands = [];
         $this->models = [];
         $this->problems = [];
+    }
+    public function submitMessage()
+    {
+        $this->validate([
+            'staffMessage' => 'required|string|min:5',
+        ]);
+
+        StaffEnquiry::create([
+            'staff_id' => Auth::id(),
+            'message' => $this->staffMessage,
+        ]);
+
+        $this->reset(['staffMessage']);
+        session()->flash('message', 'Your message has been sent. Thank you!');
     }
     public function render()
     {
