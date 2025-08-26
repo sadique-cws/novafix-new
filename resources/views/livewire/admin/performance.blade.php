@@ -1,13 +1,27 @@
-
-<div>
+<div x-data="{ 
+    loading: false,
+    init() {
+        // Listen for Livewire events
+        Livewire.on('loading', () => { this.loading = true });
+        Livewire.on('loaded', () => { this.loading = false });
+        
+        // Set up loading state for Livewire updates
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('loading', () => { this.loading = true });
+            Livewire.on('loaded', () => { this.loading = false });
+        });
+    }
+}" class="relative">
     <!-- Loading Overlay -->
-    <div wire:loading.flex class="fixed inset-0 bg-white bg-opacity-90 z-50 items-center justify-center transition-opacity duration-200">
-        <div class="text-center">
-            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
-            <h3 class="text-lg font-semibold text-gray-800">Loading Franchise Data</h3>
-            <p class="text-gray-600 mt-1">Please wait while we fetch the performance metrics</p>
+    <template x-if="loading">
+        <div class="fixed inset-0 bg-white bg-opacity-90 z-50 flex items-center justify-center transition-opacity duration-200">
+            <div class="text-center">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+                <h3 class="text-lg font-semibold text-gray-800">Loading Franchise Data</h3>
+                <p class="text-gray-600 mt-1">Please wait while we fetch the performance metrics</p>
+            </div>
         </div>
-    </div>
+    </template>
 
     <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-8">
         <!-- Header with franchise selector -->
@@ -25,9 +39,6 @@
                             <option value="{{ $franchise->id }}">{{ $franchise->franchise_name }}</option>
                         @endforeach
                     </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        
-                    </div>
                 </div>
                 <div class="relative w-full">
                     <select wire:model.live="timePeriod"
@@ -39,9 +50,6 @@
                         <option value="quarter">This Quarter</option>
                         <option value="year">This Year</option>
                     </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                       
-                    </div>
                 </div>
             </div>
         </div>
@@ -74,15 +82,6 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="mt-3 flex items-center">
-                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded-full flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
-                            </svg>
-                            12.4%
-                        </span>
-                        <span class="text-gray-500 text-xs ml-2">vs last period</span>
-                    </div>
                 </div>
             </div>
 
@@ -99,15 +98,6 @@
                                 <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
                             </svg>
                         </div>
-                    </div>
-                    <div class="mt-3 flex items-center">
-                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded-full flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
-                            </svg>
-                            8.2%
-                        </span>
-                        <span class="text-gray-500 text-xs ml-2">vs last period</span>
                     </div>
                 </div>
             </div>
@@ -126,25 +116,16 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="mt-3 flex items-center">
-                        <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-0.5 rounded-full flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
-                            </svg>
-                            15.7%
-                        </span>
-                        <span class="text-gray-500 text-xs ml-2">vs last period</span>
-                    </div>
                 </div>
             </div>
 
-            <!-- Satisfaction Card -->
+            <!-- Retention Card -->
             <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-xl border border-amber-200">
                 <div class="flex flex-col">
                     <div class="flex justify-between items-start">
                         <div>
-                            <p class="text-xs sm:text-sm font-medium text-amber-800">Satisfaction</p>
-                            <p class="text-xl sm:text-2xl font-semibold text-gray-800 mt-1">94%</p>
+                            <p class="text-xs sm:text-sm font-medium text-amber-800">Retention Rate</p>
+                            <p class="text-xl sm:text-2xl font-semibold text-gray-800 mt-1">{{ $metrics['customerRetention']['retentionRate'] }}%</p>
                         </div>
                         <div class="bg-amber-200/50 p-2 rounded-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" viewBox="0 0 20 20" fill="currentColor">
@@ -152,95 +133,25 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="mt-3 flex items-center">
-                        <span class="bg-amber-100 text-amber-800 text-xs font-medium px-2 py-0.5 rounded-full flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
-                            </svg>
-                            3.2%
-                        </span>
-                        <span class="text-gray-500 text-xs ml-2">vs last period</span>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Charts Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <!-- Revenue Trend Chart -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-medium text-gray-800">Revenue Trend</h3>
+        <!-- Customer Retention Details -->
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
+            <h3 class="text-lg font-medium text-gray-800 mb-3">Customer Retention Details</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                    <p class="text-2xl font-bold text-blue-600">{{ $metrics['customerRetention']['newCustomers'] }}</p>
+                    <p class="text-sm text-gray-600 mt-1">New Customers</p>
                 </div>
-                <div class="h-64">
-                    <canvas id="revenueTrendChart" wire:ignore wire:key="revenue-chart-{{ $chartUpdateKey }}"></canvas>
+                <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                    <p class="text-2xl font-bold text-green-600">{{ $metrics['customerRetention']['returningCustomers'] }}</p>
+                    <p class="text-sm text-gray-600 mt-1">Returning Customers</p>
                 </div>
-            </div>
-
-            <!-- Service Distribution Chart -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h3 class="text-lg font-medium text-gray-800 mb-4">Service Distribution</h3>
-                <div class="h-64">
-                    <canvas id="serviceDistributionChart" wire:ignore
-                        wire:key="service-chart-{{ $chartUpdateKey }}"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Detailed Metrics -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <!-- Customer Retention -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h3 class="text-lg font-medium text-gray-800 mb-3">Customer Retention</h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm text-gray-600">New Customers</span>
-                    <span class="text-sm font-medium">{{ $metrics['customerRetention']['newCustomers'] }}</span>
-                </div>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm text-gray-600">Returning Customers</span>
-                    <span class="text-sm font-medium">{{ $metrics['customerRetention']['returningCustomers'] }}</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-600">Retention Rate</span>
-                    <span
-                        class="text-sm font-medium text-green-600">{{ $metrics['customerRetention']['retentionRate'] }}%</span>
-                </div>
-            </div>
-
-            <!-- Staff Performance -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h3 class="text-lg font-medium text-gray-800 mb-3">Staff Performance</h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm text-gray-600">Avg. Services/Staff</span>
-                    <span class="text-sm font-medium">{{ $metrics['staffPerformance']['avgServicesPerStaff'] }}</span>
-                </div>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm text-gray-600">Top Performer</span>
-                    <span class="text-sm font-medium">{{ $metrics['staffPerformance']['topPerformer'] }}</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-600">Satisfaction Score</span>
-                    <span class="text-sm font-medium text-green-600">4.8/5</span>
-                </div>
-            </div>
-
-            <!-- Financial Health -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h3 class="text-lg font-medium text-gray-800 mb-3">Financial Health</h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm text-gray-600">Profit Margin</span>
-                    <span
-                        class="text-sm font-medium text-green-600">{{ $metrics['financialHealth']['profitMargin'] }}%</span>
-                </div>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm text-gray-600">Avg. Revenue/Day</span>
-                    <span
-                        class="text-sm font-medium">₹{{ number_format($metrics['financialHealth']['avgRevenuePerDay'], 2) }}</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-600">Expense Ratio</span>
-                    <span
-                        class="text-sm font-medium text-yellow-600">{{ $metrics['financialHealth']['expenseRatio'] }}%</span>
+                <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                    <p class="text-2xl font-bold text-purple-600">{{ $metrics['customerRetention']['retentionRate'] }}%</p>
+                    <p class="text-sm text-gray-600 mt-1">Retention Rate</p>
                 </div>
             </div>
         </div>
@@ -352,124 +263,4 @@
             </div>
         </div>
     </div>
-
-    @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            // Store chart instances
-            let revenueChart, serviceChart;
-
-            // Initialize charts
-            function initCharts() {
-                // Destroy existing charts if they exist
-                if (revenueChart) revenueChart.destroy();
-                if (serviceChart) serviceChart.destroy();
-
-                // Revenue Trend Chart
-                const revenueCtx = document.getElementById('revenueTrendChart').getContext('2d');
-                revenueChart = new Chart(revenueCtx, {
-                    type: 'line',
-                    data: {
-                        labels: @json($revenueTrendData['labels']),
-                        datasets: [{
-                            label: 'Revenue (₹)',
-                            data: @json($revenueTrendData['data']),
-                            backgroundColor: 'rgba(67, 97, 238, 0.1)',
-                            borderColor: 'rgba(67, 97, 238, 1)',
-                            borderWidth: 2,
-                            tension: 0.3,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return '₹' + context.raw.toLocaleString('en-IN');
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grid: {
-                                    drawBorder: false
-                                },
-                                ticks: {
-                                    callback: function(value) {
-                                        return '₹' + value.toLocaleString('en-IN');
-                                    }
-                                }
-                            },
-                            x: {
-                                grid: {
-                                    display: false
-                                }
-                            }
-                        }
-                    }
-                });
-
-                // Service Distribution Chart
-                const serviceCtx = document.getElementById('serviceDistributionChart').getContext('2d');
-                serviceChart = new Chart(serviceCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: @json($serviceDistributionData['labels']),
-                        datasets: [{
-                            data: @json($serviceDistributionData['data']),
-                            backgroundColor: [
-                                'rgba(67, 97, 238, 0.8)',
-                                'rgba(103, 114, 229, 0.8)',
-                                'rgba(72, 149, 239, 0.8)',
-                                'rgba(16, 185, 129, 0.8)',
-                                'rgba(156, 163, 175, 0.8)',
-                                'rgba(239, 68, 68, 0.8)',
-                                'rgba(245, 158, 11, 0.8)'
-                            ],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'right',
-                                labels: {
-                                    boxWidth: 12,
-                                    padding: 20
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return context.label + ': ' + context.raw;
-                                    }
-                                }
-                            }
-                        },
-                        cutout: '70%'
-                    }
-                });
-            }
-
-            // Initialize charts when page loads
-            document.addEventListener('DOMContentLoaded', function() {
-                initCharts();
-            });
-
-            // Listen for Livewire updates to reinitialize charts
-            Livewire.hook('message.processed', (message, component) => {
-                initCharts();
-            });
-        </script>
-    @endpush
 </div>

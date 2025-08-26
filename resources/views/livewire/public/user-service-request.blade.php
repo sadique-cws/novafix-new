@@ -158,7 +158,7 @@
                 </div>
             </form>
         </div>
-    @else
+   @else
         <!-- Success Page -->
         <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-8 text-center">
             <!-- Logo/Header -->
@@ -186,14 +186,14 @@
             <div class="mb-8">
                 <p class="text-gray-700 mb-2">Here is your service code</p>
                 <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4 inline-block">
-                    <span class="text-2xl font-bold text-indigo-700 font-mono">{{ $serviceCode }}</span>
+                    <span id="service-code" class="text-2xl font-bold text-indigo-700 font-mono">{{ $serviceCode }}</span>
                 </div>
                 <p class="text-sm text-gray-500 mt-2">Please note it down anywhere! It may be asked while reviewing your product.</p>
             </div>
 
             <!-- Copy Code Button -->
             <div class="mb-8">
-                <button onclick="copyToClipboard('{{ $serviceCode }}')" 
+                <button id="copy-button" 
                         class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 flex items-center justify-center mx-auto">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -218,34 +218,73 @@
             </div>
         </div>
 
-        <!-- Copy to Clipboard Script -->
+        <!-- Improved Copy to Clipboard Script -->
         <script>
-            function copyToClipboard(text) {
-                navigator.clipboard.writeText(text).then(function() {
-                    // Show success message
-                    const button = event.currentTarget;
-                    const originalText = button.innerHTML;
-                    
-                    button.innerHTML = `
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Copied!
-                    `;
-                    
-                    button.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
-                    button.classList.add('bg-green-600', 'hover:bg-green-700');
-                    
-                    setTimeout(function() {
-                        button.innerHTML = originalText;
-                        button.classList.remove('bg-green-600', 'hover:bg-green-700');
-                        button.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
-                    }, 2000);
-                }).catch(function(err) {
-                    console.error('Could not copy text: ', err);
-                    alert('Failed to copy code. Please copy it manually.');
+            document.addEventListener('DOMContentLoaded', function() {
+                const copyButton = document.getElementById('copy-button');
+                const serviceCode = document.getElementById('service-code').textContent;
+                
+                copyButton.addEventListener('click', function() {
+                    navigator.clipboard.writeText(serviceCode).then(function() {
+                        // Show success message
+                        const originalText = copyButton.innerHTML;
+                        
+                        copyButton.innerHTML = `
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Copied!
+                        `;
+                        
+                        copyButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                        copyButton.classList.add('bg-green-600', 'hover:bg-green-700');
+                        
+                        setTimeout(function() {
+                            copyButton.innerHTML = originalText;
+                            copyButton.classList.remove('bg-green-600', 'hover:bg-green-700');
+                            copyButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                        }, 2000);
+                    }).catch(function(err) {
+                        console.error('Could not copy text: ', err);
+                        
+                        // Fallback method for browsers that don't support clipboard API
+                        const textArea = document.createElement('textarea');
+                        textArea.value = serviceCode;
+                        textArea.style.position = 'fixed';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            const successful = document.execCommand('copy');
+                            if (successful) {
+                                // Show success message even with fallback
+                                const originalText = copyButton.innerHTML;
+                                copyButton.innerHTML = `
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Copied!
+                                `;
+                                copyButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                                copyButton.classList.add('bg-green-600', 'hover:bg-green-700');
+                                
+                                setTimeout(function() {
+                                    copyButton.innerHTML = originalText;
+                                    copyButton.classList.remove('bg-green-600', 'hover:bg-green-700');
+                                    copyButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                                }, 2000);
+                            } else {
+                                alert('Failed to copy code. Please copy it manually: ' + serviceCode);
+                            }
+                        } catch (fallbackErr) {
+                            alert('Failed to copy code. Please copy it manually: ' + serviceCode);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    });
                 });
-            }
+            });
         </script>
     @endif
 </div>

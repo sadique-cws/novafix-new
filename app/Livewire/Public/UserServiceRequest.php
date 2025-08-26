@@ -41,7 +41,12 @@ class UserServiceRequest extends Component
         'owner_name'            => 'required|string|max:255',
         'product_name'          => 'required|string|max:255',
         'email'                 => 'nullable|email',
-        'contact'               => 'required|string|max:15',
+        'contact' => [
+            'required',
+            'regex:/^[6-9][0-9]{9}$/', 
+            'unique:service_requests,contact',
+        ],
+
         'brand'                 => 'required|string|max:255',
         'color'                 => 'required|string|max:100',
         'problem'               => 'required|string|max:500',

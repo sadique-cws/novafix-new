@@ -23,7 +23,6 @@ class Performance extends Component
     public $timePeriod = 'month';
     public $paymentSearch = '';
     public $paymentStatus = 'all';
-    public $chartUpdateKey = 0;
 
     protected $queryString = ['selectedFranchise', 'timePeriod', 'paymentStatus'];
 
@@ -39,8 +38,6 @@ class Performance extends Component
             'metrics' => $metrics,
             'payments' => $payments,
             'activities' => $activities,
-            'revenueTrendData' => $this->getRevenueTrendData(),
-            'serviceDistributionData' => $this->getServiceDistributionData(),
         ]);
     }
 
@@ -81,7 +78,7 @@ class Performance extends Component
             ->when($dateRange = $this->getDateRange(), function ($q) use ($dateRange) {
                 $q->whereBetween('created_at', $dateRange);
             })
-            ->distinct('contact')
+          
             ->count('contact');
 
         return [
@@ -89,8 +86,6 @@ class Performance extends Component
             'completedServices' => $completedServices,
             'totalCustomers' => $totalCustomers,
             'customerRetention' => $this->calculateCustomerRetention(),
-            'staffPerformance' => $this->getStaffPerformance(),
-            'financialHealth' => $this->getFinancialHealth(),
         ];
     }
 
@@ -128,23 +123,6 @@ class Performance extends Component
             'newCustomers' => $totalCustomers - $repeatCustomers,
             'returningCustomers' => $repeatCustomers,
             'retentionRate' => round($retentionRate, 2),
-        ];
-    }
-
-    protected function getStaffPerformance()
-    {
-        return [
-            'avgServicesPerStaff' => 12.5,
-            'topPerformer' => 'John Doe (24)',
-        ];
-    }
-
-    protected function getFinancialHealth()
-    {
-        return [
-            'profitMargin' => 32.5,
-            'avgRevenuePerDay' => 12500,
-            'expenseRatio' => 42.1,
         ];
     }
 
@@ -220,85 +198,6 @@ class Performance extends Component
             ->take(5);
     }
 
-    protected function getRevenueTrendData()
-    {
-        $range = $this->getDateRange();
-        $start = $range ? Carbon::parse($range[0]) : Carbon::now()->subDays(30);
-        $end = $range ? Carbon::parse($range[1]) : Carbon::now();
-
-        $data = [];
-        $labels = [];
-
-        $paymentQuery = Payment::query()
-            ->where('status', 'completed')
-            ->when($this->selectedFranchise !== 'all', function ($q) {
-                $q->whereHas('serviceRequest.receptioner.franchise', function ($q2) {
-                    $q2->where('id', $this->selectedFranchise);
-                });
-            });
-
-        if ($this->timePeriod === 'month' || $this->timePeriod === 'year') {
-            $current = $start->copy();
-            while ($current <= $end) {
-                $month = $current->format('M Y');
-                $labels[] = $month;
-
-                $total = $paymentQuery->clone()
-                    ->whereYear('created_at', $current->year)
-                    ->whereMonth('created_at', $current->month)
-                    ->sum('total_amount');
-
-                $data[] = $total;
-                $current->addMonth();
-            }
-        } else {
-            $current = $start->copy();
-            while ($current <= $end) {
-                $labels[] = $current->format('M j');
-
-                $total = $paymentQuery->clone()
-                    ->whereDate('created_at', $current->toDateString())
-                    ->sum('total_amount');
-
-                $data[] = $total;
-                $current->addDay();
-            }
-        }
-
-        return [
-            'labels' => $labels ?: ['No data'],
-            'data' => $data ?: [0],
-        ];
-    }
-
-    protected function getServiceDistributionData()
-    {
-        $services = ServiceCategory::withCount(['serviceRequests' => function ($q) {
-            if ($this->selectedFranchise !== 'all') {
-                $q->whereHas('receptioner.franchise', function ($q2) {
-                    $q2->where('id', $this->selectedFranchise);
-                });
-            }
-            if ($dateRange = $this->getDateRange()) {
-                $q->whereBetween('created_at', $dateRange);
-            }
-        }])
-            ->orderByDesc('service_requests_count')
-            ->get();
-
-        if ($services->isEmpty()) {
-            return [
-                'labels' => ['No services'],
-                'data' => [1],
-            ];
-        }
-
-        return [
-            'labels' => $services->pluck('name')->toArray(),
-            'data' => $services->pluck('service_requests_count')->toArray(),
-        ];
-    }
-
     protected function getDateRange()
     {
         $now = Carbon::now();
@@ -324,13 +223,11 @@ class Performance extends Component
     public function updatedSelectedFranchise()
     {
         $this->resetPage();
-        $this->chartUpdateKey++;
     }
 
     public function updatedTimePeriod()
     {
         $this->resetPage();
-        $this->chartUpdateKey++;
     }
 
     public function updatedPaymentStatus()
