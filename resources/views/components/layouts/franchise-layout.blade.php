@@ -56,50 +56,55 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
+<!-- Sidebar Nav -->
+<nav class="p-4 space-y-1 text-sm">
+    <a wire:navigate href="{{ route('franchise.dashboard') }}"
+        class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.dashboard') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+        <i class="fas fa-tachometer-alt w-5 text-center"></i> Dashboard
+    </a>
 
-            <!-- Sidebar Nav -->
-            <nav class="p-4 space-y-1 text-sm">
-                <a wire:navigate href="{{ route('franchise.dashboard') }}"
-                    class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.dashboard') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
-                    <i class="fas fa-tachometer-alt w-5 text-center"></i> Dashboard
-                </a>
+    <a wire:navigate href="{{ route('franchise.manage.staff') }}"
+        class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.manage.staff') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+        <i class="fas fa-users-cog w-5 text-center"></i> Manage Staff
+    </a>
 
-                <a wire:navigate href="{{ route('franchise.manage.staff') }}"
-                    class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.manage.staff') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
-                    <i class="fas fa-users-cog w-5 text-center"></i> Manage Staff
-                </a>
+    <a wire:navigate href="{{ route('franchise.manage.receptioners') }}"
+        class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.manage.receptioners') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+        <i class="fas fa-user-tie w-5 text-center"></i> Receptionists
+    </a>
 
-                <a wire:navigate href="{{ route('franchise.manage.receptioners') }}"
-                    class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.manage.receptioners') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
-                    <i class="fas fa-user-tie w-5 text-center"></i> Receptionists
-                </a>
+    <a wire:navigate href="{{ route('franchise.manage.service') }}"
+        class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.manage.service') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+        <i class="fas fa-tags w-5 text-center"></i> Types
+    </a>
 
-                <a wire:navigate href="{{ route('franchise.manage.service') }}"
-                    class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.manage.service') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
-                    <i class="fas fa-tags w-5 text-center"></i> Types
-                </a>
+    <a wire:navigate href="{{ route('franchise.manage.customer') }}"
+        class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.manage.customer') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+        <i class="fas fa-users w-5 text-center"></i> Customers
+    </a>
 
-                <a wire:navigate href="{{ route('franchise.manage.customer') }}"
-                    class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.manage.customer') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
-                    <i class="fas fa-users w-5 text-center"></i> Customers
-                </a>
+    <!-- New User Service Request Link -->
+    <a wire:navigate href="{{ route('franchise.repair-requests') }}"
+        class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.repair-requests') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+        <i class="fas fa-clipboard-list w-5 text-center"></i> User Service Requests
+    </a>
 
-                <a wire:navigate href="{{ route('franchise.manage.payments') }}"
-                    class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.manage.payments') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
-                    <i class="fas fa-file-invoice-dollar w-5 text-center"></i> Manage Payment
-                </a>
+    <a wire:navigate href="{{ route('franchise.manage.payments') }}"
+        class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('franchise.manage.payments') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+        <i class="fas fa-file-invoice-dollar w-5 text-center"></i> Manage Payment
+    </a>
 
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded text-gray-700 hover:bg-gray-100">
-                    <i class="fas fa-chart-line w-5 text-center"></i> Reports
-                </a>
+    <a href="#"
+        class="flex items-center gap-3 px-3 py-2 rounded text-gray-700 hover:bg-gray-100">
+        <i class="fas fa-chart-line w-5 text-center"></i> Reports
+    </a>
 
-                <a wire:navigate href="{{ route('franchise.logout') }}"
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                    class="flex items-center gap-3 px-3 py-2 rounded text-red-600 hover:bg-red-50 cursor-pointer">
-                    <i class="fas fa-sign-out-alt w-5 text-center"></i> Logout
-                </a>
-            </nav>
+    <a wire:navigate href="{{ route('franchise.logout') }}"
+        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        class="flex items-center gap-3 px-3 py-2 rounded text-red-600 hover:bg-red-50 cursor-pointer">
+        <i class="fas fa-sign-out-alt w-5 text-center"></i> Logout
+    </a>
+</nav>
 
             <!-- Sidebar Profile -->
             <div class="p-4 border-t flex items-center gap-3">

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Livewire\Admin;
+
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Franchise;

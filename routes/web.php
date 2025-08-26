@@ -28,6 +28,7 @@ use App\Livewire\Franchise\ManageService;
 use App\Livewire\Franchise\ManagePayments;
 use App\Livewire\Franchise\ManageServiceRequest;
 use App\Livewire\Franchise\ManageStaff;
+use App\Livewire\Franchise\RepairRequest;
 use App\Livewire\Franchise\StaffEdit;
 use App\Livewire\Franchise\ViewCustomerPayment;
 use App\Livewire\Franchise\ViewReceptioners;
@@ -45,7 +46,9 @@ use App\Livewire\Frontdesk\ShowCompletedTask;
 use App\Livewire\Frontdesk\SmsSender;
 use App\Livewire\Frontdesk\ViewPayments;
 use App\Livewire\Frontdesk\ViewTask;
+use App\Livewire\Public\ContactUs;
 use App\Livewire\Public\Homepage;
+use App\Livewire\Public\Learn;
 use App\Livewire\Public\UserServiceRequest;
 use App\Livewire\Public\ServiceTracker;
 use App\Livewire\Staff\AssignedTask;
@@ -63,6 +66,8 @@ Route::get("/", Homepage::class)->name('homepage');
 Route::get('/ServiceRequest', UserServiceRequest::class)->name('user.service.request');
 // routes/web.php
 Route::get('/track-service', ServiceTracker::class)->name('track.service');
+Route::get('learn',Learn::class)->name('learn');
+Route::get('/contact', ContactUs::class)->name('contact');
 Route::get('/login', Login::class)->name('login');
 // Password reset routes
 // Password reset routes
@@ -121,6 +126,7 @@ Route::prefix("franchise")->group(function () {
             Route::get('/manage-payments', ManagePayments::class)->name('manage.payments');
             Route::get('/manage-payments/{paymentId}', ViewCustomerPayment::class)->name('payments.view');
             Route::get('/manage-customers', ManageCustomer::class)->name('manage.customer');
+            Route::get('/repair-requests',RepairRequest::class)->name('repair-requests');
         });
     });
 });
