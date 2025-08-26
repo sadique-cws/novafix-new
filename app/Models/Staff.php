@@ -49,6 +49,10 @@ class Staff extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+    public function answers()
+    {
+        return $this->HasMany(userAnswer::class, 'user_id');
+    }
     public function getImageUrlAttribute()
     {
         if ($this->image) {
@@ -70,9 +74,9 @@ class Staff extends Authenticatable
      */
     public function scopeSearch(Builder $query, string $search): Builder
     {
-        return $query->where('name', 'like', '%'.$search.'%')
-            ->orWhere('email', 'like', '%'.$search.'%')
-            ->orWhere('contact', 'like', '%'.$search.'%');
+        return $query->where('name', 'like', '%' . $search . '%')
+            ->orWhere('email', 'like', '%' . $search . '%')
+            ->orWhere('contact', 'like', '%' . $search . '%');
     }
-    
+
 }

@@ -84,6 +84,9 @@ public function isFrontdesk()
 {
     return $this->is_frontdesk;
 }
+public function answers(){
+    return  $this->HasMany(userAnswer::class);
+}
 
 public function sendPasswordResetNotification($token)
 {
