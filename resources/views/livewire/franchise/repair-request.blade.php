@@ -77,7 +77,7 @@
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href="#" class="text-blue-600 hover:text-blue-900">View</a>
+                                            <a wire:navigate href="{{route('franchise.repair-request.view',$request->id)}}" class="text-blue-600 hover:text-blue-900">View</a>
                                         </td>
                                     </tr>
                                       

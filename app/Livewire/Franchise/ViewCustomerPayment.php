@@ -4,6 +4,7 @@ namespace App\Livewire\Franchise;
 
 use App\Models\Payment;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 #[Title('View Customer Payment')]
 #[Layout('components.layouts.franchise-layout')]

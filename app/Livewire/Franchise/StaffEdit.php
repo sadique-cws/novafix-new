@@ -7,6 +7,8 @@ use App\Models\Staff;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Title;
+
 #[Title('Staff Edit')]
 #[Layout('components.layouts.franchise-layout')]
 
