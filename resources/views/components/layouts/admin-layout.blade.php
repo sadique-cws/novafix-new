@@ -151,17 +151,17 @@
 
                     <!-- Customers -->
                     <li class="mb-1">
-                        <a href="#" class="font-medium flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="{{ route('admin.user-enquiries') }}" wire:navigate class="font-medium flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-users mr-3 w-5 text-center"></i>
-                            <span>Customers</span>
+                            <span>User Enquiry</span>
                         </a>
                     </li>
 
                     <!-- Settings -->
                     <li class="mb-1">
-                        <a href="#" class="font-medium flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="{{ route('admin.staff-enquiries') }}" wire:navigate class="font-medium flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
                             <i class="fas fa-cog mr-3 w-5 text-center"></i>
-                            <span>Settings</span>
+                            <span>Staff Enquiries</span>
                         </a>
                     </li>
                     <!-- Logout -->

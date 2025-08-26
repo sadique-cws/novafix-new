@@ -105,7 +105,7 @@
                             <div class="flex flex-col gap-1">
                                 <p
                                     class=" text-gray-700
-                                                                                                                                                                                                                                                                                                                                 font-medium">
+                                                                                                                                                                                                                                                                                                                                                         font-medium">
                                     Related Image
                                     :-</p>
                                 <img src="{{ $currentQuestion->image_url }}" class="h-32 w-64 object-fit rounded shadow"
@@ -116,7 +116,7 @@
                             <div class="flex flex-col gap-1">
                                 <label for=""
                                     class="text-gray-700
-                                                                                                                                                                                                                                                                                                                                 font-medium">Explanation
+                                                                                                                                                                                                                                                                                                                                                         font-medium">Explanation
                                     :-</label>
                                 <p class="text-gray-700 text-base leading-relaxed">
                                     {{ $currentQuestion->description }}
@@ -125,6 +125,24 @@
                         @endif
                     </div>
                 @endif
+            </div>
+        @elseif($showMessageForm)
+            <div class="p-6 md:p-10">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Send Us a Message</h2>
+                <form wire:submit.prevent="submitMessage" class="space-y-4 max-w-lg mx-auto">
+                    <div>
+                        <label class="block text-gray-700 mb-1">Your Message</label>
+                        <textarea wire:model="userMessage" class="w-full border rounded p-2" rows="4" required></textarea>
+                        @error('userMessage') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-1">Your Contact (Email or Phone)</label>
+                        <input type="text" wire:model="userContact" class="w-full border rounded p-2" required>
+                        @error('userContact') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    </div>
+                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Send
+                        Message</button>
+                </form>
             </div>
         @endif
     </div>
