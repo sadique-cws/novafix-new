@@ -1,82 +1,78 @@
-<div class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-3xl bg-white rounded-lg shadow-lg overflow-hidden">
-       
+
+<div class="bg-gray-100 mt-6 flex items-center justify-center min-h-screen p-4 font-sans">
+    <div class="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+        <!-- Header -->
+        <div class="bg-blue-600 text-white p-6 text-center">
+            <h1 class="text-2xl font-bold">NovaFix Service Receipt</h1>
+        </div>
+
         <!-- Customer Info -->
-        <div class="p-6 border-b">
-            <h2 class="text-xl font-semibold text-gray-800 mb-2">Agarwal computer</h2>
-            <div class="flex flex-col sm:flex-row sm:justify-between text-gray-700">
-                <div class="flex items-center mb-2 sm:mb-0">
-                    <i class="fas fa-phone-alt mr-2 text-primary"></i>
-                    <span>9430201610</span>
+        <div class="p-6 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 mb-2">{{ $serviceRequest->owner_name }}</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-600 text-sm">
+                <div class="flex items-center">
+                    <i class="fas fa-phone-alt mr-2 text-blue-600"></i>
+                    <span>{{ $serviceRequest->contact }}</span>
                 </div>
                 <div class="flex items-center">
-                    <i class="fas fa-envelope mr-2 text-primary"></i>
-                    <span>hpworld@gmail.com</span>
+                    <i class="fas fa-envelope mr-2 text-blue-600"></i>
+                    <span>{{ $serviceRequest->email }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Service Details -->
         <div class="p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-gray-800">Service Request Details</h3>
-                <button id="downloadBtn"
-                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                        </path>
-                    </svg>
-                    Download Receipt
-                </button>
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Service Request Details</h3>
+                <div class="no-print">
+                    <button wire:click="printReceipt" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                        Print Receipt
+                    </button>
+                </div>
             </div>
-
             <div class="overflow-x-auto">
-                <table class="w-full table-auto border-collapse">
+                <table class="w-full border-collapse text-sm text-gray-700">
                     <tbody>
                         <tr class="bg-gray-50">
-                            <td class="border px-4 py-3 font-medium">Name</td>
-                            <td class="border px-4 py-3" id="customer-name">AGARWAL COMPUTER</td>
-                            <td class="border px-4 py-3 font-medium">Service Code</td>
-                            <td class="border px-4 py-3" id="service-code">LAIFVB</td>
+                            <td class="border border-gray-200 px-4 py-2 font-medium">Customer Name</td>
+                            <td class="border border-gray-200 px-4 py-2" id="customer-name">{{ $serviceRequest->owner_name}}</td>
+                            <td class="border border-gray-200 px-4 py-2 font-medium">Service Code</td>
+                            <td class="border border-gray-200 px-4 py-2" id="service-code">{{ $serviceRequest->service_code }}</td>
+                        </tr>
+                           <tr class="bg-gray-50">
+                            <td class="border border-gray-200 px-4 py-2 font-medium">Type</td>
+                            <td class="border border-gray-200 px-4 py-2" id="type">{{ $serviceRequest->category->name }}</td>
+                            <td class="border border-gray-200 px-4 py-2 font-medium">Serial Number</td>
+                            <td class="border border-gray-200 px-4 py-2" id="serial-number">S24V</td>
+                        </tr>
+                         <tr>
+                            <td class="border border-gray-200 px-4 py-2 font-medium">Color</td>
+                            <td class="border border-gray-200 px-4 py-2" id="color">{{ $serviceRequest->color }}</td>
+                            <td class="border border-gray-200 px-4 py-2 font-medium">Model</td>
+                            <td class="border border-gray-200 px-4 py-2" id="model-number">{{ $serviceRequest->brand }}</td>
                         </tr>
                         <tr>
-                            <td class="border px-4 py-3 font-medium">Problem</td>
-                            <td class="border px-4 py-3" id="problem">NO</td>
-                            <td class="border px-4 py-3 font-medium">Brand</td>
-                            <td class="border px-4 py-3" id="brand">SAMSUNG</td>
-                        </tr>
-                        <tr class="bg-gray-50">
-                            <td class="border px-4 py-3 font-medium">Type</td>
-                            <td class="border px-4 py-3" id="type">LAPTOP/DESKTOP</td>
-                            <td class="border px-4 py-3 font-medium">S.N</td>
-                            <td class="border px-4 py-3" id="serial-number">S24V</td>
-                        </tr>
-                        <tr>
-                            <td class="border px-4 py-3 font-medium">MAC</td>
-                            <td class="border px-4 py-3" id="mac-address"></td>
-                            <td class="border px-4 py-3 font-medium">Color</td>
-                            <td class="border px-4 py-3" id="color">BLACK</td>
-                        </tr>
-                        <tr class="bg-gray-50">
-                            <td class="border px-4 py-3 font-medium">Model No</td>
-                            <td class="border px-4 py-3" id="model-number">NP-RVS08</td>
-                            <td class="border px-4 py-3 font-medium">Delivery Date</td>
-                            <td class="border px-4 py-3" id="delivery-date">28 Aug 2025</td>
-                        </tr>
-                        <tr>
-                            <td class="border px-4 py-3 font-medium">Estimated Delivery</td>
-                            <td class="border px-4 py-3" id="estimated-delivery">07 Sep 2025</td>
-                            <td class="border px-4 py-3 font-medium">Status</td>
-                            <td class="border px-4 py-3">
-                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm"
-                                    id="status">pending</span>
+                            
+                            <td class="border border-gray-200 px-4 py-2 font-medium">Estimated Delivery</td>
+                            <td class="border border-gray-200 px-4 py-2" id="delivery-date">{{ $serviceRequest->estimate_delivery ?? 'N/A' }}</td>
+                             <td class="border border-gray-200 px-4 py-2 font-medium">Status</td>
+                            <td class="border border-gray-200 px-4 py-2">
+                                {{ $serviceRequest->status == 0 ? 'Pending' : ($serviceRequest->status == 25 ? 'Processing' : ($serviceRequest->status == '90' ? 'Cancelled' : ($serviceRequest->status == 100 ? 'Completed' : 'Ready for Pickup'))) }}
                             </td>
+                           
                         </tr>
-                        <tr class="bg-gray-50">
-                            <td class="border px-4 py-3 font-medium">Remark</td>
-                            <td class="border px-4 py-3" id="remarks" colspan="3">N/A</td>
+                     
+                       
+                      
+                        <tr>
+                            <td class="border border-gray-200 px-4 py-2 font-medium">Remark</td>
+                            <td class="border border-gray-200 px-4 py-2" id="remarks" colspan="3">{{ $serviceRequest->remark ?? 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            
+                            <td class="border border-gray-200 px-4 py-2 font-medium">Problem</td>
+                            <td class="border border-gray-200 px-4 py-2" id="problem" colspan="3">{{ $serviceRequest->problam }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -84,24 +80,28 @@
         </div>
 
         <!-- Footer -->
-        <div class="bg-gray-100 p-6 text-center">
-            <h3 class="text-lg font-bold text-gray-800 mb-2">NovaFix</h3>
-            <p class="text-gray-700">Balaji laptop & NovaFix</p>
-            <p class="text-gray-700">Zila School Road, Near Nokia/MI Care,</p>
-            <p class="text-gray-700">(Purnia), Bihar - 854301</p>
-            <div class="mt-3 flex flex-col sm:flex-row sm:justify-center text-gray-700">
-                <div class="flex items-center justify-center mb-2 sm:mb-0 sm:mr-6">
-                    <i class="fas fa-phone-alt mr-2 text-primary"></i>
+        <div class="bg-gray-50 p-6 text-center text-gray-600 text-sm">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">NovaFix</h3>
+            <p>Balaji Laptop & NovaFix</p>
+            <p>Zila School Road, Near Nokia/MI Care, Purnia, Bihar - 854301</p>
+            <div class="mt-3 flex flex-col sm:flex-row sm:justify-center gap-4">
+                <div class="flex items-center justify-center">
+                    <i class="fas fa-phone-alt mr-2 text-blue-600"></i>
                     <span>9304599132</span>
                 </div>
                 <div class="flex items-center justify-center">
-                    <i class="fas fa-envelope mr-2 text-primary"></i>
+                    <i class="fas fa-envelope mr-2 text-blue-600"></i>
                     <span>infotechbalaji108@gmail.com</span>
                 </div>
             </div>
         </div>
     </div>
 
-
-
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.on('printReceipt', () => {
+                window.print();
+            });
+        });
+    </script>
 </div>

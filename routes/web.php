@@ -71,7 +71,7 @@ Route::get("/", Homepage::class)->name('homepage');
 Route::get('/ServiceRequest', UserServiceRequest::class)->name('user.service.request');
 // routes/web.php
 Route::get('/track-service', ServiceTracker::class)->name('track.service');
-Route::get('/receipt/view', ReceiptRequest::class)->name('receipt.view');
+Route::get('/receipt/view/{id}', ReceiptRequest::class)->name('receipt.view');
 Route::get('learn',Learn::class)->name('learn');
 Route::get('/contact', ContactUs::class)->name('contact');
 Route::get('/login', Login::class)->name('login');

@@ -3,14 +3,12 @@
         <div class="max-w-4xl mx-auto bg-white rounded border border-gray-400 p-8">
             <h2 class="text-2xl text-center text-green-600 font-semibold underline mb-6 border-b pb-3">
                 Service Request Form
-            </h2>
-
+            </h2> 
             @if (session()->has('error'))
                 <div class="mb-6 p-4 bg-red-100 text-red-700 rounded-lg">
                     {{ session('error') }}
                 </div>
             @endif
-
             <form wire:submit.prevent="save" class="space-y-6" enctype="multipart/form-data">
 
                 {{-- Franchise --}}
@@ -110,7 +108,6 @@
                     @error('image') 
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p> 
                     @enderror
-                    
                     <!-- Upload Progress -->
                     @if($uploadProgress > 0 && $uploadProgress < 100)
                         <div class="mt-4">
@@ -120,7 +117,6 @@
                             </div>
                         </div>
                     @endif
-                    
                     @if ($image)
                         <div class="mt-2">
                             <p class="text-sm text-gray-600">Image Preview:</p>
@@ -138,7 +134,6 @@
                         </div>
                     @endif
                 </div>
-
                 {{-- Submit --}}
                 <div class="flex justify-end">
                     <button type="submit" wire:loading.attr="disabled"
@@ -201,17 +196,16 @@
                     <span x-text="copied ? 'Copied!' : 'Copy Code'"></span>
                 </button>
             </div>
-
             <!-- Additional Options -->
             <div class="border-t pt-6">
                 <p class="text-gray-600 mb-4">What would you like to do next?</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="{{ route('track.service') }}" 
-                       class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-gray-200 transition-colors duration-200">
+                       class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200">
                         Track Your Service
                     </a>
                     <button wire:click="$set('submitted', false)" 
-                            class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-indigo-200 transition-colors duration-200">
+                            class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors duration-200">
                         Submit Another Request
                     </button>
                 </div>
