@@ -240,21 +240,23 @@ class ShowCompletedTask extends Component
     }
 
     public function resetPaymentForm()
-    {
-        $this->reset([
-            'amount',
-            'discount',
-            'tax',
-            'total_amount',
-            'payment_method',
-            'transaction_id',
-            'notes',
-            'status',
-            'editingPaymentId'
-        ]);
-        $this->amount = $this->request->estimated_cost ?? 0;
-        $this->calculateTotal();
-    }
+{
+    $this->reset([
+        'amount',
+        'discount',
+        'tax',
+        'total_amount',
+        'payment_method',
+        'transaction_id',
+        'notes',
+        'status',
+        'editingPaymentId'
+    ]);
+    $this->amount = $this->request->estimated_cost ?? 0;
+    $this->payment_method = 'cash'; // Set default
+    $this->status = 'completed'; // Set default
+    $this->calculateTotal();
+}
 
     public function render()
     {

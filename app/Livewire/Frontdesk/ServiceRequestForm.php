@@ -67,7 +67,10 @@ class ServiceRequestForm extends Component
 
     public function mount()
     {
-        $this->receptioners_id = Auth::guard('frontdesk')->user()->id;
+        // Safely set receptioners_id only if frontdesk guard is authenticated
+        if (Auth::guard('frontdesk')->check()) {
+            $this->receptioners_id = Auth::guard('frontdesk')->user()->id;
+        }
         $this->last_update = now();
         $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d\TH:i');
         $this->generateServiceCode();
@@ -225,18 +228,20 @@ class ServiceRequestForm extends Component
         // Determine franchise id from the authenticated frontdesk (receptioner) user first.
         $franchiseId = null;
 
+        // If frontdesk (receptioner) is logged in, prefer their franchise_id
         if (Auth::guard('frontdesk')->check()) {
             $frontdeskUser = Auth::guard('frontdesk')->user();
-            // Receptioners model stores franchise_id
-            $franchiseId = $frontdeskUser->franchise_id ?? null;
-        } elseif (auth('franchise')->check()) {
-            // If a franchise is logged in, use its id
+            // try explicit franchise_id, else try relation
+            $franchiseId = $frontdeskUser->franchise_id ?? optional($frontdeskUser->franchise)->id;
+        }
+
+        // If franchise guard is logged in use that id
+        if (!$franchiseId && auth('franchise')->check()) {
             $franchiseId = auth('franchise')->id();
         }
 
-        // Only return technicians belonging to the determined franchise.
-        // If franchiseId cannot be determined, return an empty collection to avoid showing unrelated staff.
-        $technicians = $franchiseId ? Staff::where('franchise_id', $franchiseId)->get() : collect();
+        // If we have a franchise id, filter technicians by franchise, otherwise show all technicians
+        $technicians = $franchiseId ? Staff::where('franchise_id', $franchiseId)->get() : Staff::all();
 
         return view('livewire.frontdesk.service-request-form', [
             'technicians' => $technicians,
