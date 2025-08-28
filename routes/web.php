@@ -1,4 +1,5 @@
 <?php
+use App\Livewire\Admin\Setting;
 use App\Livewire\Admin\Solution\StaffAnswers;
 use App\Livewire\Admin\StaffEnquiries;
 use App\Livewire\Admin\UserEnquiry;
@@ -107,6 +108,7 @@ Route::prefix("admin")->group(function () {
              Route::get('solution/staff-answers',StaffAnswers::class)->name('solution.staff-answers');
              Route::get('staff-enquiries',StaffEnquiries::class)->name('staff-enquiries');
              Route::get('user-enquiries',UserEnquiry::class)->name('user-enquiries');
+             Route::get('/setting', Setting::class)->name('setting');
         });
     });
 });
