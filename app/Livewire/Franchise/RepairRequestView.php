@@ -20,15 +20,12 @@ class RepairRequestView extends Component
     {
         $franchiseId = Auth::guard('franchise')->user()->id;
 
-        // Request लऽ (ओही franchise का)
         $this->request = ServiceRequest::where('franchise_id', $franchiseId)
             ->where('id', $id)
             ->firstOrFail();
 
-        // सिर्फ़ ओही franchise के receptioners लऽ
         $this->receptioners = Receptioners::where('franchise_id', $franchiseId)->get();
 
-        // अगर पहले से assign बा
         $this->receptioner_id = $this->request->receptioners_id;
     }
 

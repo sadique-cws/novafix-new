@@ -12,13 +12,7 @@
                 <!-- Main Content Area -->
                 <div class="md:w-full">
                     <div class="bg-white rounded-lg shadow">
-                        <!-- Header -->
-                        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                            <h1 class="text-xl font-semibold text-gray-800">Service Requests</h1>
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center">
-                                <i class="fas fa-plus-circle mr-2"></i> New Request
-                            </button>
-                        </div>
+                     
 
                         <!-- Filters -->
                         <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
