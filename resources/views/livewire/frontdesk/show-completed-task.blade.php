@@ -169,21 +169,20 @@
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-gray-100 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         </div>
 
+
                         <!-- Payment Method -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Payment Method*</label>
                             <select wire:model="payment_method"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">Select Method</option>
-                                <option value="card">card</option>
-                                <option value="cash">cash</option>
+                                <option value="cash" selected>Cash</option>
+                                <option value="card">Card</option>
                                 <option value="transfer">Bank Transfer</option>
                             </select>
                             @error('payment_method')
                                 <span class="text-red-500 text-xs">{{ $message }}</span>
                             @enderror
                         </div>
-
 
                         <!-- Status -->
                         <div>
@@ -199,6 +198,8 @@
                             @enderror
                         </div>
 
+
+                        <!-- Payment Method -->
                         <!-- Notes -->
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-700">Notes</label>
