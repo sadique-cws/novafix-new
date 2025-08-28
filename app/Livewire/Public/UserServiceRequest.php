@@ -70,28 +70,18 @@ class UserServiceRequest extends Component
         $this->uploadProgress = 10;
     }
     protected function generateServiceCode()
-    {
-        $prefix = "NFSR-";
-        $lastRequest = ServiceRequest::orderBy('id', 'desc')->first();
+{
+    do {
+        $randomLetters = strtoupper(Str::random(6));
 
-        if ($lastRequest && !empty($lastRequest->service_code)) {
-            // Check if the existing code has our prefix
-            if (str_starts_with($lastRequest->service_code, $prefix)) {
-                // Extract the numeric part from the existing code
-                $numericPart = substr($lastRequest->service_code, strlen($prefix));
-                $lastNumber = (int) $numericPart;
-                $newNumber = str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
-            } else {
-                // If the code doesn't have our prefix, start from 1
-                $newNumber = '00001';
-            }
-        } else {
-            // No existing records or empty service_code
-            $newNumber = '00001';
-        }
+        $newCode = $randomLetters;
 
-        return $prefix . $newNumber;
-    }
+        $exists = ServiceRequest::where('service_code', $newCode)->exists();
+
+    } while ($exists); // Repeat until we get a unique one
+
+    return $newCode;
+}
 
 
     protected function uploadToImageKit()

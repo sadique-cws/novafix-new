@@ -95,18 +95,20 @@ class ServiceRequestForm extends Component
 
     protected function generateServiceCode()
     {
-        $lastRequest = ServiceRequest::orderBy('id', 'desc')->first();
+        do {
+            $newCode = '';
+            for ($i = 0; $i < 6; $i++) {
+                $newCode .= chr(rand(65, 90)); // 65–90 = A–Z
+            }
 
-        if ($lastRequest && $lastRequest->service_code) {
-            $lastNumber = (int) substr($lastRequest->service_code, -5);
-            $newNumber = str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
-        } else {
-            $newNumber = '00001';
-        }
+            // Check uniqueness in DB
+            $exists = ServiceRequest::where('service_code', $newCode)->exists();
+        } while ($exists);
 
-        $this->service_code = "NFSR-{$newNumber}";
+        $this->service_code = $newCode;
         $this->estimate_delivery = now()->addDays(3)->format('Y-m-d\TH:i');
     }
+
 
     public function removeImage()
     {

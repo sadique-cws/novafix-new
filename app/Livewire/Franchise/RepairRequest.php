@@ -6,10 +6,14 @@ use Livewire\Component;
 use App\Models\ServiceRequest;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\WithPagination;
 
 #[Layout('components.layouts.franchise-layout')]
+
 class RepairRequest extends Component
 {
+    use WithPagination;
+
     public $search = '';
     public $statusFilter = '';
     public $sortField = 'created_at';
@@ -17,7 +21,23 @@ class RepairRequest extends Component
 
     public function updatingSearch()
     {
-        // reset to first page if you add pagination later
+        $this->resetPage();
+    }
+
+    public function updatingStatusFilter()
+    {
+        $this->resetPage();
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+        }
+
+        $this->sortField = $field;
     }
 
     public function render()
@@ -28,14 +48,15 @@ class RepairRequest extends Component
                 $query->where(function ($q) {
                     $q->where('owner_name', 'like', '%' . $this->search . '%')
                         ->orWhere('email', 'like', '%' . $this->search . '%')
-                        ->orWhere('contact', 'like', '%' . $this->search . '%');
+                        ->orWhere('contact', 'like', '%' . $this->search . '%')
+                        ->orWhere('service_code', 'like', '%' . $this->search . '%');
                 });
             })
-            ->when($this->statusFilter, function ($query) {
+            ->when($this->statusFilter !== '', function ($query) {
                 $query->where('status', $this->statusFilter);
             })
             ->orderBy($this->sortField, $this->sortDirection)
-            ->get();
+            ->paginate(10);
 
         return view('livewire.franchise.repair-request', [
             'requests' => $requests

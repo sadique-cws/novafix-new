@@ -184,7 +184,7 @@
             <div class="mb-8">
                 <p class="text-gray-700 mb-2">Here is your service code</p>
                 <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4 inline-block">
-                    <span id="service-code" class="text-2xl font-bold text-indigo-700 font-mono">{{ $serviceCode }}</span>
+                    <span id="service-code" class="text-2xl  text-indigo-700 font-serif">{{ $serviceCode }}</span>
                 </div>
                 <p class="text-sm text-gray-500 mt-2">Please note it down anywhere! It may be asked while reviewing your product.</p>
             </div>
