@@ -59,5 +59,5 @@ class Franchise extends Authenticatable
          $query->where('franchise_id', $this->id);
       });
    }
-
+  
 }

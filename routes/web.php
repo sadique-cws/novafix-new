@@ -40,6 +40,7 @@ use App\Livewire\Franchise\ViewStaff;
 use App\Livewire\Frontdesk\CompletedTask;
 use App\Livewire\Frontdesk\ManageServiceRequest as FrontdeskManageServiceRequest;
 use App\Livewire\Frontdesk\FrontDashboard;
+use App\Livewire\Frontdesk\ManageUserRequest;
 use App\Livewire\Frontdesk\ManagePayment;
 use App\Livewire\Frontdesk\EditServiceRequest;
 use App\Livewire\Frontdesk\OtpSender;
@@ -123,7 +124,6 @@ Route::prefix("franchise")->group(function () {
             })->name('logout');
             Route::get("/profile", App\Livewire\Franchise\FranchiseProfile::class)->name("profile");
             Route::get("/dashboard", Dashboard::class)->name("dashboard");
-            Route::get("/manage/request", ManageServiceRequest::class)->name("manage.request");
             Route::get('/add-receptioners', AddReceptioners::class)->name('add.receptioners');
             Route::get('/manage-receptioners', ManageReceptioners::class)->name('manage.receptioners');
             Route::get('/receptionists/{id}', ViewReceptioners::class)->name('view.receptionist');
@@ -159,6 +159,7 @@ Route::prefix("frontdesk")->group(function () {
         Route::get('/manage/payments', ManagePayment::class)->name('frontdesk.manage.payments');
         Route::get('/payment-details/{serviceCode}', ViewPayments::class)->name('frontdesk.payment-details');
         Route::get('/reviewServiceRequest/{id}', ReviewServiceRequest::class)->name('reviewServiceRequest');
+        Route::get('/manage/user-request', ManageUserRequest::class)->name('frontdesk.manage.user-request');
     });
 });
 

@@ -4,8 +4,9 @@ namespace App\Livewire\Admin;
 
 use App\Models\Franchise;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
-#[Title('Add Franchise')]
+#[Title('view Franchise')]
 #[Layout('components.layouts.admin-layout')]
 
 class ViewFranchises extends Component

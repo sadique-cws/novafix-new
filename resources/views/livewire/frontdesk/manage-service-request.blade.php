@@ -238,7 +238,7 @@
                                     <div class="text-xs text-gray-500">{{ $request->brand }}</div>
                                     <div class="text-xs text-gray-500">SN: {{ $request->serial_no }}</div>
                                 </td>
-                                <td class="w-32 px-6 py-4 whitespace-nowrap">
+                                  <td class="w-32 px-6 py-4 whitespace-nowrap">
                                     @if ($request->status == 0)
                                         <span
                                             class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
@@ -259,7 +259,7 @@
                                             </svg>
                                             Completed
                                         </span>
-                                    @else
+                                    @elseif($request->status == 90)
                                         <span
                                             class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
@@ -269,6 +269,26 @@
                                             </svg>
                                             Rejected
                                         </span>
+                                    @elseif($request->status == 25)
+                                        <span
+                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            </svg>
+                                            In Progress
+                                        </span>
+                                        @elseif($request->status == 50)
+                                        <span
+                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            testing
+                                        
                                     @endif
                                 </td>
                                 <td class="w-48 px-6 py-4 whitespace-nowrap">

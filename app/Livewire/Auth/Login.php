@@ -12,7 +12,8 @@ use App\Models\Receptioners;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
-#[Title('Forgot Password')]
+
+#[Title('login page')]
 
 
 class Login extends Component

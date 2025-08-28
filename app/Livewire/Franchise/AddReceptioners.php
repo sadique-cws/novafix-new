@@ -7,6 +7,7 @@ use App\Models\Receptioners;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 #[Title('Add Receptionist')]
 #[Layout('components.layouts.franchise-layout')]

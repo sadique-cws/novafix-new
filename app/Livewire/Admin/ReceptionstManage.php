@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Franchise;
 use App\Models\Receptioner;
 use App\Models\Receptioners;
+use Livewire\Attributes\Title;
 use Livewire\WithPagination;
 #[Title('Manage Receptionists')]
 #[Layout('components.layouts.admin-layout')]

@@ -41,7 +41,6 @@
         class="fixed inset-0 bg-black bg-opacity-40 z-40 lg:hidden transition-opacity duration-300"
         :class="isMobileSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'">
     </div>
-
     <div class="flex gap-1">
         <!-- Sidebar -->
         <div class="fixed top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 z-50 transform transition-transform duration-300"
@@ -57,7 +56,6 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-
             <!-- Navigation -->
             <nav class="p-3">
                 <ul class="space-y-1">
@@ -68,7 +66,7 @@
                             <span class="ml-2">Dashboard</span>
                         </a>
                     </li>
-                     <li>
+                    <li>
                         <a wire:navigate href="{{ route('staff.novafix-diagnosis') }}"
                             class="flex items-center px-3 py-2 rounded hover:bg-gray-50 text-gray-700">
                             <i class="fas fa-tachometer-alt w-5 text-primary"></i>
@@ -89,9 +87,13 @@
                             <span class="ml-2">Completed Tasks</span>
                         </a>
                     </li>
+                    <a wire:navigate href="{{ route('staff.logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        class="flex items-center gap-3 px-3 py-2 rounded text-red-600 hover:bg-red-50 cursor-pointer">
+                        <i class="fas fa-sign-out-alt w-5 text-center"></i> Logout
+                    </a>
                 </ul>
             </nav>
-
             <!-- Sidebar Profile -->
             <div class="p-4 border-t flex items-center gap-3">
                 <img src="https://e7.pngegg.com/pngimages/16/412/png-clipart-computer-icons-encapsulated-postscript-staff-miscellaneous-black-thumbnail.png"
@@ -102,6 +104,7 @@
                         class="text-xs text-secondary hover:underline">View Profile</a>
                 </div>
             </div>
+
         </div>
 
         <!-- Main Content -->

@@ -4,8 +4,9 @@ namespace App\Livewire\Admin;
 
 use App\Models\Franchise;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
-#[Title('Add Franchise')]
+#[Title('Manage Franchise')]
 #[Layout('components.layouts.admin-layout')]
 
 class ManageFranchises extends Component
@@ -20,7 +21,6 @@ class ManageFranchises extends Component
 
     public function render()
     {
-
         $franchises = Franchise::query()
             ->when($this->search, function ($query) {
                 $query->where('franchise_name', 'like', '%' . $this->search . '%')
@@ -30,7 +30,8 @@ class ManageFranchises extends Component
             ->when($this->statusFilter, function ($query) {
                 $query->where('status', $this->statusFilter);
             })
-            ->paginate($this->perPage);
+            ->orderBy('created_at', 'desc')   
+            ->paginate($this->perPage);       
 
         return view('livewire.admin.manage-franchises', [
             'franchises' => $franchises,

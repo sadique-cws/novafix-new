@@ -94,6 +94,14 @@
                             Manage Payment
                         </a>
                     </li>
+                   <li>
+    <a wire:navigate href="{{ route('frontdesk.manage.user-request') }}" 
+       class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('frontdesk.manage.payments') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+        <i class="fas fa-tasks mr-3 text-gray-400"></i>
+        Manage User Request
+    </a>
+</li>
+
                     <li>
                         <a wire:navigate href="{{ route('frontdesk.profile') }}" 
                           class="flex items-center gap-3 px-3 py-2 rounded {{ request()->routeIs('frontdesk.profile') ? 'bg-secondary text-white' : 'text-gray-700 hover:bg-gray-100' }}">
