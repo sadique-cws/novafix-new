@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Franchise;
 
+use App\Helpers\ImageKitHelper;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\ServiceCategory;
@@ -18,7 +19,6 @@ class AddStaff extends Component
   
 
     // Form fields
-    #[Rule('image|max:2048')]
     public $image;
 
     #[Rule('required|string|max:255')]
@@ -57,9 +57,16 @@ class AddStaff extends Component
 
 
         // Handle image upload
-        if ($this->image) {
-            $validated['image'] = $this->image->store('/staff/images', 'public');
-           
+         if ($this->image) {
+            $imageData = ImageKitHelper::uploadImage($this->image, '/Novafix/staff-images');
+
+            if ($imageData) {
+                $validated['image_url'] = $imageData['url'];
+                $validated['image_file_id'] = $imageData['fileId'];
+            } else {
+                session()->flash('error', 'failed to upload image, please try again');
+                return;
+            }
         }
 
 

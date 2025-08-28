@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('salary');
             $table->foreignId('service_categories_id')->constrained()->onDelete('cascade');
             $table->string('status');
-            $table->string('image')->nullable();
+            $table->string('image_url')->nullable();
+            $table->string('image_file_id')->nullable();
             $table->string('aadhar');
             $table->string('pan');
             $table->string('address');
