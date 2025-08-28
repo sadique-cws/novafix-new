@@ -34,7 +34,8 @@ return new class extends Migration
             $table->boolean('delivery_status')->default(false);
             $table->dateTime('estimate_delivery')->nullable();
             $table->timestamps(); // created_at and updated_at
-            $table->string('image')->nullable();
+            $table->string('image_url')->nullable();
+            $table->string('image_file_id')->nullable();
         });
     }
 
