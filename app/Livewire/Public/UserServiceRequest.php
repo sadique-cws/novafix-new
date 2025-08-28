@@ -25,32 +25,28 @@ class UserServiceRequest extends Component
     public $color;
     public $problem;
     public $image;
-    public $imagekit_url;
-    public $uploadProgress = 0;
     public $submitted = false;
     public $serviceCode = '';
-
-
     public $serviceCategories = [];
     public $franchises = [];
     public $service_code;
 
     protected $rules = [
-        'franchise_id'          => 'required|exists:franchises,id',
+        'franchise_id' => 'required|exists:franchises,id',
         'service_categories_id' => 'required|exists:service_categories,id',
-        'owner_name'            => 'required|string|max:255',
-        'product_name'          => 'required|string|max:255',
-        'email'                 => 'nullable|email',
+        'owner_name' => 'required|string|max:255',
+        'product_name' => 'required|string|max:255',
+        'email' => 'nullable|email',
         'contact' => [
             'required',
-            'regex:/^[6-9][0-9]{9}$/', 
+            'regex:/^[6-9][0-9]{9}$/',
             'unique:service_requests,contact',
         ],
 
-        'brand'                 => 'required|string|max:255',
-        'color'                 => 'required|string|max:100',
-        'problem'               => 'required|string|max:500',
-        'image'                 => 'nullable|image|max:2048',
+        'brand' => 'required|string|max:255',
+        'color' => 'required|string|max:100',
+        'problem' => 'required|string|max:500',
+        'image' => 'nullable|image|max:2048',
     ];
 
     public function mount()
@@ -60,81 +56,51 @@ class UserServiceRequest extends Component
         $this->franchises = Franchise::all();
     }
 
-    public function updatedImage()
-    {
-        $this->validate([
-            'image' => 'image|max:2048',
-        ]);
-
-        $this->imagekit_url = null;
-        $this->uploadProgress = 10;
-    }
     protected function generateServiceCode()
-{
-    do {
-        $randomLetters = strtoupper(Str::random(6));
-
-        $newCode = $randomLetters;
-
-        $exists = ServiceRequest::where('service_code', $newCode)->exists();
-
-    } while ($exists); // Repeat until we get a unique one
-
-    return $newCode;
-}
-
-
-    protected function uploadToImageKit()
     {
-        try {
-            $this->uploadProgress = 30;
-            $result = ImageKitHelper::uploadImage($this->image, 'public-service-requests');
-            $this->uploadProgress = 100;
-            return $result;
-        } catch (\Exception $e) {
-            $this->uploadProgress = 0;
-            throw new \Exception('Failed to upload image: ' . $e->getMessage());
-        }
-    }
+        do {
+            $randomLetters = strtoupper(Str::random(6));
 
-    public function removeImage()
-    {
-        $this->reset('image', 'imagekit_url', 'uploadProgress');
+            $newCode = $randomLetters;
+
+            $exists = ServiceRequest::where('service_code', $newCode)->exists();
+
+        } while ($exists); // Repeat until we get a unique one
+
+        return $newCode;
     }
 
     public function save()
     {
         $this->validate();
-
         $serviceCode = $this->generateServiceCode();
 
-        $imagePath = null;
-        if ($this->image) {
-            $imagekitData = $this->uploadToImageKit();
+        $data = [
+            'franchise_id' => $this->franchise_id,
+            'service_categories_id' => $this->service_categories_id,
+            'service_code' => $serviceCode,
+            'owner_name' => $this->owner_name,
+            'product_name' => $this->product_name,
+            'email' => $this->email,
+            'contact' => $this->contact,
+            'brand' => $this->brand,
+            'color' => $this->color,
+            'problem' => $this->problem,
+        ];
 
-            if ($imagekitData && isset($imagekitData['url'])) {
-                $imagePath = $imagekitData['url'];
-                $this->imagekit_url = $imagePath;
+         if ($this->image) {
+            $imageData = ImageKitHelper::uploadImage($this->image, '/Novafix/service-requests');
+
+            if ($imageData) {
+                $data['image_url'] = $imageData['url'];
+                $data['image_file_id'] = $imageData['fileId'];
             } else {
-                session()->flash('error', 'Failed to upload image. Please try again.');
+                session()->flash('error', 'failed to upload image, please try again');
                 return;
             }
         }
 
-        ServiceRequest::create([
-            'franchise_id'          => $this->franchise_id,
-            'service_categories_id' => $this->service_categories_id,
-            'service_code'          => $serviceCode,
-            'owner_name'            => $this->owner_name,
-            'product_name'          => $this->product_name,
-            'email'                 => $this->email,
-            'contact'               => $this->contact,
-            'brand'                 => $this->brand,
-            'color'                 => $this->color,
-            'problem'               => $this->problem,
-            'image'                 => $imagePath,
-        ]);
-
+        ServiceRequest::create($data);
         $this->serviceCode = $serviceCode;
         $this->submitted = true;
     }
@@ -143,7 +109,7 @@ class UserServiceRequest extends Component
     {
         return view('livewire.public.user-service-request', [
             'serviceCategories' => $this->serviceCategories,
-            'franchises'        => $this->franchises,
+            'franchises' => $this->franchises,
         ]);
     }
 }
