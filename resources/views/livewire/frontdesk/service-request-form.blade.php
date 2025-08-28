@@ -54,13 +54,6 @@
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-
-                <!-- Serial no -->
-                <div>
-                    <label for="serial_no" class="block text-sm font-medium text-slate-600">Serial no.</label>
-                    <input type="text" wire:model="serial_no" class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
-                </div>
-
                 <!-- Owner Name -->
                 <div>
                     <label for="owner_name" class="block text-sm font-medium text-slate-600">Owner Name *</label>
@@ -70,18 +63,6 @@
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-
-                <!-- Product Name -->
-                <div>
-                    <label for="product_name" class="block text-sm font-medium text-slate-600">Product Name
-                        *</label>
-                    <input type="text" id="product_name" wire:model="product_name"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
-                    @error('product_name')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-
                 <!-- Email -->
                 <div>
                     <label for="email" class="block text-sm font-medium text-slate-600">Email</label>
@@ -102,17 +83,40 @@
                     @enderror
                 </div>
 
+
+
+
+                <!-- Product Name -->
+                <div>
+                    <label for="product_name" class="block text-sm font-medium text-slate-600">Product Name
+                        *</label>
+                    <input type="text" id="product_name" wire:model="product_name"
+                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                    @error('product_name')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
                 <!-- Brand -->
                 <div>
                     <label for="brand" class="block text-sm font-medium text-slate-600">Brand *</label>
-                    <input type="text" id="brand" wire:model="brand"
+                    <select wire:model="brand"
                         class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+
+                        <option value="">---select brand---</option>
+                        @foreach ($brands as $brand)
+                            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                        @endforeach
+                    </select>
                     @error('brand')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-
-                <!-- Color -->
+                <!-- Serial no -->
+                <div>
+                    <label for="serial_no" class="block text-sm font-medium text-slate-600">Device Serial no. *</label>
+                    <input type="text" wire:model="serial_no"
+                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                </div>
                 <div>
                     <label for="color" class="block text-sm font-medium text-slate-600">Color *</label>
                     <input type="text" id="color" wire:model="color"
@@ -509,7 +513,7 @@
                     <label for="estimate_delivery" class="block text-sm font-medium text-slate-600">Estimated
                         Delivery
                         *</label>
-                    <input type="datetime-local" id="estimate_delivery" wire:model="estimate_delivery"
+                    <input type="date" id="estimate_delivery" wire:model="estimate_delivery"
                         class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     @error('estimate_delivery')
                         <span class="text-red-500 text-xs">{{ $message }}</span>

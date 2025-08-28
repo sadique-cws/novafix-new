@@ -72,7 +72,7 @@
                                         <span class="text-green-600 text-xs">Ready</span>
                                     @endif
                                 </td>
-                                <td class="px-3 py-2">{{ $service->estimate_delivery }}</td>
+                                <td class="px-3 py-2">{{ \Carbon\Carbon::parse($service->estimate_delivery)->format('d-m-Y') }}</td>
                             </tr>
                         @endforeach
                     </tbody>

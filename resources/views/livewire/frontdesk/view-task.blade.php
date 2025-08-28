@@ -116,25 +116,25 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Product Image -->
-                    @if ($task->image)
+                    <!-- Product image_url -->
+                    @if ($task->image_url)
                         <div class="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
                             <div class="flex items-center mb-3 sm:mb-4">
                                 <i class="fas fa-camera text-blue-600 text-lg sm:text-xl mr-2 sm:mr-3"></i>
-                                <h3 class="text-base sm:text-lg font-semibold text-gray-900">Product Image</h3>
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-900">Product image_url</h3>
                             </div>
                             <div class="flex items-start gap-4">
-                                <a href="{{ $task->image }}" target="_blank" rel="noopener noreferrer">
-                                    <img src="{{ $task->image }}" alt="Product Image"
+                                <a href="{{ $task->image_url }}" target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ $task->image_url }}" alt="Product image_url"
                                         class="w-40 h-40 object-cover rounded-md shadow-sm border border-gray-100">
                                 </a>
                                 <div class="flex-1">
-                                    <p class="text-sm text-gray-600">Click the image to open full size in a new tab.</p>
+                                    <p class="text-sm text-gray-600">Click the image_url to open full size in a new tab.</p>
                                 </div>
                             </div>
                         </div>
                     @endif
-                    <!-- Product Image -->
+                    <!-- Product image_url -->
                     
                 </div>
             </div>
