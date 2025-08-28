@@ -9,7 +9,7 @@
                     {{ session('error') }}
                 </div>
             @endif
-            <form wire:submit.prevent="save" class="space-y-6" enctype="multipart/form-data">
+            <form wire:submit.prevent="save" class="space-y-6" >
 
                 {{-- Franchise --}}
                 <div>
@@ -108,31 +108,6 @@
                     @error('image') 
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p> 
                     @enderror
-                    <!-- Upload Progress -->
-                    @if($uploadProgress > 0 && $uploadProgress < 100)
-                        <div class="mt-4">
-                            <p class="text-sm text-gray-600">Uploading image: {{ $uploadProgress }}%</p>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $uploadProgress }}%"></div>
-                            </div>
-                        </div>
-                    @endif
-                    @if ($image)
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-600">Image Preview:</p>
-                            <img src="{{ $image->temporaryUrl() }}" alt="Image preview" class="mt-2 rounded-lg shadow-md max-w-full h-auto max-h-64">
-                        </div>
-                    @endif
-                    
-                    @if($imagekit_url)
-                        <div class="mt-4">
-                            <p class="text-sm text-gray-600">Uploaded Image:</p>
-                            <img src="{{ $imagekit_url }}" alt="Uploaded image" class="mt-2 rounded-lg shadow-md max-w-full h-auto max-h-64">
-                            <button type="button" wire:click="removeImage" class="mt-2 px-3 py-1 bg-red-500 text-white rounded-md text-sm">
-                                Remove Image
-                            </button>
-                        </div>
-                    @endif
                 </div>
                 {{-- Submit --}}
                 <div class="flex justify-end">
