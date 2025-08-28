@@ -11,79 +11,55 @@ use Livewire\Attributes\Title;
 
 #[Layout('components.layouts.staff-layout')]
 #[Title('Dashboard')]
-
 class Dashboard extends Component
 {
     public $recentTaskLimit = 5;
     public $upcomingDeliveryLimit = 2;
 
-    public function getPendingTasksCount()
+    public function getDashboardData()
     {
-        try {
-            return Cache::remember('pending_tasks_' . Auth::guard('staff')->user()->id, 60, function () {
-                return ServiceRequest::where('technician_id', Auth::guard('staff')->user()->id)
-                    ->where('status', 0)
-                    ->count();
-            });
-        } catch (\Exception $e) {
-            // Log the error and return a default value
-            return 0;
-        }
-    }
+        $userId = Auth::guard('staff')->user()->id;
+        $cacheKey = 'staff_dashboard_' . $userId;
 
-    public function getInProgressTasksCount()
-    {
-        try {
-            $userId = Auth::guard('staff')->user()->id;
-            $cacheKey = 'in_progress_tasks_' . $userId;
+        return Cache::remember($cacheKey, 10, function () use ($userId) {
+            // Get all counts in a single query using conditional aggregates
+            $counts = ServiceRequest::where('technician_id', $userId)
+                ->selectRaw('
+                    COUNT(*) as total,
+                    SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) as pending_count,
+                    SUM(CASE WHEN status > 0 AND status < 100 THEN 1 ELSE 0 END) as in_progress_count,
+                    SUM(CASE WHEN status = 100 AND DATE(updated_at) = CURDATE() THEN 1 ELSE 0 END) as completed_today_count
+                ')
+                ->first();
 
-            return Cache::remember($cacheKey, 60, function () use ($userId) {
-                return ServiceRequest::where('technician_id', $userId)
-                    ->where('status', '>', 0)
-                    ->where('status', '<', 100)
-                    ->count();
-            });
-        } catch (\Exception $e) {
-            return 0;
-        }
-    }
+            // Get recent tasks
+            $recentTasks = ServiceRequest::where('technician_id', $userId)
+                ->with(['receptionist'])
+                ->orderBy('created_at', 'desc')
+                ->limit($this->recentTaskLimit)
+                ->get();
 
-    public function getCompletedTodayCount()
-    {
-        return ServiceRequest::where('technician_id', Auth::guard('staff')->user()->id)
-            ->where('status', 100)
-            ->whereDate('updated_at', today())
-            ->count();
-    }
+            // Get upcoming deliveries
+            $upcomingDeliveries = ServiceRequest::where('technician_id', $userId)
+                ->where('status', '<', 100)
+                ->orderBy('created_at', 'asc')
+                ->limit($this->upcomingDeliveryLimit)
+                ->get();
 
-    public function getRecentTasks()
-    {
-        return ServiceRequest::where('technician_id', Auth::guard('staff')->user()->id)
-            ->with(['receptionist'])
-            ->orderBy('created_at', 'desc')
-            ->limit($this->recentTaskLimit)
-            ->get();
-    }
-
-    public function getUpcomingDeliveries()
-    {
-        return ServiceRequest::where('technician_id', Auth::guard('staff')->user()->id)
-          
-           
-            ->where('status', '<', 100)
-            
-            ->limit($this->upcomingDeliveryLimit)
-            ->get();
+            return [
+                'pendingTasksCount' => $counts->pending_count ?? 0,
+                'inProgressTasksCount' => $counts->in_progress_count ?? 0,
+                'completedTodayCount' => $counts->completed_today_count ?? 0,
+                'recentTasks' => $recentTasks,
+                'upcomingDeliveries' => $upcomingDeliveries
+            ];
+        });
     }
 
     public function render()
     {
-        return view('livewire.staff.dashboard', [
-            'pendingTasksCount' => $this->getPendingTasksCount(),
-            'inProgressTasksCount' => $this->getInProgressTasksCount(),
-            'completedTodayCount' => $this->getCompletedTodayCount(),
-            'recentTasks' => $this->getRecentTasks(),
-            'upcomingDeliveries' => $this->getUpcomingDeliveries()
-        ]);
+        $data = $this->getDashboardData();
+
+        return view('livewire.staff.dashboard', $data);
     }
 }
