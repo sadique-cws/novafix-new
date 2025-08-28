@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontdesk;
 
+use App\Models\Brand;
 use Livewire\Component;
 use App\Models\Staff;
 use App\Models\ServiceCategory;
@@ -46,21 +47,23 @@ class ServiceRequestForm extends Component
     public $technician;
     public $imagekit_url;
     public $uploadProgress = 0;
+    public $serial_no;
 
     protected function rules()
     {
         return [
             'service_categories_id' => 'required|exists:service_categories,id',
             'technician_id' => 'nullable|exists:staff,id',
+            'serial_no' =>'required',
             'owner_name' => 'required|string|max:255',
             'product_name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
-            'contact' => 'required|string|max:20',
+            'contact' => 'required|regex:/^[6-9]\d{9}$/',
             'brand' => 'required|string|max:255',
             'color' => 'required|string|max:100',
             'service_amount' => 'nullable|numeric|min:0',
             'problem' => 'required|string',
-            'estimate_delivery' => 'required|date',
+            'estimate_delivery' => 'date',
             'image' => 'nullable|image|max:5120',
         ];
     }
@@ -72,7 +75,7 @@ class ServiceRequestForm extends Component
             $this->receptioners_id = Auth::guard('frontdesk')->user()->id;
         }
         $this->last_update = now();
-        $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d\TH:i');
+        $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d');
         $this->generateServiceCode();
     }
 
@@ -95,18 +98,21 @@ class ServiceRequestForm extends Component
 
     protected function generateServiceCode()
     {
-        $lastRequest = ServiceRequest::orderBy('id', 'desc')->first();
+        do {
+            $newCode = '';
+            for ($i = 0; $i < 6; $i++) {
+                $newCode .= chr(rand(65, 90)); // 65–90 = A–Z
+            }
 
-        if ($lastRequest && $lastRequest->service_code) {
-            $lastNumber = (int) substr($lastRequest->service_code, -5);
-            $newNumber = str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
-        } else {
-            $newNumber = '00001';
-        }
+            // Check uniqueness in DB
+            $exists = ServiceRequest::where('service_code', $newCode)->exists();
+        } while ($exists);
 
-        $this->service_code = "NFSR-{$newNumber}";
-        $this->estimate_delivery = now()->addDays(3)->format('Y-m-d\TH:i');
+        $this->service_code = $newCode;
+        $this->estimate_delivery = now()->addDays(3)->format('Y-m-d');
     }
+    
+
 
     public function removeImage()
     {
@@ -129,6 +135,7 @@ class ServiceRequestForm extends Component
 
                 if ($imagekitData && isset($imagekitData['url'])) {
                     $imagePath = $imagekitData['url'];
+                    $imageFIleId = $imagekitData['fileId'];
                 } else {
                     throw new \Exception('Failed to upload image to ImageKit');
                 }
@@ -136,6 +143,7 @@ class ServiceRequestForm extends Component
 
             $serviceRequest = ServiceRequest::create([
                 'receptioners_id' => $this->receptioners_id,
+                'serial_no' => $this->serial_no,
                 'technician_id' => $this->technician_id,
                 'service_categories_id' => $this->service_categories_id,
                 'service_code' => $this->service_code,
@@ -152,7 +160,8 @@ class ServiceRequestForm extends Component
                 'delivered_by' => $this->delivered_by,
                 'delivery_status' => $this->delivery_status,
                 'estimate_delivery' => $this->estimate_delivery,
-                'image' => $imagePath,
+                'image_url' => $imagePath,
+                'image_file_id' => $imageFIleId,
                 // Removed the imagekit_data field as it doesn't exist in the database
             ]);
 
@@ -219,7 +228,7 @@ class ServiceRequestForm extends Component
     public function resetForm()
     {
         $this->resetExcept(['technicians', 'categories']);
-        $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d\TH:i');
+        $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d');
         $this->generateServiceCode();
     }
 
@@ -242,10 +251,10 @@ class ServiceRequestForm extends Component
 
         // If we have a franchise id, filter technicians by franchise, otherwise show all technicians
         $technicians = $franchiseId ? Staff::where('franchise_id', $franchiseId)->get() : Staff::all();
-
         return view('livewire.frontdesk.service-request-form', [
             'technicians' => $technicians,
             'categories' => ServiceCategory::all(),
+            'brands' => Brand::select('name')->get(),
         ]);
     }
 }

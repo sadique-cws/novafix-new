@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('franchise_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('service_categories_id')->constrained()->onDelete('cascade');
             $table->string('service_code');
+            $table->string('serial_no')->nullable();
             $table->string('owner_name');
             $table->string('product_name');
             $table->string('email')->nullable();
@@ -33,7 +34,8 @@ return new class extends Migration
             $table->boolean('delivery_status')->default(false);
             $table->dateTime('estimate_delivery')->nullable();
             $table->timestamps(); // created_at and updated_at
-            $table->string('image')->nullable();
+            $table->string('image_url')->nullable();
+            $table->string('image_file_id')->nullable();
         });
     }
 

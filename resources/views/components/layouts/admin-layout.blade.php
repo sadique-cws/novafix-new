@@ -81,11 +81,13 @@
                             class="pl-2 mt-1 ml-6 border-l-2 border-blue-100 space-y-1">
                             <li>
                                 <a wire:navigate href="{{ route('admin.manage-franchises') }}"
-                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors font-medium {{ request()->routeIs('admin.manage-franchises') ? 'bg-blue-50 text-blue-600' : '' }}">All Franchises</a>
+                                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors font-medium {{ request()->routeIs('admin.manage-franchises') ? 'bg-blue-50 text-blue-600' : '' }}">All
+                                    Franchises</a>
                             </li>
                             <li>
                                 <a wire:navigate href="{{ route('admin.add-franchise') }}"
-                                    class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.add-franchise') ? 'bg-blue-50 text-blue-600' : '' }}">Add New</a>
+                                    class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.add-franchise') ? 'bg-blue-50 text-blue-600' : '' }}">Add
+                                    New</a>
                             </li>
                             <li>
                                 <a wire:navigate href="{{ route('admin.franchise.performance') }}"
@@ -145,13 +147,14 @@
                                     <a wire:navigate href="{{ route('admin.solution.manage-models') }}"
                                         class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.solution.manage-models') ? 'bg-blue-50 text-blue-600' : '' }}">Models</a>
                                 </li>
-                                 <li>
+                                <li>
                                     <a wire:navigate href="{{ route('admin.solution.manage-problems') }}"
                                         class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.solution.manage-problems') ? 'bg-blue-50 text-blue-600' : '' }}">Problems</a>
                                 </li>
                                 <li>
                                     <a wire:navigate href="{{ route('admin.solution.staff-answers') }}"
-                                        class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.solution.staff-answers') ? 'bg-blue-50 text-blue-600' : '' }}">Staff Answers</a>
+                                        class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.solution.staff-answers') ? 'bg-blue-50 text-blue-600' : '' }}">Staff
+                                        Answers</a>
                                 </li>
                             </ul>
                         </div>
@@ -159,17 +162,28 @@
 
                     <!-- Customers -->
                     <li class="mb-1">
-                        <a href="{{ route('admin.user-enquiries') }}" wire:navigate class="font-medium flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="{{ route('admin.user-enquiries') }}" wire:navigate
+                            class="font-medium flex items-center p-3 text-gray-700 rounded-lg {{ request()->routeIs('admin.user-enquiries') ? 'bg-blue-50 text-blue-600' : '' }}">
                             <i class="fas fa-users mr-3 w-5 text-center"></i>
                             <span>User Enquiry</span>
                         </a>
                     </li>
 
+                    <!-- staff enquiry -->
+                    <li class="mb-1">
+                        <a href="{{ route('admin.staff-enquiries') }}" wire:navigate
+                            class="font-medium flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 {{ request()->routeIs('admin.staff-enquiries') ? 'bg-blue-50 text-blue-600' : '' }}">
+                            <i class="fa-solid fa-user-secret"></i>
+                            <span>Staff Enquiries</span>
+                        </a>
+                    </li>
+
                     <!-- Settings -->
                     <li class="mb-1">
-                        <a href="{{ route('admin.staff-enquiries') }}" wire:navigate class="font-medium flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50">
+                        <a href="{{ route('admin.setting') }}" wire:navigate
+                            class="font-medium flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 {{ request()->routeIs('admin.setting') ? 'bg-blue-50 text-blue-600' : '' }}">
                             <i class="fas fa-cog mr-3 w-5 text-center"></i>
-                            <span>Staff Enquiries</span>
+                            <span>Settings</span>
                         </a>
                     </li>
                     <!-- Logout -->
