@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('franchise_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('service_categories_id')->constrained()->onDelete('cascade');
             $table->string('service_code');
+            $table->string('serial_no')->nullable();
             $table->string('owner_name');
             $table->string('product_name');
             $table->string('email')->nullable();

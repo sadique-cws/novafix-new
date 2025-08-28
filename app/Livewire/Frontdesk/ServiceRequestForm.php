@@ -46,12 +46,14 @@ class ServiceRequestForm extends Component
     public $technician;
     public $imagekit_url;
     public $uploadProgress = 0;
+    public $serial_no;
 
     protected function rules()
     {
         return [
             'service_categories_id' => 'required|exists:service_categories,id',
             'technician_id' => 'nullable|exists:staff,id',
+            'serial_no' =>'required',
             'owner_name' => 'required|string|max:255',
             'product_name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
@@ -138,6 +140,7 @@ class ServiceRequestForm extends Component
 
             $serviceRequest = ServiceRequest::create([
                 'receptioners_id' => $this->receptioners_id,
+                'serial_no' => $this->serial_no,
                 'technician_id' => $this->technician_id,
                 'service_categories_id' => $this->service_categories_id,
                 'service_code' => $this->service_code,

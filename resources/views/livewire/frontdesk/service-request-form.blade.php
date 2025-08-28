@@ -1,6 +1,13 @@
 <div>
     <div class="max-w-6xl mx-auto bg-white shadow-md rounded-2xl p-6">
-        <h2 class="text-3xl font-semibold text-slate-700 mb-6">New Service Request</h2>
+        <div class="flex justify-between">
+            <h2 class="text-3xl font-semibold text-slate-700 mb-6">New Service Request</h2>
+            <div class="flex items-center gap-2">
+                <h3 class="font-medium text-xl text-blue-700">Tracking Id: </h3>
+                <p class="font-medium">{{ $service_code }}</p>
+            </div>
+        </div>
+
 
         @if (session('success'))
             <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">
@@ -48,13 +55,10 @@
                     @enderror
                 </div>
 
-                <!-- Service Code -->
+                <!-- Serial no -->
                 <div>
-                    <label for="service_code" class="block text-sm font-medium text-slate-600">Service Code</label>
-                    <div class="mt-1 w-full rounded-md border border-slate-300 shadow-sm bg-gray-50 p-2">
-                        {{ $service_code }}
-                    </div>
-                    <input type="hidden" wire:model="service_code">
+                    <label for="serial_no" class="block text-sm font-medium text-slate-600">Serial no.</label>
+                    <input type="text" wire:model="serial_no" class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                 </div>
 
                 <!-- Owner Name -->
@@ -407,8 +411,7 @@
                             <label
                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                 :disabled="isLoading">
-                                <input type="file" id="image" wire:model="image" accept="image/*"
-                                    class="hidden"
+                                <input type="file" id="image" wire:model="image" accept="image/*" class="hidden"
                                     @change="isLoading = true; $nextTick(() => { $wire.upload('image', $event.target.files[0], () => { isLoading = false }, () => { isLoading = false }) })">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -443,7 +446,8 @@
                             @if ($image)
                                 <div class="mt-4">
                                     <p class="text-sm text-gray-600">Selected Image:</p>
-                                    <img src="{{ $image->temporaryUrl() }}" alt="Selected image" class="mt-2 rounded-lg shadow-md max-w-full h-auto max-h-64">
+                                    <img src="{{ $image->temporaryUrl() }}" alt="Selected image"
+                                        class="mt-2 rounded-lg shadow-md max-w-full h-auto max-h-64">
                                 </div>
                             @endif
 
@@ -452,7 +456,8 @@
                                 <div class="mt-4">
                                     <p class="text-sm text-gray-600">Uploading image: {{ $uploadProgress }}%</p>
                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $uploadProgress }}%"></div>
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $uploadProgress }}%">
+                                        </div>
                                     </div>
                                 </div>
                             @endif
@@ -461,8 +466,10 @@
                             @if($imagekit_url)
                                 <div class="mt-4">
                                     <p class="text-sm text-gray-600">Uploaded Image:</p>
-                                    <img src="{{ $imagekit_url }}" alt="Uploaded image" class="mt-2 rounded-lg shadow-md max-w-full h-auto max-h-64">
-                                    <button type="button" wire:click="removeImage" class="mt-2 px-3 py-1 bg-red-500 text-white rounded-md text-sm">
+                                    <img src="{{ $imagekit_url }}" alt="Uploaded image"
+                                        class="mt-2 rounded-lg shadow-md max-w-full h-auto max-h-64">
+                                    <button type="button" wire:click="removeImage"
+                                        class="mt-2 px-3 py-1 bg-red-500 text-white rounded-md text-sm">
                                         Remove Image
                                     </button>
                                 </div>
@@ -515,10 +522,10 @@
                     class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition duration-200 flex items-center justify-center"
                     wire:loading.attr="disabled">
                     <span wire:loading>
-                        <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                stroke-width="4"></circle>
+                        <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
                             <path class="opacity-75" fill="currentColor"
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                             </path>
@@ -568,7 +575,7 @@
 
     @push('scripts')
         <script>
-            document.addEventListener('livewire:load', function() {
+            document.addEventListener('livewire:load', function () {
                 // Reset loading state when Livewire finishes processing
                 Livewire.hook('message.processed', (message, component) => {
                     if (message.updateQueue[0]?.payload.name === 'image') {
