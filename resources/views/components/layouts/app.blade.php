@@ -145,6 +145,7 @@
                         <li><a href="#" class="text-gray-400 hover:text-white transition">Terms & Conditions</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white transition">Our Team</a></li>
+                        <li><a href="{{ route('login') }}" class="text-gray-400 hover:text-white transition">Login</a></li>
                     </ul>
                 </div>
                 
