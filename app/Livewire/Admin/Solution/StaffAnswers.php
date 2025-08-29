@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Solution;
 
 use App\Models\Staff;
+use App\Models\StaffEnquiry;
 use App\Models\User;
 use App\Models\userAnswer;
 use Livewire\Attributes\Layout;
@@ -16,6 +17,7 @@ class StaffAnswers extends Component
     public $userAnswers = [];
     public $currentAnswerIndex = 0;
     public $selectedProblemId = null; // Filter for a specific problem
+    public $staffQuery;
 
     public function viewAnswers($userId, $problemId)
     {
@@ -41,6 +43,12 @@ class StaffAnswers extends Component
             $this->currentAnswerIndex--;
         }
     }
+
+
+
+    public function back(){
+        $this->selectedUser = null;
+    }
     public function render()
     {
          // Fetch all problems for the dropdown filter
@@ -54,7 +62,8 @@ class StaffAnswers extends Component
     })
     ->with(['answers.problem', 'answers.device', 'answers.brand', 'answers.model'])
     ->get();
-
-        return view('livewire.admin.solution.staff-answers', compact('users', 'problems'));
+        $staff = StaffEnquiry::where('staff_id',$this->selectedUser)
+        ->first();
+        return view('livewire.admin.solution.staff-answers', compact('users', 'problems','staff'));
     }
 }
