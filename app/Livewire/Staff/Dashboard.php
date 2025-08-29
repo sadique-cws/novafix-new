@@ -6,7 +6,6 @@ use App\Models\ServiceRequest;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Title;
 
 #[Layout('components.layouts.staff-layout')]
@@ -19,41 +18,36 @@ class Dashboard extends Component
     public function getDashboardData()
     {
         $userId = Auth::guard('staff')->user()->id;
-        $cacheKey = 'staff_dashboard_' . $userId;
+        
+        // Get all service requests for the technician in a single query
+        $serviceRequests = ServiceRequest::where('technician_id', $userId)
+            ->with(['receptionist'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        // Calculate counts from the collection
+        $pendingTasksCount = $serviceRequests->where('status', 0)->count();
+        $inProgressTasksCount = $serviceRequests->where('status', '>', 0)->where('status', '<', 100)->count();
+        $completedTodayCount = $serviceRequests->where('status', 100)
+            ->filter(function ($item) {
+                return $item->updated_at->isToday();
+            })->count();
+            
+        // Get recent tasks (already ordered by created_at desc)
+        $recentTasks = $serviceRequests->take($this->recentTaskLimit);
+        
+        // Get upcoming deliveries (incomplete tasks, ordered by creation date)
+        $upcomingDeliveries = $serviceRequests->where('status', '<', 100)
+            ->sortBy('created_at')
+            ->take($this->upcomingDeliveryLimit);
 
-        return Cache::remember($cacheKey, 10, function () use ($userId) {
-            // Get all counts in a single query using conditional aggregates
-            $counts = ServiceRequest::where('technician_id', $userId)
-                ->selectRaw('
-                    COUNT(*) as total,
-                    SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) as pending_count,
-                    SUM(CASE WHEN status > 0 AND status < 100 THEN 1 ELSE 0 END) as in_progress_count,
-                    SUM(CASE WHEN status = 100 AND DATE(updated_at) = CURDATE() THEN 1 ELSE 0 END) as completed_today_count
-                ')
-                ->first();
-
-            // Get recent tasks
-            $recentTasks = ServiceRequest::where('technician_id', $userId)
-                ->with(['receptionist'])
-                ->orderBy('created_at', 'desc')
-                ->limit($this->recentTaskLimit)
-                ->get();
-
-            // Get upcoming deliveries
-            $upcomingDeliveries = ServiceRequest::where('technician_id', $userId)
-                ->where('status', '<', 100)
-                ->orderBy('created_at', 'asc')
-                ->limit($this->upcomingDeliveryLimit)
-                ->get();
-
-            return [
-                'pendingTasksCount' => $counts->pending_count ?? 0,
-                'inProgressTasksCount' => $counts->in_progress_count ?? 0,
-                'completedTodayCount' => $counts->completed_today_count ?? 0,
-                'recentTasks' => $recentTasks,
-                'upcomingDeliveries' => $upcomingDeliveries
-            ];
-        });
+        return [
+            'pendingTasksCount' => $pendingTasksCount,
+            'inProgressTasksCount' => $inProgressTasksCount,
+            'completedTodayCount' => $completedTodayCount,
+            'recentTasks' => $recentTasks,
+            'upcomingDeliveries' => $upcomingDeliveries
+        ];
     }
 
     public function render()
