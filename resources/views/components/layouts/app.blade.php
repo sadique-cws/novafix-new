@@ -111,10 +111,10 @@
         </div>
         <!-- Mobile Menu -->
         <div x-show="mobileMenuOpen" x-transition class="md:hidden bg-white py-4 px-4 absolute w-full shadow-lg">
-            <a wire:navigate href="{{route('homepage')}}" class="block py-2 text-gray-700 hover:text-primary">Home</a>
-            <a wire:navigate href="{{route('learn')}}" class="block py-2 text-gray-700 hover:text-primary">Learn</a>
-            <a href="#track" class="block py-2 text-gray-700 hover:text-primary">Track Status</a>
-            <a wire:navigate href="{{route('contact')}}" class="block py-2 text-gray-700 hover:text-primary">Contact</a>
+            <a href="{{route('homepage')}}" class="block py-2 text-gray-700 hover:text-primary">Home</a>
+            <a href="{{route('learn')}}" class="block py-2 text-gray-700 hover:text-primary">Learn</a>
+            <a href="{{route('track.service')}}" class="block py-2 text-gray-700 hover:text-primary">Track Status</a>
+            <a  href="{{route('contact')}}" class="block py-2 text-gray-700 hover:text-primary">Contact</a>
             <a href="{{route('user.service.request')}}" class="block mt-2 bg-primary text-white px-4 py-2 rounded-md text-center hover:bg-blue-800">Request For Repair</a>
         </div>
     </header>
