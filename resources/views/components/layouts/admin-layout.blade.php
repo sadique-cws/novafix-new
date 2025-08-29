@@ -172,7 +172,7 @@
                     <!-- staff enquiry -->
                     <li class="mb-1">
                         <a href="{{ route('admin.staff-enquiries') }}" wire:navigate
-                            class="font-medium flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 {{ request()->routeIs('admin.staff-enquiries') ? 'bg-blue-50 text-blue-600' : '' }}">
+                            class="font-medium flex gap-3 items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 {{ request()->routeIs('admin.staff-enquiries') ? 'bg-blue-50 text-blue-600' : '' }}">
                             <i class="fa-solid fa-user-secret"></i>
                             <span>Staff Enquiries</span>
                         </a>
