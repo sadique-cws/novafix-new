@@ -36,6 +36,7 @@ return new class extends Migration
             $table->timestamps(); // created_at and updated_at
             $table->string('image_url')->nullable();
             $table->string('image_file_id')->nullable();
+            $table->boolean('status_request')->nullable();
         });
     }
 

@@ -166,6 +166,7 @@ class ServiceRequestForm extends Component
                 'estimate_delivery' => $this->estimate_delivery,
                 'image_url' => $imagePath,
                 'image_file_id' => $imageFIleId,
+                'status_request' => 1,
                 // Removed the imagekit_data field as it doesn't exist in the database
             ]);
 

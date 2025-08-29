@@ -92,7 +92,7 @@
     <header class="bg-white shadow-sm fixed w-full z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
-                <a wire:navigate href="{{route('homepage')}}" class="text-4xl font-semibold text-primary"><span class="text-accent">Nova</span>Fix</a>
+                <a wire:navigate href="{{route('homepage')}}" class="text-4xl font-bold text-gray-800">NovaFix</a>
             </div>
             <nav class="hidden md:flex space-x-8">
                 <a wire:navigate href="{{route('homepage')}}" class="nav-link text-gray-700 hover:text-primary py-2 transition">Home</a>

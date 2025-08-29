@@ -67,17 +67,17 @@ class FrontDashboard extends Component
         $today = Carbon::today()->toDateString();
 
         // Today's services count
-        $this->todayServicesCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
+        $this->todayServicesCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)->where('status_request', 1)
             ->whereDate('created_at', $today)
             ->count();
 
         // In-progress services count (status 25)
-        $this->inProgressCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
+        $this->inProgressCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)->where('status_request', 1)
             ->where('status', 25)
             ->count();
 
         // Completed services count (status 100)
-        $this->completedCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
+        $this->completedCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)->where('status_request', 1)
             ->where('status', 100)
             ->count();
     }

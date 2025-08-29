@@ -48,7 +48,7 @@ class ManageUserRequest extends Component
             ->get();
 
         // Calculate all stats in a single query
-        $statsData = ServiceRequest::where('franchise_id', $this->franchise_id)
+        $statsData = ServiceRequest::where('franchise_id', $this->franchise_id)->where('status_request', null)
             ->selectRaw('COUNT(*) as total')
             ->selectRaw('SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) as pending')
             ->selectRaw('SUM(CASE WHEN status > 0 AND status < 100 THEN 1 ELSE 0 END) as in_progress')
@@ -115,6 +115,7 @@ class ManageUserRequest extends Component
             $request->update([
                 'technician_id' => $technicianId,
                 'receptioners_id' => Auth::guard('frontdesk')->user()->id,
+                'status_request' => 1,
                 'last_update' => now()
             ]);
 
@@ -131,7 +132,7 @@ class ManageUserRequest extends Component
 
     public function render()
     {
-        $requests = ServiceRequest::with(['technician'])
+        $requests = ServiceRequest::with(['technician'])->where('status_request', null)
             ->where('franchise_id', $this->franchise_id)
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {

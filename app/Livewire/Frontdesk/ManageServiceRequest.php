@@ -83,7 +83,7 @@ class ManageServiceRequest extends Component
 
     public function render()
     {
-        $requests = ServiceRequest::query()
+        $requests = ServiceRequest::query()->where('status_request', 1)
             ->where('receptioners_id',  Auth::guard('frontdesk')->user()->id)
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
