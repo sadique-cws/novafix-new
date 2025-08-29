@@ -115,7 +115,7 @@
             <a wire:navigate href="{{route('learn')}}" class="block py-2 text-gray-700 hover:text-primary">Learn</a>
             <a href="#track" class="block py-2 text-gray-700 hover:text-primary">Track Status</a>
             <a wire:navigate href="{{route('contact')}}" class="block py-2 text-gray-700 hover:text-primary">Contact</a>
-            <a href="#request" class="block mt-2 bg-primary text-white px-4 py-2 rounded-md text-center hover:bg-blue-800">Request For Repair</a>
+            <a href="{{route('user.service.request')}}" class="block mt-2 bg-primary text-white px-4 py-2 rounded-md text-center hover:bg-blue-800">Request For Repair</a>
         </div>
     </header>
     

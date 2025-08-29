@@ -59,27 +59,27 @@
                     
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mb-8">
                         <div class="flex flex-col items-center">
-                            <img src="http://novafix.in/Assets/Laptop.png" alt="Laptop Training" class="h-16 device-icon mb-2">
+                            <img src="{{asset('laptop.jpeg')}}" alt="Laptop Training" class="h-16 device-icon mb-2">
                             <span class="text-sm text-gray-600">Laptop</span>
                         </div>
                         <div class="flex flex-col items-center">
-                            <img src="http://novafix.in/Assets/Desktop.png" alt="Desktop Training" class="h-16 device-icon mb-2">
+                            <img src="{{asset('desktop.jpeg')}}" alt="Desktop Training" class="h-16 device-icon mb-2">
                             <span class="text-sm text-gray-600">Desktop</span>
                         </div>
                         <div class="flex flex-col items-center">
-                            <img src="http://novafix.in/Assets/Printer.png" alt="Printer Training" class="h-16 device-icon mb-2">
+                            <img src="{{asset('printer.jpeg')}}" alt="Printer Training" class="h-16 device-icon mb-2">
                             <span class="text-sm text-gray-600">Printer</span>
                         </div>
                         <div class="flex flex-col items-center">
-                            <img src="http://novafix.in/Assets/mobile2.png" alt="Mobile Training" class="h-16 device-icon mb-2">
+                            <img src="{{asset(path: 'mobile.jpeg')}}" alt="Mobile Training" class="h-16 device-icon mb-2">
                             <span class="text-sm text-gray-600">Mobile</span>
                         </div>
                         <div class="flex flex-col items-center">
-                            <img src="http://novafix.in/Assets/lcd.png" alt="LCD Training" class="h-16 device-icon mb-2">
+                            <img src="{{asset('lcd.jpeg')}}" alt="LCD Training" class="h-16 device-icon mb-2">
                             <span class="text-sm text-gray-600">LCD TV</span>
                         </div>
                         <div class="flex flex-col items-center">
-                            <img src="http://novafix.in/Assets/tablet.html" alt="Tablet Training" class="h-16 device-icon mb-2">
+                            <img src="{{asset('tab.jpeg')}}" alt="Tablet Training" class="h-16 device-icon mb-2">
                             <span class="text-sm text-gray-600">Tablet</span>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                 </div>
                 
                 <div class="lg:w-1/2 flex justify-center">
-                    <img src="http://novafix.in/Assets/repairing-laptop-image.png" alt="IT Repair Training" class="rounded-lg w-full max-w-md">
+                    <img src="{{asset('itRepair.jpeg')}}" alt="IT Repair Training" class="rounded-lg w-full max-w-md">
                 </div>
             </div>
             

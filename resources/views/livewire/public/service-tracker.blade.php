@@ -98,7 +98,7 @@
                             </div>
                             <div>
                                 <span class="text-sm font-medium text-gray-600">Franchise:</span>
-                                <p>{{ $serviceRequest->franchise->franchise_name }}</p>
+                                <p>{{ $serviceRequest->franchise->franchise_name ?? 'n/a'}}</p>
                             </div>
                             @if ($serviceRequest->technician)
                                 <div>
