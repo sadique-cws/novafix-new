@@ -14,15 +14,24 @@
             <form wire:submit.prevent="track" class="space-y-4">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Service Code</label>
-                    <div class="flex space-x-2">
-                        <input type="text" wire:model="service_code"
+                   <div class="flex flex-col md:flex-row gap-2 w-full">
+                        <!-- Input -->
+                        <input 
+                            type="text" 
+                            wire:model="service_code"
                             placeholder="Enter your service code (e.g., SO3l9s-00001)"
-                            class="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500">
-                        <button type="submit"
-                            class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                            class="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500 text-sm md:text-base w-full"
+                        >
+
+                        <!-- Button -->
+                        <button 
+                            type="submit"
+                            class="px-4 py-2 md:w-auto w-full bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                        >
                             Track
                         </button>
                     </div>
+
                     @error('service_code')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
