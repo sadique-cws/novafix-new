@@ -9,6 +9,8 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+
 #[Title('Manage Payment')]
 #[Layout('components.layouts.frontdesk-layout')]
 

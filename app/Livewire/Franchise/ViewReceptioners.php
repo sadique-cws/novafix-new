@@ -4,6 +4,7 @@ namespace App\Livewire\Franchise;
 
 use App\Models\Receptioners;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 #[Title('View Receptionists')]
 #[Layout('components.layouts.franchise-layout')]

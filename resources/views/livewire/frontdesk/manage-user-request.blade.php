@@ -245,7 +245,7 @@
                                         </div>
                                     </div>
                                 @else
-                                    <select wire:change="assignTechnician('{{ $request->id }}', $event.target.value)" class="text-xs border border-gray-300 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm transition-all duration-200">
+                                    <select wire:change="assignTech('{{ $request->id }}', $event.target.value)" class="text-xs border border-gray-300 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm transition-all duration-200">
                                         <option value="">Assign Technician</option>
                                         @foreach ($technicians as $tech)
                                             <option value="{{ $tech->id }}">{{ $tech->name }}</option>

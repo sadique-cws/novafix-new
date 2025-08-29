@@ -26,6 +26,7 @@ class ServiceRequestForm extends Component
     // Form fields
     public $receptioners_id;
     public $technician_id;
+    public $franchise_id;
     public $service_categories_id;
     public $service_code;
     public $owner_name;
@@ -54,6 +55,7 @@ class ServiceRequestForm extends Component
         return [
             'service_categories_id' => 'required|exists:service_categories,id',
             'technician_id' => 'nullable|exists:staff,id',
+            'franchise_id' => 'nullable|exists:franchises,id',
             'serial_no' =>'required',
             'owner_name' => 'required|string|max:255',
             'product_name' => 'required|string|max:255',
@@ -77,6 +79,7 @@ class ServiceRequestForm extends Component
         $this->last_update = now();
         $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d');
         $this->generateServiceCode();
+        $this->franchise_id = Auth::guard('frontdesk')->user()->franchise_id ?? null;
     }
 
     public function updatedImage()
@@ -146,6 +149,7 @@ class ServiceRequestForm extends Component
                 'serial_no' => $this->serial_no,
                 'technician_id' => $this->technician_id,
                 'service_categories_id' => $this->service_categories_id,
+                'franchise_id' => $this->franchise_id,
                 'service_code' => $this->service_code,
                 'owner_name' => $this->owner_name,
                 'product_name' => $this->product_name,

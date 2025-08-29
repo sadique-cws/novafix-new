@@ -108,18 +108,26 @@ class ManageUserRequest extends Component
         }
     }
 
-    public function assignTechnician($requestId, $technicianId)
+    public function assignTech($requestId, $technicianId)
     {
         $request = ServiceRequest::find($requestId);
         if ($request) {
             $request->update([
                 'technician_id' => $technicianId,
-                'receptioners_id' => $this->receptionist_id,
+                'receptioners_id' => Auth::guard('frontdesk')->user()->id,
                 'last_update' => now()
             ]);
+
+            // Refresh the data
+            $this->loadInitialData();
+
+            // Dispatch event to hide loading
+            $this->dispatch('technicianAssigned');
+
             session()->flash('message', 'Technician assigned successfully.');
         }
     }
+
 
     public function render()
     {

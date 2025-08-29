@@ -203,6 +203,7 @@
                                 {{ $task->receptionist->name ?? 'System' }}</p>
                         </div>
                     </div>
+                    
                     <div class="flex items-start space-x-2 sm:space-x-3">
                         <i class="far fa-calendar-plus text-gray-600 text-base sm:text-lg mt-1"></i>
                         <div>

@@ -99,7 +99,7 @@
         <i class="fas fa-chart-line w-5 text-center"></i> Reports
     </a>
 
-    <a wire:navigate href="{{ route('franchise.logout') }}"
+    <a  href="{{ route('franchise.logout') }}"
         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
         class="flex items-center gap-3 px-3 py-2 rounded text-red-600 hover:bg-red-50 cursor-pointer">
         <i class="fas fa-sign-out-alt w-5 text-center"></i> Logout

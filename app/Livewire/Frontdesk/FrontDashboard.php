@@ -18,7 +18,7 @@ use Livewire\Attributes\Title;
 #[Layout('components.layouts.frontdesk-layout')]
 class FrontDashboard extends Component
 {
-    public $todayServicesCount = 0;
+    public $todayServicesCount ;
     public $inProgressCount = 0;
     public $completedCount = 0;
     public $recentServices = [];
@@ -28,27 +28,32 @@ class FrontDashboard extends Component
     public $topTechnicians = [];
     public $franchiseId;
     public $receptionerIds = [];
-    public $todayRevenue = 0;
+    public $todayRevenue ;
 
     public function mount()
     {
-        // Get the authenticated receptionist's franchise ID
-        $this->franchiseId = Auth::guard('frontdesk')->user()->franchise_id;
+        // Get the authenticated receptionist
+        $user = Auth::user();
 
-        // Get all receptionist IDs for this franchise
-        $this->receptionerIds = Receptioners::where('franchise_id', $this->franchiseId)
-            ->pluck('id')
-            ->toArray();
+        if (!$user) {
+            // Try alternative authentication method
+            $user = auth()->guard('frontdesk')->user()->id;
+        }
 
-        // Check if we have receptionists before proceeding
-        if (!empty($this->receptionerIds)) {
+        if ($user) {
+            $this->franchiseId = $user->franchise_id;
+
+            // Get all receptionist IDs for this franchise
+            $this->receptionerIds = Receptioners::where('franchise_id', $this->franchiseId)
+                ->pluck('id')
+                ->toArray();
+
             $this->loadData();
         }
     }
 
     public function loadData()
     {
-        // Get all data in minimal queries
         $this->loadServiceCounts();
         $this->loadRecentServices();
         $this->loadStatusAndDeviceBreakdown();
@@ -59,17 +64,19 @@ class FrontDashboard extends Component
 
     protected function loadServiceCounts()
     {
-        // Get today's, in-progress, and completed counts in separate queries
-        // to avoid the count() issue with the raw query
+        $today = Carbon::today()->toDateString();
 
+        // Today's services count
         $this->todayServicesCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->whereDate('created_at', Carbon::today())
+            ->whereDate('created_at', $today)
             ->count();
 
+        // In-progress services count (status 25)
         $this->inProgressCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->where('status',  25)
+            ->where('status', 25)
             ->count();
 
+        // Completed services count (status 100)
         $this->completedCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
             ->where('status', 100)
             ->count();
@@ -77,10 +84,12 @@ class FrontDashboard extends Component
 
     protected function loadTodayRevenue()
     {
+        $today = Carbon::today()->toDateString();
+
         // Today's revenue for this franchise
-        $this->todayRevenue = Payment::whereHas('serviceRequest', function ($query) {
+        $this->todayRevenue = Payment::whereHas('serviceRequest', function ($query) use ($today) {
             $query->whereIn('receptioners_id', $this->receptionerIds)
-                ->whereDate('created_at', Carbon::today());
+                ->whereDate('created_at', $today);
         })
             ->sum('total_amount');
     }
@@ -90,7 +99,7 @@ class FrontDashboard extends Component
         // Recent services (last 5) for this franchise
         $this->recentServices = ServiceRequest::with(['serviceCategory', 'technician'])
             ->whereIn('receptioners_id', $this->receptionerIds)
-            ->latest()
+            ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
     }
@@ -117,43 +126,47 @@ class FrontDashboard extends Component
             return;
         }
 
-        // Get status breakdown using separate queries to avoid complex raw queries
+        // Get status breakdown
         $this->statusBreakdown['Diagnosis'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->where('status', '<', 0.25)
+            ->where('status', '<', 25)
             ->count();
 
         $this->statusBreakdown['Repair'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->where('status', '>=', 0.25)
-            ->where('status', '<', 0.5)
+            ->where('status', '>=', 25)
+            ->where('status', '<', 50)
             ->count();
 
         $this->statusBreakdown['Quality Check'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->where('status', '>=', 0.5)
-            ->where('status', '<', 1)
+            ->where('status', '>=', 50)
+            ->where('status', '<', 100)
             ->count();
 
         $this->statusBreakdown['Ready for Pickup'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->where('status', 1)
+            ->where('status', 100)
             ->count();
 
-        // Get device breakdown using separate queries
-        $this->deviceBreakdown['Laptops'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
+        // Get device breakdown
+        $laptops = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
             ->where(function ($query) {
                 $query->where('product_name', 'like', '%laptop%')
-                    ->orWhere('product_name', 'like', '%LAPTOP%');
+                    ->orWhere('product_name', 'like', '%LAPTOP%')
+                    ->orWhere('product_name', 'like', '%notebook%')
+                    ->orWhere('product_name', 'like', '%NOTEBOOK%');
             })
             ->count();
 
-        $this->deviceBreakdown['Smartphones'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
+        $smartphones = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
             ->where(function ($query) {
                 $query->where('product_name', 'like', '%phone%')
                     ->orWhere('product_name', 'like', '%PHONE%')
                     ->orWhere('product_name', 'like', '%mobile%')
-                    ->orWhere('product_name', 'like', '%MOBILE%');
+                    ->orWhere('product_name', 'like', '%MOBILE%')
+                    ->orWhere('product_name', 'like', '%smartphone%')
+                    ->orWhere('product_name', 'like', '%SMARTPHONE%');
             })
             ->count();
 
-        $this->deviceBreakdown['Tablets'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
+        $tablets = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
             ->where(function ($query) {
                 $query->where('product_name', 'like', '%tablet%')
                     ->orWhere('product_name', 'like', '%TABLET%')
@@ -162,8 +175,12 @@ class FrontDashboard extends Component
             })
             ->count();
 
-        $this->deviceBreakdown['Others'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->count() - ($this->deviceBreakdown['Laptops'] + $this->deviceBreakdown['Smartphones'] + $this->deviceBreakdown['Tablets']);
+        $totalDevices = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)->count();
+
+        $this->deviceBreakdown['Laptops'] = $laptops;
+        $this->deviceBreakdown['Smartphones'] = $smartphones;
+        $this->deviceBreakdown['Tablets'] = $tablets;
+        $this->deviceBreakdown['Others'] = $totalDevices - ($laptops + $smartphones + $tablets);
     }
 
     protected function loadRecentPayments()
@@ -173,7 +190,7 @@ class FrontDashboard extends Component
             ->whereHas('serviceRequest', function ($query) {
                 $query->whereIn('receptioners_id', $this->receptionerIds);
             })
-            ->latest()
+            ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
     }
@@ -182,9 +199,8 @@ class FrontDashboard extends Component
     {
         // Top technicians for this franchise
         $this->topTechnicians = Staff::where('franchise_id', $this->franchiseId)
-           
             ->withCount(['serviceRequests as completed_services' => function ($query) {
-                $query->where('status', 1)
+                $query->where('status', 100)
                     ->whereIn('receptioners_id', $this->receptionerIds);
             }])
             ->with('serviceCategory')

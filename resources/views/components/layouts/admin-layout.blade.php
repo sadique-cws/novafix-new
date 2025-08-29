@@ -188,7 +188,7 @@
                     </li>
                     <!-- Logout -->
                     <li class="mb-1">
-                        <a wire:navigate href="{{ route('admin.logout') }}"
+                        <a  href="{{ route('admin.logout') }}"
                             class="flex items-center p-3 gap-2 bg-red-600 rounded-lg hover:bg-red-700 text-white font-medium">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>
                             <span>Logout</span>

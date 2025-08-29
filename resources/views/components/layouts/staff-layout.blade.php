@@ -87,7 +87,7 @@
                             <span class="ml-2">Completed Tasks</span>
                         </a>
                     </li>
-                    <a wire:navigate href="{{ route('staff.logout') }}"
+                    <a  href="{{ route('staff.logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                         class="flex items-center gap-3 px-3 py-2 rounded text-red-600 hover:bg-red-50 cursor-pointer">
                         <i class="fas fa-sign-out-alt w-5 text-center"></i> Logout
@@ -129,7 +129,7 @@
                                 class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
                             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
                             <div class="border-t"></div>
-                            <a href="#" class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                            <a href="{{ route('staff.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-50">
                                 <i class="fas fa-sign-out-alt mr-2"></i> Logout
                             </a>
                         </div>

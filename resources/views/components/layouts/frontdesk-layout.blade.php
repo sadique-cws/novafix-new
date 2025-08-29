@@ -138,7 +138,7 @@
                             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
                             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
                             <div class="border-t border-gray-100"></div>
-                            <a href="#"
+                            <a href="{{ route('frontdesk.logout') }}"
                                 class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-red-500 hover:text-red-600">
                                 <i class="fas fa-sign-out-alt mr-2"></i> Logout
                             </a>
