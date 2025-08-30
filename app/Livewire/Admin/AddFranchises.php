@@ -18,7 +18,7 @@ use Livewire\Attributes\Title;
 
 class AddFranchises extends Component
 {
-        #[Rule('required|string|min:3|unique:franchises,franchise_name|max:255')]
+    #[Rule('required|string|min:3|unique:franchises,franchise_name|max:255')]
     public $franchise_name;
 
     #[Rule('required|digits:10|regex:/^[6-9][0-9]{9}$/|unique:franchises,contact_no')]
@@ -47,9 +47,6 @@ class AddFranchises extends Component
 
     #[Rule('nullable|digits_between:9,18|unique:franchises,account_no')]
     public $account_no;
-
-    #[Rule('nullable|string|max:255')]
-    public $street;
 
     #[Rule('nullable|string|max:255')]
     public $city;
@@ -107,7 +104,6 @@ class AddFranchises extends Component
                 'ifsc_code' => $this->ifsc_code,
                 'bank_name' => $this->bank_name,
                 'account_no' => $this->account_no,
-                'street' => $this->street,
                 'city' => $this->city,
                 'district' => $this->district,
                 'pincode' => $this->pincode,

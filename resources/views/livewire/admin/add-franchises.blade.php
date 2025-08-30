@@ -86,59 +86,7 @@
                                 </div>
 
                                 <!-- Email -->
-                                <div>
-                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email
-                                        <span class="text-red-500">*</span></label>
-                                    <div class="relative">
-                                        <input wire:model.live="email" type="email" id="email" autocomplete="off"
-                                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border py-3 px-4 transition duration-150 ease-in-out"
-                                            placeholder="franchise@example.com">
-                                        <div
-                                            class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    @error('email')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <!-- Status -->
-                                <!-- Status -->
-                                <div>
-                                    <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Status <span class="text-red-500">*</span>
-                                    </label>
-
-                                    <div class="flex items-center space-x-3">
-                                        <!-- Toggle -->
-                                        <button type="button"
-                                            wire:click="$set('status', '{{ $status === 'active' ? 'inactive' : 'active' }}')"
-                                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200
-                                            {{ $status === 'active' ? 'bg-green-500' : 'bg-gray-300' }}">
-                                            <span
-                                                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200
-                                            {{ $status === 'active' ? 'translate-x-6' : 'translate-x-1' }}"></span>
-                                        </button>
-
-                                        <!-- Hidden input for form submission -->
-                                        <input type="hidden" name="status" value="{{ $status }}">
-
-                                        <!-- Label -->
-                                        <span
-                                            class="text-sm font-medium {{ $status === 'active' ? 'text-green-600' : 'text-gray-600' }}">
-                                            {{ ucfirst($status) }}
-                                        </span>
-                                    </div>
-
-                                    @error('status')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                               
                                 <!-- Password -->
                                 <div>
                                     <label for="password"
@@ -190,6 +138,57 @@
                                             </svg>
                                         </button>
                                     </div>
+                                </div>
+                                 <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email
+                                        <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <input wire:model.live="email" type="email" id="email" autocomplete="off"
+                                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border py-3 px-4 transition duration-150 ease-in-out"
+                                            placeholder="franchise@example.com">
+                                        <div
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    @error('email')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- Status -->
+                                <div>
+                                    <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Status <span class="text-red-500">*</span>
+                                    </label>
+
+                                    <div class="flex items-center space-x-3">
+                                        <!-- Toggle -->
+                                        <button type="button"
+                                            wire:click="$set('status', '{{ $status === 'active' ? 'inactive' : 'active' }}')"
+                                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200
+                                            {{ $status === 'active' ? 'bg-green-500' : 'bg-gray-300' }}">
+                                            <span
+                                                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200
+                                            {{ $status === 'active' ? 'translate-x-6' : 'translate-x-1' }}"></span>
+                                        </button>
+
+                                        <!-- Hidden input for form submission -->
+                                        <input type="hidden" name="status" value="{{ $status }}">
+
+                                        <!-- Label -->
+                                        <span
+                                            class="text-sm font-medium {{ $status === 'active' ? 'text-green-600' : 'text-gray-600' }}">
+                                            {{ ucfirst($status) }}
+                                        </span>
+                                    </div>
+
+                                    @error('status')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -255,7 +254,30 @@
                                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-
+                                <div>
+                                    <label for="ifsc_code" class="block text-sm font-medium text-gray-700 mb-2">IFSC
+                                        Code</label>
+                                    <div class="relative">
+                                        <input wire:model.live="ifsc_code" type="text" id="ifsc_code"
+                                            autocomplete="off"
+                                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border py-3 px-4 transition duration-150 ease-in-out"
+                                            placeholder="SBIN0001234">
+                                        <div
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="1.5"
+                                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c-.94-1.543.826-3.31-2.37-2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    @error('ifsc_code')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
                                 <!-- Bank Name -->
                                 <div>
                                     <label for="bank_name" class="block text-sm font-medium text-gray-700 mb-2">Bank
@@ -305,30 +327,7 @@
                                 </div>
 
                                 <!-- IFSC Code -->
-                                <div>
-                                    <label for="ifsc_code" class="block text-sm font-medium text-gray-700 mb-2">IFSC
-                                        Code</label>
-                                    <div class="relative">
-                                        <input wire:model.live="ifsc_code" type="text" id="ifsc_code"
-                                            autocomplete="off"
-                                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border py-3 px-4 transition duration-150 ease-in-out"
-                                            placeholder="SBIN0001234">
-                                        <div
-                                            class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="1.5"
-                                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c-.94-1.543.826-3.31-2.37-2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    @error('ifsc_code')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                                
                             </div>
                         </div>
 
@@ -362,33 +361,6 @@
                                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-
-                                <!-- Street -->
-                                <div>
-                                    <label for="street"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Street</label>
-                                    <div class="relative">
-                                        <input wire:model.live="street" type="text" id="street"
-                                            autocomplete="street-address"
-                                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border py-3 px-4 transition duration-150 ease-in-out"
-                                            placeholder="123 Main Street">
-                                        <div
-                                            class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="1.5"
-                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    @error('street')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
                                 <!-- City -->
                                 <div>
                                     <label for="city"
