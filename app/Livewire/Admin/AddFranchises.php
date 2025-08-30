@@ -18,7 +18,7 @@ use Livewire\Attributes\Title;
 
 class AddFranchises extends Component
 {
-    #[Rule('required|string|min:3|unique:franchises,franchise_name|max:255')]
+        #[Rule('required|string|min:3|unique:franchises,franchise_name|max:255')]
     public $franchise_name;
 
     #[Rule('required|digits:10|regex:/^[6-9][0-9]{9}$/|unique:franchises,contact_no')]
@@ -26,9 +26,11 @@ class AddFranchises extends Component
 
     #[Rule('required|email:rfc,dns|unique:franchises,email')]
     public $email;
-    #[Rule('required|string|min:8')] // Password confirmation handled by Livewire
+    
+    #[Rule('required|string|min:8')]
     public $password;
-    #[Rule('required|string|min:8|confirmed')] // Password confirmation handled by Livewire
+    
+    #[Rule('required|string|min:8|same:password')]
     public $password_confirmation;
 
     #[Rule('nullable|digits:12|regex:/^[2-9]{1}[0-9]{11}$/|unique:franchises,aadhar_no')]
@@ -37,7 +39,7 @@ class AddFranchises extends Component
     #[Rule('nullable|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/|unique:franchises,pan_no')]
     public $pan_no;
 
-    #[Rule('nullable|regex:/^[A-Z]{4}0[0-9]{6}$/')] // Valid RBI IFSC pattern
+    #[Rule('nullable|regex:/^[A-Z]{4}0[0-9]{6}$/')]
     public $ifsc_code;
 
     #[Rule('nullable|string|max:255')]
@@ -78,13 +80,19 @@ class AddFranchises extends Component
         'ifsc_code.regex' => 'IFSC must follow RBI format (e.g., HDFC0001234).',
         'pincode.digits' => 'Pincode must be exactly 6 digits.',
         'pincode.regex' => 'Pincode cannot start with 0.',
-        'password.confirmed' => 'Passwords do not match.',
+        'password_confirmation.same' => 'Passwords do not match.',
         'password.min' => 'Password must be at least 8 characters long.',
     ];
+
     public function submit()
     {
         $this->validate();
-        dd('he');
+        
+        // Check if password confirmation matches
+        if ($this->password !== $this->password_confirmation) {
+            $this->addError('password_confirmation', 'Passwords do not match.');
+            return;
+        }
 
         DB::beginTransaction();
 
@@ -118,6 +126,84 @@ class AddFranchises extends Component
             DB::rollBack();
             Log::error('Franchise creation failed: ' . $e->getMessage());
             session()->flash('error', '❌ Failed to create franchise. Please try again.');
+        }
+    }
+
+
+    /**
+     * Live IFSC lookup — when IFSC changes this will be invoked.
+     */
+    public function updatedIfscCode($value)
+    {
+        $value = strtoupper(trim($value ?? ''));
+        $this->ifsc_code = $value;
+
+        if (!$value) {
+            return;
+        }
+
+        // quick client-side pattern check to avoid unnecessary requests
+        if (!preg_match('/^[A-Z]{4}0[0-9]{6}$/', $value)) {
+            // invalid IFSC format — clear bank name and exit
+            $this->bank_name = null;
+            return;
+        }
+
+        try {
+            $res = Http::timeout(5)->get("https://ifsc.razorpay.com/{$value}");
+            if ($res->ok()) {
+                $data = $res->json();
+                // Razorpay IFSC API returns keys like BANK, BRANCH
+                $this->bank_name = $data['BANK'] ?? ($data['bank'] ?? null);
+            } else {
+                Log::warning('IFSC lookup failed', ['ifsc' => $value, 'status' => $res->status()]);
+                $this->bank_name = null;
+                $this->dispatch('notify', type: 'error', message: 'IFSC not found');
+            }
+        } catch (\Exception $e) {
+            Log::error('IFSC lookup error: ' . $e->getMessage());
+            $this->bank_name = null;
+            $this->dispatch('notify', type: 'error', message: 'Error fetching bank details.');
+        }
+    }
+
+    /**
+     * Live Pincode lookup — when pincode changes this will be invoked.
+     */
+    public function updatedPincode($value)
+    {
+        $value = trim($value ?? '');
+        $this->pincode = $value;
+
+        if (!$value) {
+            return;
+        }
+
+        // Validate Indian pincode
+        if (!preg_match('/^[1-9][0-9]{5}$/', $value)) {
+            return;
+        }
+
+        try {
+            $res = Http::timeout(5)->get("https://www.api.postalpincode.in/pincode/{$value}");
+            if ($res->ok()) {
+                $arr = $res->json();
+                if (is_array($arr) && isset($arr[0]['Status']) && $arr[0]['Status'] === 'Success' && !empty($arr[0]['PostOffice'])) {
+                    $po = $arr[0]['PostOffice'][0];
+                    // set sensible fallbacks from response
+                    $this->city = $po['Region'] ?? $po['Block'] ?? $po['Division'] ?? $this->city;
+                    $this->district = $po['District'] ?? $this->district;
+                    $this->state = $po['State'] ?? $this->state;
+                } else {
+                    $this->dispatch('notify', type: 'error', message: 'Pincode not found.');
+                }
+            } else {
+                Log::warning('Pincode API returned non-200', ['pincode' => $value, 'status' => $res->status()]);
+                $this->dispatch('notify', type: 'error', message: 'Error fetching address details.');
+            }
+        } catch (\Exception $e) {
+            Log::error("Pincode API error: " . $e->getMessage());
+            $this->dispatch('notify', type: 'error', message: 'Error fetching address details. Please enter manually.');
         }
     }
 

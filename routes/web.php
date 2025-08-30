@@ -71,10 +71,8 @@ use App\Services\Msg91Service;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Types\Relations\Role;
 
-// Public Routes
 Route::get("/", Homepage::class)->name('homepage');
 Route::get('/ServiceRequest', UserServiceRequest::class)->name('user.service.request');
-// routes/web.php
 Route::get('/track-service', ServiceTracker::class)->name('track.service');
 Route::get('/receipt/view/{id}', ReceiptRequest::class)->name('receipt.view');
 Route::get('learn',Learn::class)->name('learn');
@@ -83,8 +81,6 @@ Route::get('/login', Login::class)->name('login');
 Route::get('/warrenty-policy', Warrentypolicy::class)->name('warrenty.policy');
 Route::get('/term-condition', Terms::class)->name('term.condition');
 Route::get('privacy-policy',PrivacyPolicy::class)->name('privacy.policy');
-// Password reset routes
-// Password reset routes
 Route::get('/forgot-password', App\Livewire\Auth\ForgotPassword::class)->name('password.request');
 Route::get('/reset-password/{token}', App\Livewire\Auth\ResetPassword::class)->name('password.reset');
 
