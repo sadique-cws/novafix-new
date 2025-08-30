@@ -40,7 +40,6 @@ class UserServiceRequest extends Component
         'contact' => [
             'required',
             'regex:/^[6-9][0-9]{9}$/',
-            'unique:service_requests,contact',
         ],
 
         'brand' => 'required|string|max:255',
