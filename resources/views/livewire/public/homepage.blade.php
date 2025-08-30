@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="md:w-1/2 flex justify-center">
-                    <img src="{{ asset('repair.jpeg') }}" alt="Electronic Repair Services"
+                    <img src="{{ asset('main.png') }}" alt="Electronic Repair Services"
                         class="rounded-lg w-full max-w-md">
                 </div>
             </div>
