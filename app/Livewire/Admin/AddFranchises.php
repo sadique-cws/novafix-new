@@ -27,10 +27,10 @@ class AddFranchises extends Component
     #[Rule('required|email:rfc,dns|unique:franchises,email')]
     public $email;
     
-    #[Rule('required|string|min:8')]
+    #[Rule('required|string|min:6')]
     public $password;
     
-    #[Rule('required|string|min:8|same:password')]
+    #[Rule('required|string|min:6|same:password')]
     public $password_confirmation;
 
     #[Rule('nullable|digits:12|regex:/^[2-9]{1}[0-9]{11}$/|unique:franchises,aadhar_no')]
