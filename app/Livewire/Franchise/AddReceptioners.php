@@ -33,7 +33,7 @@ class AddReceptioners extends Component
         'pan' => 'required|string|size:10|unique:receptioners,pan',
         'address' => 'required|string|max:500',
         'salary' => 'required|numeric',
-        'password' => 'required|string|min:8|confirmed',
+        'password' => 'required|string|min:6|confirmed',
     ];
 
     public function render()
