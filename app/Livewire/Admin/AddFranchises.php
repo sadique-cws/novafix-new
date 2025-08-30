@@ -134,38 +134,41 @@ class AddFranchises extends Component
      * Live IFSC lookup — when IFSC changes this will be invoked.
      */
     public function updatedIfscCode($value)
-    {
-        $value = strtoupper(trim($value ?? ''));
-        $this->ifsc_code = $value;
+{
+    $value = strtoupper(trim($value ?? ''));
+    $this->ifsc_code = $value;
 
-        if (!$value) {
-            return;
-        }
-
-        // quick client-side pattern check to avoid unnecessary requests
-        if (!preg_match('/^[A-Z]{4}0[0-9]{6}$/', $value)) {
-            // invalid IFSC format — clear bank name and exit
-            $this->bank_name = null;
-            return;
-        }
-
-        try {
-            $res = Http::timeout(5)->get("https://ifsc.razorpay.com/{$value}");
-            if ($res->ok()) {
-                $data = $res->json();
-                // Razorpay IFSC API returns keys like BANK, BRANCH
-                $this->bank_name = $data['BANK'] ?? ($data['bank'] ?? null);
-            } else {
-                Log::warning('IFSC lookup failed', ['ifsc' => $value, 'status' => $res->status()]);
-                $this->bank_name = null;
-                $this->dispatch('notify', type: 'error', message: 'IFSC not found');
-            }
-        } catch (\Exception $e) {
-            Log::error('IFSC lookup error: ' . $e->getMessage());
-            $this->bank_name = null;
-            $this->dispatch('notify', type: 'error', message: 'Error fetching bank details.');
-        }
+    if (!$value) {
+        return;
     }
+
+    // Updated IFSC validation pattern to accommodate more bank formats
+    if (!preg_match('/^[A-Z]{4}0[A-Z0-9]{6}$/', $value)) {
+        // invalid IFSC format — clear bank name and exit
+        $this->bank_name = null;
+        $this->addError('ifsc_code', 'IFSC must follow RBI format (e.g., HDFC0001234).');
+        return;
+    }
+
+    try {
+        $res = Http::timeout(5)->get("https://ifsc.razorpay.com/{$value}");
+        if ($res->ok()) {
+            $data = $res->json();
+            // Razorpay IFSC API returns keys like BANK, BRANCH
+            $this->bank_name = $data['BANK'] ?? ($data['bank'] ?? null);
+            // Clear any previous errors if the IFSC is valid
+            $this->clearValidation('ifsc_code');
+        } else {
+            Log::warning('IFSC lookup failed', ['ifsc' => $value, 'status' => $res->status()]);
+            $this->bank_name = null;
+            $this->addError('ifsc_code', 'IFSC not found in our database.');
+        }
+    } catch (\Exception $e) {
+        Log::error('IFSC lookup error: ' . $e->getMessage());
+        $this->bank_name = null;
+        $this->addError('ifsc_code', 'Error fetching bank details. Please try again.');
+    }
+}
 
     /**
      * Live Pincode lookup — when pincode changes this will be invoked.
