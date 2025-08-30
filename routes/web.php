@@ -1,4 +1,5 @@
 <?php
+use App\Livewire\Admin\Editreceptionist;
 use App\Livewire\Admin\Setting;
 use App\Livewire\Admin\Solution\StaffAnswers;
 use App\Livewire\Admin\StaffEnquiries;
@@ -100,6 +101,7 @@ Route::prefix("admin")->group(function () {
             Route::get('Staff-Management', StaffManage::class)->name('staff.management');
             Route::get('Staff-Management/{id}', StaffView::class)->name('staff.view');
             Route::get('Receptionst-Management/{id}', ReceptionstView::class)->name('Receptionst.view');
+            Route::get('edit-receptionist/{id}', Editreceptionist::class)->name('Receptionst.edit');
             Route::get('solution', ServiceSolution::class)->name('solution');
             Route::get('solution/manage-devices', ManageDevice::class)->name('solution.manage-devices');
             Route::get('solution/manage-brands', ManageBrand::class)->name('solution.manage-brands');
