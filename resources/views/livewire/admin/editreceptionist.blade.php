@@ -16,7 +16,7 @@
 
         <div>
             <label class="block font-semibold">Contact</label>
-            <input type="text" wire:model="contact" class="w-full border rounded p-2">
+            <input type="text" maxlength="10" wire:model="contact" class="w-full border rounded p-2">
             @error('contact') <span class="text-red-600">{{ $message }}</span> @enderror
         </div>
 

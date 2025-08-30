@@ -33,7 +33,7 @@ class Editreceptionist extends Component
     {
         $this->validate([
             'name'       => 'required|string|max:255',
-            'contact'    => 'required|string|max:255',
+            'contact'    => 'required|digits:10|regex:/^[6-9][0-9]{9}$/|unique:receptioners,contact',
             'email'      => 'required|email|max:255',
             'aadhar'     => 'required|string|max:255',
             'pan'        => 'required|string|max:255',
