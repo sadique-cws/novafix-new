@@ -57,6 +57,9 @@ use App\Livewire\Public\Learn;
 use App\Livewire\Public\ReceiptRequest;
 use App\Livewire\Public\UserServiceRequest;
 use App\Livewire\Public\ServiceTracker;
+use App\Livewire\Public\Terms;
+use App\Livewire\Public\Warrentypolicy;
+use App\Livewire\Public\PrivacyPolicy;
 use App\Livewire\Staff\AssignedTask;
 use App\Livewire\Staff\CompletedTask as StaffCompletedTask;
 use App\Livewire\Staff\Dashboard as StaffDashboard;
@@ -76,6 +79,9 @@ Route::get('/receipt/view/{id}', ReceiptRequest::class)->name('receipt.view');
 Route::get('learn',Learn::class)->name('learn');
 Route::get('/contact', ContactUs::class)->name('contact');
 Route::get('/login', Login::class)->name('login');
+Route::get('/warrenty-policy', Warrentypolicy::class)->name('warrenty.policy');
+Route::get('/term-condition', Terms::class)->name('term.condition');
+Route::get('privacy-policy',PrivacyPolicy::class)->name('privacy.policy');
 // Password reset routes
 // Password reset routes
 Route::get('/forgot-password', App\Livewire\Auth\ForgotPassword::class)->name('password.request');

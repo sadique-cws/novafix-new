@@ -21,112 +21,90 @@
             </div>
         </section>
 
-        <!-- Services Section -->
-        <section id="services" class="py-16 bg-white">
-            <div class="container mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl text-gray-800 mb-4 section-title">Services Provided</h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto">We offer comprehensive electronic repair services for all your devices with 6 months warranty</p>
+      <!-- Services Section -->
+    <section id="services" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl text-gray-800 mb-4 section-title">Services Provided</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">We offer comprehensive electronic repair services for all your devices with 6 months warranty</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Laptop Service -->
+                <div class="service-card bg-white p-6 rounded-lg">
+                    <div class="text-primary text-4xl mb-4 flex justify-center">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h3 class="text-xl text-gray-800 mb-2 text-center">Laptop Service</h3>
+                    <div class="flex justify-center mb-4">
+                        <img src="{{ asset('laptop.jpeg') }}" alt="Laptop Repair" class="h-40 object-contain">
+                    </div>
+                    <p class="text-gray-600 text-center">Professional laptop repair services for all brands and models with 6 months warranty.</p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Laptop Service -->
-                    <div class="service-card bg-white p-6 rounded-lg">
-                        <div class="text-primary text-4xl mb-4 flex justify-center">
-                            <i class="fas fa-laptop"></i>
-                        </div>
-                        <h3 class="text-xl text-gray-800 mb-2 text-center">Laptop Service</h3>
-                        <div class="flex justify-center mb-4">
-<<<<<<< HEAD
-                            <img src="{{storage('/laptop1.png')}}" alt="Laptop Repair" class="h-40 object-contain">
-=======
-                            <img src="{{ asset('laptop.jpeg') }}" alt="Laptop Repair" class="h-40 object-contain">
->>>>>>> 1e48ed125f5f89afe5d22e1f7c6c09a9b6298460
-                        </div>
-                        <p class="text-gray-600 text-center">Professional laptop repair services for all brands and models with 6 months warranty.</p>
+                <!-- Desktop Service -->
+                <div class="service-card bg-white p-6 rounded-lg">
+                    <div class="text-primary text-4xl mb-4 flex justify-center">
+                        <i class="fas fa-desktop"></i>
                     </div>
+                    <h3 class="text-xl text-gray-800 mb-2 text-center">Desktop Service</h3>
+                    <div class="flex justify-center mb-4">
+                        <img src="{{ asset('desktop.jpeg') }}" alt="Desktop Repair" class="h-40 object-contain">
+                    </div>
+                    <p class="text-gray-600 text-center">Comprehensive desktop computer repair and maintenance services with warranty.</p>
+                </div>
 
-                    <!-- Desktop Service -->
-                    <div class="service-card bg-white p-6 rounded-lg">
-                        <div class="text-primary text-4xl mb-4 flex justify-center">
-                            <i class="fas fa-desktop"></i>
-                        </div>
-                        <h3 class="text-xl text-gray-800 mb-2 text-center">Desktop Service</h3>
-                        <div class="flex justify-center mb-4">
-<<<<<<< HEAD
-                            <img src="storage/Desktop1.png" alt="Desktop Repair" class="h-40 object-contain">
-=======
-                            <img src="{{ asset('desktop.jpeg') }}" alt="Desktop Repair" class="h-40 object-contain">
->>>>>>> 1e48ed125f5f89afe5d22e1f7c6c09a9b6298460
-                        </div>
-                        <p class="text-gray-600 text-center">Comprehensive desktop computer repair and maintenance services with warranty.</p>
+                <!-- Printer Service -->
+                <div class="service-card bg-white p-6 rounded-lg">
+                    <div class="text-primary text-4xl mb-4 flex justify-center">
+                        <i class="fas fa-print"></i>
                     </div>
+                    <h3 class="text-xl text-gray-800 mb-2 text-center">Printer Service</h3>
+                    <div class="flex justify-center mb-4">
+                        <img src="{{ asset('printer.jpeg') }}" alt="Printer Repair" class="h-40 object-contain">
+                    </div>
+                    <p class="text-gray-600 text-center">Expert printer repair for all types of printers and brands with 6 months warranty.</p>
+                </div>
 
-                    <!-- Printer Service -->
-                    <div class="service-card bg-white p-6 rounded-lg">
-                        <div class="text-primary text-4xl mb-4 flex justify-center">
-                            <i class="fas fa-print"></i>
-                        </div>
-                        <h3 class="text-xl text-gray-800 mb-2 text-center">Printer Service</h3>
-                        <div class="flex justify-center mb-4">
-                            <img src="{{asset('printer.jpeg')}}" alt="Printer Repair" class="h-40 object-contain">
-                        </div>
-                        <p class="text-gray-600 text-center">Expert printer repair for all types of printers and brands with 6 months warranty.</p>
+                <!-- Mobile Service -->
+                <div class="service-card bg-white p-6 rounded-lg">
+                    <div class="text-primary text-4xl mb-4 flex justify-center">
+                        <i class="fas fa-mobile-alt"></i>
                     </div>
+                    <h3 class="text-xl text-gray-800 mb-2 text-center">Mobile Service</h3>
+                    <div class="flex justify-center mb-4">
+                        <img src="{{ asset('mobile.jpeg') }}" alt="Mobile Repair" class="h-40 object-contain">
+                    </div>
+                    <p class="text-gray-600 text-center">Professional mobile phone repair services with genuine parts and warranty.</p>
+                </div>
 
-                    <!-- Mobile Service -->
-                    <div class="service-card bg-white p-6 rounded-lg">
-                        <div class="text-primary text-4xl mb-4 flex justify-center">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h3 class="text-xl text-gray-800 mb-2 text-center">Mobile Service</h3>
-                        <div class="flex justify-center mb-4">
-<<<<<<< HEAD
-                            <img src="storage/mobile2.png" alt="Mobile Repair" class="h-40 object-contain">
-=======
-                            <img src="{{ asset('mobile.jpeg') }}" alt="Mobile Repair" class="h-40 object-contain">
->>>>>>> 1e48ed125f5f89afe5d22e1f7c6c09a9b6298460
-                        </div>
-                        <p class="text-gray-600 text-center">Professional mobile phone repair services with genuine parts and warranty.</p>
+                <!-- LCD TV Service -->
+                <div class="service-card bg-white p-6 rounded-lg">
+                    <div class="text-primary text-4xl mb-4 flex justify-center">
+                        <i class="fas fa-tv"></i>
                     </div>
+                    <h3 class="text-xl text-gray-800 mb-2 text-center">LCD TV Service</h3>
+                    <div class="flex justify-center mb-4">
+                        <img src="{{ asset('lcd.jpeg') }}" alt="LCD TV Repair" class="h-40 object-contain">
+                    </div>
+                    <p class="text-gray-600 text-center">Expert repair services for LCD, LED, and Smart TVs with warranty.</p>
+                </div>
 
-                    <!-- LCD TV Service -->
-                    <div class="service-card bg-white p-6 rounded-lg">
-                        <div class="text-primary text-4xl mb-4 flex justify-center">
-                            <i class="fas fa-tv"></i>
-                        </div>
-                        <h3 class="text-xl text-gray-800 mb-2 text-center">LCD TV Service</h3>
-                        <div class="flex justify-center mb-4">
-<<<<<<< HEAD
-                            <img src="storage/lcd.png" alt="LCD TV Repair" class="h-40 object-contain">
-=======
-                            <img src="{{asset('lcd.jpeg')}}" alt="LCD TV Repair" class="h-40 object-contain">
->>>>>>> 1e48ed125f5f89afe5d22e1f7c6c09a9b6298460
-                        </div>
-                        <p class="text-gray-600 text-center">Expert repair services for LCD, LED, and Smart TVs with warranty.</p>
+                <!-- Tablet Service -->
+                <div class="service-card bg-white p-6 rounded-lg">
+                    <div class="text-primary text-4xl mb-4 flex justify-center">
+                        <i class="fas fa-tablet-alt"></i>
                     </div>
-
-                    <!-- Tablet Service -->
-                    <div class="service-card bg-white p-6 rounded-lg">
-                        <div class="text-primary text-4xl mb-4 flex justify-center">
-                            <i class="fas fa-tablet-alt"></i>
-                        </div>
-                        <h3 class="text-xl text-gray-800 mb-2 text-center">Tablet Service</h3>
-                        <div class="flex justify-center mb-4">
-<<<<<<< HEAD
-                            <img src="" alt="Tablet Repair" class="h-40 object-contain">
-=======
-                            <img src="{{'tab.jpeg'}}" alt="Tablet Repair" class="h-40 object-contain">
->>>>>>> 1e48ed125f5f89afe5d22e1f7c6c09a9b6298460
-                        </div>
-                        <p class="text-gray-600 text-center">Comprehensive tablet repair services for all models with warranty.</p>
+                    <h3 class="text-xl text-gray-800 mb-2 text-center">Tablet Service</h3>
+                    <div class="flex justify-center mb-4">
+                        <img src="{{ asset('tab.jpeg') }}" alt="Tablet Repair" class="h-40 object-contain">
                     </div>
+                    <p class="text-gray-600 text-center">Comprehensive tablet repair services for all models with warranty.</p>
                 </div>
             </div>
-        </section>
-        
-        <!-- Experience Section -->
-        <section class="py-16 bg-white">
+        </div>
+    </section>
+       <section class="py-16 bg-white">
             <div class="container mx-auto px-4">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl text-gray-800 mb-4 section-title">Our Experience</h2>
@@ -145,8 +123,7 @@
                 </div>
             </div>
         </section>
-
-        <!-- Benefits Section -->
+   <!-- Benefits Section -->
         <section class="py-16 bg-gray-50">
             <div class="container mx-auto px-4">
                 <div class="text-center mb-12">
@@ -178,7 +155,7 @@
                         <h3 class="text-xl text-gray-800 mb-2">Fair Pricing</h3>
                         <p class="text-gray-600">Transparent and competitive pricing for all our services with no hidden costs.</p>
                     </div>
-                    
+ 
                     <div class="bg-white p-6 rounded-lg border border-gray-200">
                         <div class="text-primary text-3xl mb-4">
                             <i class="fas fa-exchange-alt"></i>
@@ -206,32 +183,6 @@
             </div>
         </section>
 
-        <!-- Training Section -->
-        <section id="training" class="bg-[#F9FAFB] py-16 px-6 md:px-20 flex flex-col md:flex-row items-center justify-between">
-            <div class="max-w-xl text-center md:text-left">
-                <h2 class="text-3xl md:text-4xl text-[#111827] leading-snug">
-                    Do you wish to learn <span class="text-[#1E40AF]">IT Repairing?</span>
-                </h2>
-                <p class="mt-4 text-lg text-gray-600">
-                    Take your IT skills to the next level with our expert-led training courses.  
-                    Become a certified <span class="text-[#3B82F6]">IT repairing professional</span>  
-                    and start your career with confidence.  
-                    We provide the <span class="text-[#10B981]">best services</span> to help you succeed.
-                </p>
-                <button class="mt-6 px-6 py-3 bg-[#1E40AF] text-white rounded-md hover:bg-[#3B82F6] transition duration-300 ease-in-out">
-                    Enroll Now
-                </button>
-            </div>
-
-            <!-- Right Image -->
-            <div class="mt-10 md:mt-0">
-<<<<<<< HEAD
-                <img src="storage/repairing-laptop-image.png" alt="IT Training" class="w-full max-w-md mx-auto rounded-lg">
-=======
-                <img src="{{ asset('itRepair.jpeg') }}" alt="IT Training" class="w-full max-w-md mx-auto rounded-lg">
->>>>>>> 1e48ed125f5f89afe5d22e1f7c6c09a9b6298460
-            </div>
-        </section>
 
 
         <!-- Location Section -->
