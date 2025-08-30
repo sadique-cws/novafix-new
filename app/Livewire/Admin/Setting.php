@@ -40,8 +40,8 @@ class Setting extends Component
     public function changePassword(){
         $this->validate([
             'currentPassword' => 'required',
-            'newPassword' => 'required|min:8|same:newPassword_confirmation',
-            'newPassword_confirmation' => 'required|min:8',
+            'newPassword' => 'required|min:6',
+            'newPassword_confirmation' => 'required|min:6|same:newPassword_confirmation',
         ],[
             'newPassword.same' => 'Passwords do not match',
         ]);
