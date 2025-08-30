@@ -1,6 +1,6 @@
 <div>
     <livewire:admin.components.navigation />
-    <div class="p-6 bg-white rounded-lg shadow-sm">
+    <div class="p-6 bg-white rounded-lg mt-5 shadow-sm">
         <!-- Flash Message -->
         @if (session()->has('message'))
             <div class="mb-6 p-4 bg-green-50 text-green-700 border-l-4 border-green-500 rounded">

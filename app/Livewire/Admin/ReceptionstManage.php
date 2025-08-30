@@ -18,6 +18,10 @@ class ReceptionstManage extends Component
     public $search = '';
     public $franchiseFilter = '';
 
+    public function editReceptionist($id){
+        return redirect()->route('admin.Receptionst.edit',$id);
+    }
+
     public function render()
     {
         $receptionists = Receptioners::query()

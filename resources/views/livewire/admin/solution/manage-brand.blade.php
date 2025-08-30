@@ -102,7 +102,7 @@
                                                 </svg>
                                             </button>
                                             <button
-                                                wire:click="$dispatch('openConfirmDeleteModal', { id: {{ $brand->id }}})"
+                                                wire:click="deleteBrand({{ $brand->id }})" wire:confirm="Are You Sure want to delete"
                                                 class="text-red-600 hover:text-red-900">
                                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd"
@@ -125,8 +125,5 @@
                 </div>
             </div>
         </div>
-        @if ($showDeleteModal)
-            <livewire:admin.components.confirm-delete-modal :idToDelete="$idToDelete" />
-        @endif
     </div>
 </div>
