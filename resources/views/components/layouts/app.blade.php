@@ -97,7 +97,7 @@
             <nav class="hidden md:flex space-x-8">
                 <a wire:navigate href="{{route('homepage')}}" class="nav-link text-gray-700 hover:text-primary py-2 transition">Home</a>
                 <a wire:navigate href="{{route('learn')}}" class="nav-link text-gray-700 hover:text-primary py-2 transition">Learn</a>
-                <a href="{{route('track.service')}}" class="nav-link text-gray-700 hover:text-primary py-2 transition">Track Status</a>
+                <a wire:navigate href="{{route('track.service')}}" class="nav-link text-gray-700 hover:text-primary py-2 transition">Track Status</a>
                 <a wire:navigate href="{{route('contact')}}" class="nav-link text-gray-700 hover:text-primary py-2 transition">Contact</a>
                 <a wire:navigate href="{{route('user.service.request')}}" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">Request For Repair</a>
             </nav>
@@ -126,7 +126,7 @@
     <!-- Footer -->
     <footer id="contact" class="bg-gray-800 text-white py-12">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div>
                     <h3 class="text-2xl mb-4"><span class="text-accent">Nova</span>Fix</h3>
                     <p class="text-gray-400 mb-4">Your trusted partner for all electronic repair needs. Quality service with guaranteed satisfaction.</p>
@@ -141,22 +141,11 @@
                 <div>
                     <h4 class="text-lg text-gray-200 mb-4">Quick Links</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Warranty Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Terms & Conditions</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Our Team</a></li>
-                        <li><a href="{{ route('login') }}" class="text-gray-400 hover:text-white transition">Login</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg text-gray-200 mb-4">Services</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Laptop Repair</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Desktop Repair</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Mobile Repair</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Printer Repair</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">TV Repair</a></li>
+                        <li><a wire:navigate href="{{route('warrenty.policy')}}" class="text-gray-400 hover:text-white transition">Warranty Policy</a></li>
+                        <li><a wire:navigate href="{{route('term.condition')}}" class="text-gray-400 hover:text-white transition">Terms & Conditions</a></li>
+                        <li><a wire:navigate href="{{route('privacy.policy')}}" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
+                        <li><a wire:navigate href="#" class="text-gray-400 hover:text-white transition">Our Team</a></li>
+                        <li><a wire:navigate href="{{ route('login') }}" class="text-gray-400 hover:text-white transition">Login</a></li>
                     </ul>
                 </div>
                 
