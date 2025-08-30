@@ -71,31 +71,7 @@
             </div>
         </div>
 
-        <!-- Recent Activity & Top Franchises -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-            <!-- Top Franchises -->
-            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm">
-                <h2 class="text-base sm:text-lg font-semibold text-gray-800 mb-4">Top Franchises</h2>
-                <div class="space-y-4">
-                    @foreach ($topFranchises as $index => $franchise)
-                        <div class="flex items-center">
-                            <div
-                                class="w-6 sm:w-8 h-6 sm:h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                                <span class="text-blue-600 font-medium text-xs sm:text-sm">{{ $index + 1 }}</span>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-800">{{ $franchise->franchise_name }}</p>
-                                <p class="text-xs sm:text-sm text-gray-500">
-                                    ₹{{ number_format($franchise->total_revenue, 2) }} total revenue</p>
-                            </div>
-                            {{-- <span class="text-{{ $franchise->growth >= 0 ? 'green' : 'red' }}-600 text-xs sm:text-sm font-medium">
-                                    {{ $franchise->growth >= 0 ? '+' : '' }}{{ $franchise->growth }}%
-                                </span> --}}
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
+        
 
         <!-- Franchise List -->
         <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm mb-6 sm:mb-8">
