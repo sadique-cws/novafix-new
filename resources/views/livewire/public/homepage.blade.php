@@ -37,7 +37,7 @@
                         </div>
                         <h3 class="text-xl text-gray-800 mb-2 text-center">Laptop Service</h3>
                         <div class="flex justify-center mb-4">
-                            <img src="http://novafix.in/Assets/Laptop.png" alt="Laptop Repair" class="h-40 object-contain">
+                            <img src="{{storage('/laptop1.png')}}" alt="Laptop Repair" class="h-40 object-contain">
                         </div>
                         <p class="text-gray-600 text-center">Professional laptop repair services for all brands and models with 6 months warranty.</p>
                     </div>
@@ -49,7 +49,7 @@
                         </div>
                         <h3 class="text-xl text-gray-800 mb-2 text-center">Desktop Service</h3>
                         <div class="flex justify-center mb-4">
-                            <img src="http://novafix.in/Assets/Desktop.png" alt="Desktop Repair" class="h-40 object-contain">
+                            <img src="storage/Desktop1.png" alt="Desktop Repair" class="h-40 object-contain">
                         </div>
                         <p class="text-gray-600 text-center">Comprehensive desktop computer repair and maintenance services with warranty.</p>
                     </div>
@@ -73,7 +73,7 @@
                         </div>
                         <h3 class="text-xl text-gray-800 mb-2 text-center">Mobile Service</h3>
                         <div class="flex justify-center mb-4">
-                            <img src="http://novafix.in/Assets/mobile2.png" alt="Mobile Repair" class="h-40 object-contain">
+                            <img src="storage/mobile2.png" alt="Mobile Repair" class="h-40 object-contain">
                         </div>
                         <p class="text-gray-600 text-center">Professional mobile phone repair services with genuine parts and warranty.</p>
                     </div>
@@ -85,7 +85,7 @@
                         </div>
                         <h3 class="text-xl text-gray-800 mb-2 text-center">LCD TV Service</h3>
                         <div class="flex justify-center mb-4">
-                            <img src="http://novafix.in/Assets/lcd.png" alt="LCD TV Repair" class="h-40 object-contain">
+                            <img src="storage/lcd.png" alt="LCD TV Repair" class="h-40 object-contain">
                         </div>
                         <p class="text-gray-600 text-center">Expert repair services for LCD, LED, and Smart TVs with warranty.</p>
                     </div>
@@ -97,7 +97,7 @@
                         </div>
                         <h3 class="text-xl text-gray-800 mb-2 text-center">Tablet Service</h3>
                         <div class="flex justify-center mb-4">
-                            <img src="http://novafix.in/Assets/tablet.html" alt="Tablet Repair" class="h-40 object-contain">
+                            <img src="" alt="Tablet Repair" class="h-40 object-contain">
                         </div>
                         <p class="text-gray-600 text-center">Comprehensive tablet repair services for all models with warranty.</p>
                     </div>
@@ -205,7 +205,7 @@
 
             <!-- Right Image -->
             <div class="mt-10 md:mt-0">
-                <img src="http://novafix.in/Assets/repairing-laptop-image.png" alt="IT Training" class="w-full max-w-md mx-auto rounded-lg">
+                <img src="storage/repairing-laptop-image.png" alt="IT Training" class="w-full max-w-md mx-auto rounded-lg">
             </div>
         </section>
 

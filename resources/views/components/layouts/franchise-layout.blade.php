@@ -50,7 +50,7 @@
             <div class="pt-4 pb-3 px-4 border-b border-gray-200 flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <div class="py-1 px-3 rounded bg-primary text-white text-base">NF</div>
-                    <h2 class="text-base md:text-lg text-gray-800">Franchise</h2>
+                    <h2 class="text-base md:text-lg text-gray-800">{{Auth::guard('franchise')->user()->franchise_name}}</h2>
                 </div>
                 <button @click="isMobileSidebarOpen = false" class="lg:hidden text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
