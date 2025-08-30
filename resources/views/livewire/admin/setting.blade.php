@@ -2,7 +2,9 @@
     <!-- Profile Info -->
     <div>
         <h2 class="text-lg font-semibold mb-4">Profile Information</h2>
-
+        @if (session('message'))
+            <p class="text-green-500 font-medium">{{ session('message') }}</p>
+        @endif
         <form wire:submit="updateName">
             <div class="space-y-4">
                 <div>
@@ -25,9 +27,7 @@
                 <button type="submit" class="bg-[#1E40AF] font-medium p-2 text-white w-full rounded">Save</button>
             </div>
         </form>
-        @if (session('message'))
-            <p class="text-green-500 font-medium">{{ session('message') }}</p>
-        @endif
+
     </div>
 
     <!-- Change Password -->
@@ -66,9 +66,6 @@
                 <button type="submit" class="bg-[#1E40AF] font-medium p-2 text-white  rounded w-full">Save</button>
             </div>
         </form>
-        @if (session('message'))
-            <p class="text-green-500 font-medium">{{ session('message') }}</p>
-        @endif
     </div>
 
 </div>

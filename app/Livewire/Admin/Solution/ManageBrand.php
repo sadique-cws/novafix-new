@@ -13,35 +13,9 @@ class ManageBrand extends Component
 {
     public $editingId = null;
     public $showFlash = false;
-    public $showDeleteModal = false;
     public $name;
-    public $idToDelete;
     public $device_id; // New property to hold the device ID
 
-    // #[On('openConfirmDeleteModal')]
-    // public function openDeleteModal($id)
-    // {
-    //     $this->idToDelete = $id;
-    //     $this->showDeleteModal = true;
-    // }
-    // #[On('closeDeleteModal')]
-    // public function closeDeleteModal()
-    // {
-    //     $this->showDeleteModal = false;
-    // }
-
-    // #[On('confirmDelete')]
-    // public function handleConfirmDelete($id)
-    // {
-    //     $this->deleteBrand($id);
-    // }
-
-    // public function deleteBrand($idToDelete)
-    // {
-    //     Brand::findOrFail($idToDelete)->delete();
-    //     $this->closeDeleteModal();
-    //     session()->flash('message', 'Brand Deleted successfully');
-    // }
     protected $rules = [
         'name' => 'required|string',
         'device_id' => 'required|exists:devices,id', // Ensure device_id is provided and exists
@@ -55,6 +29,11 @@ class ManageBrand extends Component
         ]);
         $this->resetInput();
         session()->flash('message', 'Device Created successfully');
+    }
+
+    public function deleteBrand($id)
+    {
+        Brand::find($id)->delete();
     }
     public function editBrand($id)
     {
