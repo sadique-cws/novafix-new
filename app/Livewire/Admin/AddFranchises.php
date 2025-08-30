@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Title;
@@ -16,84 +17,73 @@ use Livewire\Attributes\Title;
 
 class AddFranchises extends Component
 {
+    #[Rule('required|string|min:3|unique:franchises,franchise_name|max:255')]
     public $franchise_name;
+
+    #[Rule('required|digits:10|regex:/^[6-9][0-9]{9}$/|unique:franchises,contact_no')]
     public $contact_no;
+
+    #[Rule('required|email:rfc,dns|unique:franchises,email')]
     public $email;
+    #[Rule('required|string|min:8')] // Password confirmation handled by Livewire
     public $password;
+    #[Rule('required|string|min:8|confirmed')] // Password confirmation handled by Livewire
     public $password_confirmation;
+
+    #[Rule('nullable|digits:12|regex:/^[2-9]{1}[0-9]{11}$/|unique:franchises,aadhar_no')]
     public $aadhar_no;
+
+    #[Rule('nullable|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/|unique:franchises,pan_no')]
     public $pan_no;
+
+    #[Rule('nullable|regex:/^[A-Z]{4}0[0-9]{6}$/')] // Valid RBI IFSC pattern
     public $ifsc_code;
+
+    #[Rule('nullable|string|max:255')]
     public $bank_name;
+
+    #[Rule('nullable|digits_between:9,18|unique:franchises,account_no')]
     public $account_no;
+
+    #[Rule('nullable|string|max:255')]
     public $street;
+
+    #[Rule('nullable|string|max:255')]
     public $city;
+
+    #[Rule('nullable|string|max:255')]
     public $district;
+
+    #[Rule('required|digits:6|regex:/^[1-9][0-9]{5}$/')]
     public $pincode;
+
+    #[Rule('required|string|max:255')]
     public $state;
-    public $country = 'India'; // Default to India
+
+    #[Rule('required|string|max:255')]
+    public $country = 'India';
+
+    #[Rule('nullable|date')]
     public $doc;
+
     public $status = 'active';
 
-    protected $rules = [
-        'franchise_name' => 'required|min:3|max:255',
-        'contact_no' => 'required|digits:10|unique:franchises,contact_no',
-        'email' => 'required|email|unique:franchises,email',
-        'password' => 'required|min:8|confirmed',
-        'aadhar_no' => 'nullable|digits:12|unique:franchises,aadhar_no',
-        'pan_no' => 'nullable|regex:/[A-Z]{5}[0-9]{4}[A-Z]{1}/|unique:franchises,pan_no',
-        'ifsc_code' => 'nullable|regex:/^[A-Za-z]{4}[a-zA-Z0-9]{7}$/',
-        'bank_name' => 'nullable|string|max:255',
-        'account_no' => 'nullable|digits_between:9,18|unique:franchises,account_no',
-        'street' => 'nullable|string|max:255',
-        'city' => 'nullable|string|max:255',
-        'district' => 'nullable|string|max:255',
-        'pincode' => 'nullable|digits:6',
-        'state' => 'nullable|string|max:255',
-        'country' => 'nullable|string|max:255',
-        'doc' => 'nullable|date',
-        'status' => 'required|in:active,inactive,pending',
-    ];
-
     protected $messages = [
-        'contact_no.digits' => 'Contact number must be 10 digits',
-        'aadhar_no.digits' => 'Aadhar number must be 12 digits',
-        'pan_no.regex' => 'Invalid PAN number format',
-        'ifsc_code.regex' => 'Invalid IFSC code format',
-        'pincode.digits' => 'Pincode must be 6 digits',
+        'contact_no.digits' => 'Contact number must be exactly 10 digits.',
+        'contact_no.regex' => 'Contact number must start with 6, 7, 8, or 9.',
+        'aadhar_no.digits' => 'Aadhar number must be 12 digits.',
+        'aadhar_no.regex' => 'Aadhar number must not start with 0 or 1.',
+        'pan_no.regex' => 'PAN must be in format: ABCDE1234F.',
+        'ifsc_code.regex' => 'IFSC must follow RBI format (e.g., HDFC0001234).',
+        'pincode.digits' => 'Pincode must be exactly 6 digits.',
+        'pincode.regex' => 'Pincode cannot start with 0.',
+        'password.confirmed' => 'Passwords do not match.',
+        'password.min' => 'Password must be at least 8 characters long.',
     ];
-
-    public function fetchAddressFromPincode()
-    {
-        if (strlen($this->pincode) === 6) {
-            try {
-                $response = Http::get("https://api.postalpincode.in/pincode/{$this->pincode}");
-
-                if ($response->successful()) {
-                    $data = $response->json();
-
-                    if (isset($data[0]['Status']) && $data[0]['Status'] === 'Success' && isset($data[0]['PostOffice']) && count($data[0]['PostOffice']) > 0) {
-                        $postOffice = $data[0]['PostOffice'][0];
-                        $this->city = $postOffice['District'] ?? '';
-                        $this->district = $postOffice['District'] ?? '';
-                        $this->state = $postOffice['State'] ?? '';
-                        $this->country = $postOffice['Country'] ?? 'India';
-                        return;
-                    }
-                }
-
-                // dispatch Livewire browser event so blade listener can show the error
-                $this->dispatch('pincode-error', ['message' => 'Could not fetch address details for this pincode']);
-            } catch (\Exception $e) {
-                Log::error("Pincode API error: " . $e->getMessage());
-                $this->dispatch('pincode-error', ['message' => 'Error fetching address details. Please enter manually.']);
-            }
-        }
-    }
-
     public function submit()
     {
         $this->validate();
+        dd('he');
 
         DB::beginTransaction();
 
@@ -120,14 +110,16 @@ class AddFranchises extends Component
 
             DB::commit();
 
-            session()->flash('success', 'Franchise created successfully.');
+            session()->flash('success', 'Franchise created successfully ✅');
             return redirect()->route('admin.manage-franchises');
+
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Franchise creation failed: ' . $e->getMessage());
-            session()->flash('error', 'Failed to create franchise. Please try again.');
+            session()->flash('error', '❌ Failed to create franchise. Please try again.');
         }
     }
+
 
     public function render()
     {

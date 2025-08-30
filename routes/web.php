@@ -105,7 +105,6 @@ Route::prefix("admin")->group(function () {
             Route::get('solution/manage-brands', ManageBrand::class)->name('solution.manage-brands');
             Route::get('solution/manage-models', ManageModel::class)->name('solution.manage-models');
             Route::get('solution/manage-problems', ManageProblem::class)->name('solution.manage-problems');
-            Route::get('solution/staff-diagnosis',StaffDiagnosis::class)->name('solution.staff-diagnosis');
              Route::get('solution/staff-answers',StaffAnswers::class)->name('solution.staff-answers');
              Route::get('staff-enquiries',StaffEnquiries::class)->name('staff-enquiries');
              Route::get('user-enquiries',UserEnquiry::class)->name('user-enquiries');
