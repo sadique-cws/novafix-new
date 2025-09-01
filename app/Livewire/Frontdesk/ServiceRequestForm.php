@@ -129,6 +129,8 @@ class ServiceRequestForm extends Component
         DB::beginTransaction();
         try {
             $imagePath = null;
+            // ensure file id variable exists even when no image is uploaded
+            $imageFIleId = null;
 
             // Upload to ImageKit if image exists
             if ($this->capturedImage || $this->image) {
