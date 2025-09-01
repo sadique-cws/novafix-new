@@ -135,6 +135,10 @@
                             </a>
                             <ul x-show="openDropdowns.solution" x-transition
                                 class="pl-2 mt-1 ml-6 border-l-2 border-blue-100 space-y-1">
+                                 <li>
+                                    <a wire:navigate href="{{ route('admin.solution') }}"
+                                        class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors font-medium {{ request()->routeIs('admin.solution') ? 'bg-blue-50 text-blue-600' : '' }}">Admin Diagnosis</a>
+                                </li>
                                 <li>
                                     <a wire:navigate href="{{ route('admin.solution.manage-devices') }}"
                                         class="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition-colors font-medium {{ request()->routeIs('admin.solution.manage-devices') ? 'bg-blue-50 text-blue-600' : '' }}">Devices</a>
