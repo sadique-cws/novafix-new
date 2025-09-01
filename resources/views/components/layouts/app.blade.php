@@ -145,7 +145,7 @@
                         <li><a wire:navigate href="{{route('term.condition')}}" class="text-gray-400 hover:text-white transition">Terms & Conditions</a></li>
                         <li><a wire:navigate href="{{route('privacy.policy')}}" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
                         <li><a wire:navigate href="#" class="text-gray-400 hover:text-white transition">Our Team</a></li>
-                        <li><a wire:navigate href="{{ route('login') }}" class="text-gray-400 hover:text-white transition">Login</a></li>
+                        <li><a wire:navigate href="{{ route('login') }}" class="text-gray-400 hover:text-white transition">Administrator Login</a></li>
                     </ul>
                 </div>
                 

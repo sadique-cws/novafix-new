@@ -56,7 +56,7 @@ class ViewTask extends Component
     {
         $this->task = $task->load('receptionist', 'serviceCategory', 'payments');
         $this->selectedStatus = $this->task->status;
-        $this->paymentAmount = $this->task->payment_amount ?? 0;
+        $this->paymentAmount = $this->payment_amount ?? 0;
         $this->paymentCompleted = $task->payments->isNotEmpty();
         $this->taskRejected = $task->status == 90;
     }

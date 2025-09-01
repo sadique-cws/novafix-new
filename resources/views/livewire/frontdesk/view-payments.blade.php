@@ -79,6 +79,7 @@
             <h3 class="text-base sm:text-lg font-semibold text-gray-800 flex items-center">
                 <i class="fas fa-receipt text-green-600 mr-2 sm:mr-3 text-base sm:text-lg"></i> Payment Details
             </h3>
+
         </div>
         <div class="p-4 sm:p-6">
             @if($payment)
@@ -122,7 +123,7 @@
                         <div class="space-y-2">
                             <div class="flex justify-between">
                                 <p class="text-sm text-gray-600">Service Amount:</p>
-                                <p class="text-sm sm:text-base font-medium text-gray-900">₹{{ number_format($serviceRequest->service_amount, 2) }}</p>
+                                <p class="text-sm sm:text-base font-medium text-gray-900">₹{{ number_format($payment->amount ,2) }}</p>
                             </div>
                             <div class="flex justify-between">
                                 <p class="text-sm text-gray-600">Discount:</p>
@@ -138,7 +139,6 @@
                             </div>
                         </div>
                     </div>
-
                     @if($payment->notes)
                         <div class="mt-4 sm:mt-6">
                             <p class="text-xs font-medium text-gray-500 uppercase">Notes</p>
