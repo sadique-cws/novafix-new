@@ -16,6 +16,7 @@ class ManageProblem extends Component
     public $model_id;
     public $showFlash = false;
     public $editingProblemId = null;
+    public $search = '';
 
     protected $rules = [
         'name' => 'required|string|min:2|max:255',

@@ -83,7 +83,7 @@ class ManageBrand extends Component
         $brands = Brand::when($this->search, function ($query) {
             $query->where('name', 'like', '%' . $this->search . '%');
         })
-            ->orderBy('id', 'desc')
+            ->orderBy('id', 'asc')
             ->paginate(5);
 
         return view('livewire.admin.solution.manage-brand', [
