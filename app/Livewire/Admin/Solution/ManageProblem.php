@@ -78,7 +78,11 @@ class ManageProblem extends Component
     public function render()
     {
         $models = Model::all();
-        $problems = Problem::orderBy('id', 'desc')->get();
+        $problems = Problem::when($this->search, function ($query) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        })
+            ->orderBy('id', 'desc')
+            ->paginate(5);
         return view('livewire.admin.solution.manage-problem', [
             'models' => $models,
             'problems' => $problems,

@@ -5,27 +5,38 @@ namespace App\Livewire\Admin\Solution;
 use App\Models\Brand;
 use App\Models\Device;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('components.layouts.admin-layout')]
 class ManageBrand extends Component
 {
+    use WithPagination;
+
     public $editingId = null;
     public $showFlash = false;
     public $name;
-    public $device_id; // New property to hold the device ID
+    public $device_id;
+    public $search = '';
 
     protected $rules = [
         'name' => 'required|string',
-        'device_id' => 'required|exists:devices,id', // Ensure device_id is provided and exists
+        'device_id' => 'required|exists:devices,id',
     ];
+
+    protected $paginationTheme = 'tailwind';
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function addBrand()
     {
         $this->validate();
         Brand::create([
             'name' => $this->name,
-            'device_id' => $this->device_id, // Save the device_id as well
+            'device_id' => $this->device_id,
         ]);
         $this->resetInput();
         session()->flash('message', 'Device Created successfully');
@@ -35,6 +46,7 @@ class ManageBrand extends Component
     {
         Brand::find($id)->delete();
     }
+
     public function editBrand($id)
     {
         $brand = Brand::findOrFail($id);
@@ -42,18 +54,17 @@ class ManageBrand extends Component
         $this->name = $brand->name;
         $this->device_id = $brand->device_id;
     }
+
     public function updateBrand()
     {
         $this->validate();
 
         if ($this->editingId) {
             $brand = Brand::findOrFail($this->editingId);
-            $brand->update(
-                [
-                    'name' => $this->name,
-                    'device_id' => $this->device_id
-                ]
-            );
+            $brand->update([
+                'name' => $this->name,
+                'device_id' => $this->device_id
+            ]);
             $this->resetInput();
             session()->flash('message', 'Brand updated successfully');
         }
@@ -65,16 +76,19 @@ class ManageBrand extends Component
         $this->device_id = '';
         $this->editingId = null;
     }
+
     public function render()
     {
-        $devices = Device::all(); // Fetch all devices for the dropdown
-        $brands = Brand::orderBy('id', 'desc')->get(); // Fetch all brands for display
-        return view(
-            'livewire.admin.solution.manage-brand',
-            [
-                'devices' => $devices,
-                'brands' => $brands,
-            ]
-        );
+        $devices = Device::all();
+        $brands = Brand::when($this->search, function ($query) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        })
+            ->orderBy('id', 'desc')
+            ->paginate(5);
+
+        return view('livewire.admin.solution.manage-brand', [
+            'devices' => $devices,
+            'brands' => $brands,
+        ]);
     }
 }

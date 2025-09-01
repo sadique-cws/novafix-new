@@ -46,11 +46,11 @@
                         <div class="pt-2">
                             <button type="submit"
                                 class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-                                {{ $editingId ? 'Update' : 'create' }}
+                                {{ $editingId ? 'Update' : 'Create' }}
                             </button>
                             @if ($editingId)
                                 <button wire:click="resetInput"
-                                    class="bg-gray-400 font-semibold text-sm rounded px-2 py-1">Cancel</button>
+                                    class="bg-gray-400 font-semibold text-sm rounded px-2 py-1 mt-2">Cancel</button>
                             @endif
                         </div>
                     </form>
@@ -60,40 +60,43 @@
             <!-- Brands Table -->
             <div class="w-full lg:w-2/3">
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <div
+                        class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                         <h2 class="text-lg font-medium text-gray-900">Manage Brands</h2>
-                        <div class="text-sm text-gray-500">
-                            Total: {{ $brands->count() }} brands
+                        <div class="flex flex-col md:flex-row md:items-center gap-2 w-full md:w-auto">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search Brands...."
+                            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+
                         </div>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
+                    <div class="overflow-x-auto md:overflow-x-visible">
+                        <table class="min-w-full divide-y divide-gray-200 table-auto">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         ID</th>
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Device</th>
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Brand</th>
                                     <th scope="col"
-                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($brands as $brand)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $brand->id }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $brand->device->name }}
+                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{ $brand->id }}</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            {{ $brand->device->name ?? '-' }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $brand->name }}
+                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ $brand->name }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
                                             <button wire:click="editBrand({{ $brand->id }})"
                                                 class="mr-2 text-yellow-600 hover:text-yellow-900">
                                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -101,8 +104,7 @@
                                                         d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                                 </svg>
                                             </button>
-                                            <button
-                                                wire:click="deleteBrand({{ $brand->id }})" wire:confirm="Are You Sure want to delete"
+                                            <button wire:click="deleteBrand({{ $brand->id }})"
                                                 class="text-red-600 hover:text-red-900">
                                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd"
@@ -114,14 +116,18 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">No brands found
+                                        <td colspan="4" class="px-4 py-3 text-center text-sm text-gray-500">No brands found
                                         </td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
-
+                    @if($brands->hasPages())
+                        <div class="bg-gray-50 px-6 py-3 border-t border-gray-200">
+                            {{ $brands->links() }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
