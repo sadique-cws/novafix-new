@@ -173,7 +173,7 @@ class ServiceRequestForm extends Component
             ]);
 
             DB::commit();
-
+            $this->resetFormReq();
             session()->flash('success', 'Service request created successfully!');
             return redirect()->route('reviewServiceRequest', $serviceRequest->id);
         } catch (\Exception $e) {
@@ -238,6 +238,29 @@ class ServiceRequestForm extends Component
         $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d');
         $this->generateServiceCode();
     }
+
+    public function resetFormReq()
+    {
+        // Reset all form fields except these
+        $this->resetExcept([
+            'receptioners_id', 
+            'franchise_id', 
+            'technicians', 
+            'categories'
+        ]);
+        
+        // Regenerate service code and set estimate delivery
+        $this->generateServiceCode();
+        $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d');
+        $this->last_update = now();
+        $this->status = 0.00;
+        $this->delivery_status = false;
+        
+        // Clear any file uploads
+        $this->clearImage();
+    }
+
+
 
     public function render()
     {
