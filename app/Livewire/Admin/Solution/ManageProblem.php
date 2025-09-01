@@ -39,6 +39,29 @@ class ManageProblem extends Component
         Problem::findOrFail($id)->delete();
         session()->flash('message', 'Problem deleted successfully');
     }
+    public function editProblem($id){
+         $problem = Problem::findOrFail($id);
+        $this->editingProblemId = $problem->id;
+        $this->model_id = $problem->model_id;
+        $this->name = $problem->name;
+    }
+
+     public function updateBrand()
+    {
+        $this->validate();
+
+        if ($this->editingProblemId) {
+            $problem = Problem::findOrFail($this->editingProblemId);
+            $problem->update(
+                [
+                    'name' => $this->name,
+                    'model_id' => $this->model_id
+                ]
+            );
+            $this->resetInput();
+            session()->flash('message', 'Problem updated successfully');
+        }
+    }
     private function resetForm()
     {
         $this->reset(['name', 'model_id', 'editingProblemId']);
