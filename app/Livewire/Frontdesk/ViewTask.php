@@ -151,7 +151,7 @@ class ViewTask extends Component
             'payment_method' => $this->paymentMethod,
             'transaction_id' => $this->paymentMethod === 'cash' ? 'CASH-' . uniqid() : $this->paymentReference,
             'status' => 'completed',
-            'staff_id' => Auth::guard('staff')->user()->id,
+            'staff_id' => null,
             'received_by' => Auth::guard('frontdesk')->user()->id,
             'notes' => $this->paymentReference,
         ]);
