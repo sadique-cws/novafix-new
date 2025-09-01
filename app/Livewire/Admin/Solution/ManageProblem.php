@@ -14,6 +14,7 @@ class ManageProblem extends Component
 
     public $name;
     public $model_id;
+    public $showFlash = false;
     public $editingProblemId = null;
 
     protected $rules = [
@@ -44,6 +45,13 @@ class ManageProblem extends Component
         $this->editingProblemId = $problem->id;
         $this->model_id = $problem->model_id;
         $this->name = $problem->name;
+    }
+
+     public function cancelEdit()
+    {
+        $this->editingProblemId = null;
+        $this->name = null;
+        $this->model_id = null;
     }
 
      public function updateBrand()

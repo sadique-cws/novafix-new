@@ -41,12 +41,35 @@ class ManageModel extends Component
         $this->resetForm();
     }
 
+
     public function editModel($id)
     {
         $model = Model::findOrFail($id);
         $this->editingModelId = $model->id;
         $this->name = $model->name;
         $this->brand_id = $model->brand_id;
+    }
+    public function cancelEdit()
+    {
+        $this->editingModelId = null;
+        $this->name = null;
+        $this->brand_id = null;
+    }
+    public function updateModel()
+    {
+        $this->validate();
+
+        if ($this->editingModelId) {
+            $model = Model::findOrFail($this->editingModelId);
+            $model->update(
+                [
+                    'name' => $this->name,
+                    'brand_id' => $this->brand_id
+                ]
+            );
+            $this->resetInput();
+            session()->flash('message', 'Problem updated successfully');
+        }
     }
 
     public function deleteModel($id)
