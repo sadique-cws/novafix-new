@@ -58,15 +58,17 @@ class ServiceSolution extends Component
     {
         $this->filterModels = Model::where('brand_id', $this->selectedFilterBrand)->get();
     }
-    public function updateSelectedFilterModel(){
-        $this->filterProblems = Problem::where('model_id',$this->selectedFilterModel)->get();
+    public function updateSelectedFilterModel()
+    {
+        $this->filterProblems = Problem::where('model_id', $this->selectedFilterModel)->get();
     }
-    public function updateSelectedFilterProblem(){
-         $this->filterQuestions = Question::where('problem_id', $this->selectedFilterProblem)
-        ->when($this->currentQuestion, function($query) {
-            $query->where('id', '!=', $this->currentQuestion->id);
-        })
-        ->get();
+    public function updateSelectedFilterProblem()
+    {
+        $this->filterQuestions = Question::where('problem_id', $this->selectedFilterProblem)
+            ->when($this->currentQuestion, function ($query) {
+                $query->where('id', '!=', $this->currentQuestion->id);
+            })
+            ->get();
         // If we have results, auto-select the first question to improve UX
         if ($this->filterQuestions->isNotEmpty()) {
             $first = $this->filterQuestions->first();
@@ -167,7 +169,11 @@ class ServiceSolution extends Component
     }
     public function selectQuestion($questionId)
     {
+
         $this->selectedQuestion = Question::find($questionId);
+        if ($this->editingQuestionId) {
+            $this->editingQuestionText = $this->selectedQuestion->question_text;
+        }
         $this->creatingNew = false;
         $this->search = '';
         $this->allQuestion = [];
@@ -254,8 +260,8 @@ class ServiceSolution extends Component
         $this->search = '';
         $this->creatingNew = false;
         $this->selectedFilterBrand = null;
-        $this->selectedFilterModel =  null;
-        $this->selectedFilterProblem =  null;
+        $this->selectedFilterModel = null;
+        $this->selectedFilterProblem = null;
         $this->filterModels = [];
         $this->filterProblems = [];
         $this->filterQuestions = [];
