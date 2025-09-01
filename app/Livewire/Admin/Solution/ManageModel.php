@@ -67,7 +67,8 @@ class ManageModel extends Component
                     'brand_id' => $this->brand_id
                 ]
             );
-            $this->resetInput();
+            $this->resetForm();
+
             session()->flash('message', 'Problem updated successfully');
         }
     }
