@@ -294,7 +294,7 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
                                     <select wire:model="selectedFilterBrand" wire:change="updateSelectedFilterBrand"
-                                        class="w-full p-2.5 text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                        class="w-full p-2.5 border text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Choose Brand</option>
                                         @foreach ($brands as $brand)
                                             <option value="{{ $brand->id }}">{{ $brand->name }}</option>
@@ -308,7 +308,7 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Model</label>
                                     <select wire:model="selectedFilterModel" wire:change="updateSelectedFilterModel"
-                                        class="w-full p-2.5 text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                        class="w-full p-2.5 border text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Choose Model</option>
                                         @foreach ($filterModels as $model)
                                             <option value="{{ $model->id }}">{{ $model->name }}</option>
@@ -323,7 +323,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
                                     <select wire:model="selectedFilterProblem"
                                         wire:change="updateSelectedFilterProblem"
-                                        class="w-full p-2.5 text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                        class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Choose Problem</option>
                                         @foreach ($filterProblems as $problem)
                                             <option value="{{ $problem->id }}">{{ $problem->name }}</option>
@@ -338,7 +338,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
                                     <select wire:model="selectedQuestion"
                                         wire:change="selectQuestion($event.target.value)"
-                                        class="w-full p-2.5 text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                        class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Choose Question</option>
                                         @foreach ($filterQuestions as $question)
                                             <option value="{{ $question->id }}">{{ $question->question_text }}
@@ -350,7 +350,7 @@
                         </div>
 
                         <!-- Search -->
-                        <div class="mt-4 relative">
+                        <!-- <div class="mt-4 relative">
                             <span class="absolute left-3 top-3 text-gray-400">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </span>
@@ -367,7 +367,7 @@
                                     </path>
                                 </svg>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Question Details / Create New -->

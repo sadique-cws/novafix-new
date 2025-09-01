@@ -62,7 +62,11 @@ class ServiceSolution extends Component
         $this->filterProblems = Problem::where('model_id',$this->selectedFilterModel)->get();
     }
     public function updateSelectedFilterProblem(){
-        $this->filterQuestions = Question::where('problem_id',$this->selectedFilterProblem)->get();
+         $this->filterQuestions = Question::where('problem_id', $this->selectedFilterProblem)
+        ->when($this->currentQuestion, function($query) {
+            $query->where('id', '!=', $this->currentQuestion->id);
+        })
+        ->get();
         // If we have results, auto-select the first question to improve UX
         if ($this->filterQuestions->isNotEmpty()) {
             $first = $this->filterQuestions->first();
