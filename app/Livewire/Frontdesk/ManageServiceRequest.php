@@ -42,9 +42,7 @@ class ManageServiceRequest extends Component
 
     public function loadInitialData()
     {
-        // Load technicians once
-        $this->technicians = Staff::where('franchise_id', Auth::guard('franchise')->user()->id)->get();
-        
+       
         // Calculate all stats in a single query
         $statsData = ServiceRequest::where('receptioners_id', $this->receptionistId)
             ->selectRaw('COUNT(*) as total')

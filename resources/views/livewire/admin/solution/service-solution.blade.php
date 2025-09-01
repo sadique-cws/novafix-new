@@ -74,119 +74,187 @@
         <!-- Question Section -->
         @if ($currentQuestion && !isset($newQuestionAnswer))
             <div class="p-6 bg-gray-50 border-b">
-                <div class="max-w-3xl mx-auto">
+                <div class="max-w-4xl mx-auto">
                     @if ($editingQuestionId === $currentQuestion->id)
-                        <div class="space-y-4">
-                            <div class="flex flex-col gap-1">
-                                <label class="block text-sm font-medium text-gray-700">Question</label>
-                                <input type="text" wire:model="editingQuestionText" rows="3"
-                                    class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                @error('editingQuestionText')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 items-start">
-                                <div class="grid grid-cols-2 gap-2">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">Image (Optional)</label>
-                                        <label
-                                            class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
-                                            <input type="file" accept="image/*" wire:model="editingQuestionImage"
-                                                class="hidden">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                            <span class="mt-1 text-xs text-gray-500">Upload</span>
-                                        </label>
-                                        <div wire:loading wire:target="image"
-                                            class="mt-1 flex items-center text-blue-600 text-xs">
-                                            <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
-                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <circle class="opacity-25" cx="12" cy="12" r="10"
-                                                    stroke="currentColor" stroke-width="4">
-                                                </circle>
-                                                <path class="opacity-75" fill="currentColor"
-                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                                            </svg>
-                                            Uploading...
-                                        </div>
-                                        @error('image')
-                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">Preview</label>
-                                        @if ($editingQuestionImage)
-                                            <div class="relative inline-block">
-                                                @if (is_string($editingQuestionImage))
-                                                    <img src="{{ $editingQuestionImage }}"
-                                                        class="h-28 w-full rounded-md border object-cover">
-                                                @else
-                                                    <img src="{{ $editingQuestionImage->temporaryUrl() }}"
-                                                        class="h-28 w-full rounded-md border object-cover">
-                                                @endif
-                                                <div class="absolute -top-2 -right-2 flex space-x-2">
-                                                    @if (is_string($editingQuestionImage))
-                                                        {{-- Persisted image: remove from DB/provider --}}
-                                                        <button type="button"
-                                                            wire:click.prevent="removeEditingImageNow"
-                                                            class="bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
-                                                            aria-label="Remove persisted image">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
-                                                                fill="none" viewBox="0 0 24 24"
-                                                                stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                                            </svg>
-                                                        </button>
-                                                    @else
-                                                        {{-- Temporary uploaded file: just clear the selection --}}
-                                                        <button type="button"
-                                                            wire:click.prevent="$set('editingQuestionImage', null)"
-                                                            class="bg-yellow-500 text-white rounded-full p-1 hover:bg-yellow-600 transition"
-                                                            aria-label="Clear selection">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
-                                                                fill="none" viewBox="0 0 24 24"
-                                                                stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                                            </svg>
-                                                        </button>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        @else
-                                            <div
-                                                class="flex items-center justify-center h-28 w-full border border-gray-200 rounded-md bg-gray-50 text-gray-400 text-sm">
-                                                No image
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Description
-                                        (Optional)</label>
-                                    <textarea wire:model="editingQuestionDescription" rows="5"
-                                        class="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
-                                        placeholder="Notes or context..."></textarea>
-                                </div>
-                            </div>
-                            <div class="flex space-x-3">
-                                <button wire:click="updateQuestion"
-                                    class="px-4 py-2 flex items-center gap-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
-                                    <i class="fa-regular fa-circle-check"></i>
-                                    <span>Save Changes</span>
-                                </button>
-                                <button wire:click="cancelEdit"
-                                    class="px-4 py-2 bg-gray-500 flex items-center gap-2 text-white rounded-md hover:bg-gray-600 transition-colors">
-                                    <i class="fa-regular fa-circle-xmark"></i>
-                                    <span>Cancel</span>
-                                </button>
+                       <div class="space-y-4">
+    <div class="flex flex-col gap-1">
+        <label class="block text-sm font-medium text-gray-700">Question</label>
+        <input type="text" wire:model="editingQuestionText" rows="3"
+            class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
+        @error('editingQuestionText')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+        @enderror
+    </div>
+    
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+        <!-- Left Column: Image Upload & Preview -->
+        <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Image (Optional)</label>
+                    <label
+                        class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+                        <input type="file" accept="image/*" wire:model="editingQuestionImage"
+                            class="hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span class="mt-1 text-xs text-gray-500">Upload</span>
+                    </label>
+                    <div wire:loading wire:target="image"
+                        class="mt-1 flex items-center text-blue-600 text-xs">
+                        <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                        </svg>
+                        Uploading...
+                    </div>
+                    @error('image')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Preview</label>
+                    @if ($editingQuestionImage)
+                        <div class="relative inline-block">
+                            @if (is_string($editingQuestionImage))
+                                <img src="{{ $editingQuestionImage }}"
+                                    class="h-28 w-full rounded-md border object-cover">
+                            @else
+                                <img src="{{ $editingQuestionImage->temporaryUrl() }}"
+                                    class="h-28 w-full rounded-md border object-cover">
+                            @endif
+                            <div class="absolute -top-2 -right-2 flex space-x-2">
+                                @if (is_string($editingQuestionImage))
+                                    {{-- Persisted image: remove from DB/provider --}}
+                                    <button type="button"
+                                        wire:click.prevent="removeEditingImageNow"
+                                        class="bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
+                                        aria-label="Remove persisted image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
+                                            fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                @else
+                                    {{-- Temporary uploaded file: just clear the selection --}}
+                                    <button type="button"
+                                        wire:click.prevent="$set('editingQuestionImage', null)"
+                                        class="bg-yellow-500 text-white rounded-full p-1 hover:bg-yellow-600 transition"
+                                        aria-label="Clear selection">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
+                                            fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                @endif
                             </div>
                         </div>
+                    @else
+                        <div
+                            class="flex items-center justify-center h-28 w-full border border-gray-200 rounded-md bg-gray-50 text-gray-400 text-sm">
+                            No image
+                        </div>
+                    @endif
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Description (Optional)</label>
+                <textarea wire:model="editingQuestionDescription" rows="5"
+                    class="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                    placeholder="Notes or context..."></textarea>
+            </div>
+        </div>
+        
+        <!-- Right Column: Filters Section -->
+        <div class="bg-white p-4 rounded-lg shadow border">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2 gap-4">
+                <!-- Brand -->
+                @if ($brands)
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+                        <select wire:model="selectedFilterBrand" wire:change="updateSelectedFilterBrand"
+                            class="w-full p-2.5 border text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Choose Brand</option>
+                            @foreach ($brands as $brand)
+                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+
+                <!-- Model -->
+                @if ($filterModels)
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Model</label>
+                        <select wire:model="selectedFilterModel" wire:change="updateSelectedFilterModel"
+                            class="w-full p-2.5 border text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Choose Model</option>
+                            @foreach ($filterModels as $model)
+                                <option value="{{ $model->id }}">{{ $model->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+
+                <!-- Problem -->
+                @if ($filterProblems)
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
+                        <select wire:model="selectedFilterProblem"
+                            wire:change="updateSelectedFilterProblem"
+                            class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Choose Problem</option>
+                            @foreach ($filterProblems as $problem)
+                                <option value="{{ $problem->id }}">{{ $problem->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+
+                <!-- Question -->
+                @if ($filterQuestions)
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
+                        <select wire:model="selectedQuestion"
+                            wire:change="selectQuestion($event.target.value)"
+                            class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Choose Question</option>
+                            @foreach ($filterQuestions as $question)
+                                <option value="{{ $question->id }}">{{ $question->question_text }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+    
+    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 pt-4">
+        <button wire:click="updateQuestion"
+            class="px-4 py-2 flex items-center justify-center gap-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>Save Changes</span>
+        </button>
+        <button wire:click="cancelEdit"
+            class="px-4 py-2 bg-gray-500 flex items-center justify-center gap-2 text-white rounded-md hover:bg-gray-600 transition-colors">
+            <i class="fa-regular fa-circle-xmark"></i>
+            <span>Cancel</span>
+        </button>
+    </div>
+</div>
                     @else
                         <div class="flex flex-col md:flex-row md:justify-between md:items-center p-6 md:p-10 gap-6">
                             <!-- Question Section -->
