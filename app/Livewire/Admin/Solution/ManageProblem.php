@@ -79,7 +79,7 @@ class ManageProblem extends Component
     public function render()
     {
         $models = Model::all();
-        $problems = Problem::when($this->search, function ($query) {
+       $problems = Problem::when($this->search, function ($query) {
             $query->where('name', 'like', '%' . $this->search . '%');
         })
             ->orderBy('id', 'desc')
