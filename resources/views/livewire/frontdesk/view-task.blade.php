@@ -25,19 +25,19 @@
                             </span>
                         @else
                             <span
-                                class="inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium 
+                                class="inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium
                                 @if ($task->status == 0) bg-gray-100 text-gray-800
                                 @elseif($task->status == 25) bg-blue-100 text-blue-800
                                 @elseif($task->status == 50) bg-yellow-100 text-yellow-800
                                 @elseif($task->status == 75) bg-indigo-100 text-indigo-800
                                 @elseif($task->status == 100) bg-green-100 text-green-800 @endif">
                                 <i
-                                    class="fas 
-                                    @if ($task->status == 0) fa-clock 
-                                    @elseif($task->status == 25) fa-tasks 
-                                    @elseif($task->status == 50) fa-cog 
-                                    @elseif($task->status == 75) fa-check-circle 
-                                    @elseif($task->status == 100) fa-check-double @endif 
+                                    class="fas
+                                    @if ($task->status == 0) fa-clock
+                                    @elseif($task->status == 25) fa-tasks
+                                    @elseif($task->status == 50) fa-cog
+                                    @elseif($task->status == 75) fa-check-circle
+                                    @elseif($task->status == 100) fa-check-double @endif
                                     mr-1.5 text-xs sm:text-sm"></i>
                                 {{ $statusOptions[$task->status] ?? 'Unknown' }}
                             </span>
@@ -135,7 +135,7 @@
                         </div>
                     @endif
                     <!-- Product image_url -->
-                    
+
                 </div>
             </div>
 
@@ -203,13 +203,13 @@
                                 {{ $task->receptionist->name ?? 'System' }}</p>
                         </div>
                     </div>
-                    
+
                     <div class="flex items-start space-x-2 sm:space-x-3">
                         <i class="far fa-calendar-plus text-gray-600 text-base sm:text-lg mt-1"></i>
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase">Date Created</p>
                             <p class="mt-1 text-sm sm:text-base text-gray-900 font-medium">
-                                {{ $task->created_at->format('M d, Y h:i A') }}</p>
+                                {{ $task->created_at->->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</p>
                         </div>
                     </div>
                     <div class="flex items-start space-x-2 sm:space-x-3">
@@ -217,7 +217,7 @@
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase">Last Updated</p>
                             <p class="mt-1 text-sm sm:text-base text-gray-900 font-medium">
-                                {{ $task->updated_at->format('M d, Y h:i A') }}</p>
+                                {{ $task->updated_at->->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</p>
                         </div>
                     </div>
                 </div>
@@ -342,7 +342,7 @@
                                     <h3 class="text-base sm:text-lg font-semibold text-red-800">Task Rejected</h3>
                                     <div class="mt-2 text-xs sm:text-sm text-red-700 space-y-2">
                                         <p class="flex items-center"><i class="far fa-calendar-times mr-1.5"></i>
-                                            Rejected on: {{ $task->updated_at->format('M d, Y h:i A') }}</p>
+                                            Rejected on: {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</p>
                                         @if ($task->remark)
                                             <p class="flex items-start"><i class="fas fa-comment-alt mr-1.5 mt-1"></i>
                                                 Reason:
@@ -372,7 +372,7 @@
                                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                                 </path>
                                             </svg>
-                                            <span>Completed on {{ $task->updated_at->format('M d, Y h:i A') }}</span>
+                                            <span>Completed on {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</span>
                                         </div>
                                         @if ($task->payments->isNotEmpty())
                                             <div class="flex items-center">
@@ -389,7 +389,7 @@
                                             <div class="flex items-center">
                                                 <span class="mr-2">Status:</span>
                                                 <span
-                                                    class="px-2 py-1 text-xs font-medium rounded-full 
+                                                    class="px-2 py-1 text-xs font-medium rounded-full
                                                         @if ($task->payments->first()->status == 'completed') bg-green-100 text-green-800
                                                         @elseif($task->payments->first()->status == 'pending') bg-yellow-100 text-yellow-800
                                                         @else bg-red-100 text-red-800 @endif">
@@ -423,17 +423,17 @@
                                             class=" text-sm sm:text-base text-gray-900">₹{{ number_format($payment->total_amount, 2) }}</span>
                                         <div class="mt-1 text-xs sm:text-sm">
                                             <span
-                                                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium 
+                                                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
                                                     @if ($payment->payment_method === 'cash') bg-blue-100 text-blue-800
                                                     @elseif($payment->payment_method === 'card') bg-purple-100 text-purple-800
                                                     @elseif($payment->payment_method === 'online') bg-teal-100 text-teal-800
                                                     @else bg-gray-100 text-gray-800 @endif">
                                                 <i
-                                                    class="fas 
-                                                        @if ($payment->payment_method === 'cash') fa-money-bill-wave 
-                                                        @elseif($payment->payment_method === 'card') fa-credit-card 
-                                                        @elseif($payment->payment_method === 'online') fa-globe 
-                                                        @else fa-question-circle @endif 
+                                                    class="fas
+                                                        @if ($payment->payment_method === 'cash') fa-money-bill-wave
+                                                        @elseif($payment->payment_method === 'card') fa-credit-card
+                                                        @elseif($payment->payment_method === 'online') fa-globe
+                                                        @else fa-question-circle @endif
                                                         mr-1 text-xs"></i>
                                                 {{ ucfirst($payment->payment_method) }}
                                             </span>
@@ -444,7 +444,7 @@
                                             class="text-xs sm:text-sm text-gray-500">{{ $payment->created_at->format('M d, Y') }}</span>
                                         <div class="mt-1">
                                             <span
-                                                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium 
+                                                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
                                                     @if ($payment->status === 'completed') bg-green-100 text-green-800
                                                     @elseif($payment->status === 'pending') bg-yellow-100 text-yellow-800
                                                     @else bg-red-100 text-red-800 @endif">

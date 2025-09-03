@@ -180,7 +180,8 @@
                                             <div class="text-sm font-medium text-gray-900">{{ $request->service_code }}
                                             </div>
                                             <div class="text-xs text-gray-500">
-                                                {{ $request->created_at->format('M d, Y') }}</div>
+                                               {{ $request->created_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}
+
                                         </div>
                                     </div>
                                 </td>
@@ -194,9 +195,9 @@
                                     <div class="text-xs text-gray-500">SN: {{ $request->serial_no }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $request->updated_at->format('M d, Y') }}
+                                    <div class="text-sm text-gray-900">{{ $request->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}
                                     </div>
-                                    <div class="text-xs text-gray-500">{{ $request->updated_at->format('h:i A') }}
+                                    <div class="text-xs text-gray-500">{{ $request->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -319,7 +320,7 @@
                                 </div>
                                 <div class="ml-3">
                                     <h3 class="text-sm font-medium text-gray-900">{{ $request->service_code }}</h3>
-                                    <p class="text-xs text-gray-500">{{ $request->created_at->format('M d, Y') }}</p>
+                                    <p class="text-xs text-gray-500">{{ $request->created_at->timezone('Asia/Kolkata')->format('M d, Y ')  }}</p>
                                 </div>
                             </div>
                             <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
@@ -340,7 +341,7 @@
 
                         <div class="mt-3">
                             <div class="text-xs font-medium text-gray-700">Completed On:</div>
-                            <div class="text-sm text-gray-900">{{ $request->updated_at->format('M d, Y h:i A') }}
+                            <div class="text-sm text-gray-900">{{ $request->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}
                             </div>
                         </div>
 

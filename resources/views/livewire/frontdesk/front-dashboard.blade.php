@@ -74,7 +74,7 @@
                                 </td>
                                 <td class="px-3 py-2">
                                     @if($service->estimate_delivery)
-                                        {{ \Carbon\Carbon::parse($service->estimate_delivery)->format('d-m-Y') }}
+                                        {{ \Carbon\Carbon::parse($service->estimate_delivery)->timezone('Asia/Kolkata')->format('M d, Y ')  }}
                                     @else
                                         N/A
                                     @endif
@@ -129,7 +129,10 @@
                     <div class="flex justify-between text-sm p-2 bg-gray-50 rounded">
                         <div>
                             <p>#{{ $payment->serviceRequest->service_code ?? 'N/A' }}</p>
-                            <p class="text-xs text-gray-500">{{ $payment->created_at->format('M d, h:i A') }}</p>
+                           <p class="text-xs text-gray-500">
+    {{ $payment->created_at->timezone('Asia/Kolkata')->format('M d, h:i A') }}
+</p>
+
                         </div>
                         <div class="text-right">
                             <p class="text-green-600">₹{{ number_format($payment->total_amount, 2) }}</p>

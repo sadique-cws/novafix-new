@@ -66,9 +66,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                     </div>
-                    <input 
-                        type="date" 
-                        wire:model.live="dateFilter" 
+                    <input
+                        type="date"
+                        wire:model.live="dateFilter"
                         class="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm transition-all duration-200"
                     >
                 </div> --}}
@@ -100,9 +100,9 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Pending</p>
-                        
+
                         <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{$stats['pending']}}</h3>
-                      
+
                     </div>
                     <div class="p-2 sm:p-3 rounded-full bg-yellow-50 text-yellow-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"
@@ -225,7 +225,7 @@
                                             <div class="text-sm font-medium text-gray-900">{{ $request->service_code }}
                                             </div>
                                             <div class="text-xs text-gray-500">
-                                                {{ $request->created_at->format('M d, Y') }}</div>
+                                                {{ $request->created_at->timezone('Asia/Kolkata')->format('M d, Y ')  }}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -288,7 +288,7 @@
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                             testing
-                                        
+
                                     @endif
                                 </td>
                                 <td class="w-48 px-6 py-4 whitespace-nowrap">

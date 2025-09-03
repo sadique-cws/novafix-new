@@ -7,7 +7,7 @@
             <p class="text-sm text-blue-100 opacity-90">View and manage all service payments</p>
         </div>
     </div>
-    
+
     <!-- Filters Section -->
     <div class="bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -38,7 +38,7 @@
                 </select>
             </div>
         </div>
-        
+
         <!-- Reset Button -->
         <div class="mt-4">
             <button wire:click="resetFilters"
@@ -66,7 +66,7 @@
             </div>
             <p class="text-xs text-gray-400 mt-2">All time transactions</p>
         </div>
-        
+
         <!-- Completed Card -->
         <div class="bg-white rounded-xl shadow-md border border-gray-100 p-4">
             <div class="flex items-center justify-between">
@@ -82,7 +82,7 @@
             </div>
             <p class="text-xs text-gray-400 mt-2">{{ $completedPercentage }}% of total</p>
         </div>
-        
+
         <!-- Pending Card -->
         <div class="bg-white rounded-xl shadow-md border border-gray-100 p-4">
             <div class="flex items-center justify-between">
@@ -98,7 +98,7 @@
             </div>
             <p class="text-xs text-gray-400 mt-2">{{ $pendingPercentage }}% of total</p>
         </div>
-        
+
         <!-- Failed Card -->
         <div class="bg-white rounded-xl shadow-md border border-gray-100 p-4">
             <div class="flex items-center justify-between">
@@ -138,7 +138,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Completed Card -->
         <div class="bg-gradient-to-br from-green-500 to-teal-600 rounded-xl shadow-lg overflow-hidden">
             <div class="p-6">
@@ -158,7 +158,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Pending Card -->
         <div class="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl shadow-lg overflow-hidden">
             <div class="p-6">
@@ -178,7 +178,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Failed Card -->
         <div class="bg-gradient-to-br from-red-500 to-pink-600 rounded-xl shadow-lg overflow-hidden">
             <div class="p-6">
@@ -387,7 +387,7 @@
                                     <!-- Date -->
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         <div>{{ $payment->created_at->format('d M Y') }}</div>
-                                        <div class="text-xs text-gray-400">{{ $payment->created_at->format('h:i A') }}
+                                        <div class="text-xs text-gray-400">{{ $payment->created_at->timezone('Asia/Kolkata')->format('h:i A')  }}
                                         </div>
                                     </td>
 

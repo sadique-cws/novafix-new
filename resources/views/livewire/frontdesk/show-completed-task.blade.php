@@ -96,7 +96,7 @@
                         <p class="text-sm font-medium text-gray-700">Payment Status:</p>
                         <p class="text-lg font-semibold">
                             <span
-                                class="px-2 py-1 rounded-full 
+                                class="px-2 py-1 rounded-full
                                     {{ $request->payments->last()->status === 'completed'
                                         ? 'bg-green-100 text-green-800'
                                         : ($request->payments->last()->status === 'pending'
@@ -175,7 +175,8 @@
                             <label class="block text-sm font-medium text-gray-700">Payment Method*</label>
                             <select wire:model="payment_method"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                <option value="cash" selected>Cash</option>
+                                <option value="" selected>Select</option>
+                                <option value="cash">Cash</option>
                                 <option value="card">Card</option>
                                 <option value="transfer">Bank Transfer</option>
                             </select>
