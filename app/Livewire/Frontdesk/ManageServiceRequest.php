@@ -18,7 +18,7 @@ class ManageServiceRequest extends Component
 
     public $search = '';
     public $statusFilter = '';
-    public $perPage = 10;
+    public $perPage = 5;
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
     public $technicians = [];

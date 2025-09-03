@@ -1,9 +1,6 @@
 <div class="bg-white rounded-lg shadow-xl max-w-4xl mx-auto p-6">
     <div class="flex justify-between items-start mb-6">
         <h3 class="text-xl ">Service Request Details</h3>
-        <button wire:click="$dispatch('closeModal')" class="text-gray-500 hover:text-gray-700">
-            <i class="fas fa-times"></i>
-        </button>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

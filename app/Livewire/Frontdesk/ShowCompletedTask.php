@@ -62,7 +62,6 @@ class ShowCompletedTask extends Component
             ->findOrFail($requestId);
         $this->loadLatestPayment();
     }
-
     public function loadLatestPayment()
     {
         $payment = $this->request->payments->last();
@@ -231,7 +230,7 @@ class ShowCompletedTask extends Component
             ]);
         }
     }
-
+    
     // Add this method to handle OTP timeout
     public function otpTimedOut()
     {
