@@ -13,6 +13,8 @@ class ManageModel extends Component
     public $name;
     public $brand_id;
     public $editingModelId = null;
+    public $search = '';
+
 
     protected $rules = [
         'name' => 'required|string|min:2|max:255',
@@ -67,7 +69,8 @@ class ManageModel extends Component
                     'brand_id' => $this->brand_id
                 ]
             );
-            $this->resetInput();
+            $this->resetForm();
+
             session()->flash('message', 'Problem updated successfully');
         }
     }
@@ -86,9 +89,11 @@ class ManageModel extends Component
     public function render()
     {
         $brands = Brand::orderBy('name')->get();
-        $models = Model::with('brand')
+        $models = Model::when($this->search, function ($query) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        })
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(5);
 
         return view('livewire.admin.solution.manage-model', [
             'brands' => $brands,

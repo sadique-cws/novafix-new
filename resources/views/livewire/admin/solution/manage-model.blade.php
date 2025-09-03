@@ -23,7 +23,7 @@
                     <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
                         <h2 class="text-lg font-medium text-gray-900">{{ $editingModelId ? 'Edit' : 'Add' }} Model</h2>
                     </div>
-                    <form class="p-6 space-y-4" wire:submit.prevent="{{$editingModelId ? 'addModel' :'updateModel'}}">
+                    <form class="p-6 space-y-4" wire:submit.prevent="{{$editingModelId ? 'updateModel':'addModel'}}">
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-gray-700">Select Brand</label>
                             <select wire:model="brand_id"
@@ -62,8 +62,10 @@
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                         <h2 class="text-lg font-medium text-gray-900">Manage Models</h2>
-                        <div class="text-sm text-gray-500">
-                            Total: {{ $models->count() }} models
+                        <div class="flex flex-col md:flex-row md:items-center gap-2 w-full md:w-auto">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search Brands...."
+                            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+
                         </div>
                     </div>
                     <div class="overflow-x-auto">
