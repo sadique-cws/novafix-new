@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div class="mt-2 text-sm text-gray-500">
-                    Last updated: {{ $request->payments->last()->updated_at->format('M d, Y h:i A') }}
+                    Last updated: {{ $request->payments->last()->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}
                 </div>
             </div>
         @endif

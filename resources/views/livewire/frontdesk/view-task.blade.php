@@ -209,7 +209,8 @@
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase">Date Created</p>
                             <p class="mt-1 text-sm sm:text-base text-gray-900 font-medium">
-                                {{ $task->created_at->->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</p>
+                                {{-- {{ $task->created_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</p> --}}
+                                {{ $task->created_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</p>
                         </div>
                     </div>
                     <div class="flex items-start space-x-2 sm:space-x-3">
@@ -217,7 +218,8 @@
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase">Last Updated</p>
                             <p class="mt-1 text-sm sm:text-base text-gray-900 font-medium">
-                                {{ $task->updated_at->->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</p>
+                                {{-- {{ $task->updated_at->->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</p> --}}
+                                {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</p>
                         </div>
                     </div>
                 </div>
