@@ -99,19 +99,17 @@
                                                     class="hidden">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
                                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                                 <span class="mt-1 text-xs text-gray-500">Upload</span>
                                             </label>
-                                            <div wire:loading wire:target="image"
+                                            <div wire:loading wire:target="editingQuestionImage"
                                                 class="mt-1 flex items-center text-blue-600 text-xs">
                                                 <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24">
-                                                    <circle class="opacity-25" cx="12" cy="12" r="10"
-                                                        stroke="currentColor" stroke-width="4">
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                                        stroke-width="4">
                                                     </circle>
                                                     <path class="opacity-75" fill="currentColor"
                                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -136,13 +134,11 @@
                                                     <div class="absolute -top-2 -right-2 flex space-x-2">
                                                         @if (is_string($editingQuestionImage))
                                                             {{-- Persisted image: remove from DB/provider --}}
-                                                            <button type="button"
-                                                                wire:click.prevent="removeEditingImageNow"
+                                                            <button type="button" wire:click.prevent="removeEditingImageNow"
                                                                 class="bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
                                                                 aria-label="Remove persisted image">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
-                                                                    fill="none" viewBox="0 0 24 24"
-                                                                    stroke="currentColor">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor">
                                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                                         stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                                 </svg>
@@ -153,12 +149,10 @@
                                                                 wire:click.prevent="$set('editingQuestionImage', null)"
                                                                 class="bg-yellow-500 text-white rounded-full p-1 hover:bg-yellow-600 transition"
                                                                 aria-label="Clear selection">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
-                                                                    fill="none" viewBox="0 0 24 24"
-                                                                    stroke="currentColor">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round" stroke-width="2"
-                                                                        d="M6 18L18 6M6 6l12 12" />
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                                 </svg>
                                                             </button>
                                                         @endif
@@ -188,10 +182,8 @@
                                         <!-- Brand -->
                                         @if ($brands)
                                             <div>
-                                                <label
-                                                    class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
-                                                <select wire:model="selectedFilterBrand"
-                                                    wire:change="updateSelectedFilterBrand"
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+                                                <select wire:model="selectedFilterBrand" wire:change="updateSelectedFilterBrand"
                                                     class="w-full p-2.5 border text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                                     <option value="">Choose Brand</option>
                                                     @foreach ($brands as $brand)
@@ -205,10 +197,8 @@
                                         <!-- Model -->
                                         @if ($filterModels)
                                             <div>
-                                                <label
-                                                    class="block text-sm font-medium text-gray-700 mb-1">Model</label>
-                                                <select wire:model="selectedFilterModel"
-                                                    wire:change="updateSelectedFilterModel"
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Model</label>
+                                                <select wire:model="selectedFilterModel" wire:change="updateSelectedFilterModel"
                                                     class="w-full p-2.5 border text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                                     <option value="">Choose Model</option>
                                                     @foreach ($filterModels as $model)
@@ -222,10 +212,8 @@
                                         <!-- Problem -->
                                         @if ($filterProblems)
                                             <div>
-                                                <label
-                                                    class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
-                                                <select wire:model="selectedFilterProblem"
-                                                    wire:change="updateSelectedFilterProblem"
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
+                                                <select wire:model="selectedFilterProblem" wire:change="updateSelectedFilterProblem"
                                                     class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                                     <option value="">Choose Problem</option>
                                                     @foreach ($filterProblems as $problem)
@@ -239,8 +227,7 @@
                                         <!-- Question -->
                                         @if ($filterQuestions)
                                             <div>
-                                                <label
-                                                    class="block text-sm font-medium text-gray-700 mb-1">Question</label>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
                                                 <select wire:model="selectedQuestion"
                                                     wire:change="selectQuestion($event.target.value)"
                                                     class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
@@ -318,27 +305,46 @@
 
                             <!-- Extra Section (Image + Description) -->
                             @if ($currentQuestion->image_url || $currentQuestion->description)
-                                <div
-                                    class="flex flex-col items-center md:items-start gap-3 md:w-1/3 text-center md:text-left">
+                                <div class="flex flex-col items-center md:items-start gap-3 md:w-1/3 text-center md:text-left">
                                     @if ($currentQuestion->image_url)
-                                        <div class="flex flex-col gap-1">
-                                            <p
-                                                class=" text-gray-700
-                                                                                                                                                                                             font-medium">
-                                                Related Image
-                                                :-</p>
+                                        <div x-data="{ open: false }" class="flex flex-col gap-1">
+                                            <p class="text-gray-700 font-medium">Related Image :-</p>
+
+                                            <!-- Thumbnail -->
                                             <img src="{{ $currentQuestion->image_url }}"
-                                                class="h-32 w-64 object-fit rounded shadow" alt="Question Image">
+                                                class="h-32 w-64 object-cover rounded shadow cursor-pointer hover:opacity-80 transition"
+                                                alt="Question Image" @click="open = true">
+
+                                            <!-- Popup Modal -->
+                                            <div x-show="open" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+                                                x-transition>
+                                                <div class="relative">
+                                                    <!-- Large Image -->
+                                                    <img src="{{ $currentQuestion->image_url }}"
+                                                        class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-lg">
+
+                                                    <!-- Close Button -->
+                                                    <button @click="open = false"
+                                                        class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     @endif
                                     @if ($currentQuestion->description)
                                         <div class="flex flex-col gap-1">
                                             <label for=""
                                                 class="text-gray-700
-                                                                                                                                                                                             font-medium">Explanation
+                                                                                                                                                                                                                                             font-medium">Explanation
                                                 :-</label>
                                             <p class="text-gray-700 text-base leading-relaxed">
-                                                {{ $currentQuestion->description }}</p>
+                                                {{ $currentQuestion->description }}
+                                            </p>
                                         </div>
                                     @endif
                                 </div>
@@ -412,8 +418,7 @@
                             @if ($filterProblems)
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
-                                    <select wire:model="selectedFilterProblem"
-                                        wire:change="updateSelectedFilterProblem"
+                                    <select wire:model="selectedFilterProblem" wire:change="updateSelectedFilterProblem"
                                         class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Choose Problem</option>
                                         @foreach ($filterProblems as $problem)
@@ -427,8 +432,7 @@
                             @if ($filterQuestions)
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
-                                    <select wire:model="selectedQuestion"
-                                        wire:change="selectQuestion($event.target.value)"
+                                    <select wire:model="selectedQuestion" wire:change="selectQuestion($event.target.value)"
                                         class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Choose Question</option>
                                         @foreach ($filterQuestions as $question)
@@ -442,23 +446,23 @@
 
                         <!-- Search -->
                         <!-- <div class="mt-4 relative">
-                            <span class="absolute left-3 top-3 text-gray-400">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </span>
-                            <input type="text" wire:model.live.debounce.300ms="search"
-                                placeholder="{{ $selectedQuestion ? 'Search different question...' : 'Search by question text...' }}"
-                                class="w-full pl-10 pr-12 py-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <div class="absolute right-3 top-2.5" wire:loading.delay.shortest wire:target="search">
-                                <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                    </path>
-                                </svg>
-                            </div>
-                        </div> -->
+                                        <span class="absolute left-3 top-3 text-gray-400">
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                        </span>
+                                        <input type="text" wire:model.live.debounce.300ms="search"
+                                            placeholder="{{ $selectedQuestion ? 'Search different question...' : 'Search by question text...' }}"
+                                            class="w-full pl-10 pr-12 py-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        <div class="absolute right-3 top-2.5" wire:loading.delay.shortest wire:target="search">
+                                            <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                    stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                    </div> -->
                     </div>
 
                     <!-- Question Details / Create New -->
@@ -487,7 +491,8 @@
                                     </div>
                                     <div>
                                         <h4 class="text-base font-semibold text-gray-900">
-                                            {{ $selectedQuestion->question_text }}</h4>
+                                            {{ $selectedQuestion->question_text }}
+                                        </h4>
                                         @if ($selectedQuestion->description)
                                             <p class="mt-1 text-sm text-gray-600">{{ $selectedQuestion->description }}
                                             </p>
@@ -521,8 +526,7 @@
                                                 (Optional)</label>
                                             <label
                                                 class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
-                                                <input type="file" accept="image/*" wire:model="image"
-                                                    class="hidden">
+                                                <input type="file" accept="image/*" wire:model="image" class="hidden">
                                                 <i class="fa-solid fa-upload text-gray-400 text-xl"></i>
                                                 <span class="mt-1 text-xs text-gray-500">Upload</span>
                                             </label>
@@ -609,19 +613,18 @@
                                 <label
                                     class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
                                     <input type="file" accept="image/*" wire:model="image" class="hidden">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     <span class="mt-1 text-xs text-gray-500">Upload</span>
                                 </label>
-                                <div wire:loading wire:target="image"
-                                    class="mt-1 flex items-center text-blue-600 text-xs">
+                                <div wire:loading wire:target="image" class="mt-1 flex items-center text-blue-600 text-xs">
                                     <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10"
-                                            stroke="currentColor" stroke-width="4">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4">
                                         </circle>
                                         <path class="opacity-75" fill="currentColor"
                                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -669,10 +672,10 @@
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
                             <span wire:loading.remove wire:target="createFirstQuestion">Create Question</span>
                             <span wire:loading wire:target="createFirstQuestion">
-                                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="4">
+                                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4">
                                     </circle>
                                     <path class="opacity-75" fill="currentColor"
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
