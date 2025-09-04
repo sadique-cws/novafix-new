@@ -23,7 +23,7 @@ class ManageServiceRequest extends Component
     public $sortDirection = 'desc';
     public $technicians = [];
     public $stats = [];
-    
+
     protected $receptionistId;
 
     protected $queryString = [
@@ -42,15 +42,15 @@ class ManageServiceRequest extends Component
 
     public function loadInitialData()
     {
-       
+
         // Calculate all stats in a single query
         $statsData = ServiceRequest::where('receptioners_id', $this->receptionistId)
             ->selectRaw('COUNT(*) as total')
             ->selectRaw('SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) as pending')
-            ->selectRaw('SUM(CASE WHEN status > 0 AND status < 100 THEN 1 ELSE 0 END) as in_progress')
+            ->selectRaw('SUM(CASE WHEN status > 0 AND status < 90 THEN 1 ELSE 0 END) as in_progress')
             ->selectRaw('SUM(CASE WHEN status = 100 THEN 1 ELSE 0 END) as completed')
             ->first();
-            
+
         $this->stats = [
             'total' => $statsData->total ?? 0,
             'pending' => $statsData->pending ?? 0,
