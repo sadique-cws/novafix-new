@@ -119,15 +119,6 @@
                                     </div>
                                 </div>
 
-                                <div>
-                                    <label for="MAC" class="block text-sm font-medium text-gray-700">MAC Address
-                                        (if applicable)</label>
-                                    <input type="text" wire:model="MAC" id="MAC"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                    @error('MAC')
-                                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                                    @enderror
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -243,16 +234,7 @@
                                     @enderror
                                 </div>
 
-                                <div>
-                                    <label for="date_of_delivery"
-                                        class="block text-sm font-medium text-gray-700">Actual Delivery (if
-                                        completed)</label>
-                                    <input type="datetime-local" wire:model="date_of_delivery" id="date_of_delivery"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                    @error('date_of_delivery')
-                                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                              
                             </div>
                         </div>
 
@@ -316,7 +298,7 @@
                                         @enderror
                                     </div>
 
-                                  
+
                                 </div>
 
                                 @if ($existingImage || $image || $capturedImage)
