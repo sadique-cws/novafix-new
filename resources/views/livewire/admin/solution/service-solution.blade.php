@@ -91,26 +91,33 @@
                                 <div class="space-y-4">
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700">Image (Optional)</label>
+                                            <label class="block text-sm font-medium text-gray-700">Image
+                                                (Optional)</label>
                                             <label
                                                 class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
                                                 <input type="file" accept="image/*" wire:model="editingQuestionImage"
                                                     class="hidden">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
                                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
                                                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                                 <span class="mt-1 text-xs text-gray-500">Upload</span>
                                             </label>
-                                            <div wire:loading wire:target="editingQuestionImage"
-                                                class="mt-2 flex items-center space-x-2 text-blue-600 text-sm">
-                                                <div
-                                                    class="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin">
-                                                </div>
-                                                <span>Uploading...</span>
+                                            <div wire:loading wire:target="image"
+                                                class="mt-1 flex items-center text-blue-600 text-xs">
+                                                <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                        stroke="currentColor" stroke-width="4">
+                                                    </circle>
+                                                    <path class="opacity-75" fill="currentColor"
+                                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                                </svg>
+                                                Uploading...
                                             </div>
-
                                             @error('image')
                                                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                             @enderror
@@ -129,11 +136,13 @@
                                                     <div class="absolute -top-2 -right-2 flex space-x-2">
                                                         @if (is_string($editingQuestionImage))
                                                             {{-- Persisted image: remove from DB/provider --}}
-                                                            <button type="button" wire:click.prevent="removeEditingImageNow"
+                                                            <button type="button"
+                                                                wire:click.prevent="removeEditingImageNow"
                                                                 class="bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
                                                                 aria-label="Remove persisted image">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
-                                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
+                                                                    fill="none" viewBox="0 0 24 24"
+                                                                    stroke="currentColor">
                                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                                         stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                                 </svg>
@@ -144,10 +153,12 @@
                                                                 wire:click.prevent="$set('editingQuestionImage', null)"
                                                                 class="bg-yellow-500 text-white rounded-full p-1 hover:bg-yellow-600 transition"
                                                                 aria-label="Clear selection">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
-                                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
+                                                                    fill="none" viewBox="0 0 24 24"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                        d="M6 18L18 6M6 6l12 12" />
                                                                 </svg>
                                                             </button>
                                                         @endif
@@ -163,7 +174,8 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">Description (Optional)</label>
+                                        <label class="block text-sm font-medium text-gray-700">Description
+                                            (Optional)</label>
                                         <textarea wire:model="editingQuestionDescription" rows="5"
                                             class="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
                                             placeholder="Notes or context..."></textarea>
@@ -176,12 +188,15 @@
                                         <!-- Brand -->
                                         @if ($brands)
                                             <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
-                                                <select wire:model="selectedFilterBrand" wire:change="updateSelectedFilterBrand"
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+                                                <select wire:model="selectedFilterBrand"
+                                                    wire:change="updateSelectedFilterBrand"
                                                     class="w-full p-2.5 border text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                                     <option value="">Choose Brand</option>
                                                     @foreach ($brands as $brand)
-                                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                                        <option value="{{ $brand->id }}">{{ $brand->name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -190,12 +205,15 @@
                                         <!-- Model -->
                                         @if ($filterModels)
                                             <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Model</label>
-                                                <select wire:model="selectedFilterModel" wire:change="updateSelectedFilterModel"
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Model</label>
+                                                <select wire:model="selectedFilterModel"
+                                                    wire:change="updateSelectedFilterModel"
                                                     class="w-full p-2.5 border text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                                     <option value="">Choose Model</option>
                                                     @foreach ($filterModels as $model)
-                                                        <option value="{{ $model->id }}">{{ $model->name }}</option>
+                                                        <option value="{{ $model->id }}">{{ $model->name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -204,12 +222,15 @@
                                         <!-- Problem -->
                                         @if ($filterProblems)
                                             <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
-                                                <select wire:model="selectedFilterProblem" wire:change="updateSelectedFilterProblem"
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
+                                                <select wire:model="selectedFilterProblem"
+                                                    wire:change="updateSelectedFilterProblem"
                                                     class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                                     <option value="">Choose Problem</option>
                                                     @foreach ($filterProblems as $problem)
-                                                        <option value="{{ $problem->id }}">{{ $problem->name }}</option>
+                                                        <option value="{{ $problem->id }}">{{ $problem->name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -218,13 +239,15 @@
                                         <!-- Question -->
                                         @if ($filterQuestions)
                                             <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Question</label>
                                                 <select wire:model="selectedQuestion"
                                                     wire:change="selectQuestion($event.target.value)"
                                                     class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                                     <option value="">Choose Question</option>
                                                     @foreach ($filterQuestions as $question)
-                                                        <option value="{{ $question->id }}">{{ $question->question_text }}
+                                                        <option value="{{ $question->id }}">
+                                                            {{ $question->question_text }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -282,6 +305,14 @@
                                         <i class="fa-solid fa-pen-to-square"></i>
                                         <span>Edit This Question</span>
                                     </button>
+                                    @if(!$currentQuestion->yes_question_id && !$currentQuestion->no_question_id)
+                                        <button wire:click="deleteQuestion"
+                                            onclick="confirm('Are you sure you want to delete this question? This action cannot be undone.') || event.stopImmediatePropagation()"
+                                            class="ml-4 text-red-600 mt-1 hover:text-red-800 text-lg font-medium transition-colors">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                            <span>Delete</span>
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
 

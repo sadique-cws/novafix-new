@@ -66,9 +66,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                     </div>
-                    <input 
-                        type="date" 
-                        wire:model.live="dateFilter" 
+                    <input
+                        type="date"
+                        wire:model.live="dateFilter"
                         class="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm transition-all duration-200"
                     >
                 </div> --}}
@@ -100,9 +100,9 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Pending</p>
-                        
+
                         <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{$stats['pending']}}</h3>
-                      
+
                     </div>
                     <div class="p-2 sm:p-3 rounded-full bg-yellow-50 text-yellow-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"
@@ -155,11 +155,11 @@
         <!-- Requests Table (Desktop/Tablet) -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden hidden sm:block">
             <div class="">
-                <table class=" divide-gray-200">
+                <table class=" divide-gray-200  mx-auto w-full">
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col"
-                                class="w-48 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors duration-150"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors duration-150"
                                 wire:click="sortBy('service_code')">
                                 <div class="flex items-center">
                                     <span>Request ID</span>
@@ -171,7 +171,7 @@
                                 </div>
                             </th>
                             <th scope="col"
-                                class="w-64 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors duration-150"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors duration-150"
                                 wire:click="sortBy('owner_name')">
                                 <div class="flex items-center">
                                     <span>Customer</span>
@@ -183,7 +183,7 @@
                                 </div>
                             </th>
                             <th scope="col"
-                                class="w-64 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors duration-150"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors duration-150"
                                 wire:click="sortBy('product_name')">
                                 <div class="flex items-center">
                                     <span>Product</span>
@@ -195,15 +195,15 @@
                                 </div>
                             </th>
                             <th scope="col"
-                                class="w-32 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class=" px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Status
                             </th>
                             <th scope="col"
-                                class="w-48 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class=" px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Technician
                             </th>
                             <th scope="col"
-                                class="w-32 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Actions
                             </th>
                         </tr>
@@ -211,34 +211,30 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($requests as $request)
                             <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                <td class="w-48 px-6 py-4 whitespace-nowrap">
+                                <td class=" px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div
                                             class="flex-shrink-0 h-10 w-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                            </svg>
+                                            {{ $request->id }}
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">{{ $request->service_code }}
                                             </div>
                                             <div class="text-xs text-gray-500">
-                                                {{ $request->created_at->format('M d, Y') }}</div>
+                                                {{ $request->created_at->timezone('Asia/Kolkata')->format('M d, Y ')  }}</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="w-64 px-6 py-4">
+                                <td class=" px-6 py-4">
                                     <div class="text-sm font-medium text-gray-900">{{ $request->owner_name }}</div>
                                     <div class="text-xs text-gray-500 mt-1">{{ $request->contact }}</div>
                                 </td>
-                                <td class="w-64 px-6 py-4">
+                                <td class=" px-6 py-4">
                                     <div class="text-sm font-medium text-gray-900">{{ $request->product_name }}</div>
                                     <div class="text-xs text-gray-500">{{ $request->brand }}</div>
                                     <div class="text-xs text-gray-500">SN: {{ $request->serial_no }}</div>
                                 </td>
-                                  <td class="w-32 px-6 py-4 whitespace-nowrap">
+                                  <td class=" px-6 py-4 whitespace-nowrap">
                                     @if ($request->status == 0)
                                         <span
                                             class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
@@ -288,10 +284,10 @@
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                             testing
-                                        
+
                                     @endif
                                 </td>
-                                <td class="w-48 px-6 py-4 whitespace-nowrap">
+                                <td class=" px-6 py-4 whitespace-nowrap">
                                     @if ($request->technician_id)
                                         <div class="flex items-center">
                                             <div
@@ -316,7 +312,7 @@
                                         </select>
                                     @endif
                                 </td>
-                                <td class="w-32 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
                                         <a href="{{ route('frontdesk.view.task', $request->id) }}"
                                             class="text-blue-600 hover:text-blue-900 transition-colors duration-150"

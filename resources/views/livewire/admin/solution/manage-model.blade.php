@@ -23,7 +23,7 @@
                     <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
                         <h2 class="text-lg font-medium text-gray-900">{{ $editingModelId ? 'Edit' : 'Add' }} Model</h2>
                     </div>
-                    <form class="p-6 space-y-4" wire:submit.prevent="{{$editingModelId ? 'addModel' :'updateModel'}}">
+                    <form class="p-6 space-y-4" wire:submit.prevent="{{$editingModelId ? 'updateModel':'addModel'}}">
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-gray-700">Select Brand</label>
                             <select wire:model="brand_id"

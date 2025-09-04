@@ -72,9 +72,9 @@
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                         <h2 class="text-lg font-medium text-gray-900">Manage Problems</h2>
-                        <div class="flex flex-col md:flex-row md:items-center gap-2 w-full md:w-auto">
-                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search Brands...."
-                                class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                         <div class="flex flex-col md:flex-row md:items-center gap-2 w-full md:w-auto">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search Problems...."
+                            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
 
                         </div>
                     </div>

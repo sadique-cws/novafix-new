@@ -23,7 +23,7 @@ class ShowCompletedTask extends Component
     public $discount = 0;
     public $tax = 0;
     public $total_amount = 0;
-    public $payment_method = 'cash';
+    public $payment_method;
     public $transaction_id = '';
     public $notes = '';
     public $status = 'completed';
@@ -62,7 +62,6 @@ class ShowCompletedTask extends Component
             ->findOrFail($requestId);
         $this->loadLatestPayment();
     }
-
     public function loadLatestPayment()
     {
         $payment = $this->request->payments->last();
@@ -168,7 +167,7 @@ class ShowCompletedTask extends Component
             $this->otpTimeout = false;
             $this->showOtpModal = true;
 
-           
+
             $this->dispatch('start-otp-timer', expiresAt: now()->addSeconds(60)->timestamp);
             session()->flash('otp-info', 'OTP sent to customer mobile. Valid for 60 seconds.');
         } else {
@@ -231,7 +230,7 @@ class ShowCompletedTask extends Component
             ]);
         }
     }
-
+    
     // Add this method to handle OTP timeout
     public function otpTimedOut()
     {
@@ -253,7 +252,7 @@ class ShowCompletedTask extends Component
         'editingPaymentId'
     ]);
     $this->amount = $this->request->estimated_cost ?? 0;
-    $this->payment_method = 'cash'; // Set default
+    $this->payment_method; // Set default
     $this->status = 'completed'; // Set default
     $this->calculateTotal();
 }

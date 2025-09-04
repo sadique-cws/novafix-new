@@ -327,7 +327,6 @@ class ServiceSolution extends Component
             'question_text' => $this->editingQuestionText,
             'description' => $this->editingQuestionDescription,
         ];
-        // Handle image upload if a new image was provided
         // If user marked image for removal
         if ($this->removeEditingImage) {
             if ($question->image_file_id) {
@@ -356,8 +355,6 @@ class ServiceSolution extends Component
             }
         }
 
-
-
         $question->update($updateData);
         $this->editingQuestionId = null;
         $this->editingQuestionText = '';
@@ -372,6 +369,40 @@ class ServiceSolution extends Component
     {
         $this->editingQuestionId = null;
         $this->editingQuestionText = '';
+    }
+    /**
+     * Delete the current question if it has no yes/no children.
+     */
+    public function deleteQuestion()
+    {
+        if (!$this->currentQuestion) {
+            session()->flash('error', 'No question selected');
+            return;
+        }
+
+        // Prevent deletion if node has children
+        if ($this->currentQuestion->yes_question_id || $this->currentQuestion->no_question_id) {
+            session()->flash('error', 'Cannot delete a question that has child questions');
+            return;
+        }
+
+        // If image exists, remove it from image provider
+        if ($this->currentQuestion->image_file_id) {
+            ImageKitHelper::deleteImage($this->currentQuestion->image_file_id);
+        }
+
+        // Delete the question
+        $id = $this->currentQuestion->id;
+        Question::where('id', $id)->delete();
+
+        // Reset state
+        $this->currentQuestion = null;
+        $this->editingQuestionId = null;
+        $this->editingQuestionText = '';
+        $this->description = '';
+        $this->image = null;
+
+        session()->flash('message', 'Question deleted successfully');
     }
     public function answerQuestion($answer)
     {
