@@ -15,7 +15,7 @@ class ManageDevice extends Component
     public $name;
     public $editingId = null;
     protected $rules = [
-        'name' => 'required|string',
+        'name' => 'required|unique:devices,name|string',
     ];
     public $showFlash = false;
 
