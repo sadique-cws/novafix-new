@@ -101,15 +101,37 @@
                 @if ($currentQuestion->image_url || $currentQuestion->description)
                     <div class="flex flex-col items-center md:items-start gap-3 md:w-1/3 text-center md:text-left">
                         @if ($currentQuestion->image_url)
-                            <div class="flex flex-col gap-1">
-                                <p
-                                    class=" text-gray-700
-                                                                                                                                                                                                                                                                                                                                                                                                         font-medium">
-                                    Related Image
-                                    :-</p>
-                                <img src="{{ $currentQuestion->image_url }}" class="h-32 w-64 object-fit rounded shadow"
-                                    alt="Question Image">
-                            </div>
+                           <div x-data="{ open: false }" class="flex flex-col gap-1">
+    <p class="text-gray-700 font-medium">Related Image :-</p>
+
+    <!-- Thumbnail -->
+    <img src="{{ $currentQuestion->image_url }}" 
+         class="h-32 w-64 object-cover rounded shadow cursor-pointer hover:opacity-80 transition"
+         alt="Question Image"
+         @click="open = true">
+
+    <!-- Popup Modal -->
+    <div x-show="open" 
+         class="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+         x-transition>
+        <div class="relative">
+            <!-- Large Image -->
+            <img src="{{ $currentQuestion->image_url }}" 
+                 class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-lg">
+
+            <!-- Close Button -->
+            <button @click="open = false"
+                class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
                         @endif
                         @if ($currentQuestion->description)
                             <div class="flex flex-col gap-1">

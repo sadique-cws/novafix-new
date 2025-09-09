@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+
 #[Title('Edit Service Request')]
 #[Layout('components.layouts.frontdesk-layout')]
 
@@ -108,7 +110,7 @@ class EditServiceRequest extends Component
         $this->image = null; // Clear file upload if exists
     }
 
-   
+
 
     public function update()
     {

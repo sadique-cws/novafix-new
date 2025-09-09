@@ -27,6 +27,9 @@
                             <label class="block text-gray-700 text-sm font-medium mb-2">Device Name</label>
                             <input type="text" wire:model="name" placeholder="Enter device name"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                            @error('name')
+                                <p class="text-red-500 font-mrdium">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="flex gap-2">
                             <button type="submit"

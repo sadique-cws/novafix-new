@@ -129,7 +129,8 @@
                                         class="w-40 h-40 object-cover rounded-md shadow-sm border border-gray-100">
                                 </a>
                                 <div class="flex-1">
-                                    <p class="text-sm text-gray-600">Click the image_url to open full size in a new tab.</p>
+                                    <p class="text-sm text-gray-600">Click the image_url to open full size in a new tab.
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -210,7 +211,7 @@
                             <p class="text-xs font-medium text-gray-500 uppercase">Date Created</p>
                             <p class="mt-1 text-sm sm:text-base text-gray-900 font-medium">
                                 {{-- {{ $task->created_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</p> --}}
-                                {{ $task->created_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</p>
+                                {{ $task->created_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</p>
                         </div>
                     </div>
                     <div class="flex items-start space-x-2 sm:space-x-3">
@@ -219,7 +220,7 @@
                             <p class="text-xs font-medium text-gray-500 uppercase">Last Updated</p>
                             <p class="mt-1 text-sm sm:text-base text-gray-900 font-medium">
                                 {{-- {{ $task->updated_at->->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</p> --}}
-                                {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</p>
+                                {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</p>
                         </div>
                     </div>
                 </div>
@@ -344,7 +345,9 @@
                                     <h3 class="text-base sm:text-lg font-semibold text-red-800">Task Rejected</h3>
                                     <div class="mt-2 text-xs sm:text-sm text-red-700 space-y-2">
                                         <p class="flex items-center"><i class="far fa-calendar-times mr-1.5"></i>
-                                            Rejected on: {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</p>
+                                            Rejected on:
+                                            {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}
+                                        </p>
                                         @if ($task->remark)
                                             <p class="flex items-start"><i class="fas fa-comment-alt mr-1.5 mt-1"></i>
                                                 Reason:
@@ -374,7 +377,8 @@
                                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                                 </path>
                                             </svg>
-                                            <span>Completed on {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}</span>
+                                            <span>Completed on
+                                                {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</span>
                                         </div>
                                         @if ($task->payments->isNotEmpty())
                                             <div class="flex items-center">
@@ -489,22 +493,20 @@
                             <span class="text-yellow-600 font-semibold text-sm sm:text-base">
                                 <i class="fas fa-exclamation-triangle mr-2"></i> Not Delivered
                             </span>
-                            @if ($task->payments->where('status', 'completed')->count() > 0 && $task->status == '100')
+                            @if ($task->status == '90' || ($task->payments->where('status', 'completed')->count() > 0 && $task->status == '100'))
                                 <button wire:click="initiateDelivery"
                                     class="mt-3 mr-2 sm:mt-0 px-3 sm:px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-all duration-200 transform hover:scale-105">
                                     <i class="fas fa-truck mr-2"></i> Otp
                                 </button>
                                 <button wire:click="directDelivery"
                                     class="mt-3 ml-2 sm:mt-0 px-3 sm:px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-all duration-200 transform hover:scale-105">
-                                    <i class="fas fa-truck mr-2"></i>Direct
+                                    <i class="fas fa-truck mr-2"></i> Direct
                                 </button>
                             @endif
-
                         @endif
                     </div>
                 </div>
             </div>
-
             <!-- OTP Modal -->
             @if ($showOtpModal)
                 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-3 sm:px-0">
