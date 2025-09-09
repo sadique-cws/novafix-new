@@ -17,6 +17,7 @@ class ManageProblem extends Component
     public $showFlash = false;
     public $editingProblemId = null;
     public $search = '';
+    protected $queryString = ['search'];
 
     protected $rules = [
         'name' => 'required|string|min:2|max:255',
@@ -30,14 +31,8 @@ class ManageProblem extends Component
             'name' => $this->name,
             'model_id' => $this->model_id, // Save the device_id as well
         ]);
-
-        session()->flash('message', 'Device Created successfully');
-
-        $this->resetForm();
-    }
-
-    public function deleteProblem($id)
-    {
+        // Reset pagination when search changes
+        $this->resetPage();
         Problem::findOrFail($id)->delete();
         session()->flash('message', 'Problem deleted successfully');
     }
@@ -55,19 +50,17 @@ class ManageProblem extends Component
         $this->model_id = null;
     }
 
-     public function updateBrand()
+    public function updateProblem()
     {
         $this->validate();
 
         if ($this->editingProblemId) {
             $problem = Problem::findOrFail($this->editingProblemId);
-            $problem->update(
-                [
-                    'name' => $this->name,
-                    'model_id' => $this->model_id
-                ]
-            );
-            $this->resetInput();
+            $problem->update([
+                'name' => $this->name,
+                'model_id' => $this->model_id,
+            ]);
+            $this->resetForm();
             session()->flash('message', 'Problem updated successfully');
         }
     }
