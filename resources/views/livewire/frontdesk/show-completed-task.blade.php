@@ -111,7 +111,8 @@
                     </div>
                 </div>
                 <div class="mt-2 text-sm text-gray-500">
-                    Last updated: {{ $request->payments->last()->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A')  }}
+                    Last updated:
+                    {{ $request->payments->last()->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}
                 </div>
             </div>
         @endif
@@ -238,6 +239,19 @@
                 <span class="text-green-600 font-semibold">
                     <i class="fas fa-check-circle mr-2"></i> Delivered
                 </span>
+               <div class="no-print">
+    <button wire:click="printReceipt"
+            class="p-2 rounded bg-green-500 border text-white">
+        Print Receipt
+    </button>
+</div>
+
+<script>
+    window.addEventListener('print-receipt', () => {
+        window.print();
+    });
+</script>
+
             @else
                 <span class="text-yellow-600 font-semibold">
                     <i class="fas fa-exclamation-triangle mr-2"></i> Not Delivered
@@ -363,6 +377,8 @@
                     }
                 });
             });
+
+
         </script>
     @endif
     @if (session()->has('otp-info'))

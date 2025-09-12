@@ -55,6 +55,11 @@ class ShowCompletedTask extends Component
     {
         $this->msg91Service = app(Msg91Service::class);
     }
+public function printReceipt()
+{
+    $this->dispatch('print-receipt'); // kebab-case name is recommended
+}
+
 
     public function mount($requestId)
     {
@@ -230,7 +235,7 @@ class ShowCompletedTask extends Component
             ]);
         }
     }
-    
+
     // Add this method to handle OTP timeout
     public function otpTimedOut()
     {
