@@ -10,6 +10,7 @@
             </button>
         </div>
 
+
         <!-- Selection Grid -->
         <div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 border-b">
             <!-- Device Selection -->
@@ -99,7 +100,8 @@
                                                     class="hidden">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
                                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
                                                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                                 <span class="mt-1 text-xs text-gray-500">Upload</span>
@@ -107,9 +109,10 @@
                                             <div wire:loading wire:target="editingQuestionImage"
                                                 class="mt-1 flex items-center text-blue-600 text-xs">
                                                 <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                                        stroke-width="4">
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                        stroke="currentColor" stroke-width="4">
                                                     </circle>
                                                     <path class="opacity-75" fill="currentColor"
                                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -134,11 +137,13 @@
                                                     <div class="absolute -top-2 -right-2 flex space-x-2">
                                                         @if (is_string($editingQuestionImage))
                                                             {{-- Persisted image: remove from DB/provider --}}
-                                                            <button type="button" wire:click.prevent="removeEditingImageNow"
+                                                            <button type="button"
+                                                                wire:click.prevent="removeEditingImageNow"
                                                                 class="bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
                                                                 aria-label="Remove persisted image">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
-                                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
+                                                                    fill="none" viewBox="0 0 24 24"
+                                                                    stroke="currentColor">
                                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                                         stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                                 </svg>
@@ -149,10 +154,12 @@
                                                                 wire:click.prevent="$set('editingQuestionImage', null)"
                                                                 class="bg-yellow-500 text-white rounded-full p-1 hover:bg-yellow-600 transition"
                                                                 aria-label="Clear selection">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none"
-                                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"
+                                                                    fill="none" viewBox="0 0 24 24"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                        d="M6 18L18 6M6 6l12 12" />
                                                                 </svg>
                                                             </button>
                                                         @endif
@@ -182,8 +189,10 @@
                                         <!-- Brand -->
                                         @if ($brands)
                                             <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
-                                                <select wire:model="selectedFilterBrand" wire:change="updateSelectedFilterBrand"
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+                                                <select wire:model="selectedFilterBrand"
+                                                    wire:change="updateSelectedFilterBrand"
                                                     class="w-full p-2.5 border text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                                     <option value="">Choose Brand</option>
                                                     @foreach ($brands as $brand)
@@ -197,8 +206,10 @@
                                         <!-- Model -->
                                         @if ($filterModels)
                                             <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Model</label>
-                                                <select wire:model="selectedFilterModel" wire:change="updateSelectedFilterModel"
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Model</label>
+                                                <select wire:model="selectedFilterModel"
+                                                    wire:change="updateSelectedFilterModel"
                                                     class="w-full p-2.5 border text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                                     <option value="">Choose Model</option>
                                                     @foreach ($filterModels as $model)
@@ -212,8 +223,10 @@
                                         <!-- Problem -->
                                         @if ($filterProblems)
                                             <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
-                                                <select wire:model="selectedFilterProblem" wire:change="updateSelectedFilterProblem"
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
+                                                <select wire:model="selectedFilterProblem"
+                                                    wire:change="updateSelectedFilterProblem"
                                                     class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                                     <option value="">Choose Problem</option>
                                                     @foreach ($filterProblems as $problem)
@@ -227,7 +240,8 @@
                                         <!-- Question -->
                                         @if ($filterQuestions)
                                             <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Question</label>
                                                 <select wire:model="selectedQuestion"
                                                     wire:change="selectQuestion($event.target.value)"
                                                     class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
@@ -245,11 +259,26 @@
                             </div>
 
                             <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 pt-4">
-                                <button wire:click="updateQuestion"
+                                <button wire:click="updateQuestion" wire:loading.attr="disabled"
                                     class="px-4 py-2 flex items-center justify-center gap-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
-                                    <i class="fa-regular fa-circle-check"></i>
-                                    <span>Save Changes</span>
+
+                                    {{-- Normal icon/text when not loading --}}
+                                    <i class="fa-regular fa-circle-check" wire:loading.remove
+                                        wire:target="updateQuestion"></i>
+                                    <span wire:loading.remove wire:target="updateQuestion">Save Changes</span>
+
+                                    {{-- Loader when loading --}}
+                                    <svg wire:loading wire:target="updateQuestion"
+                                        class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                    </svg>
+                                    <span wire:loading wire:target="updateQuestion">Saving...</span>
                                 </button>
+
                                 <button wire:click="cancelEdit"
                                     class="px-4 py-2 bg-gray-500 flex items-center justify-center gap-2 text-white rounded-md hover:bg-gray-600 transition-colors">
                                     <i class="fa-regular fa-circle-xmark"></i>
@@ -292,7 +321,7 @@
                                         <i class="fa-solid fa-pen-to-square"></i>
                                         <span>Edit This Question</span>
                                     </button>
-                                    @if(!$currentQuestion->yes_question_id && !$currentQuestion->no_question_id)
+                                    @if (!$currentQuestion->yes_question_id && !$currentQuestion->no_question_id)
                                         <button wire:click="deleteQuestion"
                                             onclick="confirm('Are you sure you want to delete this question? This action cannot be undone.') || event.stopImmediatePropagation()"
                                             class="ml-4 text-red-600 mt-1 hover:text-red-800 text-lg font-medium transition-colors">
@@ -305,7 +334,8 @@
 
                             <!-- Extra Section (Image + Description) -->
                             @if ($currentQuestion->image_url || $currentQuestion->description)
-                                <div class="flex flex-col items-center md:items-start gap-3 md:w-1/3 text-center md:text-left">
+                                <div
+                                    class="flex flex-col items-center md:items-start gap-3 md:w-1/3 text-center md:text-left">
                                     @if ($currentQuestion->image_url)
                                         <div x-data="{ open: false }" class="flex flex-col gap-1">
                                             <p class="text-gray-700 font-medium">Related Image :-</p>
@@ -316,7 +346,8 @@
                                                 alt="Question Image" @click="open = true">
 
                                             <!-- Popup Modal -->
-                                            <div x-show="open" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+                                            <div x-show="open"
+                                                class="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
                                                 x-transition>
                                                 <div class="relative">
                                                     <!-- Large Image -->
@@ -326,10 +357,10 @@
                                                     <!-- Close Button -->
                                                     <button @click="open = false"
                                                         class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                d="M6 18L18 6M6 6l12 12" />
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                         </svg>
                                                     </button>
                                                 </div>
@@ -418,7 +449,8 @@
                             @if ($filterProblems)
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
-                                    <select wire:model="selectedFilterProblem" wire:change="updateSelectedFilterProblem"
+                                    <select wire:model="selectedFilterProblem"
+                                        wire:change="updateSelectedFilterProblem"
                                         class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Choose Problem</option>
                                         @foreach ($filterProblems as $problem)
@@ -432,7 +464,8 @@
                             @if ($filterQuestions)
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
-                                    <select wire:model="selectedQuestion" wire:change="selectQuestion($event.target.value)"
+                                    <select wire:model="selectedQuestion"
+                                        wire:change="selectQuestion($event.target.value)"
                                         class="w-full p-2.5 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Choose Question</option>
                                         @foreach ($filterQuestions as $question)
@@ -526,7 +559,8 @@
                                                 (Optional)</label>
                                             <label
                                                 class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
-                                                <input type="file" accept="image/*" wire:model="image" class="hidden">
+                                                <input type="file" accept="image/*" wire:model="image"
+                                                    class="hidden">
                                                 <i class="fa-solid fa-upload text-gray-400 text-xl"></i>
                                                 <span class="mt-1 text-xs text-gray-500">Upload</span>
                                             </label>
@@ -613,18 +647,19 @@
                                 <label
                                     class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
                                     <input type="file" accept="image/*" wire:model="image" class="hidden">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     <span class="mt-1 text-xs text-gray-500">Upload</span>
                                 </label>
-                                <div wire:loading wire:target="image" class="mt-1 flex items-center text-blue-600 text-xs">
+                                <div wire:loading wire:target="image"
+                                    class="mt-1 flex items-center text-blue-600 text-xs">
                                     <svg class="animate-spin -ml-1 mr-1 h-3 w-3 text-blue-500"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                            stroke-width="4">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4">
                                         </circle>
                                         <path class="opacity-75" fill="currentColor"
                                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -672,10 +707,10 @@
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
                             <span wire:loading.remove wire:target="createFirstQuestion">Create Question</span>
                             <span wire:loading wire:target="createFirstQuestion">
-                                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4">
+                                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                        stroke="currentColor" stroke-width="4">
                                     </circle>
                                     <path class="opacity-75" fill="currentColor"
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
