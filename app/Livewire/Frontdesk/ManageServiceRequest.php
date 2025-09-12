@@ -93,11 +93,14 @@ class ManageServiceRequest extends Component
             })
             ->when($this->statusFilter, function ($query) {
                 if ($this->statusFilter === 'in_progress') {
-                    $query->where('status', '>', 0)->where('status', '<', 100);
+                    $query->where('status', '>', 0)->where('status', '<', 50);
                 } elseif ($this->statusFilter === 'completed') {
                     $query->where('status', 100);
                 } elseif ($this->statusFilter === 'pending') {
                     $query->where('status', 0);
+                }
+                elseif ($this->statusFilter === 'rejected') {
+                    $query->where('status', 90);
                 }
             })
             ->orderBy($this->sortField, $this->sortDirection)

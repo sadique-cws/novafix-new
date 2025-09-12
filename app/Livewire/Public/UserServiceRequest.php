@@ -45,14 +45,15 @@ class UserServiceRequest extends Component
         'brand' => 'required|string|max:255',
         'color' => 'required|string|max:100',
         'problem' => 'required|string|max:500',
-        'image' => 'nullable|image|max:2048',
+        'image' => 'nullable|image',
     ];
 
     public function mount()
     {
         // load categories & franchises
         $this->serviceCategories = ServiceCategory::all();
-        $this->franchises = Franchise::all();
+       $this->franchises = Franchise::where('status', 'active')->get();
+
     }
 
     protected function generateServiceCode()
