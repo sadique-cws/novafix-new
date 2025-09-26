@@ -32,9 +32,8 @@ class ManageProblem extends Component
             'model_id' => $this->model_id, // Save the device_id as well
         ]);
         // Reset pagination when search changes
+        session()->flash('message', 'Problem Created successfully');
         $this->resetPage();
-        Problem::findOrFail($id)->delete();
-        session()->flash('message', 'Problem deleted successfully');
     }
     public function editProblem($id){
          $problem = Problem::findOrFail($id);
@@ -48,6 +47,10 @@ class ManageProblem extends Component
         $this->editingProblemId = null;
         $this->name = null;
         $this->model_id = null;
+    }
+    public function deleteProblem($id){
+        Problem::find($id)->delete();
+        session()->flash('message', 'Problem Deleted successfully');
     }
 
     public function updateProblem()

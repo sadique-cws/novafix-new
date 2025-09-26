@@ -1,158 +1,167 @@
-<div class="max-w-4xl mx-auto py-4 sm:py-6 px-3 sm:px-4 lg:px-8">
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6">
-        <div>
-            <h2 class="text-lg sm:text-xl md:text-2xl  text-gray-800">Payment Details</h2>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">Service Code: {{ $serviceRequest->service_code }}</p>
-        </div>
-        <a wire:navigate href="{{ route('frontdesk.manage.payments') }}"
-            class="mt-3 sm:mt-0 px-3 sm:px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all duration-200 transform hover:scale-105 flex items-center">
-            <i class="fas fa-arrow-left mr-2 text-sm sm:text-base"></i> Back to Payments
-        </a>
-    </div>
+<div>
 
-    <!-- Customer Information Card -->
-    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-4 sm:mb-6 transform transition-all duration-200 hover:shadow-lg">
-        <div class="p-4 sm:p-6 bg-gradient-to-r from-blue-50 to-indigo-50">
-            <h3 class="text-base sm:text-lg font-semibold text-gray-800 flex items-center">
-                <i class="fas fa-user-circle text-indigo-600 mr-2 sm:mr-3 text-base sm:text-lg"></i> Customer Information
-            </h3>
-        </div>
-        <div class="p-4 sm:p-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+    <div class="bg-gray-100 font-sans">
+        <div class="receipt-container max-w-[180mm] mx-auto p-4 bg-white border print:shadow-none">
+            <!-- Receipt Header -->
+            <div class="receipt-header text-center border-b border-dashed border-gray-300 pb-2 mb-3">
+                <h1 class="company-name text-2xl font-bold text-blue-500">NovaFix</h1>
+                <p class="tagline italic text-gray-500 text-xs">Fixing Today, Securing Tomorrow!</p>
+                <h2 class="receipt-title text-lg font-bold text-gray-800 mt-1">PAYMENT RECEIPT</h2>
+                <p class="text-xs">Service Code: {{ $serviceRequest->service_code }}</p>
+            </div>
+
+            <!-- Customer Information -->
+            <div class="customer-info grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
                 <div>
-                    <p class="text-xs font-medium text-gray-500 uppercase">Customer Name</p>
-                    <p class="mt-1 text-sm sm:text-base font-medium text-gray-900 truncate">{{ $serviceRequest->owner_name }}</p>
+                    <div class="info-item mb-1">
+                        <span class="info-label font-bold text-gray-600">Customer Name:</span>
+                        {{ $serviceRequest->owner_name }}
+                    </div>
+                    <div class="info-item mb-1">
+                        <span class="info-label font-bold text-gray-600">Contact:</span> {{ $serviceRequest->contact }}
+                    </div>
+                    <div class="info-item mb-1">
+                        <span class="info-label font-bold text-gray-600">Email:</span>
+                        {{ $serviceRequest->email ?? 'N/A' }}
+                    </div>
                 </div>
                 <div>
-                    <p class="text-xs font-medium text-gray-500 uppercase">Contact Number</p>
-                    <p class="mt-1 text-sm sm:text-base font-medium text-gray-900">{{ $serviceRequest->contact }}</p>
+                    <div class="info-item mb-1">
+                        <span class="info-label font-bold text-gray-600">Receipt Date:</span>
+                        {{ now()->format('d M Y, h:i A') }}
+                    </div>
+                    <div class="info-item mb-1">
+                        <span class="info-label font-bold text-gray-600">Payment Status:</span>
+                        <span class="status-badge inline-block px-1 py-0.5 rounded-full text-xs font-bold
+                        @if($payment->status === 'completed') bg-green-100 text-green-800
+                        @elseif($payment->status === 'pending') bg-yellow-100 text-yellow-800
+                        @else bg-red-100 text-red-800 @endif">
+                            <i class="fas
+                            @if($payment->status === 'completed') fa-check-circle
+                            @elseif($payment->status === 'pending') fa-clock
+                            @else fa-times-circle @endif mr-1"></i>
+                            {{ ucfirst($payment->status) }}
+                        </span>
+                    </div>
+                    <div class="info-item mb-1">
+                        <span class="info-label font-bold text-gray-600">Payment Method:</span>
+                        <i class="fas
+                        @if($payment->payment_method === 'cash') fa-money-bill-wave
+                        @elseif($payment->payment_method === 'card') fa-credit-card
+                        @else fa-globe @endif mr-1"></i>
+                        {{ ucwords(str_replace('_', ' ', $payment->payment_method)) }}
+                    </div>
                 </div>
-                <div>
-                    <p class="text-xs font-medium text-gray-500 uppercase">Email</p>
-                    <p class="mt-1 text-sm sm:text-base font-medium text-gray-900 truncate">{{ $serviceRequest->email ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Company Address -->
+            <div class="text-center mb-3 text-xs text-gray-600">
+                <p>Zila School Road, Near Mi Care, (Purnia), Bihar - 854301</p>
+                <p>7856802002 | novafixteam@gmail.com</p>
+            </div>
+
+            <!-- Device and Service Details -->
+            <table class="details-table w-full border-collapse mb-3 text-xs">
+                <tr>
+                    <td class="label font-bold bg-gray-50 border border-gray-300 p-1 w-1/4">Device Name</td>
+                    <td class="border border-gray-300 p-1">{{ strtoupper($serviceRequest->product_name) }}</td>
+                    <td class="label font-bold bg-gray-50 border border-gray-300 p-1 w-1/4">Service Code</td>
+                    <td class="border border-gray-300 p-1">{{ $serviceRequest->service_code }}</td>
+                </tr>
+                <tr>
+                    <td class="label font-bold bg-gray-50 border border-gray-300 p-1">Problem Reported</td>
+                    <td class="border border-gray-300 p-1">{{ strtoupper($serviceRequest->problem) }}</td>
+                    <td class="label font-bold bg-gray-50 border border-gray-300 p-1">Brand</td>
+                    <td class="border border-gray-300 p-1">{{ strtoupper($serviceRequest->brand) }}</td>
+                </tr>
+                <tr>
+                    <td class="label font-bold bg-gray-50 border border-gray-300 p-1">Service Category</td>
+                    <td class="border border-gray-300 p-1">
+                        {{ strtoupper($serviceRequest->serviceCategory->name ?? 'N/A') }}</td>
+                    <td class="label font-bold bg-gray-50 border border-gray-300 p-1">Serial Number</td>
+                    <td class="border border-gray-300 p-1">{{ $serviceRequest->serial_no ?? 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <td class="label font-bold bg-gray-50 border border-gray-300 p-1">Color</td>
+                    <td class="border border-gray-300 p-1">{{ strtoupper($serviceRequest->color) }}</td>
+                    <td class="label font-bold bg-gray-50 border border-gray-300 p-1">Est. Delivery</td>
+                    <td class="border border-gray-300 p-1">
+                        {{ \Carbon\Carbon::parse($serviceRequest->estimate_delivery)->format('d-m-Y') }}</td>
+                </tr>
+                <tr>
+                    <td class="label font-bold bg-gray-50 border border-gray-300 p-1">Transaction ID</td>
+                    <td class="border border-gray-300 p-1">{{ $payment->transaction_id ?? 'N/A' }}</td>
+                    <td class="label font-bold bg-gray-50 border border-gray-300 p-1">Payment Date</td>
+                    <td class="border border-gray-300 p-1">{{ $payment->created_at->format('d M Y, h:i A') }}</td>
+                </tr>
+                @if($serviceRequest->remark)
+                    <tr>
+                        <td class="label font-bold bg-gray-50 border border-gray-300 p-1">Remark</td>
+                        <td class="border border-gray-300 p-1" colspan="3">{{ $serviceRequest->remark }}</td>
+                    </tr>
+                @endif
+            </table>
+
+            <!-- Payment Summary -->
+            <div class="payment-summary bg-blue-50 rounded p-3 mb-3">
+                <h3 class="text-center font-bold mb-2 text-sm">PAYMENT SUMMARY</h3>
+                <div class="payment-row flex justify-between py-0.5 text-xs">
+                    <span>Service Amount:</span>
+                    <span>₹{{ number_format($payment->amount, 2) }}</span>
                 </div>
-                <div>
-                    <p class="text-xs font-medium text-gray-500 uppercase">Service Category</p>
-                    <p class="mt-1 text-sm sm:text-base font-medium text-gray-900">{{ $serviceRequest->serviceCategory->name }}</p>
+                <div class="payment-row flex justify-between py-0.5 text-xs">
+                    <span>Discount:</span>
+                    <span>- ₹{{ number_format($payment->discount, 2) }}</span>
                 </div>
+                <div class="payment-row flex justify-between py-0.5 text-xs">
+                    <span>Tax
+                        ({{ $payment->tax > 0 ? round(($payment->tax / $payment->amount) * 100, 2) : 0 }}%):</span>
+                    <span>+ ₹{{ number_format($payment->tax, 2) }}</span>
+                </div>
+                <div class="payment-row flex justify-between border-t border-gray-300 pt-1 mt-1 font-bold text-sm">
+                    <span>TOTAL AMOUNT:</span>
+                    <span>₹{{ number_format($payment->total_amount, 2) }}</span>
+                </div>
+                @if($payment->notes)
+                    <div class="mt-2 pt-1 border-t border-dashed border-gray-300 text-xs">
+                        <p><strong>Notes:</strong> {{ $payment->notes }}</p>
+                    </div>
+                @endif
+            </div>
+
+            <!-- Thank You Message -->
+            <p class="text-center italic mb-3 text-xs">Thank you for choosing NovaFix!</p>
+
+            <!-- Terms and Conditions -->
+            <div class="terms bg-gray-50 rounded p-2 text-[9px]">
+                <strong>Terms & Conditions:</strong>
+                <ol class="pl-3 mt-1 list-decimal">
+                    <li>Product not collected within 30 days not our responsibility.</li>
+                    <li>Confirm by phone before collecting product.</li>
+                    <li>Warranty only for GST-included repairs.</li>
+                    <li>₹350 checking fee if not repaired/declined.</li>
+                </ol>
+            </div>
+
+            <!-- Signature Area -->
+            <div class="signature-area text-right mt-3 pt-2 border-t border-dashed border-gray-300 text-xs">
+                <p>Authorized Sign & Stamp</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer text-center text-[9px] text-gray-500 mt-3">
+                <p>Generated on: {{ now()->format('d M Y, h:i A') }}</p>
+                <p>Computer-generated receipt. No signature required.</p>
+            </div>
+
+            <!-- Print Button -->
+            <div class="no-print text-center mt-4">
+                <button onclick="window.print()"
+                    class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-4 rounded flex items-center justify-center mx-auto text-sm">
+                    <i class="fas fa-print mr-1"></i> Print
+                </button>
             </div>
         </div>
     </div>
-
-    <!-- Device Information Card -->
-    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-4 sm:mb-6 transform transition-all duration-200 hover:shadow-lg">
-        <div class="p-4 sm:p-6 bg-gradient-to-r from-cyan-50 to-blue-50">
-            <h3 class="text-base sm:text-lg font-semibold text-gray-800 flex items-center">
-                <i class="fas fa-mobile-alt text-blue-600 mr-2 sm:mr-3 text-base sm:text-lg"></i> Device Information
-            </h3>
-        </div>
-        <div class="p-4 sm:p-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <div>
-                    <p class="text-xs font-medium text-gray-500 uppercase">Product Name</p>
-                    <p class="mt-1 text-sm sm:text-base font-medium text-gray-900 truncate">{{ $serviceRequest->product_name }}</p>
-                </div>
-                <div>
-                    <p class="text-xs font-medium text-gray-500 uppercase">Brand</p>
-                    <p class="mt-1 text-sm sm:text-base font-medium text-gray-900">{{ $serviceRequest->brand }}</p>
-                </div>
-                <div>
-                    <p class="text-xs font-medium text-gray-500 uppercase">Serial Number</p>
-                    <p class="mt-1 text-sm sm:text-base font-medium text-gray-900">{{ $serviceRequest->serial_no ?? 'N/A' }}</p>
-                </div>
-                <div>
-                    <p class="text-xs font-medium text-gray-500 uppercase">Color</p>
-                    <p class="mt-1 text-sm sm:text-base font-medium text-gray-900">{{ $serviceRequest->color }}</p>
-                </div>
-                <div class="col-span-1 sm:col-span-2">
-                    <p class="text-xs font-medium text-gray-500 uppercase">Problem Reported</p>
-                    <p class="mt-1 text-sm sm:text-base text-gray-900">{{ $serviceRequest->problem }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Payment Details Card -->
-    <div class="bg-white rounded-xl shadow-md overflow-hidden transform transition-all duration-200 hover:shadow-lg">
-        <div class="p-4 sm:p-6 bg-gradient-to-r from-green-50 to-teal-50">
-            <h3 class="text-base sm:text-lg font-semibold text-gray-800 flex items-center">
-                <i class="fas fa-receipt text-green-600 mr-2 sm:mr-3 text-base sm:text-lg"></i> Payment Details
-            </h3>
-
-        </div>
-        <div class="p-4 sm:p-6">
-            @if($payment)
-                <div class="space-y-4 sm:space-y-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                        <div>
-                            <p class="text-xs font-medium text-gray-500 uppercase">Payment Status</p>
-                            <p class="mt-1 font-medium">
-                                <span class="px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold 
-                                    {{ $payment->status === 'completed' ? 'bg-green-100 text-green-800' : 
-                                       ($payment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
-                                    <i class="fas 
-                                        {{ $payment->status === 'completed' ? 'fa-check-circle' : 
-                                           ($payment->status === 'pending' ? 'fa-clock' : 'fa-times-circle') }} 
-                                        mr-1"></i>
-                                    {{ ucfirst($payment->status) }}
-                                </span>
-                            </p>
-                        </div>
-                        <div>
-                            <p class="text-xs font-medium text-gray-500 uppercase">Payment Method</p>
-                            <p class="mt-1 text-sm sm:text-base font-medium text-gray-900">
-                                <i class="fas 
-                                    {{ $payment->payment_method === 'cash' ? 'fa-money-bill-wave' : 
-                                       ($payment->payment_method === 'card' ? 'fa-credit-card' : 'fa-globe') }} 
-                                    mr-1"></i>
-                                {{ ucwords(str_replace('_', ' ', $payment->payment_method)) }}
-                            </p>
-                        </div>
-                        <div>
-                            <p class="text-xs font-medium text-gray-500 uppercase">Transaction ID</p>
-                            <p class="mt-1 text-sm sm:text-base font-medium text-gray-900">{{ $payment->transaction_id ?? 'N/A' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs font-medium text-gray-500 uppercase">Payment Date</p>
-                            <p class="mt-1 text-sm sm:text-base font-medium text-gray-900">{{ $payment->created_at->format('d M Y, h:i A') }}</p>
-                        </div>
-                    </div>
-
-                    <div class="border-t border-gray-200 pt-3 sm:pt-4">
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <p class="text-sm text-gray-600">Service Amount:</p>
-                                <p class="text-sm sm:text-base font-medium text-gray-900">₹{{ number_format($payment->amount ,2) }}</p>
-                            </div>
-                            <div class="flex justify-between">
-                                <p class="text-sm text-gray-600">Discount:</p>
-                                <p class="text-sm sm:text-base font-medium text-gray-900">₹{{ number_format($payment->discount, 2) }}</p>
-                            </div>
-                            <div class="flex justify-between">
-                                <p class="text-sm text-gray-600">Tax:</p>
-                                <p class="text-sm sm:text-base font-medium text-gray-900">₹{{ number_format($payment->tax, 2) }}</p>
-                            </div>
-                            <div class="flex justify-between border-t border-gray-200 pt-2">
-                                <p class="text-sm sm:text-base text-gray-800 font-semibold">Total Amount:</p>
-                                <p class="text-sm sm:text-base text-blue-600 ">₹{{ number_format($payment->total_amount, 2) }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    @if($payment->notes)
-                        <div class="mt-4 sm:mt-6">
-                            <p class="text-xs font-medium text-gray-500 uppercase">Notes</p>
-                            <p class="mt-1 text-sm sm:text-base text-gray-700 bg-gray-50 p-2 sm:p-3 rounded-lg">{{ $payment->notes }}</p>
-                        </div>
-                    @endif
-                </div>
-            @else
-                <div class="text-center py-6 sm:py-8">
-                    <i class="fas fa-receipt text-3xl sm:text-4xl text-gray-300 mb-3 sm:mb-4"></i>
-                    <h4 class="text-base sm:text-lg font-medium text-gray-500">No Payment Record Found</h4>
-                    <p class="text-xs sm:text-sm text-gray-400 mt-1">Payment details not available for this service request</p>
-                </div>
-            @endif
-        </div>
-    </div>
+   
 </div>
