@@ -4,7 +4,7 @@
         <div class="header">
             <h2 class="company-name">NovaFix</h2>
             <p class="tagline">Fixing Today, Securing Tomorrow!</p>
-            <p class="receipt-number">Receipt No: {{ $receipt->service_code }}</p>
+            <p class="receipt-number">Receipt Service Code: {{ $receipt->service_code }}</p>
         </div>
 
         <div class="customer-info">
