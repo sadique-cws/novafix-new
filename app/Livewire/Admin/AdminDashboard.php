@@ -177,6 +177,6 @@ class AdminDashboard extends Component
         
         return $previous == 0 
             ? ($current > 0 ? 100 : 0)
-            : round((($current - $previous) / $previous) * 100, 2);
+            : round((($current - $previous) / $previous) * 100,2);
         }
 }
