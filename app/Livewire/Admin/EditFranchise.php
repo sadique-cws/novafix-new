@@ -3,11 +3,10 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Franchise;
-use App\Models\franchises;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 
@@ -19,8 +18,6 @@ class EditFranchise extends Component
     public $franchise_name;
     public $contact_no;
     public $email;
-    public $password;
-    public $password_confirmation;
     public $aadhar_no;
     public $pan_no;
     public $ifsc_code;
@@ -34,6 +31,12 @@ class EditFranchise extends Component
     public $country;
     public $doc;
     public $status;
+
+    // Password modal properties
+    public $showPasswordModal = false;
+    public $current_password;
+    public $new_password;
+    public $new_password_confirmation;
 
     public function mount($id)
     {
@@ -58,33 +61,12 @@ class EditFranchise extends Component
         $this->status = $this->franchise->status;
     }
 
-    protected $rules = [
-        'franchise_name' => 'required|min:3|max:255',
-        'contact_no' => 'required|digits:10|unique:franchises,contact_no,',
-        'email' => 'required|email|unique:franchises,email,',
-        'password' => 'nullable|min:6|confirmed',
-        'aadhar_no' => 'nullable|digits:12|unique:franchises,aadhar_no,',
-        'pan_no' => 'nullable|regex:/[A-Z]{5}[0-9]{4}[A-Z]{1}/|unique:franchises,pan_no,',
-        'ifsc_code' => 'nullable|regex:/^[A-Za-z]{4}[a-zA-Z0-9]{7}$/',
-        'bank_name' => 'nullable|string|max:255',
-        'account_no' => 'nullable|digits_between:9,18|unique:franchises,account_no,',
-        'street' => 'nullable|string|max:255',
-        'city' => 'nullable|string|max:255',
-        'district' => 'nullable|string|max:255',
-        'pincode' => 'nullable|digits:6',
-        'state' => 'nullable|string|max:255',
-        'country' => 'nullable|string|max:255',
-        'doc' => 'nullable|date',
-        'status' => 'required|in:active,inactive,pending',
-    ];
-
     protected function rules()
     {
         return [
             'franchise_name' => 'required|min:3|max:255',
             'contact_no' => 'required|digits:10|unique:franchises,contact_no,' . $this->franchise->id,
             'email' => 'required|email|unique:franchises,email,' . $this->franchise->id,
-            'password' => 'nullable|min:6|confirmed',
             'aadhar_no' => 'nullable|digits:12|unique:franchises,aadhar_no,' . $this->franchise->id,
             'pan_no' => 'nullable|regex:/[A-Z]{5}[0-9]{4}[A-Z]{1}/|unique:franchises,pan_no,' . $this->franchise->id,
             'ifsc_code' => 'nullable|regex:/^[A-Za-z]{4}[a-zA-Z0-9]{7}$/',
@@ -145,11 +127,6 @@ class EditFranchise extends Component
                 }
             }
 
-            // Only update password if it's provided
-            if ($this->password) {
-                $updateData['password'] = Hash::make($this->password);
-            }
-
             $this->franchise->update($updateData);
 
             DB::commit();
@@ -160,6 +137,39 @@ class EditFranchise extends Component
             DB::rollBack();
             Log::error('Franchise update failed: ' . $e->getMessage());
             session()->flash('error', 'Failed to update franchise. Please try again.');
+        }
+    }
+
+    public function updatePassword()
+    {
+        $this->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        // Verify current password
+        if (!Hash::check($this->current_password, $this->franchise->password)) {
+            $this->addError('current_password', 'The current password is incorrect.');
+            return;
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $this->franchise->update([
+                'password' => Hash::make($this->new_password)
+            ]);
+
+            DB::commit();
+
+            // Reset password fields and close modal
+            $this->reset(['current_password', 'new_password', 'new_password_confirmation', 'showPasswordModal']);
+            
+            session()->flash('success', 'Password updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Password update failed: ' . $e->getMessage());
+            session()->flash('error', 'Failed to update password. Please try again.');
         }
     }
 

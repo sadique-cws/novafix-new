@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Livewire\Admin;
 
 use App\Models\Franchise;
@@ -15,7 +14,6 @@ use Livewire\Attributes\Title;
 
 #[Title('Add Franchise')]
 #[Layout('components.layouts.admin-layout')]
-
 class AddFranchises extends Component
 {
     #[Rule('required|string|min:3|unique:franchises,franchise_name|max:255')]
@@ -39,7 +37,8 @@ class AddFranchises extends Component
     #[Rule('nullable|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/|unique:franchises,pan_no')]
     public $pan_no;
 
-    #[Rule('nullable|regex:/^[A-Z]{4}0[0-9]{6}$/')]
+    // ✅ IFSC validation relaxed — allows all formats
+    #[Rule('nullable|string|max:20')]
     public $ifsc_code;
 
     #[Rule('nullable|string|max:255')]
@@ -61,6 +60,9 @@ class AddFranchises extends Component
     public $state;
 
     #[Rule('required|string|max:255')]
+    public $street;
+
+    #[Rule('required|string|max:255')]
     public $country = 'India';
 
     #[Rule('nullable|date')]
@@ -74,18 +76,18 @@ class AddFranchises extends Component
         'aadhar_no.digits' => 'Aadhar number must be 12 digits.',
         'aadhar_no.regex' => 'Aadhar number must not start with 0 or 1.',
         'pan_no.regex' => 'PAN must be in format: ABCDE1234F.',
-        'ifsc_code.regex' => 'IFSC must follow RBI format (e.g., HDFC0001234).',
         'pincode.digits' => 'Pincode must be exactly 6 digits.',
         'pincode.regex' => 'Pincode cannot start with 0.',
         'password_confirmation.same' => 'Passwords do not match.',
         'password.min' => 'Password must be at least 8 characters long.',
+        'street.required' => 'Street address is required.',
+        'street.max' => 'Street address must not exceed 255 characters.',
     ];
 
     public function submit()
     {
         $this->validate();
         
-        // Check if password confirmation matches
         if ($this->password !== $this->password_confirmation) {
             $this->addError('password_confirmation', 'Passwords do not match.');
             return;
@@ -108,6 +110,7 @@ class AddFranchises extends Component
                 'district' => $this->district,
                 'pincode' => $this->pincode,
                 'state' => $this->state,
+                'street' => $this->street,
                 'country' => $this->country,
                 'doc' => $this->doc,
                 'status' => $this->status,
@@ -125,49 +128,39 @@ class AddFranchises extends Component
         }
     }
 
-
     /**
-     * Live IFSC lookup — when IFSC changes this will be invoked.
+     * Live IFSC lookup — relaxed format
      */
     public function updatedIfscCode($value)
-{
-    $value = strtoupper(trim($value ?? ''));
-    $this->ifsc_code = $value;
+    {
+        $value = strtoupper(trim($value ?? ''));
+        $this->ifsc_code = $value;
 
-    if (!$value) {
-        return;
-    }
-
-    // Updated IFSC validation pattern to accommodate more bank formats
-    if (!preg_match('/^[A-Z]{4}0[A-Z0-9]{6}$/', $value)) {
-        // invalid IFSC format — clear bank name and exit
-        $this->bank_name = null;
-        $this->addError('ifsc_code', 'IFSC must follow RBI format (e.g., HDFC0001234).');
-        return;
-    }
-
-    try {
-        $res = Http::timeout(5)->get("https://ifsc.razorpay.com/{$value}");
-        if ($res->ok()) {
-            $data = $res->json();
-            // Razorpay IFSC API returns keys like BANK, BRANCH
-            $this->bank_name = $data['BANK'] ?? ($data['bank'] ?? null);
-            // Clear any previous errors if the IFSC is valid
-            $this->clearValidation('ifsc_code');
-        } else {
-            Log::warning('IFSC lookup failed', ['ifsc' => $value, 'status' => $res->status()]);
-            $this->bank_name = null;
-            $this->addError('ifsc_code', 'IFSC not found in our database.');
+        if (!$value) {
+            return;
         }
-    } catch (\Exception $e) {
-        Log::error('IFSC lookup error: ' . $e->getMessage());
-        $this->bank_name = null;
-        $this->addError('ifsc_code', 'Error fetching bank details. Please try again.');
+
+        // ✅ No strict regex validation
+        try {
+            $res = Http::timeout(5)->get("https://ifsc.razorpay.com/{$value}");
+            if ($res->ok()) {
+                $data = $res->json();
+                $this->bank_name = $data['BANK'] ?? ($data['bank'] ?? null);
+                $this->clearValidation('ifsc_code');
+            } else {
+                Log::warning('IFSC lookup failed', ['ifsc' => $value, 'status' => $res->status()]);
+                $this->bank_name = null;
+                $this->addError('ifsc_code', 'IFSC not found in our database.');
+            }
+        } catch (\Exception $e) {
+            Log::error('IFSC lookup error: ' . $e->getMessage());
+            $this->bank_name = null;
+            $this->addError('ifsc_code', 'Error fetching bank details. Please try again.');
+        }
     }
-}
 
     /**
-     * Live Pincode lookup — when pincode changes this will be invoked.
+     * Live Pincode lookup
      */
     public function updatedPincode($value)
     {
@@ -178,7 +171,6 @@ class AddFranchises extends Component
             return;
         }
 
-        // Validate Indian pincode
         if (!preg_match('/^[1-9][0-9]{5}$/', $value)) {
             return;
         }
@@ -189,7 +181,6 @@ class AddFranchises extends Component
                 $arr = $res->json();
                 if (is_array($arr) && isset($arr[0]['Status']) && $arr[0]['Status'] === 'Success' && !empty($arr[0]['PostOffice'])) {
                     $po = $arr[0]['PostOffice'][0];
-                    // set sensible fallbacks from response
                     $this->city = $po['Region'] ?? $po['Block'] ?? $po['Division'] ?? $this->city;
                     $this->district = $po['District'] ?? $this->district;
                     $this->state = $po['State'] ?? $this->state;
@@ -205,7 +196,6 @@ class AddFranchises extends Component
             $this->dispatch('notify', type: 'error', message: 'Error fetching address details. Please enter manually.');
         }
     }
-
 
     public function render()
     {

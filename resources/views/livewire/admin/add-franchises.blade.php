@@ -432,7 +432,29 @@
                                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-
+                                <!-- Street Address -->
+                                <div>
+                                    <label for="street"
+                                        class="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
+                                    <div class="relative">
+                                        <input wire:model.live="street" type="text" id="street"
+                                            autocomplete="address-line1"
+                                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border py-3 px-4 transition duration-150 ease-in-out"
+                                            placeholder="123 Main St">
+                                        <div
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="1.5"
+                                                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    @error('street')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
                                 <!-- Country -->
                                 <div>
                                     <label for="country"
