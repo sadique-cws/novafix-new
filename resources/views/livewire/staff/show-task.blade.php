@@ -25,16 +25,14 @@
                                 @else
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                                           @if ($task->status == 0) bg-gray-100 text-gray-800
-                                          @elseif($task->status == 25) bg-blue-100 text-blue-800
-                                          @elseif($task->status == 50) bg-yellow-100 text-yellow-800
-                                          @elseif($task->status == 75) bg-indigo-100 text-indigo-800
-                                          @elseif($task->status == 100) bg-green-100 text-green-800 @endif">
+                                          @elseif($task->status == 1) bg-blue-100 text-blue-800
+                                          @elseif($task->status == 3) bg-indigo-100 text-red-800
+                                          @elseif($task->status == 2) bg-green-100 text-green-800 @endif">
                                         <i class="fas 
                                             @if ($task->status == 0) fa-clock 
-                                            @elseif($task->status == 25) fa-tasks 
-                                            @elseif($task->status == 50) fa-cog 
-                                            @elseif($task->status == 75) fa-check-circle 
-                                            @elseif($task->status == 100) fa-check-double @endif 
+                                            @elseif($task->status == 1) fa-tasks 
+                                            @elseif($task->status == 2) fa-cog 
+                                            @elseif($task->status == 3) fa-check-double @endif 
                                             mr-1"></i>
                                         {{ $statusOptions[$task->status] ?? 'Unknown' }}
                                     </span>

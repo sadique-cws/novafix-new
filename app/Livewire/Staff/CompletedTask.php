@@ -48,7 +48,7 @@ class CompletedTask extends Component
     {
         $requests = ServiceRequest::query()
             ->where('technician_id', Auth::guard('staff')->user()->id)
-            ->where('status', 100) // Only completed tasks
+            ->where('status', 2) // Only completed tasks
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('service_code', 'like', '%' . $this->search . '%')

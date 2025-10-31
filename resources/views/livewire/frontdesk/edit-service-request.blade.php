@@ -16,7 +16,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Form -->
         <div class="p-2 py-8">
             <form wire:submit.prevent="update">
@@ -214,9 +213,9 @@
                                     <select wire:model="status" id="status"
                                         class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                         <option value="0">Pending</option>
-                                        <option value="50">In Progress</option>
-                                        <option value="100">Completed</option>
-                                        <option value="-1">Rejected</option>
+                                        <option value="1">In Progress</option>
+                                        <option value="2">Completed</option>
+                                        <option value="3">Rejected</option>
                                     </select>
                                     @error('status')
                                         <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -234,7 +233,7 @@
                                     @enderror
                                 </div>
 
-                              
+
                             </div>
                         </div>
 
@@ -250,14 +249,10 @@
                             </h3>
 
                             <div class="space-y-4">
-                                <!-- Current Image (only shown if no new image selected) -->
                                 @if ($existingImage && !$image && !$capturedImage)
                                     <div class="mb-4">
                                         <p class="text-sm font-medium text-gray-700 mb-2">Current Image</p>
-                                        @php
-                                            $isExternal = preg_match('/^https?:\/\//', $existingImage);
-                                        @endphp
-                                        <img src="{{ $isExternal ? $existingImage : asset('storage/' . $existingImage) }}" alt="Product Image"
+                                        <img src="{{ $existingImage }}" alt="Product Image"
                                             class="h-32 rounded-lg object-cover border border-gray-200">
                                     </div>
                                 @endif
@@ -297,10 +292,7 @@
                                             <span class="text-red-500 text-xs">{{ $message }}</span>
                                         @enderror
                                     </div>
-
-
                                 </div>
-
                                 @if ($existingImage || $image || $capturedImage)
                                     <div class="pt-2">
                                         <button type="button" wire:click="removeImage"
@@ -316,23 +308,27 @@
 
                 <!-- Form Actions -->
                 <div class="mt-8 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3">
-                <a href="{{ route('frontdesk.servicerequest.manage') }}"
-                    class="mt-3 sm:mt-0 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    wire:loading.attr="disabled">
-                    Cancel
-                </a>
-                <button type="submit"
-                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
-                    wire:loading.attr="disabled">
-                    <span wire:loading.remove>Update Service Request</span>
-                    <span wire:loading>
-                        <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                    </span>
-                </button>
-            </div>
+                    <a href="{{ route('frontdesk.servicerequest.manage') }}"
+                        class="mt-3 sm:mt-0 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        wire:loading.attr="disabled">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                        wire:loading.attr="disabled">
+                        <span wire:loading.remove>Update Service Request</span>
+                        <span wire:loading>
+                            <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
             </form>
         </div>
     </div>

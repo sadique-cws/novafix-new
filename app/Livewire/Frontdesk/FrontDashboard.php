@@ -73,12 +73,12 @@ class FrontDashboard extends Component
 
         // In-progress services count (status 25)
         $this->inProgressCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)->where('status_request', 1)
-            ->where('status', 25)
+            ->where('status', 1)
             ->count();
 
         // Completed services count (status 100)
         $this->completedCount = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)->where('status_request', 1)
-            ->where('status', 100)
+            ->where('status', 2)
             ->count();
     }
 
@@ -126,24 +126,6 @@ class FrontDashboard extends Component
             return;
         }
 
-        // Get status breakdown
-        $this->statusBreakdown['Diagnosis'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->where('status', '<', 25)
-            ->count();
-
-        $this->statusBreakdown['Repair'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->where('status', '>=', 25)
-            ->where('status', '<', 50)
-            ->count();
-
-        $this->statusBreakdown['Quality Check'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->where('status', '>=', 50)
-            ->where('status', '<', 100)
-            ->count();
-
-        $this->statusBreakdown['Ready for Pickup'] = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)
-            ->where('status', 100)
-            ->count();
 
         // Get device breakdown
         $laptops = ServiceRequest::whereIn('receptioners_id', $this->receptionerIds)

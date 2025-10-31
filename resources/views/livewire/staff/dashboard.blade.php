@@ -10,7 +10,6 @@
                 <div>
                     <p class="text-sm text-gray-500">Pending Tasks</p>
                     <p class="text-2xl text-gray-800 mt-1">{{ $pendingTasksCount }}</p>
-                    <p class="text-xs text-gray-500">+2 from yesterday</p>
                 </div>
                 <div class="p-3 rounded-full bg-purple-100 text-purple-600">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -26,7 +25,6 @@
                 <div>
                     <p class="text-sm text-gray-500">In Progress</p>
                     <p class="text-2xl text-gray-800 mt-1">{{ $inProgressTasksCount }}</p>
-                    <p class="text-xs text-gray-500">5 completed today</p>
                 </div>
                 <div class="p-3 rounded-full bg-blue-100 text-blue-600">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -42,7 +40,6 @@
                 <div>
                     <p class="text-sm text-gray-500">Completed Today</p>
                     <p class="text-2xl text-gray-800 mt-1">{{ $completedTodayCount }}</p>
-                    <p class="text-xs text-gray-500">+20% this week</p>
                 </div>
                 <div class="p-3 rounded-full bg-green-100 text-green-600">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

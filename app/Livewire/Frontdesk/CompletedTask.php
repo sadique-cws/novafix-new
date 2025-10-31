@@ -50,7 +50,7 @@ class CompletedTask extends Component
     {
         $query = ServiceRequest::query()
             ->where('receptioners_id', Auth::guard('frontdesk')->user()->id)
-            ->where('status', 100); // Only completed tasks
+            ->where('status', operator: 2); // Only completed tasks
 
         // Calculate stats
         $totalCompleted = (clone $query)->count();
@@ -60,7 +60,7 @@ class CompletedTask extends Component
         $topTechnician = Staff::select('staff.name')
             ->join('service_requests', 'staff.id', '=', 'service_requests.technician_id')
             ->where('service_requests.receptioners_id', Auth::guard('frontdesk')->user()->id)
-            ->where('service_requests.status', 100)
+            ->where('service_requests.status', 2)
             ->selectRaw('count(*) as count')
             ->groupBy('staff.id', 'staff.name')
             ->orderByDesc('count')

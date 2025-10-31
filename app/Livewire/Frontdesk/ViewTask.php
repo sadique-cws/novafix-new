@@ -2,47 +2,67 @@
 
 namespace App\Livewire\Frontdesk;
 
-use Livewire\Attributes\Layout;
-use App\Services\Msg91Service;
 use App\Models\Payment;
 use App\Models\ServiceRequest;
+use App\Services\Msg91Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+
 #[Title('View Task')]
 #[Layout('components.layouts.frontdesk-layout')]
 
 class ViewTask extends Component
 {
     public ServiceRequest $task;
+
     public $statusOptions = [
         0 => 'Pending',
-        25 => 'Processing',
-        50 => 'In Repair',
-        75 => 'Testing',
-        90 => 'Rejected',
-        100 => 'Completed'
+        1 => 'Processing',
+        2 => 'Completed',
+        4 => 'Delivered',
     ];
+
     public $selectedStatus;
+
     public $showPaymentSection = false;
+
     public $showRejectionModal = false;
+
     public $rejectionReason = '';
+
     public $paymentMethod = 'cash';
+
     public $paymentAmount = 0;
+
     public $paymentReference = '';
+
     public $paymentCompleted = false;
+
     public $taskRejected = false;
+
     public $otp = '';
+
     public $showOtpModal = false;
+
     public $customerMobile = '';
+
     public $otpSent = false;
+
     public $otpTimeout = false;
+
     public $otpExpiresAt;
+
     public $otpResendAvailable = false;
+
     public $otpAttempts = 0;
+
     public $maxOtpAttempts = 3;
+
     public $countdownSeconds = 60;
+
     public $otpExpired = false;
 
     protected Msg91Service $msg91Service;
@@ -70,6 +90,7 @@ class ViewTask extends Component
                 title: 'Cannot Reject',
                 message: 'This task already has payments and cannot be rejected'
             );
+
             return;
         }
 
@@ -79,16 +100,16 @@ class ViewTask extends Component
     public function confirmRejection()
     {
         $this->validate([
-            'rejectionReason' => 'required|string|max:500'
+            'rejectionReason' => 'required|string|max:500',
         ]);
 
         $this->task->update([
-            'status' => 90,
+            'status' => 3,
             'last_update' => now(),
-            'remark' => $this->rejectionReason
+            'remark' => $this->rejectionReason,
         ]);
 
-        $this->selectedStatus = 90;
+        $this->selectedStatus = 2;
         $this->taskRejected = true;
         $this->showRejectionModal = false;
         $this->rejectionReason = '';
@@ -108,27 +129,29 @@ class ViewTask extends Component
                 'notify',
                 type: 'error',
                 title: 'Cannot Change Status',
-                message: 'Status cannot be changed for ' . ($this->paymentCompleted ? 'completed payments' : 'rejected tasks')
+                message: 'Status cannot be changed for '.($this->paymentCompleted ? 'completed payments' : 'rejected tasks')
             );
             $this->selectedStatus = $this->task->status;
+
             return;
         }
 
-        if ($this->selectedStatus == 100) {
+        if ($this->selectedStatus == 2) {
             $this->showPaymentSection = true;
+
             return;
         }
 
         $this->task->update([
             'status' => $this->selectedStatus,
-            'last_update' => now()
+            'last_update' => now(),
         ]);
 
         $this->dispatch(
             'notify',
             type: 'success',
             title: 'Status Updated',
-            message: 'Status changed to: ' . $this->statusOptions[$this->selectedStatus]
+            message: 'Status changed to: '.$this->statusOptions[$this->selectedStatus]
         );
     }
 
@@ -149,7 +172,7 @@ class ViewTask extends Component
             'amount' => $this->paymentAmount,
             'total_amount' => $totalAmount,
             'payment_method' => $this->paymentMethod,
-            'transaction_id' => $this->paymentMethod === 'cash' ? 'CASH-' . uniqid() : $this->paymentReference,
+            'transaction_id' => $this->paymentMethod === 'cash' ? 'CASH-'.uniqid() : $this->paymentReference,
             'status' => 'completed',
             'staff_id' => null,
             'received_by' => Auth::guard('frontdesk')->user()->id,
@@ -157,7 +180,7 @@ class ViewTask extends Component
         ]);
 
         $this->task->update([
-            'status' => 100,
+            'status' => 2,
         ]);
 
         $this->paymentCompleted = true;
@@ -167,11 +190,13 @@ class ViewTask extends Component
             'notify',
             type: 'success',
             title: 'Task Completed!',
-            message: 'Payment of ₹' . number_format($totalAmount, 2) . ' recorded (pending verification)',
+            message: 'Payment of ₹'.number_format($totalAmount, 2).' recorded (pending verification)',
             duration: 5000
         );
     }
-    public function directDelivery(){
+
+    public function directDelivery()
+    {
         $this->task->update([
             'delivery_status' => 1,
             'delivered_by' => auth('frontdesk')->id(),
@@ -181,7 +206,7 @@ class ViewTask extends Component
     public function initiateDelivery()
     {
         $this->validate([
-            'task.contact' => 'required|digits:10'
+            'task.contact' => 'required|digits:10',
         ]);
 
         $this->customerMobile = $this->task->contact;
@@ -213,14 +238,14 @@ class ViewTask extends Component
                 session()->flash('otp-error', 'Failed to send OTP. Please try again.');
                 Log::error('OTP Send Failed', [
                     'mobile' => $this->customerMobile,
-                    'response' => $otpResponse
+                    'response' => $otpResponse,
                 ]);
             }
         } catch (\Exception $e) {
             session()->flash('otp-error', 'An error occurred while sending OTP.');
             Log::error('OTP Send Exception', [
                 'mobile' => $this->customerMobile,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -233,6 +258,7 @@ class ViewTask extends Component
         if (now()->gt($this->otpExpiresAt)) {
             session()->flash('otp-error', 'OTP has expired. Please request a new one.');
             $this->otpTimeout = true;
+
             return;
         }
 
@@ -240,6 +266,7 @@ class ViewTask extends Component
         if ($this->otpAttempts >= $this->maxOtpAttempts) {
             session()->flash('otp-error', 'Maximum OTP attempts reached. Please request a new OTP.');
             $this->otpTimeout = true;
+
             return;
         }
 
@@ -268,14 +295,14 @@ class ViewTask extends Component
             if ($remainingAttempts > 0) {
                 $message .= " {$remainingAttempts} attempts remaining.";
             } else {
-                $message .= " No attempts remaining.";
+                $message .= ' No attempts remaining.';
                 $this->otpTimeout = true;
             }
 
             session()->flash('otp-error', $message);
             Log::error('OTP Verification Failed', [
                 'mobile' => $this->customerMobile,
-                'response' => $verificationResponse
+                'response' => $verificationResponse,
             ]);
         }
     }
@@ -306,7 +333,7 @@ class ViewTask extends Component
     public function render()
     {
         return view('livewire.frontdesk.view-task', [
-            'task' => $this->task->load('receptionist', 'serviceCategory', 'payments')
+            'task' => $this->task->load('receptionist', 'serviceCategory', 'payments'),
         ]);
     }
 }

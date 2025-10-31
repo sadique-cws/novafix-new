@@ -27,8 +27,8 @@ class Dashboard extends Component
             
         // Calculate counts from the collection
         $pendingTasksCount = $serviceRequests->where('status', 0)->count();
-        $inProgressTasksCount = $serviceRequests->where('status', '>', 0)->where('status', '<', 100)->count();
-        $completedTodayCount = $serviceRequests->where('status', 100)
+        $inProgressTasksCount = $serviceRequests->where('status', 1)->count();
+        $completedTodayCount = $serviceRequests->where('status', 2)
             ->filter(function ($item) {
                 return $item->updated_at->isToday();
             })->count();
@@ -37,7 +37,7 @@ class Dashboard extends Component
         $recentTasks = $serviceRequests->take($this->recentTaskLimit);
         
         // Get upcoming deliveries (incomplete tasks, ordered by creation date)
-        $upcomingDeliveries = $serviceRequests->where('status', '<', 100)
+        $upcomingDeliveries = $serviceRequests->where('status', '<', 2)
             ->sortBy('created_at')
             ->take($this->upcomingDeliveryLimit);
 

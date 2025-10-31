@@ -103,19 +103,16 @@
                                 <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                                     Pending
                                 </span>
-                            @elseif ($request->status == '25')
+                            @elseif ($request->status == '1')
                                 <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                                     In Progress
                                 </span>
-                            @elseif ($request->status == '50')
-                                <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
-                                    In Repair
-                                </span>
-                            @elseif ($request->status == '90')
+                          
+                            @elseif ($request->status == '3')
                                 <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
                                     Rejected
                                 </span>
-                            @elseif ($request->status == '100')
+                            @elseif ($request->status == '2')
                                 <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                                     Completed
                                 </span>
@@ -134,7 +131,7 @@
                                     </svg>
                                 </a>
                                 
-                                @if($request->status != '100')
+                                @if($request->status != '2')
                                 <button 
                                     wire:click="markAsComplete({{ $request->id }})"
                                     class="text-green-600 hover:text-green-900 dark:hover:text-green-400 transition-colors"
@@ -189,19 +186,16 @@
                     <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                         Pending
                     </span>
-                @elseif ($request->status == '25')
+                @elseif ($request->status == '1')
                     <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                         In Progress
                     </span>
-                @elseif ($request->status == '50')
-                    <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
-                        In Repair
-                    </span>
-                @elseif ($request->status == '90')
+               
+                @elseif ($request->status == '3')
                     <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
                         Rejected
                     </span>
-                @elseif ($request->status == '100')
+                @elseif ($request->status == '2 ')
                     <span class="px-2 inline-flex text-xs leading-5  rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                         Completed
                     </span>

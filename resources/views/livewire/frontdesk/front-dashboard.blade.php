@@ -61,15 +61,14 @@
                                 <td class="px-3 py-2">{{ $service->product_name }}</td>
                                 <td class="px-3 py-2">
                                     @if ($service->status == 0)
-                                        <span class="text-blue-600 text-xs">Diagnosis</span>
-                                    @elseif($service->status == 25)
+                                        <span class="text-blue-600 text-xs">Pending</span>
+                                    @elseif($service->status == 1)
                                         <span class="text-yellow-600 text-xs">Processing</span>
-                                    @elseif($service->status == 50)
-                                        <span class="text-purple-600 text-xs">testing</span>
-                                    @elseif($service->status == 100)
-                                        <span class="text-green-600 text-xs">Complete</span>
-                                     @elseif($service->status == 90)
+                                    @elseif($service->status == 2)
                                         <span class="text-red-600 text-xs">Reject</span>
+                                    @elseif($service->status == 3)
+                                        <span class="text-green-600 text-xs">Complete</span>
+                                   
                                     @endif
                                 </td>
                                 <td class="px-3 py-2">
@@ -90,31 +89,31 @@
             </div>
         </div>
 
-        <!-- Status Breakdown -->
+    
+        <!-- Device Breakdown -->
         <div class="bg-white rounded-md p-4 border">
-            <h2 class="text-sm mb-3 text-[#111827]">Service Status Breakdown</h2>
-            <div class="space-y-3">
-                @foreach ($statusBreakdown as $status => $count)
-                    @php
-                        $total = array_sum($statusBreakdown);
-                        $percentage = $total > 0 ? ($count / $total) * 100 : 0;
-                        $color = match ($status) {
-                            'Diagnosis' => 'bg-blue-600',
-                            'Repair' => 'bg-yellow-500',
-                            'Quality Check' => 'bg-purple-600',
-                            default => 'bg-green-500',
-                        };
-                    @endphp
-                    <div>
-                        <div class="flex justify-between text-xs text-gray-600">
-                            <span>{{ $status }}</span>
-                            <span>{{ $count }}</span>
+            <h2 class="text-sm mb-3 text-[#111827]">Device Breakdown</h2>
+            <div class="flex flex-col items-center">
+                <!-- Simple bar chart instead of SVG donut -->
+                <div class="w-full space-y-2">
+                    @foreach ($deviceBreakdown as $device => $count)
+                        @php
+                            $total = array_sum($deviceBreakdown);
+                            $percentage = $total > 0 ? ($count / $total) * 100 : 0;
+                            $colors = ['Laptops' => 'bg-blue-600', 'Smartphones' => 'bg-green-600', 'Tablets' => 'bg-yellow-600', 'Others' => 'bg-purple-600'];
+                            $color = $colors[$device] ?? 'bg-gray-600';
+                        @endphp
+                        <div>
+                            <div class="flex justify-between text-xs text-gray-600 mb-1">
+                                <span>{{ $device }}</span>
+                                <span>{{ $count }} ({{ round($percentage) }}%)</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 rounded-full">
+                                <div class="h-2 {{ $color }} rounded-full" style="width: {{ $percentage }}%"></div>
+                            </div>
                         </div>
-                        <div class="h-2 bg-gray-200 rounded-full">
-                            <div class="h-2 {{ $color }} rounded-full" style="width: {{ $percentage }}%"></div>
-                        </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
@@ -168,31 +167,5 @@
             </div>
         </div>
 
-        <!-- Device Breakdown -->
-        <div class="bg-white rounded-md p-4 border">
-            <h2 class="text-sm mb-3 text-[#111827]">Device Breakdown</h2>
-            <div class="flex flex-col items-center">
-                <!-- Simple bar chart instead of SVG donut -->
-                <div class="w-full space-y-2">
-                    @foreach ($deviceBreakdown as $device => $count)
-                        @php
-                            $total = array_sum($deviceBreakdown);
-                            $percentage = $total > 0 ? ($count / $total) * 100 : 0;
-                            $colors = ['Laptops' => 'bg-blue-600', 'Smartphones' => 'bg-green-600', 'Tablets' => 'bg-yellow-600', 'Others' => 'bg-purple-600'];
-                            $color = $colors[$device] ?? 'bg-gray-600';
-                        @endphp
-                        <div>
-                            <div class="flex justify-between text-xs text-gray-600 mb-1">
-                                <span>{{ $device }}</span>
-                                <span>{{ $count }} ({{ round($percentage) }}%)</span>
-                            </div>
-                            <div class="h-2 bg-gray-200 rounded-full">
-                                <div class="h-2 {{ $color }} rounded-full" style="width: {{ $percentage }}%"></div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
     </div>
 </main>

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use App\Helpers\ImageKitHelper;
 
 #[Title('Edit Service Request')]
 #[Layout('components.layouts.frontdesk-layout')]
@@ -41,6 +42,8 @@ class EditServiceRequest extends Component
     public $capturedImage;
     public $cameraError;
     public $existingImage;
+    public $imagekit_url;
+    public $uploadProgress = 0;
 
     protected function rules()
     {
@@ -52,13 +55,12 @@ class EditServiceRequest extends Component
             'email' => 'nullable|email|max:255',
             'contact' => 'required|string|max:20',
             'brand' => 'required|string|max:255',
-            // serial_no and MAC columns do not exist on service_requests table
             'color' => 'required|string|max:100',
             'service_amount' => 'nullable|numeric|min:0',
             'problem' => 'required|string',
             'status' => 'required|numeric',
             'estimate_delivery' => 'required|date',
-            'image' => 'nullable|image',
+            'image' => 'nullable|image|max:5120',
         ];
     }
 
@@ -84,23 +86,24 @@ class EditServiceRequest extends Component
         $this->date_of_delivery = $this->serviceRequest->date_of_delivery
             ? Carbon::parse($this->serviceRequest->date_of_delivery)->format('Y-m-d\TH:i')
             : null;
-        $this->existingImage = $this->serviceRequest->image;
+        $this->existingImage = $this->serviceRequest->image_url; // Changed from image to image_url
     }
 
     public function updatedImage()
     {
         $this->validate([
-            'image' => 'image', // 1MB Max
+            'image' => 'image|max:5120',
         ]);
 
         // Clear existing and captured images when a new file is selected
         $this->existingImage = null;
         $this->capturedImage = null;
+        $this->imagekit_url = null;
     }
 
     public function removeImage()
     {
-        $this->reset('image', 'capturedImage');
+        $this->reset('image', 'capturedImage', 'imagekit_url', 'uploadProgress');
         $this->existingImage = null;
     }
 
@@ -108,9 +111,8 @@ class EditServiceRequest extends Component
     {
         $this->capturedImage = $imageData;
         $this->image = null; // Clear file upload if exists
+        $this->imagekit_url = null;
     }
-
-
 
     public function update()
     {
@@ -118,14 +120,25 @@ class EditServiceRequest extends Component
 
         try {
             $imagePath = $this->existingImage;
+            $imageFileId = $this->serviceRequest->image_file_id;
 
             // Handle new image upload
-            if ($this->capturedImage) {
-                $imagePath = $this->storeCapturedImage();
-                $this->deleteOldImage();
-            } elseif ($this->image) {
-                $imagePath = $this->image->store('service-requests', 'public');
-                $this->deleteOldImage();
+            if ($this->capturedImage || $this->image) {
+                $this->uploadProgress = 10;
+                $imagekitData = $this->uploadToImageKit();
+                $this->uploadProgress = 100;
+
+                if ($imagekitData && isset($imagekitData['url'])) {
+                    $imagePath = $imagekitData['url'];
+                    $imageFileId = $imagekitData['fileId'];
+                    
+                    // Delete old image from ImageKit if exists
+                    if ($this->serviceRequest->image_file_id) {
+                        ImageKitHelper::deleteImage($this->serviceRequest->image_file_id);
+                    }
+                } else {
+                    throw new \Exception('Failed to upload image to ImageKit');
+                }
             }
 
             // Only update columns that actually exist on the service_requests table
@@ -142,7 +155,8 @@ class EditServiceRequest extends Component
                 'problem' => $this->problem,
                 'status' => $this->status,
                 'estimate_delivery' => $this->estimate_delivery,
-                'image' => $imagePath,
+                'image_url' => $imagePath, // Changed from 'image' to 'image_url'
+                'image_file_id' => $imageFileId, // Update file ID if new image uploaded
                 'last_update' => now(),
             ]);
 
@@ -151,27 +165,50 @@ class EditServiceRequest extends Component
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to update service request: ' . $e->getMessage());
             logger()->error('Service Request Update Error: ' . $e->getMessage());
+            $this->uploadProgress = 0;
         }
     }
 
-    protected function storeCapturedImage()
+    protected function uploadToImageKit()
     {
         try {
-            $imageData = base64_decode(preg_replace('#^data:image/jpeg;base64,#i', '', $this->capturedImage));
-            $fileName = 'captured_' . time() . '.jpg';
-            $path = 'service-requests/' . $fileName;
-            Storage::disk('public')->put($path, $imageData);
-            return $path;
+            // Handle captured image (from webcam)
+            if ($this->capturedImage) {
+                $this->uploadProgress = 30;
+
+                // Convert base64 image to a temporary file
+                $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $this->capturedImage));
+                $tempFilePath = tempnam(sys_get_temp_dir(), 'img');
+                file_put_contents($tempFilePath, $imageData);
+
+                // Create UploadedFile instance
+                $uploadedFile = new \Illuminate\Http\UploadedFile(
+                    $tempFilePath,
+                    'webcam_capture.jpg',
+                    'image/jpeg',
+                    null,
+                    true
+                );
+
+                // Upload using ImageKitHelper
+                $result = ImageKitHelper::uploadImage($uploadedFile, '/Novafix/service-requests');
+
+                // Clean up temporary file
+                unlink($tempFilePath);
+
+                return $result;
+            }
+            // Handle file upload
+            elseif ($this->image) {
+                $this->uploadProgress = 30;
+                return ImageKitHelper::uploadImage($this->image, 'service-requests');
+            }
+
+            return null;
         } catch (\Exception $e) {
             $this->cameraError = $e->getMessage();
+            $this->uploadProgress = 0;
             throw $e;
-        }
-    }
-
-    protected function deleteOldImage()
-    {
-        if ($this->existingImage && Storage::disk('public')->exists($this->existingImage)) {
-            Storage::disk('public')->delete($this->existingImage);
         }
     }
 

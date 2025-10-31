@@ -55,10 +55,10 @@ class ShowCompletedTask extends Component
     {
         $this->msg91Service = app(Msg91Service::class);
     }
-public function printReceipt()
-{
-    $this->dispatch('print-receipt'); // kebab-case name is recommended
-}
+    public function printReceipt()
+    {
+        $this->dispatch('print-receipt'); // kebab-case name is recommended
+    }
 
 
     public function mount($requestId)
@@ -131,7 +131,7 @@ public function printReceipt()
 
         // Update service request with payment information
         $this->request->update([
-            'status' => '100' // Assuming 100 means completed
+            'status' => '2' // Assuming 2 means completed
         ]);
 
         $this->request->refresh();

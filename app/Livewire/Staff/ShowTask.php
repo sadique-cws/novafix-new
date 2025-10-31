@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Models\ServiceRequest;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('components.layouts.staff-layout')]
@@ -16,11 +17,9 @@ class ShowTask extends Component
     public ServiceRequest $task;
     public $statusOptions = [
         0 => 'Pending',
-        25 => 'Processing',
-        50 => 'In Repair',
-        75 => 'Testing',
-        90 => 'Rejected',
-        100 => 'Completed'
+        1 => 'Processing',
+        2 => 'Completed',
+        3 => 'Rejected',
     ];
     public $selectedStatus;
     public $showPaymentSection = false;
@@ -63,12 +62,12 @@ class ShowTask extends Component
         ]);
 
         $this->task->update([
-            'status' => 90,
+            'status' => 3,
             'last_update' => now(),
             'remark' => $this->rejectionReason
         ]);
 
-        $this->selectedStatus = 90;
+        $this->selectedStatus = 3;
         $this->taskRejected = true;
         $this->showRejectionModal = false;
         $this->rejectionReason = '';
@@ -94,7 +93,7 @@ class ShowTask extends Component
             return;
         }
 
-        if ($this->selectedStatus == 100) {
+        if ($this->selectedStatus == 2) {
             $this->showPaymentSection = true;
             return;
         }
@@ -136,7 +135,7 @@ class ShowTask extends Component
 
         // Update service request to completed
         $this->task->update([
-            'status' => 100,
+            'status' => 2,
             'last_update' => now(),  
         ]);
 

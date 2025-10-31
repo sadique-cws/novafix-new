@@ -45,7 +45,7 @@
                 <div class="relative">
                     <select wire:model.live="statusFilter"
                         class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm transition-all duration-200 appearance-none">
-                        <option value="">All Statuses</option>
+                        <option value="">All Status</option>
                         <option value="pending">Pending</option>
                         <option value="in_progress">In Progress</option>
                         <option value="completed">Completed</option>
@@ -59,19 +59,7 @@
                     </div>
                 </div>
 
-                {{-- <!-- Date Filter -->
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <input
-                        type="date"
-                        wire:model.live="dateFilter"
-                        class="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm transition-all duration-200"
-                    >
-                </div> --}}
+             
             </div>
         </div>
 
@@ -245,7 +233,7 @@
                                             </svg>
                                             Pending
                                         </span>
-                                    @elseif($request->status == 100)
+                                    @elseif($request->status == 2)
                                         <span
                                             class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
@@ -255,7 +243,7 @@
                                             </svg>
                                             Completed
                                         </span>
-                                    @elseif($request->status == 90)
+                                    @elseif($request->status == 3)
                                         <span
                                             class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
@@ -265,7 +253,7 @@
                                             </svg>
                                             Rejected
                                         </span>
-                                    @elseif($request->status == 25)
+                                    @elseif($request->status == 1)
                                         <span
                                             class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
@@ -275,7 +263,7 @@
                                             </svg>
                                             In Progress
                                         </span>
-                                        @elseif($request->status == 50)
+                                        @elseif($request->status == 4)
                                         <span
                                             class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
@@ -283,7 +271,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            testing
+                                            Deliverd
 
                                     @endif
                                 </td>
@@ -424,11 +412,15 @@
                                     class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                     Pending
                                 </span>
-                            @elseif($request->status == 100)
+                            @elseif($request->status == 1)
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                                    In Progress
+                                </span>    
+                            @elseif($request->status == 2)
                                 <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
                                     Completed
                                 </span>
-                            @else
+                            @elseif ($request->status == 3)
                                 <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
                                     Rejected
                                 </span>

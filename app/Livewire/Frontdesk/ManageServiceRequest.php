@@ -47,8 +47,8 @@ class ManageServiceRequest extends Component
         $statsData = ServiceRequest::where('receptioners_id', $this->receptionistId)
             ->selectRaw('COUNT(*) as total')
             ->selectRaw('SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) as pending')
-            ->selectRaw('SUM(CASE WHEN status > 0 AND status < 90 THEN 1 ELSE 0 END) as in_progress')
-            ->selectRaw('SUM(CASE WHEN status = 100 THEN 1 ELSE 0 END) as completed')
+            ->selectRaw('SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) as in_progress')
+            ->selectRaw('SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) as completed')
             ->first();
 
         $this->stats = [
@@ -93,14 +93,14 @@ class ManageServiceRequest extends Component
             })
             ->when($this->statusFilter, function ($query) {
                 if ($this->statusFilter === 'in_progress') {
-                    $query->where('status', '>', 0)->where('status', '<', 50);
+                    $query->where('status', 1);
                 } elseif ($this->statusFilter === 'completed') {
-                    $query->where('status', 100);
+                    $query->where('status', 2);
                 } elseif ($this->statusFilter === 'pending') {
                     $query->where('status', 0);
                 }
                 elseif ($this->statusFilter === 'rejected') {
-                    $query->where('status', 90);
+                    $query->where('status', 3);
                 }
             })
             ->orderBy($this->sortField, $this->sortDirection)
