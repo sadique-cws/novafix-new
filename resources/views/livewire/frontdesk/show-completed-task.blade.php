@@ -240,7 +240,7 @@
                     <i class="fas fa-check-circle mr-2"></i> Delivered
                 </span>
                 <div class="no-print">
-                    <a wire:navigate href="{{ route('frontdesk.payment-details',$request->service_code) }}" wire:click="printReceipt" class="p-2 rounded bg-green-500 border text-white">
+                    <a wire:navigate href="{{ route('frontdesk.payment-details',$request->service_code) }}" class="p-2 rounded bg-green-500 border text-white">
                         Print Receipt
                     </a>
                 </div>

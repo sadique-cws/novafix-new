@@ -495,7 +495,7 @@
                                 </span>
 
                                 <a wire:navigate href="{{ route('frontdesk.payment-details', $task->service_code) }}"
-                                    wire:click="printReceipt"
+                                  
                                     class="inline-flex items-center justify-center px-4 py-2 text-sm sm:text-base bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-transform transform hover:scale-105 w-full sm:w-auto text-center">
                                     <i class="fas fa-print mr-2"></i> Print Receipt
                                 </a>
