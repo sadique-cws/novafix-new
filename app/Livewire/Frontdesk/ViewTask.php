@@ -4,6 +4,7 @@ namespace App\Livewire\Frontdesk;
 
 use App\Models\Payment;
 use App\Models\ServiceRequest;
+use App\Models\Staff;
 use App\Services\Msg91Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +23,6 @@ class ViewTask extends Component
         0 => 'Pending',
         1 => 'Processing',
         2 => 'Completed',
-        4 => 'Delivered',
     ];
 
     public $selectedStatus;
@@ -96,6 +96,7 @@ class ViewTask extends Component
 
         $this->showRejectionModal = true;
     }
+    
 
     public function confirmRejection()
     {

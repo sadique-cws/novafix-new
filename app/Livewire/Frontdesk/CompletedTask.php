@@ -21,7 +21,7 @@ class CompletedTask extends Component
     public $search = '';
     public $perPage = 10;
     public $sortField = 'created_at';
-    public $sortDirection = 'asc';
+    public $sortDirection = 'desc';
 
     protected $queryString = [
         'search' => ['except' => ''],

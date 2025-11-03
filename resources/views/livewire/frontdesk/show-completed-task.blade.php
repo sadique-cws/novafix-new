@@ -239,25 +239,19 @@
                 <span class="text-green-600 font-semibold">
                     <i class="fas fa-check-circle mr-2"></i> Delivered
                 </span>
-               <div class="no-print">
-    <button wire:click="printReceipt"
-            class="p-2 rounded bg-green-500 border text-white">
-        Print Receipt
-    </button>
-</div>
+                <div class="no-print">
+                    <a wire:navigate href="{{ route('frontdesk.payment-details',$request->service_code) }}" wire:click="printReceipt" class="p-2 rounded bg-green-500 border text-white">
+                        Print Receipt
+                    </a>
+                </div>
 
-<script>
-    window.addEventListener('print-receipt', () => {
-        window.print();
-    });
-</script>
-
+                
             @else
                 <span class="text-yellow-600 font-semibold">
                     <i class="fas fa-exclamation-triangle mr-2"></i> Not Delivered
                 </span>
 
-                @if ($request->payments->where('status', 'completed')->count() > 0 && $request->status == '100')
+                @if ($request->payments->where('status', 'completed')->count() > 0 && $request->status == '2')
                     <button wire:click="initiateDelivery"
                         class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                         <i class="fas fa-truck mr-2"></i> Otp as Delivered
@@ -377,8 +371,6 @@
                     }
                 });
             });
-
-
         </script>
     @endif
     @if (session()->has('otp-info'))

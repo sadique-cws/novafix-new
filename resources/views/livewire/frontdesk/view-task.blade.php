@@ -221,6 +221,7 @@
                                 {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</p>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -476,35 +477,55 @@
 
             <!-- Delivery Status -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-yellow-50 to-orange-50">
+                <div
+                    class="px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-yellow-50 to-orange-50 border-b border-yellow-100">
                     <h2 class="text-lg sm:text-xl font-semibold text-gray-900 flex items-center">
-                        <i class="fas fa-truck text-yellow-600 mr-2 sm:mr-3 text-base sm:text-lg"></i> Delivery Status
+                        <i class="fas fa-truck text-yellow-600 mr-2 sm:mr-3 text-base sm:text-lg"></i>
+                        Delivery Status
                     </h2>
                 </div>
+
                 <div class="p-4 sm:p-6">
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+
                         @if ($task->delivery_status == '1')
-                            <span class="text-green-600 font-semibold text-sm sm:text-base">
-                                <i class="fas fa-check-circle mr-2"></i> Delivered
-                            </span>
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 w-full">
+                                <span class="flex items-center text-green-600 font-semibold text-sm sm:text-base">
+                                    <i class="fas fa-check-circle mr-2"></i> Delivered
+                                </span>
+
+                                <a wire:navigate href="{{ route('frontdesk.payment-details', $task->service_code) }}"
+                                    wire:click="printReceipt"
+                                    class="inline-flex items-center justify-center px-4 py-2 text-sm sm:text-base bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-transform transform hover:scale-105 w-full sm:w-auto text-center">
+                                    <i class="fas fa-print mr-2"></i> Print Receipt
+                                </a>
+                            </div>
                         @else
-                            <span class="text-yellow-600 font-semibold text-sm sm:text-base">
-                                <i class="fas fa-exclamation-triangle mr-2"></i> Not Delivered
-                            </span>
-                            @if ($task->status == '90' || ($task->payments->where('status', 'completed')->count() > 0 && $task->status == '100'))
-                                <button wire:click="initiateDelivery"
-                                    class="mt-3 mr-2 sm:mt-0 px-3 sm:px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-all duration-200 transform hover:scale-105">
-                                    <i class="fas fa-truck mr-2"></i> Otp
-                                </button>
-                                <button wire:click="directDelivery"
-                                    class="mt-3 ml-2 sm:mt-0 px-3 sm:px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-all duration-200 transform hover:scale-105">
-                                    <i class="fas fa-truck mr-2"></i> Direct
-                                </button>
-                            @endif
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full">
+                                <span class="flex items-center text-yellow-600 font-semibold text-sm sm:text-base">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i> Not Delivered
+                                </span>
+
+                                @if ($task->status == '3' || ($task->payments->where('status', 'completed')->count() > 0 && $task->status == '2'))
+                                    <div class="flex flex-wrap gap-3">
+                                        <button wire:click="initiateDelivery"
+                                            class="flex items-center justify-center px-4 py-2 bg-green-600 text-white text-sm sm:text-base rounded-md hover:bg-green-700 transition-transform transform hover:scale-105">
+                                            <i class="fas fa-truck mr-2"></i> Otp
+                                        </button>
+
+                                        <button wire:click="directDelivery"
+                                            class="flex items-center justify-center px-4 py-2 bg-green-600 text-white text-sm sm:text-base rounded-md hover:bg-green-700 transition-transform transform hover:scale-105">
+                                            <i class="fas fa-truck mr-2"></i> Direct
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
                         @endif
+
                     </div>
                 </div>
             </div>
+
             <!-- OTP Modal -->
             @if ($showOtpModal)
                 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-3 sm:px-0">

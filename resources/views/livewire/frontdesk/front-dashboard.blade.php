@@ -8,20 +8,20 @@
         </div>
 
         <!-- In Progress -->
-        <div class="bg-white border rounded-md p-4">
+        <a wire:navigate href="{{ route('frontdesk.servicerequest.manage') }}"  class="bg-white border rounded-md p-4">
             <p class="text-xs text-gray-500">In Progress</p>
             <h3 class="text-2xl text-[#111827]">{{ number_format($inProgressCount) }}</h3>
-        </div>
+        </a >
 
         <!-- Completed -->
-        <div class="bg-white border rounded-md p-4">
+        <a wire:navigate href="{{route('frontdesk.servicerequest.completed') }}" class="bg-white border rounded-md p-4">
             <p class="text-xs text-gray-500">Completed</p>
             <h3 class="text-2xl text-[#111827]">{{ number_format($completedCount) }}</h3>
-        </div>
+        </a>
 
         <!-- Revenue -->
         <div class="bg-white border rounded-md p-4">
-            <p class="text-xs text-gray-500">Today's Revenue</p>
+            <p class="text-xs text-gray-500">24h Revenue</p>
             <h3 class="text-2xl text-[#111827]">
                 @php
                     $total = $todayRevenue;
@@ -64,9 +64,9 @@
                                         <span class="text-blue-600 text-xs">Pending</span>
                                     @elseif($service->status == 1)
                                         <span class="text-yellow-600 text-xs">Processing</span>
-                                    @elseif($service->status == 2)
-                                        <span class="text-red-600 text-xs">Reject</span>
                                     @elseif($service->status == 3)
+                                        <span class="text-red-600 text-xs">Reject</span>
+                                    @elseif($service->status == 2)
                                         <span class="text-green-600 text-xs">Complete</span>
                                    
                                     @endif

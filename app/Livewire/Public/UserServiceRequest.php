@@ -30,6 +30,7 @@ class UserServiceRequest extends Component
     public $serviceCategories = [];
     public $franchises = [];
     public $service_code;
+    public $isExistingCustomer = false;
 
     protected $rules = [
         'franchise_id' => 'required|exists:franchises,id',
@@ -41,7 +42,6 @@ class UserServiceRequest extends Component
             'required',
             'regex:/^[6-9][0-9]{9}$/',
         ],
-
         'brand' => 'required|string|max:255',
         'color' => 'required|string|max:100',
         'problem' => 'required|string|max:500',
@@ -52,20 +52,67 @@ class UserServiceRequest extends Component
     {
         // load categories & franchises
         $this->serviceCategories = ServiceCategory::all();
-       $this->franchises = Franchise::where('status', 'active')->get();
+        $this->franchises = Franchise::where('status', 'active')->get();
+    }
 
+    // This will be called automatically when contact property changes
+    public function updatedContact($value)
+    {
+        // Remove any non-numeric characters
+        $cleanContact = preg_replace('/[^0-9]/', '', $value);
+        
+        // Check if we have exactly 10 digits
+        if (strlen($cleanContact) === 10) {
+            $this->checkExistingCustomer($cleanContact);
+        } else {
+            $this->isExistingCustomer = false;
+            $this->clearAutoFilledFields();
+        }
+    }
+
+    protected function checkExistingCustomer($contact)
+    {
+        // Find the latest service request for this contact number
+        $existingRequest = ServiceRequest::where('contact', $contact)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if ($existingRequest) {
+            $this->isExistingCustomer = true;
+            
+            // Auto-fill the form with existing customer data
+            $this->owner_name = $existingRequest->owner_name;
+            $this->email = $existingRequest->email;
+            $this->brand = $existingRequest->brand;
+            $this->color = $existingRequest->color;
+            
+            // Show success message
+            session()->flash('info', 'Welcome back! We found your previous details and auto-filled the form.');
+        } else {
+            $this->isExistingCustomer = false;
+            $this->clearAutoFilledFields();
+        }
+    }
+
+    protected function clearAutoFilledFields()
+    {
+        // Only clear auto-filled fields if they match the pattern of being auto-filled
+        // This prevents clearing user input
+        if ($this->isExistingCustomer) {
+            $this->owner_name = '';
+            $this->email = '';
+            $this->brand = '';
+            $this->color = '';
+        }
     }
 
     protected function generateServiceCode()
     {
         do {
             $randomLetters = strtoupper(Str::random(6));
-
             $newCode = $randomLetters;
-
             $exists = ServiceRequest::where('service_code', $newCode)->exists();
-
-        } while ($exists); // Repeat until we get a unique one
+        } while ($exists);
 
         return $newCode;
     }
@@ -88,14 +135,14 @@ class UserServiceRequest extends Component
             'problem' => $this->problem,
         ];
 
-         if ($this->image) {
+        if ($this->image) {
             $imageData = ImageKitHelper::uploadImage($this->image, '/Novafix/service-requests');
 
             if ($imageData) {
                 $data['image_url'] = $imageData['url'];
                 $data['image_file_id'] = $imageData['fileId'];
             } else {
-                session()->flash('error', 'failed to upload image, please try again');
+                session()->flash('error', 'Failed to upload image, please try again');
                 return;
             }
         }

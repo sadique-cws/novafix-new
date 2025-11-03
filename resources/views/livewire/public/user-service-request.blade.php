@@ -4,12 +4,41 @@
             <h2 class="text-2xl text-center text-green-600 font-semibold underline mb-6 border-b pb-3">
                 Service Request Form
             </h2> 
+            
             @if (session()->has('error'))
                 <div class="mb-6 p-4 bg-red-100 text-red-700 rounded-lg">
                     {{ session('error') }}
                 </div>
             @endif
-            <form wire:submit.prevent="save" class="space-y-6" >
+
+            @if (session()->has('info'))
+                <div class="mb-6 p-4 bg-blue-100 text-blue-700 rounded-lg">
+                    {{ session('info') }}
+                </div>
+            @endif
+
+            @if ($isExistingCustomer)
+                <div class="mb-6 p-4 bg-green-100 text-green-700 rounded-lg border border-green-300">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="font-semibold">Welcome back!</span>
+                    </div>
+                    <p class="mt-1 text-sm">We found your previous service requests. Your details have been auto-filled.</p>
+                </div>
+            @endif
+
+            <form wire:submit.prevent="save" class="space-y-6">
+
+                 {{-- Contact --}}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Contact *</label>
+                    <input type="text" wire:model.live="contact"
+                           class="w-full rounded-lg border py-1 px-2 border-gray-500"
+                           placeholder="Enter your 10-digit mobile number">
+                    @error('contact') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
 
                 {{-- Franchise --}}
                 <div>
@@ -46,24 +75,16 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Owner Name *</label>
                         <input type="text" wire:model="owner_name"
-                               class="w-full rounded-lg border py-1 px-2 border-gray-500">
+                               class="w-full rounded-lg border py-1 px-2 border-gray-500 {{ $isExistingCustomer ? 'bg-green-50 border-green-300' : '' }}">
                         @error('owner_name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Email (optional)</label>
                         <input type="email" wire:model="email"
-                               class="w-full rounded-lg border py-1 px-2 border-gray-500">
+                               class="w-full rounded-lg border py-1 px-2 border-gray-500 {{ $isExistingCustomer ? 'bg-green-50 border-green-300' : '' }}">
                         @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
-                </div>
-
-                {{-- Contact --}}
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Contact *</label>
-                    <input type="text" wire:model="contact"
-                           class="w-full rounded-lg border py-1 px-2 border-gray-500">
-                    @error('contact') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 {{-- Product Info --}}
@@ -77,7 +98,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Brand *</label>
                         <input type="text" wire:model="brand"
-                               class="w-full rounded-lg border py-1 px-2 border-gray-500">
+                               class="w-full rounded-lg border py-1 px-2 border-gray-500 {{ $isExistingCustomer ? 'bg-green-50 border-green-300' : '' }}">
                         @error('brand') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
@@ -86,7 +107,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Color *</label>
                     <input type="text" wire:model="color"
-                           class="w-full rounded-lg border py-1 px-2 border-gray-500">
+                           class="w-full rounded-lg border py-1 px-2 border-gray-500 {{ $isExistingCustomer ? 'bg-green-50 border-green-300' : '' }}">
                     @error('color') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -109,6 +130,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p> 
                     @enderror
                 </div>
+
                 {{-- Submit --}}
                 <div class="flex justify-end">
                     <button type="submit" wire:loading.attr="disabled"
@@ -121,12 +143,21 @@
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
                         </span>
-                        <span wire:loading.remove>Submit Request</span>
+                        <span wire:loading.remove>
+                            @if($isExistingCustomer)
+                                Submit New Request
+                            @else
+                                Submit Request
+                            @endif
+                        </span>
                     </button>
                 </div>
             </form>
         </div>
     @else
+        <!-- Success Page (same as before) -->
+       
+        
         <!-- Success Page -->
         <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-8 text-center">
             <!-- Logo/Header -->

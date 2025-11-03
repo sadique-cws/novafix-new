@@ -84,14 +84,12 @@ class FrontDashboard extends Component
 
     protected function loadTodayRevenue()
     {
-        $today = Carbon::today()->toDateString();
-
-        // Today's revenue for this franchise
-        $this->todayRevenue = Payment::whereHas('serviceRequest', function ($query) use ($today) {
-            $query->whereIn('receptioners_id', $this->receptionerIds)
-                ->whereDate('created_at', $today);
+        // Last 24 hours revenue for this franchise
+        $this->todayRevenue = Payment::whereHas('serviceRequest', function ($query) {
+            $query->whereIn('receptioners_id', $this->receptionerIds);
         })
-            ->sum('total_amount');
+        ->where('created_at', '>=', now()->subDay())
+        ->sum('total_amount');
     }
 
     protected function loadRecentServices()
