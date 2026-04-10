@@ -104,7 +104,8 @@ Route::prefix("admin")->group(function () {
             Route::get('Staff-Management/{id}', StaffView::class)->name('staff.view');
             Route::get('Receptionst-Management/{id}', ReceptionstView::class)->name('Receptionst.view');
             Route::get('edit-receptionist/{id}', Editreceptionist::class)->name('Receptionst.edit');
-            Route::get('solution', ServiceSolution::class)->name('solution');
+             Route::get('solution', ServiceSolution::class)->name('solution');
+            Route::get('solution/tree-explorer', \App\Livewire\Admin\Solution\TreeExplorer::class)->name('solution.tree-explorer');
             Route::get('solution/manage-devices', ManageDevice::class)->name('solution.manage-devices');
             Route::get('solution/manage-brands', ManageBrand::class)->name('solution.manage-brands');
             Route::get('solution/manage-models', ManageModel::class)->name('solution.manage-models');

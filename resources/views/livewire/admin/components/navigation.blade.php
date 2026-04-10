@@ -19,4 +19,7 @@
    <x-nav-link :href="route('admin.solution.staff-answers')" :active="request()->routeIs('admin.solution.staff-answers')" wire:navigate>
             {{ __('Staff Answers') }}
         </x-nav-link>
+   <x-nav-link :href="route('admin.solution.tree-explorer')" :active="request()->routeIs('admin.solution.tree-explorer')" wire:navigate>
+            {{ __('Tree Explorer') }}
+        </x-nav-link>
 </div>

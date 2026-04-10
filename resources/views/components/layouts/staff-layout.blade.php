@@ -33,6 +33,7 @@
             color: #111827;
         }
     </style>
+    @livewireStyles
 </head>
 
 <body class="bg-gray-50" x-data="dashboard()">
@@ -152,6 +153,7 @@
             }
         }
     </script>
+    @livewireScripts
 </body>
 
 </html>

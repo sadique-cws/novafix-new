@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novafix | Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
@@ -35,6 +36,7 @@
             transition: opacity 0.3s ease;
         }
     </style>
+    @livewireStyles
 </head>
 
 <body class="bg-gray-50" x-data="dashboard()">
@@ -160,6 +162,10 @@
                                         class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.solution.staff-answers') ? 'bg-blue-50 text-blue-600' : '' }}">Staff
                                         Answers</a>
                                 </li>
+                                <li>
+                                    <a wire:navigate href="{{ route('admin.solution.tree-explorer') }}"
+                                        class="block font-medium px-4 py-2 text-gray-700 hover:bg-blue-50 rounded {{ request()->routeIs('admin.solution.tree-explorer') ? 'bg-blue-50 text-blue-600' : '' }}">Tree Explorer</a>
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -265,6 +271,7 @@
             }
         }
     </script>
+    @livewireScripts
 </body>
 
 </html>
