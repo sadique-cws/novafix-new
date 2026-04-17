@@ -107,7 +107,7 @@
     <div class="grid grid-cols-1 gap-4 p-4 xl:grid-cols-3">
         <div
             class="rounded-lg border border-gray-200 bg-gray-50 p-4 xl:col-span-2"
-            x-data="treeExplorer(@js($tree), @entangle('selectedTreeNodeId'))"
+            x-data="treeExplorer($wire.entangle('tree'), $wire.entangle('selectedTreeNodeId'))"
             x-init="init()"
             x-ref="treePanel"
             :class="isFullscreen ? 'fixed inset-0 z-50 m-0 overflow-auto rounded-none border-0 bg-white p-3' : ''"
@@ -390,22 +390,24 @@
 
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script>
-        function treeExplorer(tree, selectedNodeId) {
-            return {
-                tree,
-                selectedNodeId,
-                expanded: {},
-                search: '',
-                compact: true,
-                focusSelected: false,
-                viewMode: 'd3',
-                isFullscreen: false,
-                zoomBehavior: null,
-                currentTransform: d3.zoomIdentity,
-                nodeCoords: {},
-                contentSize: { width: 0, height: 0 },
-                fullscreenListener: null,
-                keydownListener: null,
+        document.addEventListener('alpine:init', () => {
+            if (typeof window.treeExplorer !== 'function') {
+                window.treeExplorer = function(tree, selectedNodeId) {
+                    return {
+                        tree,
+                        selectedNodeId,
+                        expanded: {},
+                        search: '',
+                        compact: true,
+                        focusSelected: false,
+                        viewMode: 'd3',
+                        isFullscreen: false,
+                        zoomBehavior: null,
+                        currentTransform: d3.zoomIdentity,
+                        nodeCoords: {},
+                        contentSize: { width: 0, height: 0 },
+                        fullscreenListener: null,
+                        keydownListener: null,
                 init() {
                     if (!this.selectedNodeId && this.tree.roots.length) {
                         this.selectedNodeId = this.tree.roots[0];
@@ -861,6 +863,8 @@
                     d3.select(svgEl).transition().duration(220).call(this.zoomBehavior.transform, transform);
                 },
             };
-        }
-    </script>
+        };
+    }
+});
+</script>
 </div>

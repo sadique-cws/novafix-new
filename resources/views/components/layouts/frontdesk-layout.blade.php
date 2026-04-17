@@ -5,24 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novafix | Frontdesk</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4f46e5',
-                        secondary: '#6366f1',
-                        success: '#10b981',
-                        warning: '#f59e0b',
-                        danger: '#ef4444',
-                    }
-                }
-            }
-        }
-    </script>
     <style>
+        :root {
+            --color-primary: #4f46e5;
+            --color-secondary: #6366f1;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+        }
+
         [x-cloak] {
             display: none !important;
         }
@@ -159,32 +152,34 @@
     </div>
 
     <script>
-        function dashboard() {
-            return {
-                isMobileSidebarOpen: false,
-                openDropdowns: {
-                    franchise: false,
-                    solution: false,
-                    finance: false,
-                    reports: false
-                },
-                isMobile: window.innerWidth < 640,
-                toggleDropdown(dropdown) {
-                    this.openDropdowns[dropdown] = !this.openDropdowns[dropdown];
-                    // Close other dropdowns
-                    Object.keys(this.openDropdowns).forEach(key => {
-                        if (key !== dropdown) {
-                            this.openDropdowns[key] = false;
-                        }
-                    });
-                },
-                init() {
-                    window.addEventListener('resize', () => {
-                        this.isMobile = window.innerWidth < 640;
-                    });
+        document.addEventListener('alpine:init', () => {
+            window.dashboard = function() {
+                return {
+                    isMobileSidebarOpen: false,
+                    openDropdowns: {
+                        franchise: false,
+                        solution: false,
+                        finance: false,
+                        reports: false
+                    },
+                    isMobile: window.innerWidth < 640,
+                    toggleDropdown(dropdown) {
+                        this.openDropdowns[dropdown] = !this.openDropdowns[dropdown];
+                        // Close other dropdowns
+                        Object.keys(this.openDropdowns).forEach(key => {
+                            if (key !== dropdown) {
+                                this.openDropdowns[key] = false;
+                            }
+                        });
+                    },
+                    init() {
+                        window.addEventListener('resize', () => {
+                            this.isMobile = window.innerWidth < 640;
+                        });
+                    }
                 }
             }
-        }
+        });
     </script>
 </body>
 
