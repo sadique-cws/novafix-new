@@ -16,9 +16,13 @@ class AppServiceProvider extends ServiceProvider
             return new Msg91Service();
         });
 
-        // Useful for Shared Hosting where public/ is often public_html/ or root
-        if (file_exists(base_path('../public_html'))) {
-            $this->app->usePublicPath(base_path('../public_html'));
+        // Improved Shared Hosting Vite Fix
+        if ($this->app->environment('production')) {
+            if (file_exists(base_path('build/manifest.json'))) {
+                $this->app->usePublicPath(base_path());
+            } elseif (file_exists(base_path('../public_html/build/manifest.json'))) {
+                $this->app->usePublicPath(base_path('../public_html'));
+            }
         }
     }
 
