@@ -16,10 +16,10 @@ class AppServiceProvider extends ServiceProvider
             return new Msg91Service();
         });
 
-        // Improved Shared Hosting Vite Fix
-        if ($this->app->environment('production')) {
-            if (file_exists(base_path('build/manifest.json'))) {
-                $this->app->usePublicPath(base_path());
+        // Robust Shared Hosting Vite Fix
+        if (!$this->app->runningInConsole()) {
+            if (file_exists(base_path('public_html/build/manifest.json'))) {
+                $this->app->usePublicPath(base_path('public_html'));
             } elseif (file_exists(base_path('../public_html/build/manifest.json'))) {
                 $this->app->usePublicPath(base_path('../public_html'));
             }

@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NovaFix - Electronic Repair Services</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#10B981',
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -78,6 +92,10 @@
             bottom: -10px;
             border-radius: 3px;
         }
+
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="bg-background">
@@ -103,7 +121,7 @@
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div x-show="mobileMenuOpen" x-transition class="md:hidden bg-white py-4 px-4 absolute w-full shadow-lg">
+        <div x-show="mobileMenuOpen" x-cloak x-transition class="md:hidden bg-white py-4 px-4 absolute w-full shadow-lg">
             <a href="{{route('homepage')}}" class="block py-2 text-gray-700 hover:text-primary">Home</a>
             <a href="{{route('learn')}}" class="block py-2 text-gray-700 hover:text-primary">Learn</a>
             <a href="{{route('track.service')}}" class="block py-2 text-gray-700 hover:text-primary">Track Status</a>
