@@ -67,10 +67,16 @@ class CompletedTask extends Component
             ->first();
 
         // Calculate average resolution time in days
-        $averageResolutionDays = (clone $query)
-            ->selectRaw('AVG(DATEDIFF(updated_at, created_at)) as avg_days')
-            ->value('avg_days');
-        $averageResolutionDays = $averageResolutionDays ? round($averageResolutionDays, 1) : 0;
+        $resolutionRows = (clone $query)->get(['created_at', 'updated_at']);
+        $averageResolutionDays = $resolutionRows->count()
+            ? round(
+                $resolutionRows
+                    ->avg(fn ($row) => $row->updated_at && $row->created_at
+                        ? Carbon::parse($row->created_at)->diffInDays(Carbon::parse($row->updated_at))
+                        : 0),
+                1
+            )
+            : 0;
 
         // Apply search and sorting
         $requests = $query

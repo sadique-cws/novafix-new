@@ -9,7 +9,25 @@ class Franchise extends Authenticatable
 {
    use HasFactory, Notifiable;
 
-   protected $guarded = [];
+   protected $fillable = [
+      'franchise_name',
+      'contact_no',
+      'email',
+      'password',
+      'aadhar_no',
+      'pan_no',
+      'ifsc_code',
+      'bank_name',
+      'account_no',
+      'street',
+      'city',
+      'district',
+      'pincode',
+      'state',
+      'country',
+      'doc',
+      'status',
+   ];
 
    protected $hidden = [
        'password',

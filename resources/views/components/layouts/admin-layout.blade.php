@@ -198,11 +198,14 @@
                     </li>
                     <!-- Logout -->
                     <li class="mb-1">
-                        <a href="{{ route('admin.logout') }}"
-                            class="flex items-center p-3 gap-2 bg-red-600 rounded-lg hover:bg-red-700 text-white font-medium">
+                        <form method="POST" action="{{ route('admin.logout') }}">
+                            @csrf
+                            <button type="submit"
+                            class="w-full flex items-center p-3 gap-2 bg-red-600 rounded-lg hover:bg-red-700 text-white font-medium text-left">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>
                             <span>Logout</span>
-                        </a>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </nav>
@@ -229,10 +232,13 @@
                             <a href="{{ route('admin.setting') }}"
                                 class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
                             <div class="border-t border-gray-100"></div>
-                            <a href="{{ route('admin.logout') }}"
-                                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-red-500 hover:text-red-600">
+                            <form method="POST" action="{{ route('admin.logout') }}">
+                                @csrf
+                                <button type="submit"
+                                class="w-full block px-4 py-2 text-left text-gray-700 hover:bg-gray-100 text-red-500 hover:text-red-600">
                                 <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                            </a>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

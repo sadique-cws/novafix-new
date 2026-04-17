@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('questions', function (Blueprint $table) {
-            $table->string('image_url')->nullable();
-            $table->string('image_file_id')->nullable();
-            $table->text('description')->nullable();
+        Schema::table('receptioners', function (Blueprint $table) {
+            $table->foreign('franchise_id')
+                ->references('id')
+                ->on('franchises')
+                ->nullOnDelete();
         });
     }
 
@@ -23,8 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('questions', function (Blueprint $table) {
-            $table->dropColumn(['image_url', 'image_file_id', 'description']);
+        Schema::table('receptioners', function (Blueprint $table) {
+            $table->dropForeign(['franchise_id']);
         });
     }
 };

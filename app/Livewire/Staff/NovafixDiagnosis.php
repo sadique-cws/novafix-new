@@ -96,7 +96,7 @@ class NovafixDiagnosis extends Component
 
         // save user's answer
         userAnswer::create([
-            'user_id' => Auth::id(),
+            'user_id' => Auth::guard('staff')->id(),
             'question_id' => $this->currentQuestion->id,
             'device_id' => $this->selectedDevice,
             'brand_id' => $this->selectedBrand,
@@ -136,7 +136,7 @@ class NovafixDiagnosis extends Component
         ]);
 
         StaffEnquiry::create([
-            'staff_id' => Auth::id(),
+            'staff_id' => Auth::guard('staff')->id(),
             'message' => $this->staffMessage,
         ]);
 

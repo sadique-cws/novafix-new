@@ -62,25 +62,19 @@ class ViewStaff extends Component
         // Extend end date by one month for inclusive DatePeriod iteration
         $endDateInclusive = (clone $endDate)->modify('+1 month');
 
-        // Completed services count grouped by month
-        $servicesData = ServiceRequest::where('technician_id', $this->staffId)
+        $serviceRows = ServiceRequest::where('technician_id', $this->staffId)
             ->where('status', 1)
             ->whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('DATE_FORMAT(created_at, "%b %Y") as month, COUNT(*) as count')
-            ->groupBy('month')
-            ->orderBy('created_at')
-            ->get()
-            ->pluck('count', 'month');
+            ->get(['created_at', 'service_amount']);
 
-        // Total revenue grouped by month
-        $revenueData = ServiceRequest::where('technician_id', $this->staffId)
-            ->where('status', 1)
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('DATE_FORMAT(created_at, "%b %Y") as month, SUM(service_amount) as total')
-            ->groupBy('month')
-            ->orderBy('created_at')
-            ->get()
-            ->pluck('total', 'month');
+        // Database-agnostic month grouping
+        $servicesData = $serviceRows
+            ->groupBy(fn ($row) => optional($row->created_at)->format('M Y'))
+            ->map(fn ($rows) => $rows->count());
+
+        $revenueData = $serviceRows
+            ->groupBy(fn ($row) => optional($row->created_at)->format('M Y'))
+            ->map(fn ($rows) => (float) $rows->sum('service_amount'));
 
         $period = new \DatePeriod($startDate, new \DateInterval('P1M'), $endDateInclusive);
 

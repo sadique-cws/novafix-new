@@ -15,7 +15,21 @@ class Staff extends Authenticatable
     use Notifiable;
 
 
-    protected $guarded = [];
+    protected $fillable = [
+        'franchise_id',
+        'name',
+        'email',
+        'contact',
+        'salary',
+        'service_categories_id',
+        'status',
+        'image_url',
+        'image_file_id',
+        'aadhar',
+        'pan',
+        'address',
+        'password',
+    ];
 
     protected $hidden = [
         'password',

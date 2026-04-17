@@ -138,6 +138,24 @@ return [
             'expire' => 120,
             'throttle' => 120,
         ],
+        'staff' => [
+            'provider' => 'staff',
+            'table' => 'password_reset_tokens',
+            'expire' => 120,
+            'throttle' => 120,
+        ],
+        'franchises' => [
+            'provider' => 'franchises',
+            'table' => 'password_reset_tokens',
+            'expire' => 120,
+            'throttle' => 120,
+        ],
+        'receptioners' => [
+            'provider' => 'receptioners',
+            'table' => 'password_reset_tokens',
+            'expire' => 120,
+            'throttle' => 120,
+        ],
     ],
 
     /*

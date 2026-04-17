@@ -86,9 +86,9 @@ Route::get('/reset-password/{token}', App\Livewire\Auth\ResetPassword::class)->n
 
 // Admin Routes (protected by 'auth:admin' middleware)
 Route::prefix("admin")->group(function () {
-    Route::middleware('auth:admin')->group(function () {
+    Route::middleware(['auth:admin', 'role:admin'])->group(function () {
         Route::name("admin.")->group(function () {
-            Route::get('/logout', function () {
+            Route::post('/logout', function () {
                 auth()->guard('admin')->logout();
                 return redirect()->route('login');
             })->name('logout');
@@ -122,7 +122,7 @@ Route::prefix("admin")->group(function () {
 Route::prefix("franchise")->group(function () {
     Route::middleware('auth:franchise')->group(function () {
         Route::name("franchise.")->group(function () {
-            Route::get('/logout', function () {
+            Route::post('/logout', function () {
                 auth()->guard('franchise')->logout();
                 return redirect()->route('login');
             })->name('logout');
@@ -148,7 +148,7 @@ Route::prefix("franchise")->group(function () {
 // Frontdesk Routes (protected by 'auth:frontdesk' middleware)
 Route::prefix("frontdesk")->group(function () {
     Route::middleware('auth:frontdesk')->group(function () {
-        Route::get('/logout', function () {
+        Route::post('/logout', function () {
             auth()->guard('frontdesk')->logout();
             return redirect()->route('login');
         })->name('frontdesk.logout');
@@ -171,7 +171,7 @@ Route::prefix("frontdesk")->group(function () {
 Route::prefix("staff")->group(function () {
     Route::middleware('auth:staff')->group(function () {
         Route::name("staff.")->group(function () {
-            Route::get('logout', function () {
+            Route::post('logout', function () {
                 auth()->guard('staff')->logout();
                 return redirect()->route('login');
             })->name('logout');

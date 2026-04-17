@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
            ModelSeeder::class,
            ProblemSeeder::class,
            QuestionSeeder::class,
+           TreeExplorerSampleSeeder::class,
         ]);
         
        

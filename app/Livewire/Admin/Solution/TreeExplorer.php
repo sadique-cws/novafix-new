@@ -37,37 +37,38 @@ class TreeExplorer extends Component
     public $sourceQuestionId;
     public $attachMode = 'yes'; // yes|no|root
     public $targetAttachQuestionId;
-    public $cloneSearch = '';
+    public $sourceSearch = '';
+    public $targetSearch = '';
+    public bool $canCloneFlow = false;
 
     public function mount()
     {
         $this->devices = Device::query()->orderBy('name')->get();
+        $this->syncDependentLists();
+        $this->canCloneFlow = $this->hasClonePermission();
     }
 
     public function updatedSelectedDevice()
     {
-        $this->brands = Brand::query()->where('device_id', $this->selectedDevice)->orderBy('name')->get();
         $this->selectedBrand = null;
-        $this->models = [];
-        $this->problems = [];
         $this->selectedModel = null;
         $this->selectedProblem = null;
+        $this->syncDependentLists();
         $this->resetTree();
     }
 
     public function updatedSelectedBrand()
     {
-        $this->models = Model::query()->where('brand_id', $this->selectedBrand)->orderBy('name')->get();
         $this->selectedModel = null;
-        $this->problems = [];
         $this->selectedProblem = null;
+        $this->syncDependentLists();
         $this->resetTree();
     }
 
     public function updatedSelectedModel()
     {
-        $this->problems = Problem::query()->where('model_id', $this->selectedModel)->orderBy('name')->get();
         $this->selectedProblem = null;
+        $this->syncDependentLists();
         $this->resetTree();
     }
 
@@ -166,6 +167,8 @@ class TreeExplorer extends Component
 
     public function useSelectedAsAttachTarget()
     {
+        $this->ensureClonePermission();
+
         if ($this->attachMode === 'root') {
             return;
         }
@@ -175,19 +178,68 @@ class TreeExplorer extends Component
         }
     }
 
+    public function useSelectedAsSource()
+    {
+        $this->ensureClonePermission();
+
+        if (!$this->selectedProblem || !$this->selectedTreeNodeId) {
+            return;
+        }
+
+        $this->sourceProblemId = (int) $this->selectedProblem;
+        $this->sourceQuestionId = (int) $this->selectedTreeNodeId;
+    }
+
+    public function attachSelectedToYes()
+    {
+        $this->ensureClonePermission();
+
+        if (!$this->selectedTreeNodeId) {
+            return;
+        }
+
+        $this->attachMode = 'yes';
+        $this->targetAttachQuestionId = (int) $this->selectedTreeNodeId;
+    }
+
+    public function attachSelectedToNo()
+    {
+        $this->ensureClonePermission();
+
+        if (!$this->selectedTreeNodeId) {
+            return;
+        }
+
+        $this->attachMode = 'no';
+        $this->targetAttachQuestionId = (int) $this->selectedTreeNodeId;
+    }
+
     public function cloneFlow(QuestionFlowCloner $cloner)
     {
+        $this->ensureClonePermission();
+
         $this->validate([
-            'sourceProblemId' => ['required', 'exists:problems,id'],
-            'sourceQuestionId' => ['required', 'exists:questions,id'],
             'selectedProblem' => ['required', 'exists:problems,id'],
             'attachMode' => ['required', 'in:yes,no,root'],
             'targetAttachQuestionId' => ['nullable', 'exists:questions,id'],
         ]);
 
+        $sourceProblemId = $this->sourceProblemId ? (int) $this->sourceProblemId : (int) $this->selectedProblem;
+        $sourceQuestionId = $this->sourceQuestionId ? (int) $this->sourceQuestionId : (int) ($this->selectedTreeNodeId ?? 0);
+
+        if (!$sourceProblemId) {
+            session()->flash('error', 'Choose source problem.');
+            return;
+        }
+
+        if (!$sourceQuestionId) {
+            session()->flash('error', 'Choose source start question or select a node from the tree and use it as source.');
+            return;
+        }
+
         $sourceQuestion = Question::query()
-            ->whereKey($this->sourceQuestionId)
-            ->where('problem_id', $this->sourceProblemId)
+            ->whereKey($sourceQuestionId)
+            ->where('problem_id', $sourceProblemId)
             ->first();
 
         if (!$sourceQuestion) {
@@ -206,7 +258,7 @@ class TreeExplorer extends Component
 
         try {
             $result = $cloner->cloneAndAttach(
-                (int) $this->sourceQuestionId,
+                $sourceQuestionId,
                 (int) $this->selectedProblem,
                 (string) $this->attachMode,
                 $this->targetAttachQuestionId ? (int) $this->targetAttachQuestionId : null,
@@ -222,12 +274,14 @@ class TreeExplorer extends Component
 
     public function getSourceQuestionsProperty()
     {
-        if (!$this->sourceProblemId) {
+        $sourceProblemId = $this->sourceProblemId ?: $this->selectedProblem;
+
+        if (!$sourceProblemId) {
             return collect();
         }
 
         return Question::query()
-            ->where('problem_id', $this->sourceProblemId)
+            ->where('problem_id', $sourceProblemId)
             ->orderBy('id')
             ->get(['id', 'question_text']);
     }
@@ -246,7 +300,7 @@ class TreeExplorer extends Component
 
     public function getFilteredSourceQuestionsProperty()
     {
-        $q = trim((string) $this->cloneSearch);
+        $q = trim((string) $this->sourceSearch);
         $items = $this->sourceQuestions;
         if ($q === '') {
             return $items;
@@ -260,7 +314,7 @@ class TreeExplorer extends Component
 
     public function getFilteredTargetQuestionsProperty()
     {
-        $q = trim((string) $this->cloneSearch);
+        $q = trim((string) $this->targetSearch);
         $items = $this->targetQuestions;
         if ($q === '') {
             return $items;
@@ -272,8 +326,48 @@ class TreeExplorer extends Component
         })->values();
     }
 
+    private function syncDependentLists(): void
+    {
+        $this->brands = $this->selectedDevice
+            ? Brand::query()->where('device_id', $this->selectedDevice)->orderBy('name')->get()
+            : collect();
+
+        if ($this->selectedBrand && !$this->brands->contains('id', (int) $this->selectedBrand)) {
+            $this->selectedBrand = null;
+        }
+
+        $this->models = $this->selectedBrand
+            ? Model::query()->where('brand_id', $this->selectedBrand)->orderBy('name')->get()
+            : collect();
+
+        if ($this->selectedModel && !$this->models->contains('id', (int) $this->selectedModel)) {
+            $this->selectedModel = null;
+        }
+
+        $this->problems = $this->selectedModel
+            ? Problem::query()->where('model_id', $this->selectedModel)->orderBy('name')->get()
+            : collect();
+
+        if ($this->selectedProblem && !$this->problems->contains('id', (int) $this->selectedProblem)) {
+            $this->selectedProblem = null;
+        }
+    }
+
+    private function hasClonePermission(): bool
+    {
+        $adminUser = auth()->guard('admin')->user();
+        return (bool) ($adminUser && ($adminUser->is_admin ?? false));
+    }
+
+    private function ensureClonePermission(): void
+    {
+        abort_unless($this->hasClonePermission(), 403, 'Only admin can copy/clone flow.');
+    }
+
     public function render()
     {
+        $this->syncDependentLists();
+        $this->canCloneFlow = $this->hasClonePermission();
         $allProblems = Problem::query()->orderBy('name')->get(['id', 'name']);
 
         return view('livewire.admin.solution.tree-explorer', [

@@ -99,11 +99,13 @@
         <i class="fas fa-chart-line w-5 text-center"></i> Reports
     </a>
 
-    <a  href="{{ route('franchise.logout') }}"
-        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-        class="flex items-center gap-3 px-3 py-2 rounded text-red-600 hover:bg-red-50 cursor-pointer">
+    <form method="POST" action="{{ route('franchise.logout') }}">
+        @csrf
+        <button type="submit"
+        class="w-full flex items-center gap-3 px-3 py-2 rounded text-red-600 hover:bg-red-50 cursor-pointer text-left">
         <i class="fas fa-sign-out-alt w-5 text-center"></i> Logout
-    </a>
+        </button>
+    </form>
 </nav>
 
             <!-- Sidebar Profile -->
@@ -139,9 +141,12 @@
                             <a href="{{route('franchise.profile')}}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
                             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
                             <div class="border-t"></div>
-                            <a  href="{{ route('franchise.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                            <form method="POST" action="{{ route('franchise.logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full block px-4 py-2 text-left text-red-600 hover:bg-red-50">
                                 <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                            </a>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Auth;
 
-use Livewire\Component;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Carbon;
-use App\Models\User;
-use App\Models\Staff;
 use App\Models\Franchise;
 use App\Models\Receptioners;
+use App\Models\Staff;
+use App\Models\User;
+use Livewire\Component;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class ResetPassword extends Component
 {
@@ -18,15 +18,11 @@ class ResetPassword extends Component
     public $password_confirmation;
     public $message = '';
     public $error = '';
-    public $validToken = false;
 
     public function mount($token)
     {
         $this->token = $token;
         $this->email = request()->query('email', '');
-
-        // Validate token
-        $this->validateToken();
     }
 
     protected function rules()
@@ -36,80 +32,55 @@ class ResetPassword extends Component
         ];
     }
 
-    public function validateToken()
-    {
-        $sessionKey = 'password_reset_' . $this->email;
-        $resetData = session()->get($sessionKey);
-
-        if (!$resetData) {
-            $this->error = 'Invalid reset token.';
-            return;
-        }
-
-        // Check if token is expired (60 minutes)
-        $createdAt = Carbon::createFromTimestamp($resetData['created_at']);
-        if ($createdAt->addMinutes(60)->isPast()) {
-            $this->error = 'Reset token has expired.';
-            session()->forget($sessionKey);
-            return;
-        }
-
-        // Verify token
-        if ($this->token !== $resetData['token']) {
-            $this->error = 'Invalid reset token.';
-            return;
-        }
-
-        $this->validToken = true;
-    }
-
     public function resetPassword()
     {
         $this->validate();
+        $this->error = '';
+        $this->message = '';
 
-        if (!$this->validToken) {
-            $this->validateToken();
+        $broker = $this->resolveBrokerByEmail($this->email);
+        if (!$broker) {
+            $this->error = 'Invalid or expired reset token.';
             return;
         }
 
-        // Find user in appropriate table
-        $user = $this->findUserByEmail($this->email);
+        $status = Password::broker($broker)->reset(
+            [
+                'email' => $this->email,
+                'password' => $this->password,
+                'password_confirmation' => $this->password_confirmation,
+                'token' => $this->token,
+            ],
+            function ($user, $password) {
+                $user->password = Hash::make($password);
+                $user->save();
+            }
+        );
 
-        if (!$user) {
-            $this->error = 'User not found.';
+        if ($status !== Password::PASSWORD_RESET) {
+            $this->error = 'Invalid or expired reset token.';
             return;
         }
 
-        // Update password
-        $user->password = Hash::make($this->password);
-        $user->save();
-
-        // Delete the reset token from session
-        session()->forget('password_reset_' . $this->email);
-
-        $this->message = 'Your password has been reset successfully!';
-
-        // Redirect to login after a short delay
         return redirect()->route('login')->with('status', 'Password reset successfully!');
     }
 
-    private function findUserByEmail($email)
+    private function resolveBrokerByEmail(string $email): ?string
     {
-        // Check all user tables
-        if ($user = User::where('email', $email)->first()) {
-            return $user;
+        if (Staff::where('email', $email)->exists()) {
+            return 'staff';
         }
 
-        if ($staff = Staff::where('email', $email)->first()) {
-            return $staff;
+        if (Receptioners::where('email', $email)->exists()) {
+            return 'receptioners';
         }
 
-        if ($franchise = Franchise::where('email', $email)->first()) {
-            return $franchise;
+        if (Franchise::where('email', $email)->exists()) {
+            return 'franchises';
         }
 
-        if ($receptioner = Receptioners::where('email', $email)->first()) {
-            return $receptioner;
+        if (User::where('email', $email)->exists()) {
+            return 'users';
         }
 
         return null;

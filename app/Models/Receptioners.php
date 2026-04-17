@@ -11,18 +11,24 @@ class Receptioners extends Authenticatable
 
 {
     use Notifiable;
-    protected $guarded = [];
+    protected $fillable = [
+        'franchise_id',
+        'name',
+        'contact',
+        'email',
+        'aadhar',
+        'pan',
+        'address',
+        'salary',
+        'status',
+        'password',
+    ];
 
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
-     public function user()
-   {
-      return $this->belongsTo(User::class);
-   }
-
     public function franchise()
     {
         return $this->belongsTo(Franchise::class);

@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\Receptioners;
 use App\Models\ServiceRequest;
 use App\Models\Staff;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
@@ -65,6 +66,9 @@ class AdminDashboard extends Component
     {
         // Use a single cache for all dashboard data to minimize queries and avoid repeated/separate cache calls
         $dashboardData = Cache::remember('admin_dashboard_data', 300, function () {
+            $last30DaysStart = Carbon::now()->subDays(30)->toDateTimeString();
+            $last60DaysStart = Carbon::now()->subDays(60)->toDateTimeString();
+
             // Get franchise revenues in a single query - corrected table name to receptioners
             $franchiseRevenues = DB::table('franchises')
                 ->leftJoin('receptioners', 'receptioners.franchise_id', '=', 'franchises.id')
@@ -74,8 +78,14 @@ class AdminDashboard extends Component
                     'franchises.id',
                     'franchises.franchise_name',
                     DB::raw('COALESCE(SUM(payments.total_amount), 0) as total_revenue'),
-                    DB::raw('COALESCE(SUM(CASE WHEN payments.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY) THEN payments.total_amount ELSE 0 END), 0) as monthly_revenue'),
-                    DB::raw('COALESCE(SUM(CASE WHEN payments.created_at >= DATE_SUB(NOW(), INTERVAL 60 DAY) AND payments.created_at < DATE_SUB(NOW(), INTERVAL 30 DAY) THEN payments.total_amount ELSE 0 END), 0) as previous_monthly_revenue')
+                )
+                ->selectRaw(
+                    'COALESCE(SUM(CASE WHEN payments.created_at >= ? THEN payments.total_amount ELSE 0 END), 0) as monthly_revenue',
+                    [$last30DaysStart]
+                )
+                ->selectRaw(
+                    'COALESCE(SUM(CASE WHEN payments.created_at >= ? AND payments.created_at < ? THEN payments.total_amount ELSE 0 END), 0) as previous_monthly_revenue',
+                    [$last60DaysStart, $last30DaysStart]
                 )
                 ->groupBy('franchises.id', 'franchises.franchise_name')
                 ->get()
@@ -131,9 +141,11 @@ class AdminDashboard extends Component
         // Get franchises with pagination and search/filter
         $franchises = Franchise::query()
             ->when($this->search, function ($query) {
-                $query->where('franchise_name', 'like', '%' . $this->search . '%')
-                    ->orWhere('email', 'like', '%' . $this->search . '%')
-                    ->orWhere('contact_no', 'like', '%' . $this->search . '%');
+                $query->where(function ($q) {
+                    $q->where('franchise_name', 'like', '%' . $this->search . '%')
+                        ->orWhere('email', 'like', '%' . $this->search . '%')
+                        ->orWhere('contact_no', 'like', '%' . $this->search . '%');
+                });
             })
             ->when($this->statusFilter, function ($query) {
                 $query->where('status', $this->statusFilter);

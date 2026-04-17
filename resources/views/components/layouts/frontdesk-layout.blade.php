@@ -109,9 +109,12 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('frontdesk.logout') }}" class="sidebar-link flex items-center hover:text-red-500 px-4 py-3 text-white bg-red-600 rounded-lg transition duration-150">
+                        <form method="POST" action="{{ route('frontdesk.logout') }}">
+                            @csrf
+                            <button type="submit" class="w-full sidebar-link flex items-center hover:text-red-500 px-4 py-3 text-white bg-red-600 rounded-lg transition duration-150 text-left">
                             <i class="fas fa-sign-out-alt mr-2 text-white"></i> Logout
-                        </a>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </nav>
@@ -138,10 +141,13 @@
                             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
                             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
                             <div class="border-t border-gray-100"></div>
-                            <a href="{{ route('frontdesk.logout') }}"
-                                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-red-500 hover:text-red-600">
+                            <form method="POST" action="{{ route('frontdesk.logout') }}">
+                                @csrf
+                                <button type="submit"
+                                class="w-full block px-4 py-2 text-left text-gray-700 hover:bg-gray-100 text-red-500 hover:text-red-600">
                                 <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                            </a>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
 
 class userAnswer extends BaseModel
 {
-    protected $fillable = ['user_id', 'question_id', 'answer','device_id','brand_id','model_id','problem_id','selected_answer'];
+    protected $fillable = ['user_id', 'question_id', 'device_id', 'brand_id', 'model_id', 'problem_id', 'selected_answer'];
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Staff::class, 'user_id');
     }
 
      public function question(){

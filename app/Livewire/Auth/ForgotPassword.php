@@ -2,14 +2,12 @@
 
 namespace App\Livewire\Auth;
 
-use Livewire\Component;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\ResetPasswordMail;
-use App\Models\User;
-use App\Models\Staff;
 use App\Models\Franchise;
 use App\Models\Receptioners;
-use Illuminate\Support\Str;
+use App\Models\Staff;
+use App\Models\User;
+use Livewire\Component;
+use Illuminate\Support\Facades\Password;
 
 class ForgotPassword extends Component
 {
@@ -26,51 +24,36 @@ class ForgotPassword extends Component
         $this->validate();
         $this->error = '';
         $this->message = '';
+        $broker = $this->resolveBrokerByEmail($this->email);
 
-        // Check if email exists in any of the user tables
-        $user = $this->findUserByEmail($this->email);
-
-        if (!$user) {
-            $this->error = "We can't find a user with that email address.";
-            return;
+        if ($broker) {
+            try {
+                Password::broker($broker)->sendResetLink(['email' => $this->email]);
+            } catch (\Throwable $e) {
+                report($e);
+            }
         }
 
-        // Generate a simple reset token (not stored in database)
-        $token = Str::random(60);
-
-        // Store token in session (temporary storage)
-        session()->put('password_reset_' . $this->email, [
-            'token' => $token,
-            'created_at' => now()->timestamp
-        ]);
-
-        try {
-            // Send reset password email
-            Mail::to($this->email)->send(new ResetPasswordMail($token, $this->email));
-
-            $this->message = 'We have emailed your password reset link!';
-        } catch (\Exception $e) {
-            $this->error = 'Failed to send reset email. Please try again later.';
-        }
+        // Always return a generic message to prevent account enumeration.
+        $this->message = 'If your email exists in our system, you will receive a password reset link shortly.';
     }
 
-    private function findUserByEmail($email)
+    private function resolveBrokerByEmail(string $email): ?string
     {
-        // Check all user tables
-        if (User::where('email', $email)->exists()) {
-            return User::where('email', $email)->first();
-        }
-
         if (Staff::where('email', $email)->exists()) {
-            return Staff::where('email', $email)->first();
-        }
-
-        if (Franchise::where('email', $email)->exists()) {
-            return Franchise::where('email', $email)->first();
+            return 'staff';
         }
 
         if (Receptioners::where('email', $email)->exists()) {
-            return Receptioners::where('email', $email)->first();
+            return 'receptioners';
+        }
+
+        if (Franchise::where('email', $email)->exists()) {
+            return 'franchises';
+        }
+
+        if (User::where('email', $email)->exists()) {
+            return 'users';
         }
 
         return null;
