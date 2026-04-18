@@ -7,7 +7,21 @@
     <title>Novafix | Admin</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+        <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#10B981',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
         :root {
             --color-primary: #4f46e5;
             --color-secondary: #6366f1;
