@@ -179,7 +179,7 @@
                                             (Optional)</label>
                                         <textarea wire:model="editingQuestionDescription" rows="5"
                                             class="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
-                                            placeholder="Notes or context..."></textarea>
+                                            placeholder="Notes or context... Paste URLs and they will become clickable links."></textarea>
                                     </div>
                                 </div>
 
@@ -374,7 +374,7 @@
                                                                                                                                                                                                                                              font-medium">Explanation
                                                 :-</label>
                                             <p class="text-gray-700 text-base leading-relaxed">
-                                                {{ $currentQuestion->description }}
+                                                {!! \App\Helpers\TextHelper::linkify($currentQuestion->description) !!}
                                             </p>
                                         </div>
                                     @endif
@@ -527,7 +527,7 @@
                                             {{ $selectedQuestion->question_text }}
                                         </h4>
                                         @if ($selectedQuestion->description)
-                                            <p class="mt-1 text-sm text-gray-600">{{ $selectedQuestion->description }}
+                                            <p class="mt-1 text-sm text-gray-600">{!! \App\Helpers\TextHelper::linkify($selectedQuestion->description) !!}
                                             </p>
                                         @endif
                                     </div>
@@ -598,7 +598,7 @@
                                             (Optional)</label>
                                         <textarea wire:model="description" rows="3"
                                             class="mt-1 block w-full border rounded-md py-2 px-3 text-sm focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="Add additional details..."></textarea>
+                                            placeholder="Add additional details... Paste URLs and they will become clickable links."></textarea>
                                     </div>
                                 </div>
                             @endif
@@ -699,7 +699,7 @@
                             <label class="block text-sm font-medium text-gray-700">Description (Optional)</label>
                             <textarea wire:model="description" rows="5"
                                 class="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
-                                placeholder="Notes or context..."></textarea>
+                                placeholder="Notes or context... Paste URLs and they will become clickable links."></textarea>
                         </div>
                     </div>
                     <div class="pt-4">

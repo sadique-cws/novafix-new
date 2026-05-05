@@ -140,7 +140,7 @@
                                                                                                                                                                                                                                                                                                                                                                                                          font-medium">Explanation
                                     :-</label>
                                 <p class="text-gray-700 text-base leading-relaxed">
-                                    {{ $currentQuestion->description }}
+                                    {!! \App\Helpers\TextHelper::linkify($currentQuestion->description) !!}
                                 </p>
                             </div>
                         @endif
