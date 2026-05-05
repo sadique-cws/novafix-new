@@ -284,7 +284,7 @@
                         <select wire:model.change="sourceProblemId" class="w-full rounded-md border border-gray-300 p-2 text-sm">
                             <option value="">Choose source problem (default: current target problem)</option>
                             @foreach($allProblems as $p)
-                                <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                <option value="{{ $p->id }}">{{ $p->name }}@if($p->model) ({{ $p->model->brand->name ?? '' }} › {{ $p->model->name }})@endif</option>
                             @endforeach
                         </select>
                     </div>

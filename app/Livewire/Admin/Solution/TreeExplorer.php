@@ -368,7 +368,7 @@ class TreeExplorer extends Component
     {
         $this->syncDependentLists();
         $this->canCloneFlow = $this->hasClonePermission();
-        $allProblems = Problem::query()->orderBy('name')->get(['id', 'name']);
+        $allProblems = Problem::query()->with('model.brand')->orderBy('name')->get();
 
         return view('livewire.admin.solution.tree-explorer', [
             'allProblems' => $allProblems,
