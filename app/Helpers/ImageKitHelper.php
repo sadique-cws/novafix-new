@@ -12,28 +12,42 @@ class ImageKitHelper
             return null;
         }
 
-        $imageKit = new ImageKit(
-            publicKey: env('IMAGEKIT_PUBLIC_KEY'),
-            privateKey: env('IMAGEKIT_PRIVATE_KEY'),
-            urlEndpoint: env('IMAGEKIT_URL_ENDPOINT')
-        );
+        $publicKey = config('services.imagekit.public_key');
+        $privateKey = config('services.imagekit.private_key');
+        $urlEndpoint = config('services.imagekit.url_endpoint');
 
-        $fileData = [
-            'file' => base64_encode(file_get_contents($file->getRealPath())),
-            'fileName' => uniqid() . '.' . $file->getClientOriginalExtension(),
-            'folder' => $folder,
-        ];
-
-        $upload = $imageKit->upload($fileData);
-
-        if (isset($upload->result->url) && isset($upload->result->fileId)) {
-            return [
-                'url' => $upload->result->url,
-                'fileId' => $upload->result->fileId,
-            ];
+        if (!$publicKey || !$privateKey || !$urlEndpoint) {
+            Log::error('ImageKit configuration is missing in .env or config/services.php');
+            return null;
         }
 
-        Log::error('ImageKit upload failed: ' . json_encode($upload->error ?? 'Unknown error'));
+        try {
+            $imageKit = new ImageKit(
+                publicKey: $publicKey,
+                privateKey: $privateKey,
+                urlEndpoint: $urlEndpoint
+            );
+
+            $fileData = [
+                'file' => base64_encode(file_get_contents($file->getRealPath())),
+                'fileName' => uniqid() . '.' . $file->getClientOriginalExtension(),
+                'folder' => $folder,
+            ];
+
+            $upload = $imageKit->upload($fileData);
+
+            if (isset($upload->result->url) && isset($upload->result->fileId)) {
+                return [
+                    'url' => $upload->result->url,
+                    'fileId' => $upload->result->fileId,
+                ];
+            }
+
+            Log::error('ImageKit upload failed: ' . json_encode($upload->error ?? 'Unknown error'));
+        } catch (\Exception $e) {
+            Log::error('ImageKit Exception: ' . $e->getMessage());
+        }
+
         return null;
     }
 
@@ -43,15 +57,28 @@ class ImageKitHelper
             return;
         }
 
-        $imageKit = new ImageKit(
-            publicKey: env('IMAGEKIT_PUBLIC_KEY'),
-            privateKey: env('IMAGEKIT_PRIVATE_KEY'),
-            urlEndpoint: env('IMAGEKIT_URL_ENDPOINT')
-        );
+        $publicKey = config('services.imagekit.public_key');
+        $privateKey = config('services.imagekit.private_key');
+        $urlEndpoint = config('services.imagekit.url_endpoint');
 
-        $result = $imageKit->deleteFile($fileId);
-        if (isset($result->error)) {
-            Log::error('ImageKit deletion failed for fileId ' . $fileId . ': ' . json_encode($result->error));
+        if (!$publicKey || !$privateKey || !$urlEndpoint) {
+            Log::error('ImageKit configuration is missing in .env or config/services.php');
+            return;
+        }
+
+        try {
+            $imageKit = new ImageKit(
+                publicKey: $publicKey,
+                privateKey: $privateKey,
+                urlEndpoint: $urlEndpoint
+            );
+
+            $result = $imageKit->deleteFile($fileId);
+            if (isset($result->error)) {
+                Log::error('ImageKit deletion failed for fileId ' . $fileId . ': ' . json_encode($result->error));
+            }
+        } catch (\Exception $e) {
+            Log::error('ImageKit Exception during deletion: ' . $e->getMessage());
         }
     }
 }
