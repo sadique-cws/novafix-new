@@ -35,6 +35,7 @@
                 <select
                     wire:model.live="selectedDevice"
                     class="w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    autocomplete="off"
                     wire:loading.attr="disabled"
                     wire:target="selectedDevice"
                 >
@@ -50,6 +51,7 @@
                 <select
                     wire:model.live="selectedBrand"
                     class="w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    autocomplete="off"
                     @disabled(!$selectedDevice)
                     wire:loading.attr="disabled"
                     wire:target="selectedDevice,selectedBrand"
@@ -66,6 +68,7 @@
                 <select
                     wire:model.live="selectedModel"
                     class="w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    autocomplete="off"
                     @disabled(!$selectedBrand)
                     wire:loading.attr="disabled"
                     wire:target="selectedBrand,selectedModel"
@@ -82,6 +85,7 @@
                 <select
                     wire:model.live="selectedProblem"
                     class="w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    autocomplete="off"
                     @disabled(!$selectedModel)
                     wire:loading.attr="disabled"
                     wire:target="selectedModel,selectedProblem"
@@ -281,7 +285,7 @@
 
                     <div class="mt-3">
                         <label class="mb-1 block text-sm font-medium text-gray-700">Source Problem</label>
-                        <select wire:model.change="sourceProblemId" class="w-full rounded-md border border-gray-300 p-2 text-sm">
+                        <select wire:model.change="sourceProblemId" class="w-full rounded-md border border-gray-300 p-2 text-sm" autocomplete="off">
                             <option value="">Choose source problem (default: current target problem)</option>
                             @foreach($allProblems as $p)
                                 <option value="{{ $p->id }}">{{ $p->name }}@if($p->model) ({{ $p->model->brand->name ?? '' }} › {{ $p->model->name }})@endif</option>
@@ -291,7 +295,7 @@
 
                     <div class="mt-3">
                         <label class="mb-1 block text-sm font-medium text-gray-700">Source Start Question</label>
-                        <select wire:model.change="sourceQuestionId" class="w-full rounded-md border border-gray-300 p-2 text-sm" @disabled(!$sourceProblemId && !$selectedProblem)>
+                        <select wire:model.change="sourceQuestionId" class="w-full rounded-md border border-gray-300 p-2 text-sm" autocomplete="off" @disabled(!$sourceProblemId && !$selectedProblem)>
                             <option value="">Choose source question (or use selected node)</option>
                             @foreach($this->filteredSourceQuestions as $q)
                                 <option value="{{ $q->id }}">#{{ $q->id }} - {{ \Illuminate\Support\Str::limit($q->question_text, 80) }}</option>
@@ -335,7 +339,7 @@
 
                     <div class="mt-3">
                         <label class="mb-1 block text-sm font-medium text-gray-700">Attach Mode</label>
-                        <select wire:model.change="attachMode" class="w-full rounded-md border border-gray-300 p-2 text-sm">
+                        <select wire:model.change="attachMode" class="w-full rounded-md border border-gray-300 p-2 text-sm" autocomplete="off">
                             <option value="yes">Attach to YES</option>
                             <option value="no">Attach to NO</option>
                             <option value="root">Set as ROOT (target must be empty)</option>
@@ -347,14 +351,14 @@
                             <input
                                 type="text"
                                 wire:model.live.debounce.250ms="targetSearch"
-                                class="w-full rounded-md border border-gray-300 p-2 text-sm"
+                                class="w-full rounded-md border border-gray-300 p-2 text-sm" autocomplete="off"
                                 placeholder="Search target questions"
                             />
                         </div>
 
                         <div class="mt-3">
                             <label class="mb-1 block text-sm font-medium text-gray-700">Attach To (Target Question)</label>
-                            <select wire:model.change="targetAttachQuestionId" class="w-full rounded-md border border-gray-300 p-2 text-sm" @disabled(!$selectedProblem)>
+                            <select wire:model.change="targetAttachQuestionId" class="w-full rounded-md border border-gray-300 p-2 text-sm" autocomplete="off" @disabled(!$selectedProblem)>
                                 <option value="">Choose target question (or use selected node)</option>
                                 @foreach($this->filteredTargetQuestions as $q)
                                     <option value="{{ $q->id }}">#{{ $q->id }} - {{ \Illuminate\Support\Str::limit($q->question_text, 80) }}</option>

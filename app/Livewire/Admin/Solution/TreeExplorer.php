@@ -9,6 +9,7 @@ use App\Models\Problem;
 use App\Models\Question;
 use App\Services\QuestionFlowCloner;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 #[Layout('components.layouts.admin-layout')]
@@ -19,9 +20,13 @@ class TreeExplorer extends Component
     public $models = [];
     public $problems = [];
 
+    #[Url]
     public $selectedDevice;
+    #[Url]
     public $selectedBrand;
+    #[Url]
     public $selectedModel;
+    #[Url]
     public $selectedProblem;
     public $selectedTreeNodeId;
 
@@ -45,6 +50,9 @@ class TreeExplorer extends Component
     {
         $this->devices = Device::query()->orderBy('name')->get();
         $this->syncDependentLists();
+        if ($this->selectedProblem) {
+            $this->loadTree();
+        }
         $this->canCloneFlow = $this->hasClonePermission();
     }
 
