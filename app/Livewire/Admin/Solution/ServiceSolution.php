@@ -312,11 +312,16 @@ class ServiceSolution extends Component
     }
     public function updateQuestion()
     {
-        $this->validate([
+        $rules = [
             'editingQuestionText' => 'required|min:3',
-            'editingQuestionImage' => 'nullable|image|max:1024',
             'editingQuestionDescription' => 'nullable|string'
-        ]);
+        ];
+
+        if ($this->editingQuestionImage && !is_string($this->editingQuestionImage)) {
+            $rules['editingQuestionImage'] = 'image|max:1024';
+        }
+
+        $this->validate($rules);
 
         $question = Question::find($this->editingQuestionId);
         if (!$question) {
