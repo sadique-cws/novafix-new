@@ -16,7 +16,7 @@
             <!-- Device Selection -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Select Device</label>
-                <select wire:model="selectedDevice" wire:change="updateSelectedDevice"
+                <select wire:model="selectedDevice" wire:change="updateSelectedDevice" autocomplete="off"
                     class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{ $selectedDevice ? 'bg-gray-100 cursor-not-allowed' : '' }}"
                     {{ $selectedDevice ? 'disabled' : '' }}>
                     <option value="">Choose Device</option>
@@ -30,7 +30,7 @@
             @if ($brands)
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Select Brand</label>
-                    <select wire:model="selectedBrand" wire:change="updateSelectedBrand"
+                    <select wire:model="selectedBrand" wire:change="updateSelectedBrand" autocomplete="off"
                         class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{ $selectedBrand ? 'bg-gray-100 cursor-not-allowed' : '' }}"
                         {{ $selectedBrand ? 'disabled' : '' }}>
                         <option value="">Choose Brand</option>
@@ -45,7 +45,7 @@
             @if ($models)
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Select Model</label>
-                    <select wire:model="selectedModel" wire:change="updateSelectedModel"
+                    <select wire:model="selectedModel" wire:change="updateSelectedModel" autocomplete="off"
                         class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{ $selectedModel ? 'bg-gray-100 cursor-not-allowed' : '' }}"
                         {{ $selectedModel ? 'disabled' : '' }}>
                         <option value="">Choose Model</option>
@@ -60,7 +60,7 @@
             @if ($problems)
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Select Problem</label>
-                    <select wire:model="selectedProblem" wire:change="updateSelectedProblem"
+                    <select wire:model="selectedProblem" wire:change="updateSelectedProblem" autocomplete="off"
                         class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 {{ $selectedProblem ? 'bg-gray-100 cursor-not-allowed' : '' }}"
                         {{ $selectedProblem ? 'disabled' : '' }}>
                         <option value="">Choose Problem</option>

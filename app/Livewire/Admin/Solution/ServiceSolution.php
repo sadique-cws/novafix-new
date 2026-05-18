@@ -16,6 +16,7 @@ use Illuminate\Container\Attributes\Auth as AttributesAuth;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Livewire\WithFileUploads;
 use Illuminate\Http\UploadedFile;
+use Livewire\Attributes\Url;
 
 #[Layout('components.layouts.admin-layout')]
 
@@ -29,9 +30,13 @@ class ServiceSolution extends Component
     public $models = [];
     public $problems = [];
     public $questionTree = [];
+    #[Url]
     public $selectedDevice;
+    #[Url]
     public $selectedBrand;
+    #[Url]
     public $selectedModel;
+    #[Url]
     public $selectedProblem;
     public $currentQuestion;
     public $newQuestionText;
@@ -118,6 +123,22 @@ class ServiceSolution extends Component
     public function mount()
     {
         $this->devices = Device::all();
+
+        if ($this->selectedDevice) {
+            $this->brands = Brand::where('device_id', $this->selectedDevice)->get();
+        }
+
+        if ($this->selectedBrand) {
+            $this->models = Model::where('brand_id', $this->selectedBrand)->get();
+        }
+
+        if ($this->selectedModel) {
+            $this->problems = Problem::where('model_id', $this->selectedModel)->get();
+        }
+
+        if ($this->selectedProblem) {
+            $this->updateSelectedProblem();
+        }
     }
     public function updateSelectedDevice()
     {
