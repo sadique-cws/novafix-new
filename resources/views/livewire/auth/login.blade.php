@@ -1,8 +1,8 @@
-<div class="min-h-screen  flex flex-col justify-center items-center bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 px-4 sm:px-6 lg:px-8">
-    <div class="w-full m-16 mt-20 sm:max-w-md bg-white shadow-2xl rounded-2xl p-8 sm:p-10 transition-transform transform hover:scale-[1.01]">
+<div class="min-h-screen  flex flex-col justify-center items-center bg-gray-50 px-4 sm:px-6 lg:px-8">
+    <div class="w-full m-16 mt-20 sm:max-w-md bg-white border border-gray-200 shadow-xl rounded-lg p-8 sm:p-10">
         <!-- Logo -->
         <div class="flex justify-center mb-8">
-            <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center shadow-md">
+            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
@@ -45,17 +45,17 @@
                         wire:model="email" 
                         required 
                         autocomplete="email"
-                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-400"
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-gray-400 transition"
                         placeholder="you@example.com"
                     >
                 </div>
             </div>
 
             <!-- Password -->
-            <div>
+            <div x-data="{ showPassword: false }">
                 <div class="flex items-center justify-between mb-1">
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <a href="{{ route('password.request') }}" class="text-sm text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                    <a href="{{ route('password.request') }}" class="text-sm text-primary hover:text-blue-800">Forgot password?</a>
                 </div>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -65,13 +65,18 @@
                     </div>
                     <input 
                         id="password" 
-                        type="password" 
+                        x-bind:type="showPassword ? 'text' : 'password'" 
                         wire:model="password" 
                         required 
                         autocomplete="current-password"
-                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-400"
+                        class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-gray-400 transition"
                         placeholder="••••••••"
                     >
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                        <button type="button" @click="showPassword = !showPassword" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                            <i class="fas text-lg" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -81,7 +86,7 @@
                     id="remember" 
                     type="checkbox" 
                     wire:model="remember"
-                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                 >
                 <label for="remember" class="ml-2 block text-sm text-gray-700">
                     Remember me
@@ -92,7 +97,7 @@
             <button 
                 type="submit" 
                 wire:loading.attr="disabled"
-                class="w-full flex justify-center items-center py-3 px-4 rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 shadow-md transition duration-300 ease-in-out transform hover:-translate-y-0.5"
+                class="w-full flex justify-center items-center py-3 px-4 rounded-lg text-sm font-medium text-white bg-primary hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-primary/50 shadow-md transition duration-300 ease-in-out transform hover:-translate-y-0.5"
             >
                 <span wire:loading.remove>Sign In</span>
                 <span wire:loading>
