@@ -1,6 +1,6 @@
 <div class="min-h-screen py-6 px-4 md:py-10 md:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto">
-        <div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 mb-6 md:mb-8 shadow-lg">
+        <div class="bg-white rounded-lg border border-gray-200 p-6 md:p-8 mb-6 md:mb-8">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 border-b border-gray-200 pb-3">
                 Track Your Service Request
             </h2>
@@ -17,9 +17,9 @@
                     <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                         <input type="text" wire:model="service_code"
                             placeholder="Enter your service code (e.g., SO3l9s-00001)"
-                            class="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-shadow">
+                            class="flex-1 rounded-md border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
                         <button type="submit"
-                            class="w-full sm:w-auto px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors font-medium shadow-sm">
+                            class="w-full sm:w-auto px-6 py-3 bg-primary text-white rounded-md hover:bg-blue-800 transition-colors font-medium shadow-sm">
                             Track
                         </button>
                     </div>
@@ -31,7 +31,7 @@
         </div>
 
         @if ($serviceRequest)
-            <div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-lg">
+            <div class="bg-white rounded-lg border border-gray-200 p-6 md:p-8">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                     <h3 class="text-xl md:text-2xl font-bold text-gray-800">Service Request Details</h3>
                     <a wire:navigate href="{{route('receipt.view', $serviceRequest->id)}}" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center shadow-sm">
@@ -242,9 +242,9 @@
         <form wire:submit.prevent="track" class="flex space-x-2">
             <input type="text" wire:model="service_code"
                 placeholder="Enter service code"
-                class="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                class="flex-1 rounded-md border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
             <button type="submit"
-                class="px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors font-medium">
+                class="px-6 py-3 bg-primary text-white rounded-md hover:bg-blue-800 transition-colors font-medium">
                 Track
             </button>
         </form>

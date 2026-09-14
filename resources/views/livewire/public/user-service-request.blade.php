@@ -1,9 +1,11 @@
 <div class="min-h-screen bg-gray-50 py-10 px-4" x-data="{ copied: false }">
     @if (!$submitted)
-        <div class="max-w-4xl mx-auto bg-white rounded border border-gray-400 p-8">
-            <h2 class="text-2xl text-center text-green-600 font-semibold underline mb-6 border-b pb-3">
-                Service Request Form
-            </h2> 
+        <div class="max-w-4xl mx-auto bg-white rounded-lg border border-gray-200 p-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Service Request Form</h2>
+                <p class="text-gray-500">Please fill out the details below to request a repair.</p>
+            </div>
+            <hr class="mb-8 border-gray-100"> 
             
             @if (session()->has('error'))
                 <div class="mb-6 p-4 bg-red-100 text-red-700 rounded-lg">
@@ -31,119 +33,159 @@
 
             <form wire:submit.prevent="save" class="space-y-6">
 
-                 {{-- Contact --}}
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Contact *</label>
-                    <input type="text" wire:model.live="contact"
-                           class="w-full rounded-lg border py-1 px-2 border-gray-500"
-                           placeholder="Enter your 10-digit mobile number">
-                    @error('contact') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-
-                {{-- Franchise --}}
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Franchise *</label>
-                    <select wire:model="franchise_id"
-                            class="w-full rounded-lg border py-1 px-2 border-gray-500">
-                        <option value="">Select Franchise</option>
-                        @foreach($franchises as $franchise)
-                            <option value="{{ $franchise->id }}">{{ $franchise->franchise_name }}</option>
-                        @endforeach
-                    </select>
-                    @error('franchise_id') 
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p> 
-                    @enderror
-                </div>
-
-                {{-- Service Category --}}
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Service Category *</label>
-                    <select wire:model="service_categories_id"
-                            class="w-full rounded-lg border py-1 px-2 border-gray-500">
-                        <option value="">Select Category</option>
-                        @foreach($serviceCategories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('service_categories_id') 
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p> 
-                    @enderror
-                </div>
-
-                {{-- Owner Info --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {{-- Contact --}}
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Owner Name *</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Contact Number *</label>
+                        <input type="text" wire:model.live="contact"
+                               class="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                               placeholder="Enter 10-digit mobile number">
+                        @error('contact') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+
+                    {{-- Franchise --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Select Franchise *</label>
+                        <select wire:model="franchise_id"
+                                class="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition bg-white">
+                            <option value="">Choose a location...</option>
+                            @foreach($franchises as $franchise)
+                                <option value="{{ $franchise->id }}">{{ $franchise->franchise_name }}</option>
+                            @endforeach
+                        </select>
+                        @error('franchise_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+
+                    {{-- Owner Info --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Owner Name *</label>
                         <input type="text" wire:model="owner_name"
-                               class="w-full rounded-lg border py-1 px-2 border-gray-500 {{ $isExistingCustomer ? 'bg-green-50 border-green-300' : '' }}">
+                               class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition {{ $isExistingCustomer ? 'bg-green-50 border-green-300 text-green-800' : 'border-gray-300' }}"
+                               placeholder="Your full name">
                         @error('owner_name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email (optional)</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address (Optional)</label>
                         <input type="email" wire:model="email"
-                               class="w-full rounded-lg border py-1 px-2 border-gray-500 {{ $isExistingCustomer ? 'bg-green-50 border-green-300' : '' }}">
+                               class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition {{ $isExistingCustomer ? 'bg-green-50 border-green-300 text-green-800' : 'border-gray-300' }}"
+                               placeholder="you@example.com">
                         @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
-                {{-- Product Info --}}
+                <hr class="border-gray-100 my-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Device Information</h3>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {{-- Service Category --}}
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Product Name *</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Device Type *</label>
+                        <select wire:model="service_categories_id"
+                                class="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition bg-white">
+                            <option value="">Select device type...</option>
+                            @foreach($serviceCategories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('service_categories_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+
+                    {{-- Product Name --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Model / Product Name *</label>
                         <input type="text" wire:model="product_name"
-                               class="w-full rounded-lg border py-1 px-2 border-gray-500">
+                               class="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                               placeholder="e.g. iPhone 13 Pro, Dell XPS 15">
                         @error('product_name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
+
+                    {{-- Brand --}}
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Brand *</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Brand *</label>
                         <input type="text" wire:model="brand"
-                               class="w-full rounded-lg border py-1 px-2 border-gray-500 {{ $isExistingCustomer ? 'bg-green-50 border-green-300' : '' }}">
+                               class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition {{ $isExistingCustomer ? 'bg-green-50 border-green-300 text-green-800' : 'border-gray-300' }}"
+                               placeholder="e.g. Apple, Samsung, Dell">
                         @error('brand') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
-                </div>
 
-                {{-- Color --}}
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Color *</label>
-                    <input type="text" wire:model="color"
-                           class="w-full rounded-lg border py-1 px-2 border-gray-500 {{ $isExistingCustomer ? 'bg-green-50 border-green-300' : '' }}">
-                    @error('color') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    {{-- Color --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Color *</label>
+                        <input type="text" wire:model="color"
+                               class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition {{ $isExistingCustomer ? 'bg-green-50 border-green-300 text-green-800' : 'border-gray-300' }}"
+                               placeholder="e.g. Space Gray, Black">
+                        @error('color') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
                 </div>
 
                 {{-- Problem --}}
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Problem Description *</label>
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Problem Description *</label>
                     <textarea wire:model="problem" rows="4"
-                              class="w-full rounded-lg border py-1 px-2 border-gray-500"></textarea>
+                              class="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition resize-none"
+                              placeholder="Please describe the issue you are facing with your device in detail..."></textarea>
                     @error('problem') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- Image Upload --}}
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Upload Image (optional)</label>
-                    
-                    <input type="file" wire:model="image" id="image"
-                           class="w-full text-sm text-gray-600 file:py-2 file:px-4 file:rounded-lg file:border-0 
-                                  file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                    @error('image') 
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p> 
-                    @enderror
+                {{-- Image Upload (Drag & Drop) --}}
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Device Image (Optional)</label>
+                    <div class="mt-1 flex justify-center px-6 pt-8 pb-8 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary hover:bg-gray-50 transition-colors cursor-pointer relative"
+                         x-data="{ isUploading: false, progress: 0 }"
+                         x-on:livewire-upload-start="isUploading = true"
+                         x-on:livewire-upload-finish="isUploading = false"
+                         x-on:livewire-upload-error="isUploading = false"
+                         x-on:livewire-upload-progress="progress = $event.detail.progress">
+                        
+                        <input type="file" wire:model="image" id="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*">
+                        
+                        <div class="space-y-1 text-center relative z-0">
+                            @if ($image)
+                                <div class="mb-4 flex justify-center">
+                                    <img src="{{ $image->temporaryUrl() }}" class="h-40 object-contain rounded-md shadow-sm border border-gray-200">
+                                </div>
+                                <div class="text-sm text-gray-600">
+                                    <span class="text-primary font-semibold hover:underline">Change image</span> or drag and drop another
+                                </div>
+                            @else
+                                <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <div class="flex text-sm text-gray-600 justify-center">
+                                    <span class="relative font-semibold text-primary hover:text-blue-800">
+                                        Click to upload
+                                    </span>
+                                    <p class="pl-1">or drag and drop</p>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">PNG, JPG, GIF up to 5MB</p>
+                            @endif
+                            
+                            <!-- Upload Progress -->
+                            <div x-show="isUploading" class="w-full mt-4 max-w-xs mx-auto">
+                                <div class="bg-gray-200 rounded-full h-2 overflow-hidden">
+                                    <div class="bg-primary h-2 rounded-full transition-all duration-300" :style="`width: ${progress}%`"></div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1 text-center" x-text="`Uploading: ${progress}%`"></p>
+                            </div>
+                        </div>
+                    </div>
+                    @error('image') <p class="text-red-500 text-xs mt-2">{{ $message }}</p> @enderror
                 </div>
 
                 {{-- Submit --}}
-                <div class="flex justify-end">
+                <div class="pt-6 mt-6 border-t border-gray-100 flex justify-end">
                     <button type="submit" wire:loading.attr="disabled"
-                            class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 
-                                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 transition-colors duration-200
-                                   disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
-                        <span wire:loading>
-                            <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
+                            class="px-8 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-blue-800 
+                                   focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200
+                                   disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center min-w-[200px]">
+                        <span wire:loading class="mr-2">
+                            <i class="fas fa-circle-notch fa-spin"></i>
                         </span>
-                        <span wire:loading.remove>
+                        <span wire:loading.remove class="mr-2">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
+                        <span>
                             @if($isExistingCustomer)
                                 Submit New Request
                             @else
@@ -159,7 +201,7 @@
        
         
         <!-- Success Page -->
-        <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-8 text-center">
+        <div class="max-w-2xl mx-auto bg-white rounded-lg border border-gray-200 p-8 text-center">
             <!-- Logo/Header -->
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-indigo-600">NovaFix</h1>

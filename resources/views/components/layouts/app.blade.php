@@ -101,18 +101,22 @@
 <body class="bg-background">
     <!-- Header -->
     <header class="bg-white shadow-sm fixed w-full z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <div class="flex-shrink-0">
                 <a wire:navigate href="{{route('homepage')}}" class="text-4xl font-bold text-gray-800">NovaFix</a>
             </div>
-            <nav class="hidden md:flex space-x-8">
+            <nav class="hidden md:flex flex-1 justify-center gap-8">
                 <a wire:navigate href="{{route('homepage')}}" class="nav-link text-gray-700 hover:text-primary py-2 transition">Home</a>
                 <a wire:navigate href="{{route('learn')}}" class="nav-link text-gray-700 hover:text-primary py-2 transition">Learn</a>
                 <a wire:navigate href="{{route('track.service')}}" class="nav-link text-gray-700 hover:text-primary py-2 transition">Track Status</a>
                 <a wire:navigate href="{{route('contact')}}" class="nav-link text-gray-700 hover:text-primary py-2 transition">Contact</a>
-                <a wire:navigate href="{{route('user.service.request')}}" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">Request For Repair</a>
             </nav>
-            <div class="md:hidden">
+            <div class="hidden md:flex flex-shrink-0">
+                <a wire:navigate href="{{route('user.service.request')}}" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition flex items-center">
+                    <i class="fas fa-tools mr-2"></i> Request For Repair
+                </a>
+            </div>
+            <div class="md:hidden flex items-center">
                 <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-gray-700 focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
@@ -126,7 +130,9 @@
             <a href="{{route('learn')}}" class="block py-2 text-gray-700 hover:text-primary">Learn</a>
             <a href="{{route('track.service')}}" class="block py-2 text-gray-700 hover:text-primary">Track Status</a>
             <a  href="{{route('contact')}}" class="block py-2 text-gray-700 hover:text-primary">Contact</a>
-            <a href="{{route('user.service.request')}}" class="block mt-2 bg-primary text-white px-4 py-2 rounded-md text-center hover:bg-blue-800">Request For Repair</a>
+            <a href="{{route('user.service.request')}}" class="mt-2 bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 flex items-center justify-center">
+                <i class="fas fa-tools mr-2"></i> Request For Repair
+            </a>
         </div>
     </header>
     
@@ -136,7 +142,7 @@
 
     <!-- Footer -->
     <footer id="contact" class="bg-gray-800 text-white py-12">
-        <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div>
                     <h3 class="text-2xl mb-4"><span class="text-accent">Nova</span>Fix</h3>
@@ -184,6 +190,5 @@
             </div>
         </div>
     </footer>
-   
 </body>
 </html>

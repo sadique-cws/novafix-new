@@ -11,7 +11,7 @@
         </div>
 
         <!-- Policy Content -->
-        <div class="bg-white shadow-md rounded-2xl p-8 space-y-8">
+        <div class="bg-white border border-gray-200 rounded-lg p-8 space-y-8">
 
             <!-- Section 1 -->
             <div>

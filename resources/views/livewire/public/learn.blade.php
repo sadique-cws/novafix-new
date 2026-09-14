@@ -47,7 +47,7 @@
 <div class="bg-background">
     <!-- IT Repair Training Section -->
     <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl text-gray-800 mb-4 section-title">IT Repair Training Program</h2>
                 <p class="text-gray-600 max-w-2xl mx-auto">Looking to start a career in IT repairing service? Our comprehensive training program will provide you with the skills and knowledge needed to succeed</p>

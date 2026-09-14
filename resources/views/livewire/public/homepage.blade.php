@@ -1,7 +1,7 @@
 <div>
     <!-- Hero Section -->
         <section class="hero-pattern pt-32 pb-20 text-white">
-            <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center">
                 <div class="md:w-1/2 mb-10 md:mb-0">
                     <h1 class="text-4xl md:text-5xl mb-4">All Electronic Services Under One Roof</h1>
                     <p class="text-xl mb-8">Expert repair services for all your electronic devices with warranty</p>
@@ -23,7 +23,7 @@
 
       <!-- Services Section -->
     <section id="services" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl text-gray-800 mb-4 section-title">Services Provided</h2>
                 <p class="text-gray-600 max-w-2xl mx-auto">We offer comprehensive electronic repair services for all your devices with 6 months warranty</p>
@@ -105,7 +105,7 @@
         </div>
     </section>
        <section class="py-16 bg-white">
-            <div class="container mx-auto px-4">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl text-gray-800 mb-4 section-title">Our Experience</h2>
                 </div>
@@ -125,7 +125,7 @@
         </section>
    <!-- Benefits Section -->
         <section class="py-16 bg-gray-50">
-            <div class="container mx-auto px-4">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl text-gray-800 mb-4 section-title">Why Choose NovaFix?</h2>
                     <p class="text-gray-600 max-w-2xl mx-auto">We provide comprehensive electronic repair services with a focus on quality and customer satisfaction</p>
@@ -187,7 +187,7 @@
 
         <!-- Location Section -->
         <section class="py-16 bg-gray-50">
-            <div class="container mx-auto px-4">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl text-gray-800 mb-4 section-title">Our Location</h2>
                     <p class="text-gray-600 max-w-2xl mx-auto">Visit our service center for expert electronic repairs</p>

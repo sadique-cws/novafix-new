@@ -3,7 +3,7 @@
    
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-12">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <!-- Page Header -->
         <div class="text-center mb-16">
             <h1 class="text-4xl md:text-5xl font-bold text-primary mb-4">Get in Touch With Us</h1>
@@ -14,7 +14,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <!-- Contact Form -->
-            <div class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="bg-white rounded-lg border border-gray-200 p-8">
                 <h2 class="text-2xl font-bold text-dark mb-6">Send us a Message</h2>
                 
                 @if(session()->has('success'))
@@ -32,43 +32,43 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-gray-700 mb-2 font-medium">Full Name <span class="text-red-500">*</span></label>
-                            <input type="text" wire:model="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                            <input type="text" wire:model="name" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
                             @error('name') <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span> @enderror
                         </div>
 
                         <div>
                             <label class="block text-gray-700 mb-2 font-medium">Phone Number <span class="text-red-500">*</span></label>
-                            <input type="text" wire:model="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                            <input type="text" wire:model="phone" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
                             @error('phone') <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-gray-700 mb-2 font-medium">Company</label>
-                        <input type="text" wire:model="company" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                        <input type="text" wire:model="company" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
                     </div>
 
                     <div>
                         <label class="block text-gray-700 mb-2 font-medium">Email Address <span class="text-red-500">*</span></label>
-                        <input type="email" wire:model="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                        <input type="email" wire:model="email" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
                         @error('email') <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
                         <label class="block text-gray-700 mb-2 font-medium">Subject <span class="text-red-500">*</span></label>
-                        <input type="text" wire:model="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                        <input type="text" wire:model="subject" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
                         @error('subject') <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
                         <label class="block text-gray-700 mb-2 font-medium">Message <span class="text-red-500">*</span></label>
-                        <textarea wire:model="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"></textarea>
+                        <textarea wire:model="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"></textarea>
                         @error('message') <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                  =  <div>
                         <label class="block text-gray-700 mb-2 font-medium">How Did You Here About Us <span class="text-red-500">*</span></label>
-                        <input type="text" wire:model="about_us" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                        <input type="text" wire:model="about_us" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
                         @error('about_us') <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
@@ -81,7 +81,7 @@
 
             <!-- Contact Information -->
             <div class="space-y-8">
-                <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="bg-white rounded-lg border border-gray-200 p-8">
                     <h3 class="text-2xl font-bold text-dark mb-6">Contact Information</h3>
                     
                     <div class="space-y-6">
@@ -148,7 +148,7 @@
                     </div>
                 </div>
                 
-                <div class="bg-accent/10 rounded-2xl p-8 border border-accent/20">
+                <div class="bg-accent/10 rounded-lg p-8 border border-accent/20">
                     <div class="flex items-start">
                         <div class="bg-accent/20 p-3 rounded-full mr-4">
                             <i class="fas fa-lightbulb text-accent text-lg"></i>
@@ -166,8 +166,8 @@
     </main>
 
     <!-- Map Section -->
-    <section class="container mx-auto px-4 py-12">
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
             <div class="h-96 w-full bg-gray-200 flex items-center justify-center">
                 <div class="text-center">
                     <i class="fas fa-map-marked-alt text-4xl text-gray-400 mb-3"></i>
