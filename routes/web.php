@@ -23,6 +23,7 @@ use App\Livewire\Admin\Solution\ServiceSolution;
 use App\Livewire\Admin\StaffManage;
 use App\Livewire\Admin\StaffView;
 use App\Livewire\Admin\ViewFranchises;
+use App\Livewire\Admin\FranchiseServiceRequests;
 use App\Livewire\Franchise\AddReceptioners;
 use App\Livewire\Franchise\AddStaff;
 use App\Livewire\Franchise\Dashboard;
@@ -114,6 +115,7 @@ Route::prefix("admin")->group(function () {
              Route::get('staff-enquiries',StaffEnquiries::class)->name('staff-enquiries');
              Route::get('user-enquiries',UserEnquiry::class)->name('user-enquiries');
              Route::get('/setting', Setting::class)->name('setting');
+             Route::get('franchise-service-requests/{id}', FranchiseServiceRequests::class)->name('franchise-service-requests');
         });
     });
 });
