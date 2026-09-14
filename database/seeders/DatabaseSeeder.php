@@ -10,6 +10,7 @@ use App\Models\Receptioners;
 use App\Models\Staff;
 use App\Models\ServiceCategory;
 use App\Models\ServiceRequest;
+use App\Models\Customer;
 use App\Models\Payment;
 use Faker\Factory as Faker;
 
@@ -110,15 +111,31 @@ class DatabaseSeeder extends Seeder
                 $technician = $faker->randomElement($staffs);
                 $amount = $faker->randomFloat(2, 500, 5000);
 
+                // Create Customer
+                $ownerName = $faker->name;
+                $contact = $faker->numerify('9#########');
+                $email = $faker->safeEmail;
+
+                Customer::updateOrCreate(
+                    [
+                        'contact' => $contact,
+                        'franchise_id' => $franchise->id
+                    ],
+                    [
+                        'name' => $ownerName,
+                        'email' => $email,
+                    ]
+                );
+
                 $request = ServiceRequest::create([
                     'franchise_id'          => $franchise->id,
                     'receptioners_id'       => $receptionist->id,
                     'technician_id'         => $technician->id,
                     'service_categories_id' => $technician->service_categories_id,
                     'service_code'          => strtoupper($faker->bothify('REQ###??')),
-                    'owner_name'            => $faker->name,
-                    'contact'               => $faker->numerify('9#########'),
-                    'email'                 => $faker->safeEmail,
+                    'owner_name'            => $ownerName,
+                    'contact'               => $contact,
+                    'email'                 => $email,
                     'product_name'          => 'Device ' . $faker->word,
                     'brand'                 => 'Brand ' . $faker->word,
                     'color'                 => $faker->safeColorName,

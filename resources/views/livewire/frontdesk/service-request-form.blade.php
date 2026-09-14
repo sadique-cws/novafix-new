@@ -54,6 +54,15 @@
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
+                <!-- Contact -->
+                <div>
+                    <label for="contact" class="block text-sm font-medium text-slate-600">Contact *</label>
+                    <input type="tel" id="contact" wire:model.live="contact" placeholder="Enter 10-digit number"
+                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                    @error('contact')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
                 <!-- Owner Name -->
                 <div>
                     <label for="owner_name" class="block text-sm font-medium text-slate-600">Owner Name *</label>
@@ -72,19 +81,6 @@
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-
-                <!-- Contact -->
-                <div>
-                    <label for="contact" class="block text-sm font-medium text-slate-600">Contact *</label>
-                    <input type="tel" id="contact" wire:model="contact"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
-                    @error('contact')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-
-
-
 
                 <!-- Product Name -->
                 <div>

@@ -13,17 +13,16 @@
     </div>
 </div>
 
-
     <!-- Customers Table -->
     <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
         <table class="w-full text-sm text-left text-gray-900">
             <thead class="bg-blue-800 text-white">
                 <tr>
                     <th class="px-4 py-3">#</th>
-                    <th class="px-4 py-3">Owner Name</th>
+                    <th class="px-4 py-3">Customer Name</th>
                     <th class="px-4 py-3">Contact</th>
                     <th class="px-4 py-3">Email</th>
-                    <th class="px-4 py-3">Product</th>
+                    <th class="px-4 py-3 text-center">Total Requests</th>
                     <th class="px-4 py-3 text-center">Action</th>
                 </tr>
             </thead>
@@ -31,12 +30,14 @@
                 @forelse ($customers as $index => $customer)
                     <tr class="border-b hover:bg-gray-100">
                         <td class="px-4 py-3">{{ $index + 1 }}</td>
-                        <td class="px-4 py-3">{{ $customer->owner_name }}</td>
+                        <td class="px-4 py-3 font-medium">{{ $customer->name }}</td>
                         <td class="px-4 py-3">{{ $customer->contact }}</td>
                         <td class="px-4 py-3">{{ $customer->email ?? 'N/A' }}</td>
-                        <td class="px-4 py-3">{{ $customer->product_name }}</td>
                         <td class="px-4 py-3 text-center">
-                            <a href=""
+                            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ $customer->service_requests_count }}</span>
+                        </td>
+                        <td class="px-4 py-3 text-center">
+                            <a wire:navigate href="{{ route('franchise.view.customer', $customer->id) }}"
                                class="inline-block px-3 py-1 bg-emerald-500 text-white text-xs rounded-lg hover:bg-emerald-600">
                                 View
                             </a>

@@ -28,6 +28,7 @@ use App\Livewire\Franchise\AddReceptioners;
 use App\Livewire\Franchise\AddStaff;
 use App\Livewire\Franchise\Dashboard;
 use App\Livewire\Franchise\ManageCustomer;
+use App\Livewire\Franchise\ViewCustomer;
 use App\Livewire\Franchise\ManageReceptioners;
 use App\Livewire\Franchise\ManageService;
 use App\Livewire\Franchise\ManagePayments;
@@ -141,6 +142,7 @@ Route::prefix("franchise")->group(function () {
             Route::get('/manage-payments', ManagePayments::class)->name('manage.payments');
             Route::get('/manage-payments/{paymentId}', ViewCustomerPayment::class)->name('payments.view');
             Route::get('/manage-customers', ManageCustomer::class)->name('manage.customer');
+            Route::get('/view-customer/{id}', ViewCustomer::class)->name('view.customer');
             Route::get('/repair-requests',RepairRequest::class)->name('repair-requests');
             Route::get('/repair-requests/{id}', RepairRequestView::class)->name('repair-request.view');
         });

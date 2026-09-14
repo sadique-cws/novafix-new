@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Staff;
 use App\Models\ServiceCategory;
 use App\Models\ServiceRequest;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
 use Carbon\Carbon;
@@ -92,6 +93,22 @@ class ServiceRequestForm extends Component
         $this->imagekit_url = null;
     }
 
+    public function updatedContact($value)
+    {
+        if (strlen($value) == 10) {
+            $customer = Customer::where('contact', $value);
+            if ($this->franchise_id) {
+                $customer->where('franchise_id', $this->franchise_id);
+            }
+            $customer = $customer->first();
+
+            if ($customer) {
+                $this->owner_name = $customer->name;
+                $this->email = $customer->email;
+            }
+        }
+    }
+
     public function setCapturedImage($imageData)
     {
         $this->capturedImage = $imageData;
@@ -171,6 +188,20 @@ class ServiceRequestForm extends Component
                 'status_request' => 1,
                 // Removed the imagekit_data field as it doesn't exist in the database
             ]);
+
+            // Save or Update Customer
+            if ($this->contact) {
+                Customer::updateOrCreate(
+                    [
+                        'contact' => $this->contact,
+                        'franchise_id' => $this->franchise_id
+                    ],
+                    [
+                        'name' => $this->owner_name,
+                        'email' => $this->email,
+                    ]
+                );
+            }
 
             DB::commit();
             $this->resetFormReq();
