@@ -1,136 +1,161 @@
-<main class="p-4 sm:p-6 bg-[#F9FAFB] text-[#111827]">
-    <!-- Stats Overview -->
-    <div class="grid grid-cols-2 md:grid grid-col-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+<div class="space-y-6">
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         
         <!-- Total Receptionists -->
-        <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-[#3B82F6]/20 text-[#1E40AF] mr-3">
+        <div class="bg-white border border-gray-200 rounded-lg p-6 h-32 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                     <i class="fas fa-user-tie"></i>
                 </div>
-                <div>
-                    <p class="text-sm text-gray-500">Total Receptionists</p>
-                    <h3 class="text-xl font-semibold">{{ $stats['totalReceptionists'] }}</h3>
-                </div>
+                <p class="text-sm font-medium text-gray-500">Total Receptionists</p>
             </div>
+            <h3 class="text-3xl font-bold text-gray-900">{{ $stats['totalReceptionists'] }}</h3>
         </div>
 
         <!-- Total Customers -->
-        <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-[#10B981]/20 text-[#10B981] mr-3">
+        <div class="bg-white border border-gray-200 rounded-lg p-6 h-32 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600">
                     <i class="fas fa-users"></i>
                 </div>
-                <div>
-                    <p class="text-sm text-gray-500">Total Customers</p>
-                    <h3 class="text-xl font-semibold">{{ number_format($stats['totalCustomers']) }}</h3>
-                </div>
+                <p class="text-sm font-medium text-gray-500">Total Customers</p>
             </div>
+            <h3 class="text-3xl font-bold text-gray-900">{{ number_format($stats['totalCustomers']) }}</h3>
         </div>
 
         <!-- Services Completed -->
-        <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-[#1E40AF]/20 text-[#1E40AF] mr-3">
+        <div class="bg-white border border-gray-200 rounded-lg p-6 h-32 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
                     <i class="fas fa-wrench"></i>
                 </div>
-                <div>
-                    <p class="text-sm text-gray-500">Services Completed</p>
-                    <h3 class="text-xl font-semibold">{{ number_format($stats['servicesCompleted']) }}</h3>
-                </div>
+                <p class="text-sm font-medium text-gray-500">Services Completed</p>
             </div>
+            <h3 class="text-3xl font-bold text-gray-900">{{ number_format($stats['servicesCompleted']) }}</h3>
         </div>
 
         <!-- Total Revenue -->
-        <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-[#3B82F6]/20 text-[#3B82F6] mr-3">
+        <div class="bg-white border border-gray-200 rounded-lg p-6 h-32 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-600">
                     <i class="fas fa-file-invoice-dollar"></i>
                 </div>
-                <div>
-                    <p class="text-sm text-gray-500">Total Revenue</p>
-                    <h3 class="text-xl font-semibold">₹
-                        @php
-                            $revenue = $stats['totalRevenue'];
-                            if ($revenue >= 10000000) {
-                                echo number_format($revenue / 10000000, 1) . ' Cr';
-                            } elseif ($revenue >= 100000) {
-                                echo number_format($revenue / 100000, 1) . ' L';
-                            } elseif ($revenue >= 1000) {
-                                echo number_format($revenue / 1000, 1) . 'K';
-                            } else {
-                                echo number_format($revenue, 2);
-                            }
-                        @endphp
-                    </h3>
-                </div>
+                <p class="text-sm font-medium text-gray-500">Total Revenue</p>
             </div>
+            <h3 class="text-3xl font-bold text-gray-900">₹
+                @php
+                    $revenue = $stats['totalRevenue'];
+                    if ($revenue >= 10000000) {
+                        echo number_format($revenue / 10000000, 1) . 'Cr';
+                    } elseif ($revenue >= 100000) {
+                        echo number_format($revenue / 100000, 1) . 'L';
+                    } elseif ($revenue >= 1000) {
+                        echo number_format($revenue / 1000, 1) . 'K';
+                    } else {
+                        echo number_format($revenue, 2);
+                    }
+                @endphp
+            </h3>
         </div>
     </div>
 
     <!-- Recent Orders + Quick Actions -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         <!-- Recent Orders -->
-        <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm lg:col-span-2">
-            <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
-                <h2 class="text-lg font-semibold">Recent Orders</h2>
-                <a href="" class="text-sm text-[#1E40AF] hover:underline">View All</a>
+        <div class="lg:col-span-2 bg-white rounded-lg border border-gray-200">
+            <div class="p-5 border-b border-gray-100 flex justify-between items-center">
+                <h2 class="text-base font-bold text-gray-900 uppercase tracking-wide">Recent Orders</h2>
+                <a href="" class="text-sm font-medium text-primary hover:text-primary/80">View All</a>
             </div>
 
             <div class="overflow-x-auto">
-                <table class="min-w-full border-t border-gray-200 text-sm">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-4 py-2 text-left text-gray-500">Order ID</th>
-                            <th class="px-4 py-2 text-left text-gray-500">Customer</th>
-                            <th class="px-4 py-2 text-left text-gray-500">Service</th>
-                            <th class="px-4 py-2 text-left text-gray-500">Status</th>
-                            <th class="px-4 py-2 text-left text-gray-500">Amount</th>
+                <x-ui.table>
+                    <x-slot name="head">
+                        <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200 bg-gray-50/50">Order ID</th>
+                        <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200 bg-gray-50/50">Customer</th>
+                        <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200 bg-gray-50/50">Service</th>
+                        <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200 bg-gray-50/50">Status</th>
+                        <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200 bg-gray-50/50">Amount</th>
+                    </x-slot>
+                    
+                    @forelse ($recentOrders as $order)
+                        <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+                            <td class="px-5 py-3 whitespace-nowrap text-sm font-medium text-gray-900">#{{ $order['id'] }}</td>
+                            <td class="px-5 py-3 whitespace-nowrap text-sm text-gray-700">{{ $order['customer'] }}</td>
+                            <td class="px-5 py-3 whitespace-nowrap text-sm text-gray-700">{{ $order['service'] }}</td>
+                            <td class="px-5 py-3 whitespace-nowrap text-sm">
+                                @php
+                                    $color = 'gray';
+                                    if(str_contains(strtolower($order['status']['text']), 'pend')) $color = 'blue';
+                                    if(str_contains(strtolower($order['status']['text']), 'progress') || str_contains(strtolower($order['status']['text']), 'process')) $color = 'yellow';
+                                    if(str_contains(strtolower($order['status']['text']), 'comple')) $color = 'green';
+                                    if(str_contains(strtolower($order['status']['text']), 'reject')) $color = 'red';
+                                @endphp
+                                <x-ui.badge :color="$color">{{ $order['status']['text'] }}</x-ui.badge>
+                            </td>
+                            <td class="px-5 py-3 whitespace-nowrap text-sm font-medium text-green-600">₹{{ number_format($order['amount'], 2) }}</td>
                         </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        @foreach ($recentOrders as $order)
-                            <tr>
-                                <td class="px-4 py-2">{{ $order['id'] }}</td>
-                                <td class="px-4 py-2 text-gray-600">{{ $order['customer'] }}</td>
-                                <td class="px-4 py-2 text-gray-600">{{ $order['service'] }}</td>
-                                <td class="px-4 py-2">
-                                    <span class="px-2 py-1 text-xs rounded-full {{ $order['status']['class'] }}">
-                                        {{ $order['status']['text'] }}
-                                    </span>
-                                </td>
-                                <td class="px-4 py-2 text-gray-600">₹{{ number_format($order['amount'], 2) }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="px-5 py-8 text-center text-sm text-gray-500">No recent orders found.</td>
+                        </tr>
+                    @endforelse
+                </x-ui.table>
             </div>
         </div>
 
         <!-- Quick Actions + Notifications -->
-        <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-            <h2 class="text-lg font-semibold mb-4">Quick Actions</h2>
-            <div class="space-y-3">
+        <div class="bg-white rounded-lg border border-gray-200">
+            <div class="p-5 border-b border-gray-100">
+                <h2 class="text-base font-bold text-gray-900 uppercase tracking-wide">Quick Actions</h2>
+            </div>
+            <div class="p-4 space-y-2">
                 <a wire:navigate href="{{ route('franchise.add.staff') }}"
-                   class="block p-3 bg-[#3B82F6]/10 text-[#1E40AF] rounded-lg hover:bg-[#3B82F6]/20 transition">
-                    <i class="fas fa-user-tie mr-2"></i>Add New Staff
+                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group">
+                    <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-100 transition-colors">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">Add New Staff</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Register a new technician</p>
+                    </div>
                 </a>
+                
                 <a wire:navigate href="{{route('franchise.add.receptioners')}}"
-                   class="block p-3 bg-[#10B981]/10 text-[#10B981] rounded-lg hover:bg-[#10B981]/20 transition">
-                    <i class="fas fa-concierge-bell mr-2"></i>Add New Receptionist
+                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group">
+                    <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center text-green-600 group-hover:bg-green-100 transition-colors">
+                        <i class="fas fa-concierge-bell"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">Add Receptionist</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Register a frontdesk user</p>
+                    </div>
                 </a>
+                
                 <a wire:navigate href="{{ route('franchise.manage.payments') }}"
-                   class="block p-3 bg-[#1E40AF]/10 text-[#1E40AF] rounded-lg hover:bg-[#1E40AF]/20 transition">
-                    <i class="fas fa-money-check-alt mr-2"></i>Manage Payments
+                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-100 transition-colors">
+                        <i class="fas fa-money-check-alt"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">Manage Payments</p>
+                        <p class="text-xs text-gray-500 mt-0.5">View and record transactions</p>
+                    </div>
                 </a>
-                <a wire:navigate href=""{{ route('franchise.manage.service') }}""
-                   class="block p-3 bg-[#3B82F6]/10 text-[#3B82F6] rounded-lg hover:bg-[#3B82F6]/20 transition">
-                    <i class="fas fa-th-list mr-2"></i>Manage Service Category
+                
+                <a wire:navigate href="{{ route('franchise.manage.service') }}"
+                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group">
+                    <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600 group-hover:bg-purple-100 transition-colors">
+                        <i class="fas fa-th-list"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">Service Categories</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Configure repair types</p>
+                    </div>
                 </a>
             </div>
-
-           
         </div>
     </div>
-</main>
+</div>

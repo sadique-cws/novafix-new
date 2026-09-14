@@ -30,8 +30,8 @@
             
             <div class="pt-4 pb-4 px-4 border-b border-gray-800 flex items-center justify-start gap-3">
                 <div class="py-1 px-2 rounded-lg bg-[#1E40AF] text-xl font-medium text-[#F9FAFB]">NF</div>
-                <h2 class="text-lg font-medium md:text-xl text-white">Receptionist</h2>
-                <button @click="isMobileSidebarOpen = false" class="lg:hidden ml-10 text-gray-500 hover:text-gray-300">
+                <h2 class="text-base font-medium md:text-lg text-white">Receptionist</h2>
+                <button @click="isMobileSidebarOpen = false" class="lg:hidden ml-auto text-gray-500 hover:text-gray-300">
                     <i class="fas text-lg fa-times"></i>
                 </button>
             </div>
