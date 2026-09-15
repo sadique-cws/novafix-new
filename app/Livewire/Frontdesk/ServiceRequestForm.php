@@ -8,6 +8,7 @@ use App\Models\Staff;
 use App\Models\ServiceCategory;
 use App\Models\ServiceRequest;
 use App\Models\Customer;
+use App\Models\Shop;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
 use Carbon\Carbon;
@@ -50,18 +51,23 @@ class ServiceRequestForm extends Component
     public $imagekit_url;
     public $uploadProgress = 0;
     public $serial_no;
+    public $request_type = 'customer';
+    public $shop_id;
+    public $new_shop_name;
+    public $new_owner_name;
+    public $new_contact;
+    public $new_email;
+    public $new_address;
+    public $new_gst_number;
 
     protected function rules()
     {
-        return [
+        $rules = [
             'service_categories_id' => 'required|exists:service_categories,id',
             'technician_id' => 'nullable|exists:staff,id',
             'franchise_id' => 'nullable|exists:franchises,id',
-            'serial_no' =>'required',
-            'owner_name' => 'required|string|max:255',
+            'serial_no' => 'required',
             'product_name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255',
-            'contact' => 'required|regex:/^[6-9]\d{9}$/',
             'brand' => 'required|string|max:255',
             'color' => 'required|string|max:100',
             'service_amount' => 'nullable|numeric|min:0',
@@ -69,6 +75,22 @@ class ServiceRequestForm extends Component
             'estimate_delivery' => 'date',
             'image' => 'nullable|image|max:5120',
         ];
+
+        if ($this->request_type === 'customer') {
+            $rules['owner_name'] = 'required|string|max:255';
+            $rules['contact'] = 'required|regex:/^[6-9]\d{9}$/';
+            $rules['email'] = 'nullable|email|max:255';
+        } else {
+            $rules['shop_id'] = 'required';
+            if ($this->shop_id === 'new') {
+                $rules['new_shop_name'] = 'required|string|max:255';
+                $rules['new_owner_name'] = 'required|string|max:255';
+                $rules['new_contact'] = 'required|regex:/^[6-9]\d{9}$/';
+                $rules['new_email'] = 'nullable|email|max:255';
+            }
+        }
+
+        return $rules;
     }
 
     public function mount()
@@ -91,6 +113,19 @@ class ServiceRequestForm extends Component
 
         $this->capturedImage = null;
         $this->imagekit_url = null;
+    }
+
+
+    public function updatedShopId($value)
+    {
+        if ($value) {
+            $shop = Shop::find($value);
+            if ($shop) {
+                $this->owner_name = $shop->owner_name ?? $shop->shop_name;
+                $this->contact = $shop->contact;
+                $this->email = $shop->email;
+            }
+        }
     }
 
     public function updatedContact($value)
@@ -145,6 +180,31 @@ class ServiceRequestForm extends Component
 
         DB::beginTransaction();
         try {
+            if ($this->request_type === 'shop') {
+                if ($this->shop_id === 'new') {
+                    $shop = Shop::create([
+                        'franchise_id' => $this->franchise_id,
+                        'shop_name' => $this->new_shop_name,
+                        'owner_name' => $this->new_owner_name,
+                        'contact' => $this->new_contact,
+                        'email' => $this->new_email,
+                        'address' => $this->new_address,
+                        'gst_number' => $this->new_gst_number,
+                    ]);
+                    $this->shop_id = $shop->id;
+                    $this->owner_name = $shop->owner_name ?? $shop->shop_name;
+                    $this->contact = $shop->contact;
+                    $this->email = $shop->email;
+                } else {
+                    $shop = Shop::find($this->shop_id);
+                    if ($shop) {
+                        $this->owner_name = $shop->owner_name ?? $shop->shop_name;
+                        $this->contact = $shop->contact;
+                        $this->email = $shop->email;
+                    }
+                }
+            }
+
             $imagePath = null;
             // ensure file id variable exists even when no image is uploaded
             $imageFIleId = null;
@@ -164,6 +224,8 @@ class ServiceRequestForm extends Component
             }
 
             $serviceRequest = ServiceRequest::create([
+                'is_shop' => $this->request_type === 'shop',
+                'shop_id' => $this->request_type === 'shop' ? $this->shop_id : null,
                 'receptioners_id' => $this->receptioners_id,
                 'serial_no' => $this->serial_no,
                 'technician_id' => $this->technician_id,
@@ -189,8 +251,8 @@ class ServiceRequestForm extends Component
                 // Removed the imagekit_data field as it doesn't exist in the database
             ]);
 
-            // Save or Update Customer
-            if ($this->contact) {
+            // Save or Update Customer if direct customer
+            if ($this->request_type === 'customer' && $this->contact) {
                 Customer::updateOrCreate(
                     [
                         'contact' => $this->contact,
@@ -312,8 +374,11 @@ class ServiceRequestForm extends Component
 
         // If we have a franchise id, filter technicians by franchise, otherwise show all technicians
         $technicians = $franchiseId ? Staff::where('franchise_id', $franchiseId)->get() : Staff::all();
+        $shops = $franchiseId ? Shop::where('franchise_id', $franchiseId)->get() : Shop::all();
+        
         return view('livewire.frontdesk.service-request-form', [
             'technicians' => $technicians,
+            'shops' => $shops,
             'categories' => ServiceCategory::all(),
             'brands' => Brand::select('name')->get(),
         ]);

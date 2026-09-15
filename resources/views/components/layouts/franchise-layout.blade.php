@@ -68,10 +68,17 @@
                         </a>
                     </li>
                     <li class="mb-1">
+                        <a wire:navigate href="{{ route('franchise.manage.shops') }}" 
+                              class="flex items-center font-medium p-3 rounded-lg {{ request()->routeIs('franchise.manage.shops', 'franchise.view.shops') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white transition-colors' }}">
+                            <i class="fas fa-store mr-3 w-5 text-center"></i>
+                            <span>Shops (B2B)</span>
+                        </a>
+                    </li>
+                    <li class="mb-1">
                         <a wire:navigate href="{{ route('franchise.manage.customer') }}" 
                               class="flex items-center font-medium p-3 rounded-lg {{ request()->routeIs('franchise.manage.customer', 'franchise.view.customer') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white transition-colors' }}">
                             <i class="fas fa-users mr-3 w-5 text-center"></i>
-                            <span>Customers</span>
+                            <span>Direct Customers</span>
                         </a>
                     </li>
                     <li class="mb-1">
