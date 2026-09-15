@@ -12,12 +12,12 @@
   
   // Variant classes
   $variantClasses = match($variant) {
-    'primary' => 'bg-primary text-white hover:bg-blue-800 focus:ring-primary',
+    'primary' => 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
     'secondary' => 'bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500',
     'danger' => 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
-    'outline' => 'bg-transparent border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-primary',
-    'ghost' => 'bg-transparent  text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:ring-gray-500',
-    default => 'bg-primary text-white hover:bg-blue-800 focus:ring-primary',
+    'outline' => 'bg-transparent border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-blue-500',
+    'ghost' => 'bg-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:ring-gray-500',
+    default => 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
   };
   
   // Size classes
