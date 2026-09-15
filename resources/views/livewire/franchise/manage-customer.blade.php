@@ -1,54 +1,54 @@
-<div class="p-6 bg-gray-50 min-h-screen">
-   <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
-    <!-- Title -->
-    <h1 class="text-2xl text-blue-800">Manage Customers</h1>
-
-    <!-- Search -->
-    <div class="relative w-full md:w-72">
-        <input type="text" wire:model.live="search" 
-               placeholder="Search by name, contact, or email"
-               class="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 text-sm
-                      focus:outline-none focus:ring-1 focus:ring-blue-500">
-        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+<div class="space-y-6">
+    <!-- Search and Actions -->
+    <div class="flex flex-col md:flex-row gap-4 mb-4">
+        <div class="flex-1">
+            <x-ui.input type="text" wire:model.live="search" placeholder="Search by name, contact, or email..." />
+        </div>
     </div>
-</div>
 
     <!-- Customers Table -->
-    <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
-        <table class="w-full text-sm text-left text-gray-900">
-            <thead class="bg-blue-800 text-white">
-                <tr>
-                    <th class="px-4 py-3">#</th>
-                    <th class="px-4 py-3">Customer Name</th>
-                    <th class="px-4 py-3">Contact</th>
-                    <th class="px-4 py-3">Email</th>
-                    <th class="px-4 py-3 text-center">Total Requests</th>
-                    <th class="px-4 py-3 text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($customers as $index => $customer)
-                    <tr class="border-b hover:bg-gray-100">
-                        <td class="px-4 py-3">{{ $index + 1 }}</td>
-                        <td class="px-4 py-3 font-medium">{{ $customer->name }}</td>
-                        <td class="px-4 py-3">{{ $customer->contact }}</td>
-                        <td class="px-4 py-3">{{ $customer->email ?? 'N/A' }}</td>
-                        <td class="px-4 py-3 text-center">
-                            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ $customer->service_requests_count }}</span>
-                        </td>
-                        <td class="px-4 py-3 text-center">
-                            <a wire:navigate href="{{ route('franchise.view.customer', $customer->id) }}"
-                               class="inline-block px-3 py-1 bg-emerald-500 text-white text-xs rounded-lg hover:bg-emerald-600">
-                                View
+    <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
+        <x-ui.table>
+            <x-slot name="head">
+                <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">#</th>
+                <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Customer Name</th>
+                <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Contact</th>
+                <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase hidden sm:table-cell">Email</th>
+                <th class="px-5 py-3 text-center text-xs font-bold text-gray-500 uppercase">Total Requests</th>
+                <th class="px-5 py-3 text-right text-xs font-bold text-gray-500 uppercase">Actions</th>
+            </x-slot>
+
+            @forelse ($customers as $index => $customer)
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+                    <td class="px-5 py-4 text-sm text-gray-900 font-medium">{{ $index + 1 }}</td>
+                    <td class="px-5 py-4 text-sm text-gray-900 font-medium">{{ $customer->name }}</td>
+                    <td class="px-5 py-4 text-sm text-gray-700">{{ $customer->contact }}</td>
+                    <td class="px-5 py-4 text-sm text-gray-700 hidden sm:table-cell">{{ $customer->email ?? 'N/A' }}</td>
+                    <td class="px-5 py-4 text-sm text-center">
+                        <x-ui.badge color="blue">{{ $customer->service_requests_count }}</x-ui.badge>
+                    </td>
+                    <td class="px-5 py-4 text-sm text-right font-medium">
+                        <div class="flex justify-end space-x-3">
+                            <a wire:navigate href="{{ route('franchise.view.customer', $customer->id) }}" class="text-blue-500 hover:text-blue-700 transition" title="View">
+                                <i class="fas fa-eye text-lg"></i>
                             </a>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="px-4 py-3 text-center text-gray-500">No customers found</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="6" class="px-5 py-8 text-center text-sm text-gray-500">
+                        <i class="fas fa-users text-4xl mb-4 text-gray-300 block"></i>
+                        No customers found.
+                    </td>
+                </tr>
+            @endforelse
+        </x-ui.table>
+
+        @if($customers->hasPages())
+            <div class="bg-gray-50 px-5 py-3 border-t border-gray-200">
+                {{ $customers->links() }}
+            </div>
+        @endif
     </div>
 </div>

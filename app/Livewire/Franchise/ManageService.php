@@ -5,34 +5,27 @@ namespace App\Livewire\Franchise;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\ServiceCategory;
 use Livewire\Attributes\Title;
 
 #[Title('Manage Services')]
 #[Layout('components.layouts.franchise-layout')]
-
 class ManageService extends Component
 {
+    use WithPagination;
+
     public $showAddModal = false;
     public $categoryName = '';
-    public $categories = [];
     public $editId = null;
-
-    public function mount()
-    {
-        $this->loadCategories();
-    }
-
-    public function loadCategories()
-    {
-        $this->categories = ServiceCategory::all();
-    }
+    public $search = '';
+    public $perPage = 10;
 
     #[On('startAdd')]
     public function viewAddModal()
     {
         $this->resetForm();
-        $this->showAddModal = true;
+        $this->dispatch('open-modal', 'serviceModal');
     }
 
     public function addCategory()
@@ -51,7 +44,6 @@ class ManageService extends Component
         }
 
         $this->closeModal();
-        $this->loadCategories();
     }
 
     public function startEdit($id)
@@ -60,21 +52,19 @@ class ManageService extends Component
         if ($category) {
             $this->editId = $id;
             $this->categoryName = $category->name;
-            $this->showAddModal = true;
+            $this->dispatch('open-modal', 'serviceModal');
         }
     }
 
-   
     public function deleteCategory($id)
     {
         ServiceCategory::destroy($id);
         session()->flash('message', 'Category deleted successfully.');
-        $this->loadCategories();
     }
 
     public function closeModal()
     {
-        $this->showAddModal = false;
+        $this->dispatch('close-modal', 'serviceModal');
         $this->resetForm();
     }
 
@@ -86,6 +76,15 @@ class ManageService extends Component
 
     public function render()
     {
-        return view('livewire.franchise.manage-service');
+        $categories = ServiceCategory::query()
+            ->when($this->search, function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })
+            ->latest()
+            ->paginate($this->perPage);
+
+        return view('livewire.franchise.manage-service', [
+            'categories' => $categories
+        ]);
     }
 }

@@ -7,12 +7,16 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\WithPagination;
 
 #[Title('Manage Customers')]
 #[Layout('components.layouts.franchise-layout')]
 class ManageCustomer extends Component
 {
+    use WithPagination;
+
     public $search = '';
+    public $perPage = 10;
 
     public function render()
     {
@@ -31,7 +35,7 @@ class ManageCustomer extends Component
                 });
             })
             ->latest()
-            ->get();
+            ->paginate($this->perPage);
 
         return view('livewire.franchise.manage-customer', [
             'customers' => $customers,

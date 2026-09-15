@@ -1,7 +1,14 @@
 <div class="space-y-6">
-    <div class="flex justify-between items-center">
-        <h2 class="text-xl font-bold text-gray-800">Manage Shops (B2B)</h2>
-        <x-ui.button wire:click="openModal">Add New Shop</x-ui.button>
+    <!-- Search and Actions -->
+    <div class="flex flex-col md:flex-row gap-4 mb-4">
+        <div class="flex-1">
+            <x-ui.input type="text" wire:model.live="search" placeholder="Search by shop name, owner, contact, or email..." />
+        </div>
+        <div class="w-full md:w-auto shrink-0">
+            <x-ui.button wire:click="openModal" class="w-full md:w-auto">
+                <i class="fas fa-plus mr-2"></i> Add New Shop
+            </x-ui.button>
+        </div>
     </div>
 
     @if (session()->has('message'))
@@ -16,28 +23,41 @@
                 <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Shop Name</th>
                 <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Owner</th>
                 <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Contact</th>
-                <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Email</th>
-                <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Address</th>
+                <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase hidden sm:table-cell">Email</th>
+                <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase hidden md:table-cell">Address</th>
                 <th class="px-5 py-3 text-right text-xs font-bold text-gray-500 uppercase">Actions</th>
             </x-slot>
 
             @forelse($shops as $shop)
-                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
                     <td class="px-5 py-4 text-sm text-gray-900 font-medium">{{ $shop->shop_name }}</td>
                     <td class="px-5 py-4 text-sm text-gray-700">{{ $shop->owner_name }}</td>
                     <td class="px-5 py-4 text-sm text-gray-700">{{ $shop->contact }}</td>
-                    <td class="px-5 py-4 text-sm text-gray-700">{{ $shop->email ?? 'N/A' }}</td>
-                    <td class="px-5 py-4 text-sm text-gray-700">{{ $shop->address ?? 'N/A' }}</td>
-                    <td class="px-5 py-4 text-sm text-right">
-                        <a href="{{ route('franchise.view.shop', $shop->id) }}" wire:navigate class="text-blue-600 hover:text-blue-900 font-semibold text-sm">View</a>
+                    <td class="px-5 py-4 text-sm text-gray-700 hidden sm:table-cell">{{ $shop->email ?? 'N/A' }}</td>
+                    <td class="px-5 py-4 text-sm text-gray-700 hidden md:table-cell">{{ Str::limit($shop->address ?? 'N/A', 30) }}</td>
+                    <td class="px-5 py-4 text-sm text-right font-medium">
+                        <div class="flex justify-end space-x-3">
+                            <a href="{{ route('franchise.view.shop', $shop->id) }}" wire:navigate class="text-blue-500 hover:text-blue-700 transition" title="View">
+                                <i class="fas fa-eye text-lg"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="px-5 py-8 text-center text-sm text-gray-500">No shops found.</td>
+                    <td colspan="6" class="px-5 py-8 text-center text-sm text-gray-500">
+                        <i class="fas fa-store text-4xl mb-4 text-gray-300 block"></i>
+                        No shops found.
+                    </td>
                 </tr>
             @endforelse
         </x-ui.table>
+
+        @if($shops->hasPages())
+            <div class="bg-gray-50 px-5 py-3 border-t border-gray-200">
+                {{ $shops->links() }}
+            </div>
+        @endif
     </div>
 
     <!-- Add/Edit Modal -->
