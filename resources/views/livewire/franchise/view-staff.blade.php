@@ -1,4 +1,9 @@
 <div class="container mx-auto py-2" x-data="{ activeTab: 'details' }">
+    <x-slot name="navbar_back">
+        <a wire:navigate href="{{ route('franchise.manage.staff') }}" class="text-gray-400 hover:text-white transition-colors">
+            <i class="fas fa-arrow-left text-lg"></i>
+        </a>
+    </x-slot>
     <!-- Staff Profile Card -->
     <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
         <!-- Staff Header with Gradient Background -->
@@ -360,11 +365,9 @@
                                     <p class="text-xs sm:text-sm font-medium text-gray-500">Performance Trend</p>
                                     <p class="text-xl sm:text-2xl font-semibold text-gray-900 flex items-center">
                                         {{ $performanceData['performance_change'] }}%
-                                        <span
-                                            x-html="$performanceData['performance_change'] >= 0 ? '&uarr;' : '&darr;'"
-                                            :class="$performanceData['performance_change'] >= 0 ? 'text-green-500' :
-                                                'text-red-500'"
-                                            class="ml-1 text-xs sm:text-sm"></span>
+                                        <span class="ml-1 text-xs sm:text-sm {{ $performanceData['performance_change'] >= 0 ? 'text-green-500' : 'text-red-500' }}">
+                                            {!! $performanceData['performance_change'] >= 0 ? '&uarr;' : '&darr;' !!}
+                                        </span>
                                     </p>
                                 </div>
                             </div>

@@ -1,4 +1,9 @@
-<div class="container mx-auto  py-2 sm:py-8 max-w-6xl">
+<div class="container mx-auto py-2 sm:py-8 max-w-6xl">
+    <x-slot name="navbar_back">
+        <a wire:navigate href="{{ route('franchise.manage.staff') }}" class="text-gray-400 hover:text-white transition-colors">
+            <i class="fas fa-arrow-left text-lg"></i>
+        </a>
+    </x-slot>
     <!-- Success/Error Messages -->
     @if(session('success'))
         <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded-r-lg shadow-sm">
@@ -222,13 +227,7 @@
                 </div>
 
                 <!-- Form Actions -->
-                <div class="mt-8 pt-5 border-t border-gray-200 flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-4">
-                    <a href="{{ route('franchise.manage.staff') }}" class="inline-flex justify-center items-center px-4 py-2.5 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                        </svg>
-                        Back to Staff List
-                    </a>
+                <div class="mt-8 pt-5 border-t border-gray-200 flex flex-col sm:flex-row sm:justify-end sm:items-center gap-4">
                     <div class="flex flex-col sm:flex-row gap-3">
                         <button type="button" wire:click="resetForm" class="inline-flex justify-center items-center px-4 py-2.5 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Reset Form

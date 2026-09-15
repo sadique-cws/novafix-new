@@ -1,83 +1,88 @@
-<div class="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-6">
-        <div>
-            <h2 class="text-2xl  text-gray-800">Payment Details</h2>
-            <p class="text-gray-600">Service Code: {{ $payment->serviceRequest->service_code }}</p>
-        </div>
-        <a wire:navigate href="{{ route('franchise.manage.payments') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
-            <i class="fas fa-arrow-left mr-2"></i> Back to Payments
+<div class="space-y-6">
+    <x-slot name="navbar_back">
+        <a wire:navigate href="{{ route('franchise.manage.payments') }}" class="text-gray-400 hover:text-white transition-colors">
+            <i class="fas fa-arrow-left text-lg"></i>
         </a>
-    </div>
+    </x-slot>
 
     <!-- Customer Information Card -->
-    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <div class="px-6 py-4 bg-gray-50 border-b border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-800">Customer Information</h3>
+        </div>
         <div class="p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Customer Information</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div>
-                    <p class="text-sm text-gray-500">Customer Name</p>
-                    <p class="font-medium">{{ $payment->serviceRequest->owner_name }}</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Customer Name</p>
+                    <p class="text-lg font-medium text-gray-900">{{ $payment->serviceRequest->owner_name }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Contact Number</p>
-                    <p class="font-medium">{{ $payment->serviceRequest->contact }}</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Contact Number</p>
+                    <p class="text-lg font-medium text-gray-900">{{ $payment->serviceRequest->contact }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Email</p>
-                    <p class="font-medium">{{ $payment->serviceRequest->email ?? 'N/A' }}</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Email</p>
+                    <p class="text-lg font-medium text-gray-900">{{ $payment->serviceRequest->email ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Service Category</p>
-                    <p class="font-medium">{{ $payment->serviceRequest->serviceCategory->name }}</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Service Category</p>
+                    <p class="text-lg font-medium text-gray-900">{{ $payment->serviceRequest->serviceCategory->name }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Received By</p>
-                    <p class="font-medium">{{ $payment->receivedBy->name ?? 'N/A' }}</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Received By</p>
+                    <p class="text-lg font-medium text-gray-900">{{ $payment->receivedBy->name ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Service Status</p>
-                    <p class="font-medium">
-                        <span class="px-2 py-1 rounded-full text-xs 
-                            {{ $payment->serviceRequest->status === 'completed' ? 'bg-green-100 text-green-800' : 
-                               ($payment->serviceRequest->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
-                            {{ ucfirst($payment->serviceRequest->status) }}
-                        </span>
-                    </p>
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Service Status</p>
+                    <div class="mt-1">
+                        @if (in_array((string)$payment->serviceRequest->status, ['0', '1', 'pending']))
+                            <x-ui.badge color="yellow">Pending</x-ui.badge>
+                        @elseif(in_array((string)$payment->serviceRequest->status, ['25', '50', '2']))
+                            <x-ui.badge color="blue">In Progress</x-ui.badge>
+                        @elseif(in_array((string)$payment->serviceRequest->status, ['100', '3', 'completed']))
+                            <x-ui.badge color="green">Completed</x-ui.badge>
+                        @elseif((string)$payment->serviceRequest->status == '90')
+                            <x-ui.badge color="red">Cancelled</x-ui.badge>
+                        @else
+                            <x-ui.badge color="gray">{{ ucfirst($payment->serviceRequest->status ?? 'Unknown') }}</x-ui.badge>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Device Information Card -->
-    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <div class="px-6 py-4 bg-gray-50 border-b border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-800">Device Information</h3>
+        </div>
         <div class="p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Device Information</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div>
-                    <p class="text-sm text-gray-500">Product Name</p>
-                    <p class="font-medium">{{ $payment->serviceRequest->product_name }}</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Product Name</p>
+                    <p class="text-lg font-medium text-gray-900">{{ $payment->serviceRequest->product_name }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Brand</p>
-                    <p class="font-medium">{{ $payment->serviceRequest->brand }}</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Brand</p>
+                    <p class="text-lg font-medium text-gray-900">{{ $payment->serviceRequest->brand }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Serial Number</p>
-                    <p class="font-medium">{{ $payment->serviceRequest->serial_no ?? 'N/A' }}</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Serial Number</p>
+                    <p class="text-lg font-medium text-gray-900">{{ $payment->serviceRequest->serial_no ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Color</p>
-                    <p class="font-medium">{{ $payment->serviceRequest->color }}</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Color</p>
+                    <p class="text-lg font-medium text-gray-900">{{ $payment->serviceRequest->color }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Problem Reported</p>
-                    <p class="font-medium">{{ $payment->serviceRequest->problem }}</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Problem Reported</p>
+                    <p class="text-lg font-medium text-gray-900">{{ $payment->serviceRequest->problem }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Estimated Delivery</p>
-                    <p class="font-medium">
-                        {{ $payment->serviceRequest->estimate_delivery   }}
+                    <p class="text-sm font-bold text-gray-500 uppercase mb-1">Estimated Delivery</p>
+                    <p class="text-lg font-medium text-gray-900">
+                        {{ $payment->serviceRequest->estimate_delivery }}
                     </p>
                 </div>
             </div>
@@ -85,74 +90,77 @@
     </div>
 
     <!-- Payment Details Card -->
-    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 bg-gray-50 border-b border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-800">Payment Details</h3>
+        </div>
         <div class="p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Payment Details</h3>
-            
-            <div class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div>
-                        <p class="text-sm text-gray-500">Payment Status</p>
-                        <p class="font-medium">
-                            <span class="px-2 py-1 rounded-full text-xs 
-                                {{ $payment->status === 'completed' ? 'bg-green-100 text-green-800' : 
-                                   ($payment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
-                                {{ ucfirst($payment->status) }}
-                            </span>
-                        </p>
+                        <p class="text-sm font-bold text-gray-500 uppercase mb-1">Payment Status</p>
+                        <div class="mt-1">
+                            @if ($payment->status === 'completed')
+                                <x-ui.badge color="green">Completed</x-ui.badge>
+                            @elseif ($payment->status === 'pending')
+                                <x-ui.badge color="yellow">Pending</x-ui.badge>
+                            @elseif ($payment->status === 'failed')
+                                <x-ui.badge color="red">Failed</x-ui.badge>
+                            @endif
+                        </div>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500">Payment Method</p>
-                        <p class="font-medium">{{ ucwords(str_replace('_', ' ', $payment->payment_method)) }}</p>
+                        <p class="text-sm font-bold text-gray-500 uppercase mb-1">Payment Method</p>
+                        <p class="text-lg font-medium text-gray-900">{{ ucwords(str_replace('_', ' ', $payment->payment_method)) }}</p>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500">Transaction ID</p>
-                        <p class="font-medium">{{ $payment->transaction_id ?? 'N/A' }}</p>
+                        <p class="text-sm font-bold text-gray-500 uppercase mb-1">Transaction ID</p>
+                        <p class="text-lg font-medium text-gray-900">{{ $payment->transaction_id ?? 'N/A' }}</p>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500">Payment Date</p>
-                        <p class="font-medium">{{ $payment->created_at->format('d M Y, h:i A') }}</p>
+                        <p class="text-sm font-bold text-gray-500 uppercase mb-1">Payment Date</p>
+                        <p class="text-lg font-medium text-gray-900">{{ $payment->created_at->format('d M Y, h:i A') }}</p>
                     </div>
                 </div>
 
-                <div class="border-t border-gray-200 pt-4">
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <p class="text-gray-600">Service Amount:</p>
-                            <p class="font-medium">₹{{ number_format($payment->amount, 2) }}</p>
+                <div class="border-t border-gray-100 pt-6">
+                    <div class="max-w-md ml-auto space-y-3">
+                        <div class="flex justify-between items-center text-gray-600">
+                            <p class="font-medium">Service Amount:</p>
+                            <p class="text-lg">₹{{ number_format($payment->amount, 2) }}</p>
                         </div>
-                        <div class="flex justify-between">
-                            <p class="text-gray-600">Discount:</p>
-                            <p class="font-medium">₹{{ number_format($payment->discount, 2) }}</p>
+                        <div class="flex justify-between items-center text-gray-600">
+                            <p class="font-medium">Discount:</p>
+                            <p class="text-lg text-green-600">- ₹{{ number_format($payment->discount, 2) }}</p>
                         </div>
-                        <div class="flex justify-between">
-                            <p class="text-gray-600">Tax:</p>
-                            <p class="font-medium">₹{{ number_format($payment->tax, 2) }}</p>
+                        <div class="flex justify-between items-center text-gray-600">
+                            <p class="font-medium">Tax:</p>
+                            <p class="text-lg">₹{{ number_format($payment->tax, 2) }}</p>
                         </div>
-                        <div class="flex justify-between border-t border-gray-200 pt-2">
-                            <p class="text-gray-800 font-semibold">Total Amount:</p>
-                            <p class="text-blue-600 ">₹{{ number_format($payment->total_amount, 2) }}</p>
+                        <div class="flex justify-between items-center border-t border-gray-200 pt-3">
+                            <p class="text-xl font-bold text-gray-800">Total Amount:</p>
+                            <p class="text-2xl font-bold text-blue-600">₹{{ number_format($payment->total_amount, 2) }}</p>
                         </div>
                     </div>
                 </div>
 
                 @if($payment->notes)
-                    <div class="mt-4">
-                        <p class="text-sm text-gray-500">Notes</p>
+                    <div class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                        <p class="text-sm font-bold text-gray-500 uppercase mb-2">Notes</p>
                         <p class="text-gray-700">{{ $payment->notes }}</p>
                     </div>
                 @endif
 
                 <!-- Payment Actions -->
-                <div class="flex justify-end space-x-3 mt-6">
+                <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 mt-8 border-t border-gray-100 pt-6">
                     @if($payment->status !== 'completed')
-                        <button wire:click="markAsPaid({{ $payment->id }})" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                        <x-ui.button wire:click="markAsPaid({{ $payment->id }})" variant="primary">
                             <i class="fas fa-check-circle mr-2"></i> Mark as Paid
-                        </button>
+                        </x-ui.button>
                     @endif
-                    <button wire:click="printReceipt({{ $payment->id }})" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    <x-ui.button wire:click="printReceipt({{ $payment->id }})" variant="secondary">
                         <i class="fas fa-print mr-2"></i> Print Receipt
-                    </button>
+                    </x-ui.button>
                 </div>
             </div>
         </div>

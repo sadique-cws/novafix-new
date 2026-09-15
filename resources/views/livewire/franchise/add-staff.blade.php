@@ -1,10 +1,11 @@
 <div>
-    <div class="container mx-auto  py-2 max-w-6xl">
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <!-- Form Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-4">
-            <h2 class="text-2xl  text-white">Add New Staff Member</h2>
-        </div>
+    <div class="container mx-auto py-2 max-w-6xl">
+        <x-slot name="navbar_back">
+            <a wire:navigate href="{{ route('franchise.manage.staff') }}" class="text-gray-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left text-lg"></i>
+            </a>
+        </x-slot>
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden mt-4">
 
         <!-- Success/Error Messages -->
         <div class="px-6 pt-4">

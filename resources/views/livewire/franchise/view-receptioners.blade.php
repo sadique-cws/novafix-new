@@ -12,24 +12,11 @@
             </div>
         @endif
 
-        <!-- Header Section -->
-        <div
-            class="px-6 py-5 sm:px-8 sm:py-6 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-                <h2 class="text-2xl sm:text-3xl  text-gray-900 leading-tight">Receptionist Details</h2>
-                <p class="text-gray-500 mt-1">ID: {{ $receptionist->id }}</p>
-            </div>
-            <a wire:navigate href="{{ route('franchise.manage.receptioners') }}"
-                class="inline-flex items-center px-4 py-2.5 sm:px-5 sm:py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors duration-200 shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 -ml-1" viewBox="0 0 20 20"
-                    fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-                        clip-rule="evenodd" />
-                </svg>
-                Back to List
+        <x-slot name="navbar_back">
+            <a wire:navigate href="{{ route('franchise.manage.receptioners') }}" class="text-gray-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left text-lg"></i>
             </a>
-        </div>
+        </x-slot>
 
         <!-- Main Content -->
         <div class="p-2 sm:p-8">
