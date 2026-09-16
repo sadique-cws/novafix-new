@@ -24,12 +24,16 @@
         <div class="mb-6 border-b border-gray-200">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
                 <li class="mr-2">
-                    <button type="button" @click="tab = 'customer'" :class="tab === 'customer' ? 'text-blue-600 border-blue-600' : 'text-gray-500 border-transparent hover:text-gray-600 hover:border-gray-300'" class="inline-block p-4 border-b-2 rounded-t-lg transition-colors">
+                    <button type="button" @click="tab = 'customer'"
+                        :class="tab === 'customer' ? 'text-blue-600 border-blue-600' : 'text-gray-500 border-transparent hover:text-gray-600 hover:border-gray-300'"
+                        class="inline-block p-4 border-b-2 rounded-t-lg transition-colors">
                         Direct Customer
                     </button>
                 </li>
                 <li class="mr-2">
-                    <button type="button" @click="tab = 'shop'" :class="tab === 'shop' ? 'text-blue-600 border-blue-600' : 'text-gray-500 border-transparent hover:text-gray-600 hover:border-gray-300'" class="inline-block p-4 border-b-2 rounded-t-lg transition-colors">
+                    <button type="button" @click="tab = 'shop'"
+                        :class="tab === 'shop' ? 'text-blue-600 border-blue-600' : 'text-gray-500 border-transparent hover:text-gray-600 hover:border-gray-300'"
+                        class="inline-block p-4 border-b-2 rounded-t-lg transition-colors">
                         Shop (B2B)
                     </button>
                 </li>
@@ -37,12 +41,13 @@
         </div>
 
         <form wire:submit.prevent="save" class="space-y-6" enctype="multipart/form-data">
-            
+
             <div class="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
                 <div x-show="tab === 'shop'" x-cloak class="space-y-4">
                     <div>
                         <label for="shop_id" class="block text-sm font-medium text-slate-600">Select Shop *</label>
-                        <select id="shop_id" wire:model.live="shop_id" class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                        <select id="shop_id" wire:model.live="shop_id"
+                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                             <option value="">Select a Shop</option>
                             @foreach ($shops as $shop)
                                 <option value="{{ $shop->id }}">{{ $shop->shop_name }} ({{ $shop->owner_name }})</option>
@@ -96,7 +101,8 @@
                     @enderror
                 </div>
                 <!-- Direct Customer Fields -->
-                <div x-show="tab === 'customer' || (tab === 'shop' && $wire.shop_id && $wire.shop_id !== 'new')" class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                <div x-show="tab === 'customer' || (tab === 'shop' && $wire.shop_id && $wire.shop_id !== 'new')"
+                    class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-lg border border-gray-100">
                     <!-- Contact -->
                     <div>
                         <label for="contact" class="block text-sm font-medium text-slate-600">Contact *</label>
@@ -127,38 +133,45 @@
                 </div>
 
                 <!-- Add New Shop Fields -->
-                <div x-cloak x-show="tab === 'shop' && $wire.shop_id === 'new'" class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-indigo-50 rounded-lg border border-indigo-100">
+                <div x-cloak x-show="tab === 'shop' && $wire.shop_id === 'new'"
+                    class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-indigo-50 rounded-lg border border-indigo-100">
                     <div class="col-span-1 md:col-span-2 pb-2 border-b border-indigo-200">
                         <h4 class="font-semibold text-indigo-800">Add New Shop Details</h4>
                         <p class="text-sm text-indigo-600">This shop will be permanently saved for future use.</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-600">Shop Name *</label>
-                        <input type="text" wire:model="new_shop_name" class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                        <input type="text" wire:model="new_shop_name"
+                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                         @error('new_shop_name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-600">Owner Name *</label>
-                        <input type="text" wire:model="new_owner_name" class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                        <input type="text" wire:model="new_owner_name"
+                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                         @error('new_owner_name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-600">Contact *</label>
-                        <input type="tel" wire:model="new_contact" class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                        <input type="tel" wire:model="new_contact"
+                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                         @error('new_contact') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-600">Email</label>
-                        <input type="email" wire:model="new_email" class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                        <input type="email" wire:model="new_email"
+                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                         @error('new_email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-600">Address</label>
-                        <input type="text" wire:model="new_address" class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                        <input type="text" wire:model="new_address"
+                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-600">GST Number</label>
-                        <input type="text" wire:model="new_gst_number" class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                        <input type="text" wire:model="new_gst_number"
+                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
                     </div>
                 </div>
 
@@ -195,8 +208,25 @@
                 </div>
                 <div>
                     <label for="color" class="block text-sm font-medium text-slate-600">Color *</label>
-                    <input type="text" id="color" wire:model="color"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                    <input type="text" id="color" wire:model="color" list="color-options" autocomplete="off"
+                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2"
+                        placeholder="Select or type a color">
+                    <datalist id="color-options">
+                        <option value="Black"></option>
+                        <option value="White"></option>
+                        <option value="Silver"></option>
+                        <option value="Gold"></option>
+                        <option value="Space Grey"></option>
+                        <option value="Blue"></option>
+                        <option value="Red"></option>
+                        <option value="Green"></option>
+                        <option value="Midnight"></option>
+                        <option value="Starlight"></option>
+                        <option value="Titanium"></option>
+                        <option value="Rose Gold"></option>
+                        <option value="Purple"></option>
+                        <option value="Yellow"></option>
+                    </datalist>
                     @error('color')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror

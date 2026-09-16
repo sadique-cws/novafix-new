@@ -1,60 +1,65 @@
 <div class="p-4 sm:p-6 lg:p-8 space-y-6">
     
-    <!-- Top Stats (Made bigger with p-6 and better typography) -->
+    <!-- Top Stats (Clean Flat Design) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-white border border-gray-200 rounded-lg p-6 flex flex-col justify-between h-32">
-            <div class="flex items-start justify-between">
-                <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest">Total Franchises</p>
-                <div class="h-8 w-8 flex items-center justify-center bg-gray-900 text-white rounded">
-                    <i class="fas fa-store text-xs"></i>
+        
+        <!-- Total Franchises -->
+        <div class="bg-white border border-gray-200 rounded-lg p-6 h-32 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                    <i class="fas fa-store"></i>
                 </div>
+                <p class="text-sm font-medium text-gray-500">Total Franchises</p>
             </div>
-            <p class="text-3xl font-bold text-gray-900">{{ $totalFranchises }}</p>
+            <h3 class="text-3xl font-bold text-gray-900">{{ $totalFranchises }}</h3>
         </div>
 
-        <div class="bg-white border border-gray-200 rounded-lg p-6 flex flex-col justify-between h-32">
-            <div class="flex items-start justify-between">
-                <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest">Active Staff</p>
-                <div class="h-8 w-8 flex items-center justify-center bg-gray-900 text-white rounded">
-                    <i class="fas fa-users text-xs"></i>
+        <!-- Active Staff -->
+        <div class="bg-white border border-gray-200 rounded-lg p-6 h-32 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+                    <i class="fas fa-users"></i>
                 </div>
+                <p class="text-sm font-medium text-gray-500">Active Staff</p>
             </div>
-            <p class="text-3xl font-bold text-gray-900">{{ $totalstaff }}</p>
+            <h3 class="text-3xl font-bold text-gray-900">{{ $totalstaff }}</h3>
         </div>
 
-        <div class="bg-white border border-gray-200 rounded-lg p-6 flex flex-col justify-between h-32">
-            <div class="flex items-start justify-between">
-                <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest">Receptionists</p>
-                <div class="h-8 w-8 flex items-center justify-center bg-gray-900 text-white rounded">
-                    <i class="fas fa-user-tie text-xs"></i>
+        <!-- Receptionists -->
+        <div class="bg-white border border-gray-200 rounded-lg p-6 h-32 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
+                    <i class="fas fa-user-tie"></i>
                 </div>
+                <p class="text-sm font-medium text-gray-500">Receptionists</p>
             </div>
-            <p class="text-3xl font-bold text-gray-900">{{ $stats['receptionists'] }}</p>
+            <h3 class="text-3xl font-bold text-gray-900">{{ $stats['receptionists'] }}</h3>
         </div>
 
-        <div class="bg-white border border-gray-200 rounded-lg p-6 flex flex-col justify-between h-32">
-            <div class="flex items-start justify-between">
-                <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest">Monthly Revenue</p>
-                <div class="h-8 w-8 flex items-center justify-center bg-gray-900 text-white rounded">
-                    <i class="fas fa-rupee-sign text-xs"></i>
+        <!-- Monthly Revenue -->
+        <div class="bg-white border border-gray-200 rounded-lg p-6 h-32 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+                    <i class="fas fa-rupee-sign"></i>
                 </div>
+                <p class="text-sm font-medium text-gray-500">Monthly Revenue</p>
             </div>
-            @php
-                $revenue = $stats['monthlyRevenue'];
-                $formattedRevenue = '';
-                if ($revenue >= 10000000) {
-                    $formattedRevenue = '₹' . number_format($revenue / 10000000, 2) . 'Cr';
-                } elseif ($revenue >= 1000000) {
-                    $formattedRevenue = '₹' . number_format($revenue / 1000000, 2) . 'M';
-                } elseif ($revenue >= 100000) {
-                    $formattedRevenue = '₹' . number_format($revenue / 100000, 2) . 'L';
-                } elseif ($revenue >= 1000) {
-                    $formattedRevenue = '₹' . number_format($revenue / 1000, 2) . 'k';
-                } else {
-                    $formattedRevenue = '₹' . number_format($revenue, 2);
-                }
-            @endphp
-            <p class="text-3xl font-bold text-gray-900">{{ $formattedRevenue }}</p>
+            <h3 class="text-3xl font-bold text-gray-900">
+                @php
+                    $revenue = $stats['monthlyRevenue'];
+                    if ($revenue >= 10000000) {
+                        echo '₹' . number_format($revenue / 10000000, 2) . 'Cr';
+                    } elseif ($revenue >= 1000000) {
+                        echo '₹' . number_format($revenue / 1000000, 2) . 'M';
+                    } elseif ($revenue >= 100000) {
+                        echo '₹' . number_format($revenue / 100000, 2) . 'L';
+                    } elseif ($revenue >= 1000) {
+                        echo '₹' . number_format($revenue / 1000, 2) . 'k';
+                    } else {
+                        echo '₹' . number_format($revenue, 2);
+                    }
+                @endphp
+            </h3>
         </div>
     </div>
 

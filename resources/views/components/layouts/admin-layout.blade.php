@@ -7,8 +7,8 @@
     <title>Novafix | Admin</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+    <!-- <script src="https://cdn.tailwindcss.com" data-navigate-once></script> -->
+    <script data-navigate-once>
         tailwind.config = {
             theme: {
                 extend: {
@@ -232,9 +232,10 @@
                 </button>
 
                 <!-- Spacer for desktop (keeps dropdown aligned to right) -->
-                <div class="hidden lg:block">
+                <div class="hidden lg:flex items-center gap-3">
+                    {{ $navbar_back ?? '' }}
                     <h1 class="text-white font-medium text-lg capitalize">
-                        {{ str_replace(['admin.', '.'], ['', ' '], request()->route()->getName() ?? 'Dashboard') }}
+                        {{ $title ?? str_replace(['admin.', '.'], ['', ' '], request()->route()->getName() ?? 'Dashboard') }}
                     </h1>
                 </div>
 
@@ -282,7 +283,7 @@
         </div>
     </div>
 
-    <script>
+    <script data-navigate-once>
         document.addEventListener('alpine:init', () => {
             window.dashboard = function () {
                 const path = window.location.pathname;
