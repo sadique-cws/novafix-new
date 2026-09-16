@@ -124,7 +124,7 @@
                             </div>
                             <div>
                                 <span class="text-sm font-medium text-gray-600">Due Amount:</span>
-                                <p class="font-bold {{ ($serviceRequest->payment->due_amount ?? 0) > 0 ? \"text-red-600\" : \"text-green-600\" }}">
+                                <p class="font-bold {{ ($serviceRequest->payment->due_amount ?? 0) > 0 ? 'text-red-600' : 'text-green-600' }}">
                                     ₹{{ number_format($serviceRequest->payment->due_amount ?? 0, 2) }}
                                 </p>
                             </div>
