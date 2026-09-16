@@ -220,6 +220,44 @@
                         </div>
                     </div>
 
+                    <!-- Billing & Payments Card -->
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 mb-6">
+                        <div class="px-6 py-4 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-100">
+                            <h2 class="text-lg text-gray-800 flex items-center">
+                                <i class="fas fa-file-invoice-dollar text-green-600 mr-3"></i>
+                                Billing & Payments
+                            </h2>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+                                <span class="text-sm font-medium text-gray-500 uppercase">Total Bill</span>
+                                <span class="text-lg font-bold text-gray-900">₹{{ number_format($task->payment->total_amount ?? 0, 2) }}</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+                                <span class="text-sm font-medium text-gray-500 uppercase">Amount Paid</span>
+                                <span class="text-lg font-bold text-green-600">₹{{ number_format($task->payment->paid_amount ?? 0, 2) }}</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-2">
+                                <span class="text-sm font-medium text-gray-500 uppercase">Remaining Due</span>
+                                <span class="text-xl font-bold {{ ($task->payment->due_amount ?? 0) > 0 ? 'text-red-600' : 'text-green-600' }}">
+                                    ₹{{ number_format($task->payment->due_amount ?? 0, 2) }}
+                                </span>
+                            </div>
+
+                            @if(!$taskRejected)
+                                <button type="button" wire:click="openFinalPriceModal" class="w-full flex justify-center items-center py-2.5 px-4 border border-indigo-600 rounded-lg shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50 transition duration-150 ease-in-out mt-4 mb-2">
+                                    <i class="fas fa-edit mr-2"></i> Set Final Price
+                                </button>
+                            @endif
+
+                            @if(($task->payment->due_amount ?? 0) > 0 && !$taskRejected)
+                                <button type="button" x-data @click="$dispatch('open-modal', 'recordPaymentModal')" class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transition duration-150 ease-in-out mt-2">
+                                    <i class="fas fa-money-bill-wave mr-2"></i> Record Payment
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+
                     <!-- Status Update Card -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                         <div class="px-6 py-4 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-100">
@@ -261,52 +299,6 @@
                                     </button>
                                 </div>
 
-                                <!-- Payment Section (shown only when completing) -->
-                                @if ($showPaymentSection)
-                                    <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                                        <h3 class="text-md  text-gray-700 mb-4 flex items-center">
-                                            <i class="fas fa-rupee-sign text-blue-600 mr-2"></i>
-                                            Complete Task Payment
-                                        </h3>
-
-                                        <div class="space-y-4">
-                                            <!-- Payment Amount -->
-                                            <div>
-                                                <label for="paymentAmount" class="block text-xs font-medium text-gray-700 mb-1 uppercase tracking-wider">Amount (₹)</label>
-                                                <div class="mt-1 relative rounded-md shadow-sm">
-                                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <span class="text-gray-500 sm:text-sm">₹</span>
-                                                    </div>
-                                                    <input type="number" wire:model="paymentAmount" id="paymentAmount"
-                                                        class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 py-2 sm:text-sm border-gray-300 rounded-md"
-                                                        placeholder="0.00">
-                                                </div>
-                                            </div>
-
-
-
-                                            <!-- Payment Reference -->
-                                            <div>
-                                                <label for="paymentReference" class="block text-xs font-medium text-gray-700 mb-1 uppercase tracking-wider">Reference/Note</label>
-                                                <input type="text" wire:model="paymentReference" id="paymentReference"
-                                                    class="focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 px-3 sm:text-sm border-gray-300 rounded-md"
-                                                    placeholder="Enter payment reference">
-                                            </div>
-
-                                            <!-- Action Buttons -->
-                                            <div class="flex space-x-3 pt-2">
-                                                <button type="button" wire:click="completeWithPayment"
-                                                    class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition duration-150 ease-in-out">
-                                                    Submit Task
-                                                </button>
-                                                <button type="button" wire:click="cancelPayment"
-                                                    class="flex-1 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 py-2 px-4 rounded-lg text-sm font-medium transition duration-150 ease-in-out">
-                                                    Cancel
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
 
                                 <!-- Status Selector -->
                                 <div>
@@ -497,6 +489,98 @@
             </div>
         </div>
     @endif
+
+    <!-- Record Payment Modal -->
+    <x-ui.modal name="recordPaymentModal" title="Record Partial or Full Payment">
+        <div class="p-6">
+            <div class="mb-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-gray-600">Total Bill</span>
+                    <span class="font-medium text-gray-900">₹{{ number_format($task->payment->total_amount ?? 0, 2) }}</span>
+                </div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-gray-600">Already Paid</span>
+                    <span class="font-medium text-green-600">₹{{ number_format($task->payment->paid_amount ?? 0, 2) }}</span>
+                </div>
+                <div class="flex justify-between items-center border-t border-gray-200 pt-2 mt-2">
+                    <span class="text-sm font-bold text-gray-800">Remaining Due</span>
+                    <span class="font-bold text-red-600">₹{{ number_format($task->payment->due_amount ?? 0, 2) }}</span>
+                </div>
+            </div>
+
+            <form wire:submit.prevent="recordPayment">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Amount to Collect (₹)</label>
+                        <input type="number" step="0.01" wire:model="paymentAmount" max="{{ $task->payment->due_amount ?? 0 }}"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border" placeholder="Enter amount">
+                        @error('paymentAmount') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+                        <select wire:model="paymentMethod" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border">
+                            <option value="cash">Cash</option>
+                            <option value="upi">UPI</option>
+                            <option value="card">Card</option>
+                        </select>
+                        @error('paymentMethod') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Reference / Note (Optional)</label>
+                        <input type="text" wire:model="paymentReference" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border" placeholder="e.g. Transaction ID">
+                        @error('paymentReference') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" x-data @click="$dispatch('close-modal', 'recordPaymentModal')"
+                        class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors flex items-center">
+                        <i class="fas fa-check mr-2"></i> Save Payment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </x-ui.modal>
+
+    <!-- Set Final Price Modal -->
+    <x-ui.modal name="setFinalPriceModal" title="Set Final Bill Amount">
+        <div class="p-6">
+            <div class="mb-4 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                <p class="text-sm text-yellow-800">
+                    <i class="fas fa-info-circle mr-1"></i> 
+                    Update the final total amount for this service request. The remaining due will be recalculated automatically.
+                </p>
+            </div>
+
+            <form wire:submit.prevent="setFinalPrice">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Final Total Bill (₹)</label>
+                        <input type="number" step="0.01" wire:model="finalPriceAmount" min="0"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border" placeholder="Enter final amount">
+                        @error('finalPriceAmount') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" x-data @click="$dispatch('close-modal', 'setFinalPriceModal')"
+                        class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors flex items-center">
+                        <i class="fas fa-check mr-2"></i> Update Bill
+                    </button>
+                </div>
+            </form>
+        </div>
+    </x-ui.modal>
 </div>
 
 <style>

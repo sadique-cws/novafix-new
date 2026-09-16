@@ -29,6 +29,20 @@
                 </p>
             </div>
         </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 pt-6 border-t border-gray-100">
+            <div>
+                <p class="text-sm font-bold text-gray-500 uppercase mb-1">Total Outstanding Dues</p>
+                <p class="text-xl font-bold {{ $total_dues > 0 ? 'text-red-600' : 'text-green-600' }}">
+                    ₹{{ number_format($total_dues, 2) }}
+                </p>
+                @if($total_dues > 0)
+                <button type="button" x-data @click="$dispatch('open-modal', 'settleModal')" class="mt-2 bg-primary hover:bg-primary/90 text-white text-xs font-bold py-1.5 px-4 rounded transition-colors">
+                    Settle Dues
+                </button>
+                @endif
+            </div>
+        </div>
     </div>
 
     <!-- Booking History Table -->
@@ -41,7 +55,8 @@
                 <x-slot name="head">
                     <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Tracking ID</th>
                     <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Device</th>
-                    <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Amount</th>
+                    <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Total Bill</th>
+                    <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Due</th>
                     <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Status</th>
                     <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Date</th>
                 </x-slot>
@@ -56,7 +71,10 @@
                             <div class="text-xs text-gray-500">{{ $request->brand }}</div>
                         </td>
                         <td class="px-5 py-4 text-sm font-medium">
-                            ₹{{ number_format($request->service_amount, 2) }}
+                            ₹{{ number_format($request->payment->total_amount ?? 0, 2) }}
+                        </td>
+                        <td class="px-5 py-4 text-sm font-bold {{ ($request->payment->due_amount ?? 0) > 0 ? 'text-red-600' : 'text-green-600' }}">
+                            ₹{{ number_format($request->payment->due_amount ?? 0, 2) }}
                         </td>
                         <td class="px-5 py-4 text-sm">
                             @if (in_array((string)$request->status, ['0', '1']))
@@ -77,7 +95,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-5 py-8 text-center text-gray-500">
+                        <td colspan="6" class="px-5 py-8 text-center text-gray-500">
                             No service requests found for this customer.
                         </td>
                     </tr>
@@ -85,4 +103,33 @@
             </x-ui.table>
         </div>
     </div>
+
+    <!-- Settle Dues Modal -->
+    <x-ui.modal name="settleModal" title="Settle Customer Dues">
+        <div class="p-2">
+            <p class="text-sm text-gray-600 mb-4">
+                Total Outstanding: <span class="font-bold text-red-600">₹{{ number_format($total_dues, 2) }}</span>
+            </p>
+            
+            <form wire:submit.prevent="settleDues">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Amount Received</label>
+                    <input type="number" step="0.01" wire:model="settle_amount" max="{{ $total_dues }}"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    @error('settle_amount') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </div>
+                
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" x-data @click="$dispatch('close-modal', 'settleModal')"
+                        class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-primary/90">
+                        Record Payment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </x-ui.modal>
 </div>

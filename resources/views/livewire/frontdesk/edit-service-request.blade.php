@@ -178,18 +178,19 @@
 
                                 <div>
                                     <label for="service_amount"
-                                        class="block text-sm font-medium text-gray-700">Service Fee</label>
-                                    <div class="mt-1 relative rounded-md shadow-sm">
-                                        <div
-                                            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <span class="text-gray-500 sm:text-sm">₹</span>
+                                        class="block text-sm font-medium text-slate-700 mb-1">
+                                        Total Bill Amount
+                                    </label>
+                                    <div class="relative rounded-md shadow-sm">
+                                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                            <span class="text-slate-500 sm:text-sm">₹</span>
                                         </div>
                                         <input type="number" wire:model="service_amount" id="service_amount"
-                                            class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2 px-3"
-                                            placeholder="0.00">
+                                            class="block w-full rounded-md border-slate-300 pl-7 pr-12 focus:border-primary focus:ring-primary sm:text-sm"
+                                            placeholder="0.00" step="0.01">
                                     </div>
                                     @error('service_amount')
-                                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>

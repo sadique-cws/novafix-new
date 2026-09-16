@@ -57,8 +57,8 @@
                         <p class="text-lg font-medium text-gray-900">{{ $request->color }}</p>
                     </div>
                     <div>
-                        <p class="text-sm font-bold text-gray-500 uppercase mb-1">Service Amount</p>
-                        <p class="text-lg font-medium text-gray-900">{{ $request->service_amount ?? 'N/A' }}</p>
+                        <p class="text-sm font-medium text-gray-500 mb-1">Service Amount</p>
+                        <p class="text-lg font-medium text-gray-900">₹{{ $request->payment->total_amount ?? 'N/A' }}</p>
                     </div>
                     <div>
                         <p class="text-sm font-bold text-gray-500 uppercase mb-1">Status</p>

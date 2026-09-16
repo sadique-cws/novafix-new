@@ -140,23 +140,40 @@ class DatabaseSeeder extends Seeder
                     'brand'                 => 'Brand ' . $faker->word,
                     'color'                 => $faker->safeColorName,
                     'problem'               => $faker->sentence,
-                    'service_amount'        => $amount,
                     'status'                => $faker->randomElement([1, 2, 3]), // e.g. pending, in-progress, completed
                     'delivery_status'       => 0,
                     'estimate_delivery'     => now()->addDays(rand(1, 5)),
                     'last_update'           => now(),
                 ]);
 
+                $paymentStatus = $faker->randomElement(['pending', 'completed']);
+                $paid = $paymentStatus === 'completed' ? $amount : 0;
+                $due = $amount - $paid;
+
                 // Create Payment for this Service Request
-                Payment::create([
+                $payment = Payment::create([
                     'service_request_id' => $request->id,
                     'amount'             => $amount,
                     'total_amount'       => $amount,
-                    'status'             => $faker->randomElement(['pending', 'completed']),
+                    'paid_amount'        => $paid,
+                    'due_amount'         => $due,
+                    'status'             => $paymentStatus,
                     'payment_method'     => 'cash',
                     'staff_id'           => $technician->id,
                     'received_by'        => $receptionist->id,
                 ]);
+
+                if ($paid > 0) {
+                    \App\Models\PaymentTransaction::create([
+                        'payment_id' => $payment->id,
+                        'service_request_id' => $request->id,
+                        'amount_paid' => $paid,
+                        'payment_method' => 'cash',
+                        'staff_id' => $technician->id,
+                        'received_by' => $receptionist->id,
+                        'notes' => 'Seeded payment',
+                    ]);
+                }
             }
         }
     }

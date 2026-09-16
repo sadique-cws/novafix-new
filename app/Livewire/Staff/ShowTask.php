@@ -26,6 +26,7 @@ class ShowTask extends Component
     public $showRejectionModal = false;
     public $rejectionReason = '';
   
+    public $paymentMethod = 'cash';
     public $paymentAmount = 0;
     public $paymentReference = '';
     public $paymentCompleted = false;
@@ -33,25 +34,15 @@ class ShowTask extends Component
 
     public function mount(ServiceRequest $task)
     {
-        $this->task = $task->load('receptionist', 'serviceCategory', 'payments');
+        $this->task = $task->load('receptionist', 'serviceCategory', 'payment');
         $this->selectedStatus = $this->task->status;
-        $this->paymentAmount = $this->task->payment_amount ?? 0;
-        $this->paymentCompleted = $task->payments->isNotEmpty();
+        $this->paymentAmount = 0;
+        $this->paymentCompleted = $this->task->payment && $this->task->payment->due_amount <= 0;
         $this->taskRejected = $task->status == 90;
     }
 
     public function rejectTask()
     {
-        if ($this->paymentCompleted) {
-            $this->dispatch(
-                'notify',
-                type: 'error',
-                title: 'Cannot Reject',
-                message: 'This task already has payments and cannot be rejected'
-            );
-            return;
-        }
-
         $this->showRejectionModal = true;
     }
 
@@ -82,19 +73,14 @@ class ShowTask extends Component
 
     public function updateStatus()
     {
-        if ($this->paymentCompleted || $this->taskRejected) {
+        if ($this->taskRejected) {
             $this->dispatch(
                 'notify',
                 type: 'error',
                 title: 'Cannot Change Status',
-                message: 'Status cannot be changed for ' . ($this->paymentCompleted ? 'completed payments' : 'rejected tasks')
+                message: 'Status cannot be changed for rejected tasks'
             );
             $this->selectedStatus = $this->task->status;
-            return;
-        }
-
-        if ($this->selectedStatus == 2) {
-            $this->showPaymentSection = true;
             return;
         }
 
@@ -111,44 +97,92 @@ class ShowTask extends Component
         );
     }
 
-    public function completeWithPayment()
+    public $finalPriceAmount = 0;
+
+    public function openFinalPriceModal()
+    {
+        $this->finalPriceAmount = $this->task->payment->total_amount ?? 0;
+        $this->dispatch('open-modal', 'setFinalPriceModal');
+    }
+
+    public function setFinalPrice()
     {
         $this->validate([
-            'paymentAmount' => 'required|numeric|min:0',
+            'finalPriceAmount' => 'required|numeric|min:0'
+        ]);
+
+        if ($this->task->payment) {
+            $new_due = max(0, $this->finalPriceAmount - $this->task->payment->paid_amount);
+            $this->task->payment->update([
+                'total_amount' => $this->finalPriceAmount,
+                'due_amount' => $new_due,
+                'status' => ($new_due <= 0 && $this->task->payment->paid_amount >= $this->finalPriceAmount && $this->finalPriceAmount > 0) ? 'completed' : 'partial'
+            ]);
+
+            $this->dispatch('close-modal', 'setFinalPriceModal');
+            $this->dispatch(
+                'notify',
+                type: 'success',
+                title: 'Final Price Updated',
+                message: 'Total bill has been updated successfully.'
+            );
+            $this->task->refresh();
+        }
+    }
+
+    public function recordPayment()
+    {
+        $this->validate([
+            'paymentMethod' => 'required|string|in:cash,card,upi',
+            'paymentAmount' => 'required|numeric|min:1',
             'paymentReference' => 'nullable|string|max:255',
         ]);
 
-        $taxAmount = 0;
-        $discountAmount = 0;
-        $totalAmount = $this->paymentAmount + $taxAmount - $discountAmount;
+        $payment = $this->task->payment;
+        if (!$payment) {
+            return;
+        }
 
-        // Create payment record with pending status
-        $payment = Payment::create([
+        $remaining_due = (float) $payment->due_amount;
+        
+        if ($this->paymentAmount > $remaining_due) {
+            $this->addError('paymentAmount', 'Amount cannot exceed the remaining due of ₹' . number_format($remaining_due, 2));
+            return;
+        }
+
+        \App\Models\PaymentTransaction::create([
+            'payment_id' => $payment->id,
             'service_request_id' => $this->task->id,
-            'amount' => $this->paymentAmount,
-            'total_amount' => $totalAmount,
-            'status' => 'pending', // Payment status is pending
-            'staff_id' => Auth::guard('staff')->user()->id,
-            'notes' => $this->paymentReference
-            
+            'amount_paid' => $this->paymentAmount,
+            'payment_method' => $this->paymentMethod,
+            'transaction_id' => $this->paymentMethod === 'cash' ? 'CASH-'.uniqid() : $this->paymentReference,
+            'staff_id' => Auth::guard('staff')->id(),
+            'notes' => $this->paymentReference,
         ]);
 
-        // Update service request to completed
-        $this->task->update([
-            'status' => 2,
-            'last_update' => now(),  
+        $new_paid = (float) $payment->paid_amount + $this->paymentAmount;
+        $new_due = (float) $payment->total_amount - $new_paid;
+        
+        $payment->update([
+            'paid_amount' => $new_paid,
+            'due_amount' => max($new_due, 0),
+            'status' => $new_due <= 0 ? 'completed' : 'partial',
         ]);
 
-        $this->paymentCompleted = true;
-        $this->showPaymentSection = false;
+        $this->paymentCompleted = $new_due <= 0;
+        
+        $this->dispatch('close-modal', 'recordPaymentModal');
 
         $this->dispatch(
             'notify',
             type: 'success',
-            title: 'Task Completed!',
-            message: 'Payment of ₹' . number_format($totalAmount, 2) . ' recorded (pending verification)',
+            title: 'Payment Recorded!',
+            message: 'Payment of ₹'.number_format($this->paymentAmount, 2).' recorded successfully.',
             duration: 5000
         );
+
+        $this->paymentAmount = 0;
+        $this->task->refresh();
     }
 
     public function cancelPayment()
@@ -160,7 +194,7 @@ class ShowTask extends Component
     public function render()
     {
         return view('livewire.staff.show-task', [
-            'task' => $this->task->load('receptionist', 'serviceCategory', 'payments')
+            'task' => $this->task->load('receptionist', 'serviceCategory', 'payment')
         ]);
     }
 }

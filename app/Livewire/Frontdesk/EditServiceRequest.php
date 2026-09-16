@@ -66,7 +66,7 @@ class EditServiceRequest extends Component
 
     public function mount($id)
     {
-        $this->serviceRequest = ServiceRequest::findOrFail($id);
+        $this->serviceRequest = ServiceRequest::with('payment')->findOrFail($id);
 
         // Populate form fields
         $this->technician_id = $this->serviceRequest->technician_id;
@@ -79,7 +79,7 @@ class EditServiceRequest extends Component
         $this->serial_no = $this->serviceRequest->serial_no;
         $this->MAC = $this->serviceRequest->MAC;
         $this->color = $this->serviceRequest->color;
-        $this->service_amount = $this->serviceRequest->service_amount;
+        $this->service_amount = $this->serviceRequest->payment->total_amount ?? 0;
         $this->problem = $this->serviceRequest->problem;
         $this->status = $this->serviceRequest->status;
         $this->estimate_delivery = Carbon::parse($this->serviceRequest->estimate_delivery)->format('Y-m-d\TH:i');
@@ -151,7 +151,6 @@ class EditServiceRequest extends Component
                 'contact' => $this->contact,
                 'brand' => $this->brand,
                 'color' => $this->color,
-                'service_amount' => $this->service_amount,
                 'problem' => $this->problem,
                 'status' => $this->status,
                 'estimate_delivery' => $this->estimate_delivery,
@@ -159,6 +158,26 @@ class EditServiceRequest extends Component
                 'image_file_id' => $imageFileId, // Update file ID if new image uploaded
                 'last_update' => now(),
             ]);
+
+            if ($this->serviceRequest->payment) {
+                $total = (float)($this->service_amount ?? 0);
+                $paid = (float)$this->serviceRequest->payment->paid_amount;
+                $due = max($total - $paid, 0);
+
+                $paymentStatus = 'pending';
+                if ($paid > 0 && $due > 0) {
+                    $paymentStatus = 'partial';
+                } elseif ($paid >= $total && $total > 0) {
+                    $paymentStatus = 'completed';
+                }
+
+                $this->serviceRequest->payment->update([
+                    'amount' => $total,
+                    'total_amount' => $total,
+                    'due_amount' => $due,
+                    'status' => $paymentStatus,
+                ]);
+            }
 
             session()->flash('success', 'Service request updated successfully!');
             return redirect()->route('frontdesk.servicerequest.manage');

@@ -108,6 +108,29 @@
                             @endif
                         </div>
                     </div>
+
+                    <!-- Payment Information -->
+                    @if ($serviceRequest->payment)
+                    <div class="border border-gray-200 rounded-lg p-4 shadow-sm md:col-span-2">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4 border-b border-gray-200 pb-2">Payment Information</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <span class="text-sm font-medium text-gray-600">Total Amount:</span>
+                                <p class="font-bold text-gray-900">₹{{ number_format($serviceRequest->payment->total_amount ?? 0, 2) }}</p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-600">Paid Amount:</span>
+                                <p class="font-bold text-green-600">₹{{ number_format($serviceRequest->payment->paid_amount ?? 0, 2) }}</p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-600">Due Amount:</span>
+                                <p class="font-bold {{ ($serviceRequest->payment->due_amount ?? 0) > 0 ? \"text-red-600\" : \"text-green-600\" }}">
+                                    ₹{{ number_format($serviceRequest->payment->due_amount ?? 0, 2) }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
                 <!-- Problem Description -->

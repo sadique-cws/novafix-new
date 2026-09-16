@@ -62,10 +62,11 @@ class ViewStaff extends Component
         // Extend end date by one month for inclusive DatePeriod iteration
         $endDateInclusive = (clone $endDate)->modify('+1 month');
 
-        $serviceRows = ServiceRequest::where('technician_id', $this->staffId)
+        $serviceRows = ServiceRequest::with('payment')
+            ->where('technician_id', $this->staffId)
             ->where('status', 1)
             ->whereBetween('created_at', [$startDate, $endDate])
-            ->get(['created_at', 'service_amount']);
+            ->get(['id', 'created_at']);
 
         // Database-agnostic month grouping
         $servicesData = $serviceRows
@@ -74,7 +75,7 @@ class ViewStaff extends Component
 
         $revenueData = $serviceRows
             ->groupBy(fn ($row) => optional($row->created_at)->format('M Y'))
-            ->map(fn ($rows) => (float) $rows->sum('service_amount'));
+            ->map(fn ($rows) => (float) $rows->sum(fn ($sr) => $sr->payment->total_amount ?? 0));
 
         $period = new \DatePeriod($startDate, new \DateInterval('P1M'), $endDateInclusive);
 

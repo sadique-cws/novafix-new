@@ -74,10 +74,10 @@ class ViewTask extends Component
 
     public function mount(ServiceRequest $task)
     {
-        $this->task = $task->load('receptionist', 'serviceCategory', 'payments');
+        $this->task = $task->load('receptionist', 'serviceCategory', 'payment');
         $this->selectedStatus = $this->task->status;
-        $this->paymentAmount = $this->task->service_amount ?? 0;
-        $this->paymentCompleted = $task->payments->isNotEmpty();
+        $this->paymentAmount = $this->task->payment->total_amount ?? 0;
+        $this->paymentCompleted = (bool) $this->task->payment;
         $this->taskRejected = $task->status == 90;
     }
 
@@ -125,20 +125,14 @@ class ViewTask extends Component
 
     public function updateStatus()
     {
-        if ($this->paymentCompleted || $this->taskRejected) {
+        if ($this->taskRejected) {
             $this->dispatch(
                 'notify',
                 type: 'error',
                 title: 'Cannot Change Status',
-                message: 'Status cannot be changed for '.($this->paymentCompleted ? 'completed payments' : 'rejected tasks')
+                message: 'Status cannot be changed for rejected tasks'
             );
             $this->selectedStatus = $this->task->status;
-
-            return;
-        }
-
-        if ($this->selectedStatus == 2) {
-            $this->showPaymentSection = true;
 
             return;
         }
@@ -156,44 +150,60 @@ class ViewTask extends Component
         );
     }
 
-    public function completeWithPayment()
+    public function recordPayment()
     {
         $this->validate([
             'paymentMethod' => 'required|string|in:cash,card,upi',
-            'paymentAmount' => 'required|numeric|min:0',
+            'paymentAmount' => 'required|numeric|min:1',
             'paymentReference' => 'nullable|string|max:255',
         ]);
 
-        $taxAmount = 0;
-        $discountAmount = 0;
-        $totalAmount = $this->paymentAmount + $taxAmount - $discountAmount;
+        $payment = $this->task->payment;
+        if (!$payment) {
+            return;
+        }
 
-        $payment = Payment::create([
+        $remaining_due = (float) $payment->due_amount;
+        
+        if ($this->paymentAmount > $remaining_due) {
+            $this->addError('paymentAmount', 'Amount cannot exceed the remaining due of ₹' . number_format($remaining_due, 2));
+            return;
+        }
+
+        \App\Models\PaymentTransaction::create([
+            'payment_id' => $payment->id,
             'service_request_id' => $this->task->id,
-            'amount' => $this->paymentAmount,
-            'total_amount' => $totalAmount,
+            'amount_paid' => $this->paymentAmount,
             'payment_method' => $this->paymentMethod,
             'transaction_id' => $this->paymentMethod === 'cash' ? 'CASH-'.uniqid() : $this->paymentReference,
-            'status' => 'completed',
             'staff_id' => null,
-            'received_by' => Auth::guard('frontdesk')->user()->id,
+            'received_by' => Auth::guard('frontdesk')->id(),
             'notes' => $this->paymentReference,
         ]);
 
-        $this->task->update([
-            'status' => 2,
+        $new_paid = (float) $payment->paid_amount + $this->paymentAmount;
+        $new_due = (float) $payment->total_amount - $new_paid;
+        
+        $payment->update([
+            'paid_amount' => $new_paid,
+            'due_amount' => max($new_due, 0),
+            'status' => $new_due <= 0 ? 'completed' : 'partial',
         ]);
 
-        $this->paymentCompleted = true;
-        $this->showPaymentSection = false;
+        $this->paymentCompleted = $new_due <= 0;
+        
+        $this->dispatch('close-modal', 'recordPaymentModal');
 
         $this->dispatch(
             'notify',
             type: 'success',
-            title: 'Task Completed!',
-            message: 'Payment of ₹'.number_format($totalAmount, 2).' recorded (pending verification)',
+            title: 'Payment Recorded!',
+            message: 'Payment of ₹'.number_format($this->paymentAmount, 2).' recorded successfully.',
             duration: 5000
         );
+
+        $this->paymentAmount = 0;
+        $this->task->refresh();
     }
 
     public function directDelivery()

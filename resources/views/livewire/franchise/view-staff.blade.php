@@ -205,10 +205,10 @@
 
 
             <!-- Performance Tab -->
-            <div x-show="activeTab === 'performance'" x-cloak x-transition x-data="{
+            <div x-show="activeTab === 'performance'" x-cloak x-transition x-data='{
                 chart: null,
-                chartType: '{{ $chartType }}',
-                performanceRange: '{{ $performanceRange }}',
+                chartType: "{{ $chartType }}",
+                performanceRange: "{{ $performanceRange }}",
                 initChart() {
                     const ctx = this.$refs.chartCanvas.getContext('2d');
                     this.chart = new Chart(ctx, {
@@ -308,7 +308,7 @@
                     }
                     this.initChart();
                 }
-            }"
+            }'
                 x-init="initChart" @refresh-chart.window="refreshChart()"
                 @update-chart.window="updateChart($event.detail.type)">
                 <div class="space-y-6">
@@ -467,7 +467,7 @@
                                         <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
                                             {{ $service->problem }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            ₹{{ number_format($service->service_amount, 2) }}</td>
+                                            ₹{{ number_format($service->payment->total_amount ?? 0, 2) }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="px-2.5 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full 

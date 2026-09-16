@@ -141,6 +141,14 @@
                             <p class="text-xl font-bold text-gray-800">Total Amount:</p>
                             <p class="text-2xl font-bold text-blue-600">₹{{ number_format($payment->total_amount, 2) }}</p>
                         </div>
+                        <div class="flex justify-between items-center">
+                            <p class="font-medium text-gray-600">Paid Amount:</p>
+                            <p class="text-lg text-green-600">₹{{ number_format($payment->paid_amount ?? 0, 2) }}</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <p class="font-bold text-gray-800">Due Amount:</p>
+                            <p class="text-lg font-bold {{ ($payment->due_amount ?? 0) > 0 ? 'text-red-600' : 'text-green-600' }}">₹{{ number_format($payment->due_amount ?? 0, 2) }}</p>
+                        </div>
                     </div>
                 </div>
 
@@ -154,8 +162,8 @@
                 <!-- Payment Actions -->
                 <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 mt-8 border-t border-gray-100 pt-6">
                     @if($payment->status !== 'completed')
-                        <x-ui.button wire:click="markAsPaid({{ $payment->id }})" variant="primary">
-                            <i class="fas fa-check-circle mr-2"></i> Mark as Paid
+                        <x-ui.button wire:click="$set('showPaymentModal', true)" variant="primary">
+                            <i class="fas fa-money-bill-wave mr-2"></i> Record Payment
                         </x-ui.button>
                     @endif
                     <x-ui.button wire:click="printReceipt({{ $payment->id }})" variant="secondary">

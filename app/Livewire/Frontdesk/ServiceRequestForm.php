@@ -38,6 +38,7 @@ class ServiceRequestForm extends Component
     public $brand;
     public $color;
     public $service_amount;
+    public $amount_paid = 0;
     public $problem;
     public $status = 0.00;
     public $last_update;
@@ -71,6 +72,7 @@ class ServiceRequestForm extends Component
             'brand' => 'required|string|max:255',
             'color' => 'required|string|max:100',
             'service_amount' => 'nullable|numeric|min:0',
+            'amount_paid' => 'nullable|numeric|min:0',
             'problem' => 'required|string',
             'estimate_delivery' => 'date',
             'image' => 'nullable|image|max:5120',
@@ -238,7 +240,6 @@ class ServiceRequestForm extends Component
                 'contact' => $this->contact,
                 'brand' => $this->brand,
                 'color' => $this->color,
-                'service_amount' => $this->service_amount,
                 'problem' => $this->problem,
                 'status' => $this->status,
                 'last_update' => $this->last_update,
@@ -248,8 +249,42 @@ class ServiceRequestForm extends Component
                 'image_url' => $imagePath,
                 'image_file_id' => $imageFIleId,
                 'status_request' => 1,
-                // Removed the imagekit_data field as it doesn't exist in the database
             ]);
+
+            // Calculate payment status
+            $total = (float)($this->service_amount ?? 0);
+            $paid = (float)($this->amount_paid ?? 0);
+            $due = max($total - $paid, 0);
+
+            $paymentStatus = 'pending';
+            if ($paid > 0 && $due > 0) {
+                $paymentStatus = 'partial';
+            } elseif ($paid >= $total && $total > 0) {
+                $paymentStatus = 'completed';
+            }
+
+            // Create master payment record
+            $payment = \App\Models\Payment::create([
+                'service_request_id' => $serviceRequest->id,
+                'amount' => $total,
+                'total_amount' => $total,
+                'paid_amount' => $paid,
+                'due_amount' => $due,
+                'status' => $paymentStatus,
+                'received_by' => $this->receptioners_id,
+            ]);
+
+            // Create initial transaction if anything is paid
+            if ($paid > 0) {
+                \App\Models\PaymentTransaction::create([
+                    'payment_id' => $payment->id,
+                    'service_request_id' => $serviceRequest->id,
+                    'amount_paid' => $paid,
+                    'payment_method' => 'cash',
+                    'received_by' => $this->receptioners_id,
+                    'notes' => 'Advance Payment',
+                ]);
+            }
 
             // Save or Update Customer if direct customer
             if ($this->request_type === 'customer' && $this->contact) {
@@ -347,6 +382,7 @@ class ServiceRequestForm extends Component
         $this->estimate_delivery = Carbon::now()->addDays(3)->format('Y-m-d');
         $this->last_update = now();
         $this->status = 0.00;
+        $this->amount_paid = 0;
         $this->delivery_status = false;
         
         // Clear any file uploads

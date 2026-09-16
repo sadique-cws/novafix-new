@@ -232,15 +232,49 @@
                     @enderror
                 </div>
 
-                <!-- Service Amount -->
-                <div>
-                    <label for="service_amount" class="block text-sm font-medium text-slate-600">Service
-                        Amount</label>
-                    <input type="number" step="0.01" id="service_amount" wire:model="service_amount"
-                        class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
-                    @error('service_amount')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
+                <!-- Service Amount & Payments -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-1 md:col-span-2">
+                    <div>
+                        <label for="service_amount" class="block text-sm font-medium text-slate-600">Total Bill
+                            Amount</label>
+                        <input type="number" step="0.01" id="service_amount" wire:model.live="service_amount"
+                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                        @error('service_amount')
+                            <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="amount_paid" class="block text-sm font-medium text-slate-600">Amount Paid
+                            (Advance)</label>
+                        <input type="number" step="0.01" id="amount_paid" wire:model.live="amount_paid"
+                            class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">
+                        @error('amount_paid')
+                            <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Dues Calculation Display -->
+                <div
+                    class="col-span-1 md:col-span-2 bg-gray-50 p-4 rounded-lg border border-gray-200 flex justify-between items-center">
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">Payment Summary</p>
+                        <p class="text-xs text-gray-400 mt-1">If the amount paid is less than the total bill, the
+                            remaining will be marked as Due.</p>
+                    </div>
+                    <div class="text-right">
+                        @php
+                            $total = (float) ($service_amount ?? 0);
+                            $paid = (float) ($amount_paid ?? 0);
+                            $due = max($total - $paid, 0);
+                        @endphp
+                        <p class="text-sm text-gray-600">Total: <span
+                                class="font-bold text-gray-900">₹{{ number_format($total, 2) }}</span></p>
+                        <p class="text-lg font-bold {{ $due > 0 ? 'text-red-600' : 'text-green-600' }}">
+                            Due: ₹{{ number_format($due, 2) }}
+                        </p>
+                    </div>
                 </div>
 
                 <div class="md:col-span-2">
