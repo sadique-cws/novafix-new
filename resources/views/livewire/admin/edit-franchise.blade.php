@@ -1,9 +1,14 @@
 <div class="min-h-screen bg-gray-50 py-8">
     <div class="container mx-auto max-w-4xl px-4">
-        <!-- Header -->
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Edit Franchise</h1>
-            <p class="text-gray-600">Update franchise information and details</p>
+        <!-- Header Actions -->
+        <div class="flex justify-end mb-6">
+            <a wire:navigate href="{{ route('admin.manage-franchises') }}"
+                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-2xs text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Franchises
+            </a>
         </div>
         
         <!-- Success/Error Messages -->

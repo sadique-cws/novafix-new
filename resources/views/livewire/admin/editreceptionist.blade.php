@@ -1,5 +1,13 @@
 <div class="p-6 bg-white shadow rounded">
-    <h2 class="text-xl font-bold mb-4">Edit Receptionist</h2>
+    <div class="flex justify-end mb-4">
+        <a wire:navigate href="{{ route('admin.receptionst.management') }}"
+            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-2xs text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Receptionists
+        </a>
+    </div>
 
     @if (session()->has('success'))
         <div class="p-2 mb-3 text-green-700 bg-green-200 rounded">

@@ -2,8 +2,7 @@
   <div class=" overflow-hidden">
     <!-- Header -->
     <div
-      class="px-4 sm:px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-      <h2 class="text-xl sm:text-2xl text-gray-800">Franchise Management</h2>
+      class="px-4 sm:px-6 py-4 border-b border-gray-100 flex justify-end items-center">
       <div class="w-full sm:w-auto flex justify-end">
         <a wire:navigate href="{{route('admin.add-franchise')}}"
           class="btn-primary w-full flex justify-center items-center gap-2 text-white font-semibold rounded-lg bg-blue-500 p-2 sm:w-auto text-center transition-colors duration-200 ">

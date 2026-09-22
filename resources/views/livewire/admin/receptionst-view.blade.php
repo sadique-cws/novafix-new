@@ -1,11 +1,7 @@
 <div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto">
-        <!-- Header Section -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-            <div>
-                <h1 class="text-2xl sm:text-3xl  text-gray-900">Receptionist Profile</h1>
-                <p class="text-sm text-gray-500 mt-1">Detailed professional information</p>
-            </div>
+        <!-- Header Section with back button -->
+        <div class="flex justify-end items-center mb-6">
             <a wire:navigate href="{{ route('admin.receptionst.management') }}" 
                class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">

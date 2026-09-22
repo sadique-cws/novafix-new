@@ -1,11 +1,7 @@
-<div class="flex-1 p-6 mt-6 md:mb-6">
-    <!-- Header Section with Search/Filter -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
-        <div>
-            <h2 class="text-2xl  text-gray-800 ">Assigned Tasks</h2>
-            <p class="text-gray-600 dark:text-gray-300">Tasks assigned to you by receptionists</p>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+<div class="flex-1 p-4 sm:p-6">
+    <!-- Search/Filter Bar -->
+    <div class="flex justify-end mb-6">
+        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <div class="relative flex-grow">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">

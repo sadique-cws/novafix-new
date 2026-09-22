@@ -24,12 +24,8 @@
     </template>
 
     <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-8">
-        <!-- Header with franchise selector -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-            <div>
-                <h2 class="text-xl font-semibold text-gray-800">Franchise Performance</h2>
-                <p class="text-sm text-gray-500 mt-1">Detailed analytics for selected franchise</p>
-            </div>
+        <!-- Franchise selectors -->
+        <div class="flex justify-end mb-6">
             <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                 <div class="relative w-full">
                     <select wire:model.live="selectedFranchise"
