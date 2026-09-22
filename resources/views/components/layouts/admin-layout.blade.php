@@ -7,20 +7,7 @@
     <title>Novafix | Admin</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- <script src="https://cdn.tailwindcss.com" data-navigate-once></script> -->
-    <script data-navigate-once>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1E40AF',
-                        secondary: '#3B82F6',
-                        accent: '#10B981',
-                    }
-                }
-            }
-        }
-    </script>
+
     <style>
         :root {
             --color-primary: #4f46e5;
@@ -47,9 +34,9 @@
 
 <body class="bg-gray-50" x-data="dashboard()">
     <!-- Mobile backdrop -->
-    <div x-show="isMobileSidebarOpen" @click="isMobileSidebarOpen = false"
-        class="fixed inset-0 bg-black bg-opacity-50 z-40 backdrop-transition lg:hidden"
-        :class="isMobileSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'">
+    <div x-cloak x-show="isMobileSidebarOpen" @click="isMobileSidebarOpen = false"
+        class="fixed inset-0 bg-black/50 z-40 backdrop-transition md:hidden pointer-events-none opacity-0"
+        :class="isMobileSidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'">
     </div>
 
     <div class="flex gap-1">
@@ -59,7 +46,7 @@
             <div class="pt-4 pb-4 px-4 border-b border-gray-800 flex items-center justify-start gap-3">
                 <div class="py-1 px-2 rounded-lg bg-[#1E40AF] text-xl font-medium text-[#F9FAFB]">NF</div>
                 <h2 class="text-lg font-medium md:text-xl text-white">Super Admin</h2>
-                <button @click="isMobileSidebarOpen = false" class="lg:hidden ml-10 text-gray-500 hover:text-gray-300">
+                <button @click="isMobileSidebarOpen = false" class="md:hidden ml-10 text-gray-500 hover:text-gray-300">
                     <i class="fas text-lg fa-times"></i>
                 </button>
             </div>
@@ -76,15 +63,15 @@
 
                     <!-- Franchise Management -->
                     <li class="mb-1 relative">
-                        <a href="#" @click="toggleDropdown('franchise')"
-                            class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-800 hover:text-white transition-colors {{ request()->routeIs('admin.manage-franchises', 'admin.add-franchise', 'admin.franchise.performance') ? 'bg-gray-800 text-white' : 'text-gray-300' }}">
+                        <button type="button" @click.prevent="toggleDropdown('franchise')"
+                            class="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-800 hover:text-white transition-colors text-left {{ request()->routeIs('admin.manage-franchises', 'admin.add-franchise', 'admin.franchise.performance') ? 'bg-gray-800 text-white' : 'text-gray-300' }}">
                             <div class="flex font-medium items-center">
                                 <i class="fas fa-store mr-3 w-5 text-center"></i>
                                 <span>Franchises</span>
                             </div>
                             <i class="fas fa-chevron-down text-xs ml-2 transition-transform"
                                 :class="openDropdowns.franchise ? 'rotate-180' : ''"></i>
-                        </a>
+                        </button>
                         <ul x-show="openDropdowns.franchise" x-transition
                             class="pl-2 mt-1 ml-6 border-l-2 border-gray-700 space-y-1">
                             <li>
@@ -124,23 +111,23 @@
 
                     <!-- Solution (Conditional: Link for md/lg, Dropdown for sm) -->
                     <li class="mb-1">
-                        <div x-show="!isMobile" class="md:block hidden">
+                        <div class="hidden md:block">
                             <a wire:navigate href="{{ route('admin.solution') }}"
                                 class="flex font-medium items-center p-3 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white transition-colors {{ request()->routeIs('admin.solution') ? 'bg-gray-800 text-white' : '' }}">
                                 <i class="fas fa-user-tie mr-3 w-5 text-center"></i>
                                 <span>Solution</span>
                             </a>
                         </div>
-                        <div x-show="isMobile" class="sm:block md:hidden">
-                            <a href="#" @click="toggleDropdown('solution')"
-                                class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-800 hover:text-white transition-colors {{ request()->routeIs('admin.solution*') ? 'bg-gray-800 text-white' : 'text-gray-300' }}">
+                        <div class="block md:hidden">
+                            <button type="button" @click.prevent="toggleDropdown('solution')"
+                                class="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-800 hover:text-white transition-colors text-left {{ request()->routeIs('admin.solution*') ? 'bg-gray-800 text-white' : 'text-gray-300' }}">
                                 <div class="flex font-medium items-center">
                                     <i class="fas fa-user-tie mr-3 w-5 text-center"></i>
                                     <span>Solution</span>
                                 </div>
                                 <i class="fas fa-chevron-down text-xs ml-2 transition-transform"
                                     :class="openDropdowns.solution ? 'rotate-180' : ''"></i>
-                            </a>
+                            </button>
                             <ul x-show="openDropdowns.solution" x-transition
                                 class="pl-2 mt-1 ml-6 border-l-2 border-gray-700 space-y-1">
                                 <li>
@@ -227,12 +214,12 @@
                 class="sticky top-0 z-40 flex items-center justify-between px-6 py-4 bg-gray-900 shadow-md border-b border-gray-800">
                 <!-- Mobile Menu Button (Hidden on Desktop) -->
                 <button @click="isMobileSidebarOpen = true"
-                    class="lg:hidden text-gray-300 hover:text-white transition-colors">
+                    class="md:hidden text-gray-300 hover:text-white transition-colors">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
 
                 <!-- Spacer for desktop (keeps dropdown aligned to right) -->
-                <div class="hidden lg:flex items-center gap-3">
+                <div class="hidden md:flex items-center gap-3">
                     {{ $navbar_back ?? '' }}
                     <h1 class="text-white font-medium text-lg capitalize">
                         {{ $title ?? str_replace(['admin.', '.'], ['', ' '], request()->route()->getName() ?? 'Dashboard') }}
@@ -284,50 +271,56 @@
     </div>
 
     <script data-navigate-once>
-        document.addEventListener('alpine:init', () => {
-            window.dashboard = function () {
-                const path = window.location.pathname;
-                const isFranchise = path.includes('/admin/manage-franchises') || path.includes('/admin/add-franchise') || path.includes('/admin/Franchise-performance');
-                const isSolution = path.includes('/admin/solution');
-                
-                return {
-                    isMobileSidebarOpen: false,
-                    openDropdowns: {
-                        franchise: isFranchise,
-                        solution: isSolution,
-                        finance: false,
-                        reports: false
-                    },
-                    isMobile: window.innerWidth < 640,
-                    toggleDropdown(dropdown) {
-                        this.openDropdowns[dropdown] = !this.openDropdowns[dropdown];
-                        // Close other dropdowns
-                        Object.keys(this.openDropdowns).forEach(key => {
-                            if (key !== dropdown) {
-                                this.openDropdowns[key] = false;
-                            }
-                        });
-                    },
-                    init() {
-                        window.addEventListener('resize', () => {
-                            this.isMobile = window.innerWidth < 640;
-                        });
-                        
-                        document.addEventListener('livewire:navigated', () => {
-                            const currentPath = window.location.pathname;
-                            if (currentPath.includes('/admin/manage-franchises') || currentPath.includes('/admin/add-franchise') || currentPath.includes('/admin/Franchise-performance')) {
-                                this.openDropdowns.franchise = true;
-                            } else {
-                                this.openDropdowns.franchise = false;
-                            }
-                            
-                            if (currentPath.includes('/admin/solution')) {
-                                this.openDropdowns.solution = true;
-                            } else {
-                                this.openDropdowns.solution = false;
-                            }
-                        });
-                    }
+        function createDashboard() {
+            const path = window.location.pathname;
+            const isFranchise = path.includes('/admin/manage-franchises') || path.includes('/admin/add-franchise') || path.includes('/admin/Franchise-performance');
+            const isSolution = path.includes('/admin/solution');
+            
+            return {
+                isMobileSidebarOpen: false,
+                openDropdowns: {
+                    franchise: isFranchise,
+                    solution: isSolution,
+                    finance: false,
+                    reports: false
+                },
+                isMobile: window.innerWidth < 768,
+                toggleDropdown(dropdown) {
+                    this.openDropdowns[dropdown] = !this.openDropdowns[dropdown];
+                    // Close other dropdowns
+                    Object.keys(this.openDropdowns).forEach(key => {
+                        if (key !== dropdown) {
+                            this.openDropdowns[key] = false;
+                        }
+                    });
+                },
+                init() {
+                    window.addEventListener('resize', () => {
+                        this.isMobile = window.innerWidth < 768;
+                    });
+                }
+            };
+        }
+
+        window.dashboard = createDashboard;
+
+        if (window.Alpine) {
+            Alpine.data('dashboard', createDashboard);
+        } else {
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('dashboard', createDashboard);
+            });
+        }
+
+        document.addEventListener('livewire:navigated', () => {
+            const path = window.location.pathname;
+            const bodyEl = document.querySelector('body[x-data]');
+            if (bodyEl && bodyEl._x_dataStack) {
+                const alpineData = bodyEl._x_dataStack[0];
+                if (alpineData) {
+                    alpineData.isMobileSidebarOpen = false;
+                    alpineData.openDropdowns.franchise = path.includes('/admin/manage-franchises') || path.includes('/admin/add-franchise') || path.includes('/admin/Franchise-performance');
+                    alpineData.openDropdowns.solution = path.includes('/admin/solution');
                 }
             }
         });

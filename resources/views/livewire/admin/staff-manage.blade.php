@@ -1,15 +1,7 @@
-<div class="min-h-screen bg-gray-50 p-4 sm:p-6">
-    <!-- Header Section -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <div>
-            <h1 class="text-2xl sm:text-3xl  text-gray-800">Staff Management</h1>
-            <p class="text-sm text-gray-500 mt-1">Manage all staff members across franchises</p>
-        </div>
-      
-    </div>
+<div class="space-y-4">
 
     <!-- Filter Section -->
-    <div class="bg-white rounded-xl shadow-sm p-4 mb-6 border border-gray-100">
+    <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <!-- Search Input -->
             <div>

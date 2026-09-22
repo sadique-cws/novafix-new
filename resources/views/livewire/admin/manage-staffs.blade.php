@@ -1,8 +1,4 @@
 <div>
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold">Manage Staff</h2>
-    </div>
-
     <div class="flex space-x-4 mb-4">
         <div class="w-1/4">
             <label for="franchise_id" class="block text-gray-700 text-sm  mb-2">Franchise:</label>
