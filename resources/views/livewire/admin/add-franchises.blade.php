@@ -11,7 +11,7 @@
                                 <h2 class="text-2xl  text-white">Register New Franchise</h2>
                             </div>
                             <a href="{{ route('admin.manage-franchises') }}"
-                                class="flex items-center px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg text-white text-sm font-medium transition-colors">
+                                class="flex items-center px-4 py-2 bg-white hover:bg-slate-100 text-indigo-700 rounded-lg text-sm font-semibold shadow-xs transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

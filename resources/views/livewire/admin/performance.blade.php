@@ -234,15 +234,11 @@
                 </table>
             </div>
 
-            <div class="flex items-center justify-between mt-4">
-                <div class="text-sm text-gray-500">
-                    Showing {{ $payments->firstItem() }} to {{ $payments->lastItem() }} of {{ $payments->total() }}
-                    payments
-                </div>
-                <div class="flex space-x-2">
+            @if ($payments->hasPages())
+                <div class="mt-4">
                     {{ $payments->links() }}
                 </div>
-            </div>
+            @endif
         </div>
 
         <!-- Recent Activities -->
