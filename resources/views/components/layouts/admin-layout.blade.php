@@ -212,17 +212,23 @@
         <div class="min-h-screen w-full md:w-[calc(100%-16rem)] md:ml-64">
             <div
                 class="sticky top-0 z-40 flex items-center justify-between px-6 py-4 bg-gray-900 shadow-md border-b border-gray-800">
-                <!-- Mobile Menu Button (Hidden on Desktop) -->
-                <button @click="isMobileSidebarOpen = true"
-                    class="md:hidden text-gray-300 hover:text-white transition-colors">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
+                <div class="flex items-center space-x-3">
+                    <!-- Mobile Menu Button (Hidden on Desktop) -->
+                    <button @click="isMobileSidebarOpen = true"
+                        class="md:hidden text-gray-300 hover:text-white transition-colors mr-1">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
 
-                <!-- Spacer for desktop (keeps dropdown aligned to right) -->
-                <div class="hidden md:flex items-center gap-3">
-                    {{ $navbar_back ?? '' }}
-                    <h1 class="text-white font-medium text-lg capitalize">
-                        {{ $title ?? str_replace(['admin.', '.'], ['', ' '], request()->route()->getName() ?? 'Dashboard') }}
+                    <!-- Back Button in Header -->
+                    <button type="button" 
+                        onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href = '{{ route('admin.dashboard') }}'; }"
+                        class="hidden md:inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors border border-gray-700 focus:outline-none"
+                        title="Back">
+                        <i class="fas fa-arrow-left text-sm"></i>
+                    </button>
+
+                    <h1 class="text-white font-medium text-base sm:text-lg capitalize">
+                        {{ $title ?? str_replace(['admin.', '.'], ['', ' '], request()->route()?->getName() ?? 'Dashboard') }}
                     </h1>
                 </div>
 
