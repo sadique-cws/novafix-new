@@ -1,31 +1,36 @@
 <div class="container mx-auto px-4 py-8 max-w-6xl">
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
         <!-- Profile Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-4 md:p-6 text-white">
+        <div class="bg-white border-b border-gray-200 p-6 md:p-8">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
-                    <div class="relative">
+                <div class="flex items-center space-x-4">
+                    <div class="relative flex-shrink-0">
                         @if($receptionist->photo_path)
                             <img src="{{ asset('storage/'.$receptionist->photo_path) }}" 
-                                 class="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 border-white shadow-md">
+                                 class="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 border-blue-500 shadow-md">
                         @else
-                            <div class="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-blue-400 flex items-center justify-center text-2xl sm:text-3xl  text-white border-2 border-white shadow-md">
+                            <div class="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-blue-600 flex items-center justify-center text-2xl sm:text-3xl font-bold text-white shadow-md shadow-blue-500/20">
                                 {{ strtoupper(substr($receptionist->name, 0, 1)) }}
                             </div>
                         @endif
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-2xl ">{{ $receptionist->name }}</h1>
-                        <p class="text-blue-100 text-sm sm:text-base">{{ $receptionist->email }}</p>
-                        <div class="mt-1 sm:hidden">
-                            <span class="px-2 py-1 rounded-full text-xs font-semibold {{ $receptionist->status == '1' ? 'bg-green-500' : 'bg-red-500' }}">
+                        <h1 class="text-xl sm:text-2xl font-bold text-gray-900 leading-tight">{{ $receptionist->name }}</h1>
+                        <p class="text-gray-500 text-sm sm:text-base mt-1 flex items-center gap-1.5">
+                            <i class="far fa-envelope text-gray-400 text-xs"></i>
+                            {{ $receptionist->email }}
+                        </p>
+                        <div class="mt-2 sm:hidden">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $receptionist->status == '1' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200' }}">
+                                <span class="w-1.5 h-1.5 rounded-full mr-1.5 {{ $receptionist->status == '1' ? 'bg-green-500' : 'bg-red-500' }}"></span>
                                 {{ $receptionist->status == '1' ? 'Active' : 'Inactive' }}
                             </span>
                         </div>
                     </div>
                 </div>
                 <div class="hidden sm:block">
-                    <span class="px-3 py-1 rounded-full text-sm font-semibold {{ $receptionist->status == '1' ? 'bg-green-500' : 'bg-red-500' }}">
+                    <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold {{ $receptionist->status == '1' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200' }}">
+                        <span class="w-2 h-2 rounded-full mr-1.5 {{ $receptionist->status == '1' ? 'bg-green-500' : 'bg-red-500' }}"></span>
                         {{ $receptionist->status == '1' ? 'Active' : 'Inactive' }}
                     </span>
                 </div>

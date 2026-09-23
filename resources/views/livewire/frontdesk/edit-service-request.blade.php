@@ -1,18 +1,18 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-4">
+        <div class="bg-blue-600 bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white mr-3" fill="none"
+                <div class="flex items-center text-white text-sm font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-200" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                     </svg>
-                    <h2 class="text-xl  text-white">Edit Service Request</h2>
+                    Service Code: <span class="ml-1 text-white font-bold">{{ $serviceRequest->service_code }}</span>
                 </div>
-                <div class="text-sm text-blue-100">
-                    Request ID: {{ $serviceRequest->service_code }}
+                <div class="text-xs text-blue-100">
+                    Created {{ $serviceRequest->created_at->format('M d, Y') }}
                 </div>
             </div>
         </div>

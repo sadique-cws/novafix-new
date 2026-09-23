@@ -1,14 +1,5 @@
 <div>
     <div class="max-w-6xl mx-auto bg-white shadow-md rounded-2xl p-6" x-data="{ tab: @entangle('request_type') }">
-        <div class="flex justify-between">
-            <h2 class="text-3xl font-semibold text-slate-700 mb-6">New Service Request</h2>
-            <div class="flex items-center gap-2">
-                <h3 class="font-medium text-xl text-blue-700">Tracking Id: </h3>
-                <p class="font-medium">{{ $service_code }}</p>
-            </div>
-        </div>
-
-
         @if (session('success'))
             <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">
                 {{ session('success') }}
@@ -21,23 +12,30 @@
             </div>
         @endif
 
-        <div class="mb-6 border-b border-gray-200">
+        <div class="mb-6 border-b border-gray-200 flex flex-wrap items-center justify-between gap-3">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
                 <li class="mr-2">
                     <button type="button" @click="tab = 'customer'"
                         :class="tab === 'customer' ? 'text-blue-600 border-blue-600' : 'text-gray-500 border-transparent hover:text-gray-600 hover:border-gray-300'"
-                        class="inline-block p-4 border-b-2 rounded-t-lg transition-colors">
+                        class="inline-block p-4 border-b-2 rounded-t-lg transition-colors font-semibold">
                         Direct Customer
                     </button>
                 </li>
                 <li class="mr-2">
                     <button type="button" @click="tab = 'shop'"
                         :class="tab === 'shop' ? 'text-blue-600 border-blue-600' : 'text-gray-500 border-transparent hover:text-gray-600 hover:border-gray-300'"
-                        class="inline-block p-4 border-b-2 rounded-t-lg transition-colors">
+                        class="inline-block p-4 border-b-2 rounded-t-lg transition-colors font-semibold">
                         Shop (B2B)
                     </button>
                 </li>
             </ul>
+
+            <div class="pb-2 sm:pb-0">
+                <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 px-3.5 py-1.5 rounded-lg shadow-sm">
+                    <span class="text-xs sm:text-sm font-semibold text-blue-700">Tracking ID:</span>
+                    <span class="text-xs sm:text-sm font-bold text-gray-800 tracking-wide">{{ $service_code }}</span>
+                </div>
+            </div>
         </div>
 
         <form wire:submit.prevent="save" class="space-y-6" enctype="multipart/form-data">

@@ -1,24 +1,4 @@
-
-<div class="">
-    <!-- Page Header -->
-    <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20">
-                    <i class="fas fa-credit-card text-lg"></i>
-                </div>
-                <span>Manage Payments</span>
-            </h1>
-            <p class="text-sm text-gray-500 mt-1">View, track, and manage all service request payments</p>
-        </div>
-        <div class="flex items-center gap-3">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
-                <span class="w-2 h-2 rounded-full bg-blue-600"></span>
-                {{ $totalPayments }} Total Records
-            </span>
-        </div>
-    </div>
-
+<div>
     <!-- Filters Section -->
     <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

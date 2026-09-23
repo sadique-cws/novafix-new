@@ -12,7 +12,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Title('View Task')]
+#[Title('Service Request Details')]
 #[Layout('components.layouts.frontdesk-layout')]
 
 class ViewTask extends Component

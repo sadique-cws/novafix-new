@@ -1,52 +1,36 @@
-<div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
-  <!-- Header Section -->
-  <div class="bg-white rounded-xl shadow-md mb-4 sm:mb-6 overflow-hidden">
-    <div
-      class="px-4 sm:px-6 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-200">
-      <div class="flex items-center space-x-3 sm:space-x-4">
-        <a href="{{ route('frontdesk.servicerequest.manage') }}"
-          class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 ">
-          <i class="fas fa-arrow-left text-gray-600 text-base sm:text-lg"></i>
-        </a>
-        <div>
-          <h1 class="text-lg sm:text-xl md:text-2xl text-gray-900">Service Request Details</h1>
-          <div class="flex flex-wrap items-center mt-2 space-x-2 sm:space-x-3">
-            <span
-              class="text-xs sm:text-sm font-medium text-gray-600 bg-gray-200 px-2.5 sm:px-3 py-1 rounded-full">SR-{{ $task->service_code }}</span>
-            @if ($paymentCompleted)
-              <span
-                class="inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-green-100 text-green-800">
-                <i class="fas fa-check-circle mr-1.5"></i> Payment Completed
-              </span>
-            @elseif($taskRejected)
-              <span
-                class="inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-red-100 text-red-800">
-                <i class="fas fa-times-circle mr-1.5"></i> Rejected
-              </span>
-            @else
-              <span
-                class="inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium
-                @if ($task->status == 0) bg-gray-100 text-gray-800
-                @elseif($task->status == 1) bg-blue-100 text-blue-800
-                @elseif($task->status == 4) bg-yellow-100 text-yellow-800
-                @elseif($task->status == 3) bg-red-100 text-red-800
-                @elseif($task->status == 2) bg-green-100 text-green-800 @endif">
-                <i
-                  class="fas
-                  @if ($task->status == 0) fa-clock
-                  @elseif($task->status == 1) fa-tasks
-                  @elseif($task->status == 2) fa-check-circle @endif
-                  mr-1.5 text-xs sm:text-sm"></i>
-                {{ $statusOptions[$task->status] ?? 'Unknown' }}
-              </span>
-            @endif
-          </div>
-        </div>
-      </div>
-      <div class="mt-3 sm:mt-0">
-        <span class="text-xs sm:text-sm text-gray-600 bg-gray-100 px-3 sm:px-4 py-1.5 rounded-full">
-          <i class="far fa-clock mr-1.5"></i> Last Updated: {{ $task->updated_at->format('M d, Y h:i A') }}
+<div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
+  <!-- Top Action & Status Bar -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <span class="text-xs sm:text-sm font-semibold text-gray-800 bg-gray-100 px-3 py-1.5 rounded-lg border border-gray-200">
+          SR-{{ $task->service_code }}
         </span>
+        @if ($paymentCompleted)
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">
+            <i class="fas fa-check-circle mr-1.5 text-green-600"></i> Payment Completed
+          </span>
+        @elseif($taskRejected)
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 border border-red-200">
+            <i class="fas fa-times-circle mr-1.5 text-red-600"></i> Rejected
+          </span>
+        @else
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold
+            @if ($task->status == 0) bg-gray-100 text-gray-800 border border-gray-200
+            @elseif($task->status == 1) bg-blue-100 text-blue-800 border border-blue-200
+            @elseif($task->status == 4) bg-yellow-100 text-yellow-800 border border-yellow-200
+            @elseif($task->status == 3) bg-red-100 text-red-800 border border-red-200
+            @elseif($task->status == 2) bg-green-100 text-green-800 border border-green-200 @endif">
+            <i class="fas
+              @if ($task->status == 0) fa-clock text-gray-500
+              @elseif($task->status == 1) fa-tasks text-blue-600
+              @elseif($task->status == 2) fa-check-circle text-green-600
+              @elseif($task->status == 3) fa-times-circle text-red-600
+              @else fa-info-circle @endif
+              mr-1.5 text-xs"></i>
+            {{ $statusOptions[$task->status] ?? 'Unknown' }}
+          </span>
+        @endif
       </div>
     </div>
   </div>
@@ -86,7 +70,7 @@
                   <p class="text-xs font-medium text-gray-500 uppercase">Email Address</p>
                   <p class="mt-1 text-sm sm:text-base text-gray-900 font-medium truncate">
                     {{ $task->email ?? 'Not provided' }}</p>
-                </div>font-semibol
+                </div>
               </div>
             </div>
             <!-- Product Info -->
@@ -208,8 +192,8 @@
             <div>
               <p class="text-xs font-medium text-gray-500 uppercase">Date Created</p>
               <p class="mt-1 text-sm sm:text-base text-gray-900 font-medium">
-                {{-- {{ $task->created_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</p> --}}
-                {{ $task->created_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</p>
+                {{ $task->created_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}
+              </p>
             </div>
           </div>
           <div class="flex items-start space-x-2 sm:space-x-3">
@@ -217,8 +201,8 @@
             <div>
               <p class="text-xs font-medium text-gray-500 uppercase">Last Updated</p>
               <p class="mt-1 text-sm sm:text-base text-gray-900 font-medium">
-                {{-- {{ $task->updated_at->->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</p> --}}
-                {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}</p>
+                {{ $task->updated_at->timezone('Asia/Kolkata')->format('M d, Y h:i A') }}
+              </p>
             </div>
           </div>
 
