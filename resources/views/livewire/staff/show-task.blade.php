@@ -6,10 +6,10 @@
             <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
                 <div class="px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-100">
                     <div class="flex items-center">
-                        <button wire:navigate href="{{ route('staff.assigned.task') }}"
-                            class="mr-4 p-2 rounded-lg hover:bg-gray-50 text-gray-600 transition duration-150 ease-in-out">
+                        <a wire:navigate href="{{ route('staff.assigned.task') }}"
+                            class="mr-4 p-2 rounded-lg hover:bg-gray-50 text-gray-600 transition duration-150 ease-in-out inline-flex items-center justify-center">
                             <i class="fas fa-arrow-left text-lg"></i>
-                        </button>
+                        </a>
                         <div>
                             <h1 class="text-2xl  text-gray-800 leading-tight">Service Request Details</h1>
                             <div class="flex items-center mt-1 space-x-3">
@@ -251,7 +251,7 @@
                             @endif
 
                             @if(($task->payment->due_amount ?? 0) > 0 && !$taskRejected)
-                                <button type="button" x-data @click="$dispatch('open-modal', 'recordPaymentModal')" class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transition duration-150 ease-in-out mt-2">
+                                <button type="button" x-data @click="$dispatch('open-modal', 'recordPaymentModal')" class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-green-600 hover:bg-green-700 transition duration-150 ease-in-out mt-2">
                                     <i class="fas fa-money-bill-wave mr-2"></i> Record Payment
                                 </button>
                             @endif
@@ -583,85 +583,35 @@
     </x-ui.modal>
 </div>
 
-<style>
-    .toast-success {
-        background-color: #38a169;
-        border-left: 6px solid #2f855a;
-    }
 
-    .toast-success .toast-title {
-        font-weight: 600;
-        font-size: 1.1em;
-        margin-bottom: 5px;
-    }
-
-    .toast-success .toast-message {
-        font-size: 0.95em;
-        line-height: 1.4;
-    }
-
-    .toast-close-button {
-        color: white;
-        opacity: 0.8;
-        font-weight: normal;
-    }
-
-    .toast-close-button:hover {
-        opacity: 1;
-        color: white;
-    }
-</style>
-
-@push('scripts')
+@script
 <script>
-    document.addEventListener('livewire:initialized', () => {
-        Livewire.on('notify', (event) => {
-            toastr[event.type](event.message, event.title, {
-                closeButton: true,
-                progressBar: true,
-                positionClass: 'toast-top-right',
-                timeOut: 5000,
-                extendedTimeOut: 1000,
-                showMethod: 'fadeIn',
-                hideMethod: 'fadeOut',
-            });
-            if (event.type === 'success') {
-                Livewire.emit('taskUpdated');
-            }
-            if (event.type === 'error') {
-                Livewire.emit('taskError');
-            }
-            if (event.type === 'info') {
-                Livewire.emit('taskInfo');
-            }
-        });
-    });
-    document.addEventListener('DOMContentLoaded', () => {
-        Livewire.on('taskUpdated', () => {
-            toastr.success('Task updated successfully!', 'Success');
-        });
-
-        Livewire.on('taskError', () => {
-            toastr.error('An error occurred while updating the task.', 'Error');
-        });
-
-        Livewire.on('taskInfo', () => {
-            toastr.info('Please check the task details.', 'Info');
-        });
-    });
-        const sidebar = document.getElementById('sidebar');
-        const mobileOverlay = document.getElementById('mobile-overlay');
-
-        document.querySelector('.sidebar-toggle').addEventListener('click', () => {
-            sidebar.classList.toggle('-translate-x-full');
-            mobileOverlay.classList.toggle('hidden');
-        });
-
-        mobileOverlay.addEventListener('click', () => {
-            sidebar.classList.add('-translate-x-full');
-            mobileOverlay.classList.add('hidden');
-        });
+    $wire.on('notify', (event) => {
+        // Create a simple toast notification
+        const toast = document.createElement('div');
+        toast.className = `fixed top-4 right-4 z-[9999] px-6 py-4 rounded-lg shadow-xl text-white text-sm font-medium transition-all duration-300 transform translate-x-0 opacity-100`;
+        
+        if (event.type === 'success') {
+            toast.classList.add('bg-green-600');
+        } else if (event.type === 'error') {
+            toast.classList.add('bg-red-600');
+        } else {
+            toast.classList.add('bg-blue-600');
+        }
+        
+        toast.innerHTML = `
+            <div class="font-semibold">${event.title || ''}</div>
+            <div class="mt-1 text-sm opacity-90">${event.message || ''}</div>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100%)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
     });
 </script>
-@endpush
+@endscript
 </div>

@@ -97,6 +97,26 @@ class ShowTask extends Component
         );
     }
 
+    public function markAsComplete($id = null)
+    {
+        $targetId = $id ?? $this->task->id;
+        $request = ServiceRequest::find($targetId);
+        if ($request) {
+            $request->update([
+                'status' => 2,
+                'last_update' => now()
+            ]);
+            $this->selectedStatus = 2;
+            $this->task->refresh();
+            $this->dispatch(
+                'notify',
+                type: 'success',
+                title: 'Task Completed',
+                message: 'Task has been marked as completed successfully.'
+            );
+        }
+    }
+
     public $finalPriceAmount = 0;
 
     public function openFinalPriceModal()

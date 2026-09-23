@@ -64,5 +64,21 @@ class CompletedTask extends Component
             'requests' => $requests,
         ]);
     }
+
+    public function markAsComplete($id = null)
+    {
+        if (!$id) {
+            return;
+        }
+
+        $request = ServiceRequest::find($id);
+        if ($request) {
+            $request->update([
+                'status' => 2,
+                'last_update' => now()
+            ]);
+            session()->flash('message', 'Task marked as completed successfully.');
+        }
+    }
    
 }

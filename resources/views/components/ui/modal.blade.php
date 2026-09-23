@@ -17,8 +17,8 @@ $maxWidthClass = match ($maxWidth) {
 <div
   x-data="{ show: false }"
   x-show="show"
-  x-on:open-modal.window="$event.detail === '{{ $name }}' ? show = true : null"
-  x-on:close-modal.window="$event.detail === '{{ $name }}' ? show = false : null"
+  x-on:open-modal.window="if ($event.detail === '{{ $name }}' || (Array.isArray($event.detail) && $event.detail.includes('{{ $name }}')) || $event.detail?.name === '{{ $name }}' || $event.detail?.id === '{{ $name }}' || $event.detail?.[0] === '{{ $name }}') { show = true; }"
+  x-on:close-modal.window="if ($event.detail === '{{ $name }}' || (Array.isArray($event.detail) && $event.detail.includes('{{ $name }}')) || $event.detail?.name === '{{ $name }}' || $event.detail?.id === '{{ $name }}' || $event.detail?.[0] === '{{ $name }}') { show = false; }"
   x-on:close.stop="show = false"
   x-on:keydown.escape.window="show = false"
   style="display: none;"

@@ -1,36 +1,47 @@
 
 <div class="">
-    <!-- Header -->
-    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl p-6 mb-6 shadow-lg">
-        <div class="flex flex-col space-y-2">
-            <h2 class="text-2xl sm:text-3xl  text-white tracking-tight">Manage Payment</h2>
-            <p class="text-sm text-blue-100 opacity-90">View and manage all service payments</p>
+    <!-- Page Header -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20">
+                    <i class="fas fa-credit-card text-lg"></i>
+                </div>
+                <span>Manage Payments</span>
+            </h1>
+            <p class="text-sm text-gray-500 mt-1">View, track, and manage all service request payments</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                {{ $totalPayments }} Total Records
+            </span>
         </div>
     </div>
 
     <!-- Filters Section -->
-    <div class="bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
+    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <!-- Search -->
             <div>
-                <label for="search" class="block text-xs font-medium text-gray-600 mb-1">Search Payments</label>
+                <label for="search" class="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-1.5">Search Payments</label>
                 <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                         <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
-                    <input wire:model.live="search" type="text" id="search"
-                        class="block w-full pl-10 pr-3 py-2.5 text-sm border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white/50"
+                    <input wire:model.live.debounce.300ms="search" type="text" id="search"
+                        class="block w-full pl-10 pr-3 py-2.5 text-sm border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white text-gray-900 placeholder-gray-400"
                         placeholder="Service code, customer...">
                 </div>
             </div>
 
             <!-- Status Filter -->
             <div>
-                <label for="status" class="block text-xs font-medium text-gray-600 mb-1">Payment Status</label>
+                <label for="status" class="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-1.5">Payment Status</label>
                 <select wire:model.live="statusFilter" id="status"
-                    class="block w-full pl-3 pr-8 py-2.5 text-sm border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white/50">
+                    class="block w-full pl-3 pr-8 py-2.5 text-sm border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white text-gray-900">
                     <option value="all">All Statuses</option>
                     <option value="completed">Completed</option>
                     <option value="pending">Pending</option>
@@ -40,165 +51,104 @@
         </div>
 
         <!-- Reset Button -->
-        <div class="mt-4">
+        <div class="mt-4 flex items-center justify-between">
             <button wire:click="resetFilters"
-                class="w-full sm:w-auto px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition flex items-center justify-center text-sm font-medium shadow-sm">
-                <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition flex items-center text-sm font-medium shadow-sm">
+                <svg class="h-4 w-4 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
                 Reset Filters
             </button>
+            <span wire:loading class="text-xs text-blue-600 font-medium flex items-center gap-1.5">
+                <svg class="animate-spin h-3.5 w-3.5 text-blue-600" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Filtering...
+            </span>
         </div>
     </div>
 
-    <!-- Mobile Summary Cards - 2x2 Grid -->
-    <div class="md:hidden grid grid-cols-2 gap-4 mb-6">
-        <!-- Total Payments Card -->
-        <div class="bg-white rounded-xl shadow-md border border-gray-100 p-4">
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+        <!-- Total Revenue Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-medium text-gray-500">Total Payments</p>
-                    <p class="text-lg  text-blue-600 mt-1">₹{{ number_format($totalAmount, 2) }}</p>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-gray-500">Total Payments</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1.5">₹{{ number_format($totalAmount, 2) }}</p>
                 </div>
-                <div class="p-2 rounded-full bg-blue-100 text-blue-600">
-                   ₹
-                </div>
-            </div>
-            <p class="text-xs text-gray-400 mt-2">All time transactions</p>
-        </div>
-
-        <!-- Completed Card -->
-        <div class="bg-white rounded-xl shadow-md border border-gray-100 p-4">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-medium text-gray-500">Completed</p>
-                    <p class="text-lg  text-green-600 mt-1">{{ $completedCount }}</p>
-                </div>
-                <div class="p-2 rounded-full bg-green-100 text-green-600">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg font-bold">
+                    <i class="fas fa-wallet text-blue-600"></i>
                 </div>
             </div>
-            <p class="text-xs text-gray-400 mt-2">{{ $completedPercentage }}% of total</p>
-        </div>
-
-        <!-- Pending Card -->
-        <div class="bg-white rounded-xl shadow-md border border-gray-100 p-4">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-medium text-gray-500">Pending</p>
-                    <p class="text-lg  text-amber-600 mt-1">{{ $pendingCount }}</p>
-                </div>
-                <div class="p-2 rounded-full bg-amber-100 text-amber-600">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-            </div>
-            <p class="text-xs text-gray-400 mt-2">{{ $pendingPercentage }}% of total</p>
-        </div>
-
-        <!-- Failed Card -->
-        <div class="bg-white rounded-xl shadow-md border border-gray-100 p-4">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-medium text-gray-500">Failed</p>
-                    <p class="text-lg  text-red-600 mt-1">{{ $failedCount }}</p>
-                </div>
-                <div class="p-2 rounded-full bg-red-100 text-red-600">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </div>
-            </div>
-            <p class="text-xs text-gray-400 mt-2">{{ $failedPercentage }}% of total</p>
-        </div>
-    </div>
-
-    <!-- Desktop Summary Cards -->
-    <div class="hidden md:grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <!-- Total Payments Card -->
-        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg overflow-hidden">
-            <div class="p-6">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm font-medium text-blue-100 opacity-90">Total Payments</p>
-                        <p class="text-2xl  text-white mt-1">₹{{ number_format($totalAmount, 2) }}</p>
-                    </div>
-                    <div class="p-3 rounded-full text-white  bg-white/20 backdrop-blur-sm">
-                        ₹
-                    </div>
-                </div>
-                <div class="mt-4 flex items-center text-xs font-medium text-blue-100">
-                    <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                    <span>All time transactions</span>
-                </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                <span class="flex items-center gap-1">
+                    <i class="fas fa-receipt text-gray-400"></i>
+                    {{ $totalPayments }} transactions
+                </span>
+                <span class="font-medium text-blue-600">All-time</span>
             </div>
         </div>
 
         <!-- Completed Card -->
-        <div class="bg-gradient-to-br from-green-500 to-teal-600 rounded-xl shadow-lg overflow-hidden">
-            <div class="p-6">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm font-medium text-green-100 opacity-90">Completed</p>
-                        <p class="text-2xl  text-white mt-1">{{ $completedCount }}</p>
-                    </div>
-                    <div class="p-3 rounded-full bg-white/20 backdrop-blur-sm">
-                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-green-600">Completed</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1.5">{{ $completedCount }}</p>
                 </div>
-                <div class="mt-4">
-                    <p class="text-xs font-medium text-green-100">{{ $completedPercentage }}% of total</p>
+                <div class="w-11 h-11 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-lg">
+                    <i class="fas fa-check-circle text-green-600"></i>
                 </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                <span class="text-green-700 font-semibold">₹{{ number_format($completedAmount, 2) }}</span>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                    {{ $completedPercentage }}% of total
+                </span>
             </div>
         </div>
 
         <!-- Pending Card -->
-        <div class="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl shadow-lg overflow-hidden">
-            <div class="p-6">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm font-medium text-amber-100 opacity-90">Pending</p>
-                        <p class="text-2xl  text-white mt-1">{{ $pendingCount }}</p>
-                    </div>
-                    <div class="p-3 rounded-full bg-white/20 backdrop-blur-sm">
-                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-amber-600">Pending</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1.5">{{ $pendingCount }}</p>
                 </div>
-                <div class="mt-4">
-                    <p class="text-xs font-medium text-amber-100">{{ $pendingPercentage }}% of total</p>
+                <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg">
+                    <i class="fas fa-clock text-amber-600"></i>
                 </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                <span class="text-amber-700 font-semibold">₹{{ number_format($pendingAmount, 2) }}</span>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+                    {{ $pendingPercentage }}% of total
+                </span>
             </div>
         </div>
 
         <!-- Failed Card -->
-        <div class="bg-gradient-to-br from-red-500 to-pink-600 rounded-xl shadow-lg overflow-hidden">
-            <div class="p-6">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm font-medium text-red-100 opacity-90">Failed</p>
-                        <p class="text-2xl  text-white mt-1">{{ $failedCount }}</p>
-                    </div>
-                    <div class="p-3 rounded-full bg-white/20 backdrop-blur-sm">
-                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-red-600">Failed</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1.5">{{ $failedCount }}</p>
                 </div>
-                <div class="mt-4">
-                    <p class="text-xs font-medium text-red-100">{{ $failedPercentage }}% of total</p>
+                <div class="w-11 h-11 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-lg">
+                    <i class="fas fa-exclamation-circle text-red-600"></i>
                 </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                <span class="text-red-700 font-semibold">₹{{ number_format($failedAmount, 2) }}</span>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+                    {{ $failedPercentage }}% of total
+                </span>
             </div>
         </div>
     </div>
+
 
         <!-- Payments Section -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">

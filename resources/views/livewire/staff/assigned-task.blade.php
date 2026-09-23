@@ -1,4 +1,21 @@
 <div class="flex-1 p-4 sm:p-6">
+    @if (session()->has('message'))
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)"
+            class="mb-4 bg-green-50 border-l-4 border-green-500 p-4 rounded shadow-sm flex items-center justify-between">
+            <div class="flex items-center">
+                <svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span class="text-sm font-medium text-green-800">{{ session('message') }}</span>
+            </div>
+            <button @click="show = false" class="text-green-600 hover:text-green-800">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    @endif
+
     <!-- Search/Filter Bar -->
     <div class="flex justify-end mb-6">
         <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
@@ -130,7 +147,8 @@
                                 @if($request->status != '2')
                                 <button 
                                     wire:click="markAsComplete({{ $request->id }})"
-                                    class="text-green-600 hover:text-green-900 dark:hover:text-green-400 transition-colors"
+                                    wire:loading.attr="disabled"
+                                    class="text-green-600 hover:text-green-900 dark:hover:text-green-400 transition-colors disabled:opacity-50"
                                     title="Mark Complete"
                                 >
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -236,10 +254,11 @@
                         View
                     </a>
                     
-                    @if($request->status != '100')
+                    @if($request->status != '2')
                     <button 
                         wire:click="markAsComplete({{ $request->id }})"
-                        class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                        wire:loading.attr="disabled"
+                        class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
                     >
                         <svg class="-ml-0.5 mr-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />

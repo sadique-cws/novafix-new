@@ -3,6 +3,7 @@
 namespace App\Livewire\Staff;
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\ServiceRequest;
@@ -65,9 +66,9 @@ class AssignedTask extends Component
             })
             ->when($this->statusFilter, function ($query) {
                 if ($this->statusFilter === 'in_progress') {
-                    $query->where('status', '>', 0)->where('status', '<', 100);
+                    $query->where('status', 1);
                 } elseif ($this->statusFilter === 'completed') {
-                    $query->where('status', 100);
+                    $query->where('status', 2);
                 } elseif ($this->statusFilter === 'pending') {
                     $query->where('status', 0);
                 }
@@ -89,6 +90,22 @@ class AssignedTask extends Component
                 'last_update' => now()
             ]);
             session()->flash('message', 'Status updated successfully.');
+        }
+    }
+
+    public function markAsComplete($id = null)
+    {
+        if (!$id) {
+            return;
+        }
+
+        $request = ServiceRequest::find($id);
+        if ($request) {
+            $request->update([
+                'status' => 2,
+                'last_update' => now()
+            ]);
+            session()->flash('message', 'Task marked as completed successfully.');
         }
     }
 }
