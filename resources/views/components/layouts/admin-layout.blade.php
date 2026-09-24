@@ -331,6 +331,7 @@
             }
         });
     </script>
+    <x-ui.confirm-modal />
     @livewireScripts
 </body>
 

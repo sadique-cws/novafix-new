@@ -142,7 +142,7 @@
                 <div class="hidden lg:flex items-center gap-4">
                     {{ $navbar_back ?? '' }}
                     <h1 class="text-white font-medium text-lg capitalize">
-                        {{ str_replace(['franchise.', '.'], ['', ' '], request()->route()->getName() ?? 'Dashboard') }}
+                        {{ str_replace(['franchise.', '.'], ['', ' '], request()->route()?->getName() ?? 'Dashboard') }}
                     </h1>
                     {{ $navbar_actions ?? '' }}
                 </div>
@@ -217,6 +217,7 @@
             }
         });
     </script>
+    <x-ui.confirm-modal />
     @livewireScripts
 </body>
 

@@ -175,8 +175,15 @@
 
                     <!-- Modal Footer -->
                     <div class="bg-gray-50 px-6 py-3.5 border-t border-gray-200 flex items-center justify-between">
-                        <button type="button" wire:click="deleteEnquiry({{ $selectedEnquiry->id }})" wire:confirm="Are you sure you want to delete this enquiry?"
-                            class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-red-600 hover:text-white hover:bg-red-600 border border-red-200 hover:border-transparent rounded-lg transition-colors focus:outline-none">
+                        <button type="button"
+                            @click="$dispatch('confirm-action', {
+                                title: 'Delete User Enquiry',
+                                message: 'Are you sure you want to delete this enquiry from {{ addslashes($selectedEnquiry->name ?? 'User') }}? This action cannot be undone.',
+                                confirmText: 'Yes, Delete',
+                                confirmColor: 'red',
+                                action: () => $wire.deleteEnquiry({{ $selectedEnquiry->id }})
+                            })"
+                            class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-red-600 hover:text-white hover:bg-red-600 border border-red-200 hover:border-transparent rounded-lg transition-colors focus:outline-none cursor-pointer">
                             <i class="fas fa-trash-alt mr-1.5"></i> Delete
                         </button>
                         <button type="button" wire:click="closeModal"

@@ -93,7 +93,7 @@
                 <!-- Spacer for desktop -->
                 <div class="hidden lg:block">
                     <h1 class="text-white font-medium text-lg capitalize">
-                        {{ str_replace(['staff.', '.'], ['', ' '], request()->route()->getName() ?? 'Dashboard') }}
+                        {{ str_replace(['staff.', '.'], ['', ' '], request()->route()?->getName() ?? 'Dashboard') }}
                     </h1>
                 </div>
 
@@ -156,6 +156,7 @@
             }
         });
     </script>
+    <x-ui.confirm-modal />
     @livewireScripts
 </body>
 
