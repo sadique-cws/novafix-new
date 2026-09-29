@@ -6,7 +6,6 @@ use App\Livewire\Admin\StaffEnquiries;
 use App\Livewire\Admin\UserEnquiry;
 use App\Livewire\Auth\{Login,ForgotPassword, ResetPassword};
 use App\Livewire\Admin\AddFranchises;
-use App\Livewire\Admin\EditFranchise; 
 use App\Livewire\Admin\AdminDashboard;
 use App\Livewire\Admin\Franchises\Add;
 use App\Livewire\Admin\ManageFranchises;
@@ -101,7 +100,7 @@ Route::prefix("admin")->group(function () {
             Route::get('manage-franchises', ManageFranchises::class)->name('manage-franchises');
             Route::get('manage-staffs', ManageStaffs::class)->name('manage-staffs');
             Route::get('view-franchises/{id}', ViewFranchises::class)->name('view-franchises');
-            Route::get('franchises/edit/{id}', EditFranchise::class)->name('edit-franchise');
+            Route::get('franchises/edit/{id}', AddFranchises::class)->name('edit-franchise');
             Route::get('Franchise-performance', Performance::class)->name('franchise.performance');
             Route::get('Receptionst-Management', ReceptionstManage::class)->name('receptionst.management');
             Route::get('Staff-Management', StaffManage::class)->name('staff.management');

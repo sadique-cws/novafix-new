@@ -1,34 +1,28 @@
-<div class="container bg-white px-4 sm:px-6 lg:px-8 py-6">
-  <div class=" overflow-hidden">
-    <!-- Header -->
-    <div
-      class="px-4 sm:px-6 py-4 border-b border-gray-100 flex justify-end items-center">
-      <div class="w-full sm:w-auto flex justify-end">
-        <a wire:navigate href="{{route('admin.add-franchise')}}"
-          class="btn-primary w-full flex justify-center items-center gap-2 text-white font-semibold rounded-lg bg-blue-500 p-2 sm:w-auto text-center transition-colors duration-200 ">
-          <i class="fa-solid fa-plus"></i>
-          Add Franchise
-        </a>
+<div class="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+  <!-- Filters & Actions -->
+  <div class="px-4 sm:px-6 py-4 bg-gray-50 border-b border-gray-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+    <div class="relative max-w-md w-full">
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+        <i class="fa-solid fa-magnifying-glass"></i>
       </div>
+      <input wire:model.live="search" type="text" placeholder="Search franchises..."
+        class="pl-10 pr-4 py-2.5 w-full rounded-lg border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-sm sm:text-base transition-colors duration-200">
     </div>
-
-    <!-- Filters -->
-    <div class="px-4 flex items-center justify-between sm:px-6 py-4 bg-gray-50 border-b border-gray-100">
-      <div class="relative max-w-md w-full">
-        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
-        <input wire:model.live="search" type="text" placeholder="Search franchises..."
-          class="pl-10 pr-4 py-2.5 w-full rounded-lg border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-sm sm:text-base transition-colors duration-200">
-      </div>
+    <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
       <select wire:model.live="statusFilter"
-        class="px-3 sm:px-4 py-2 border rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto">
+        class="px-3 sm:px-4 py-2.5 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white w-full sm:w-auto">
         <option value="">All Statuses</option>
         <option value="active">Active</option>
         <option value="inactive">Inactive</option>
         <option value="pending">Pending</option>
       </select>
+      <a wire:navigate href="{{route('admin.add-franchise')}}"
+        class="btn-primary flex justify-center items-center gap-2 text-white font-semibold rounded-lg bg-blue-500 px-4 py-2 sm:py-2.5 text-center transition-colors duration-200 whitespace-nowrap text-sm sm:text-base">
+        <i class="fa-solid fa-plus"></i>
+        <span>Add Franchise</span>
+      </a>
     </div>
+  </div>
 
     <!-- Success Message -->
     @if (session()->has('message'))
@@ -233,7 +227,6 @@
         {{ $franchises->links() }}
       </div>
     @endif
-  </div>
   <style>
     .btn-primary {
       @apply px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center transition-colors duration-200 text-sm sm:text-base font-medium;
@@ -273,31 +266,13 @@
     }
 
     /* Responsive adjustments */
-    @media (max-width: 640px) {
-      .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-    }
-
     @media (min-width: 641px) and (max-width: 1023px) {
-      .container {
-        padding-left: 2rem;
-        padding-right: 2rem;
-      }
-
       .status-badge {
         @apply text-xs;
       }
 
       .btn-primary {
         @apply px-3 py-2;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .container {
-        max-width: 1200px;
       }
     }
   </style>

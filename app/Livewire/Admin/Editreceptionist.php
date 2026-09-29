@@ -4,14 +4,17 @@ namespace App\Livewire\Admin;
 
 use App\Models\Receptioners;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title('Edit Receptionist')]
 #[Layout('components.layouts.admin-layout')]
 class Editreceptionist extends Component
 {
     public $receptionist;
 
     public $name, $contact, $email, $aadhar, $pan, $address, $salary, $status, $franchise_id;
+    public $successMessage = '';
 
     public function mount($id)
     {
@@ -33,7 +36,7 @@ class Editreceptionist extends Component
     {
         $this->validate([
             'name'       => 'required|string|max:255',
-            'contact'    => 'required|digits:10|regex:/^[6-9][0-9]{9}$/|unique:receptioners,contact',
+            'contact'    => 'required|digits:10|regex:/^[6-9][0-9]{9}$/|unique:receptioners,contact,' . $this->receptionist->id,
             'email'      => 'required|email|max:255',
             'aadhar'     => 'required|string|max:255',
             'pan'        => 'required|string|max:255',
@@ -54,6 +57,7 @@ class Editreceptionist extends Component
             'status'       => $this->status,
         ]);
 
+        $this->successMessage = 'Receptionist updated successfully!';
         session()->flash('success', 'Receptionist updated successfully!');
     }    public function render()
     {

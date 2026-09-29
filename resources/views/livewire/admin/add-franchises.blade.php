@@ -6,19 +6,8 @@
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                     <!-- Form Header with Gradient -->
                     <div class="bg-gradient-to-r from-blue-700 to-indigo-800 px-8 py-6">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                            <div>
-                                <h2 class="text-2xl  text-white">Register New Franchise</h2>
-                            </div>
-                            <a href="{{ route('admin.manage-franchises') }}"
-                                class="flex items-center px-4 py-2 bg-white hover:bg-slate-100 text-indigo-700 rounded-lg text-sm font-semibold shadow-xs transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                </svg>
-                                Back to List
-                            </a>
+                        <div>
+                            <h2 class="text-2xl text-white">{{ $isEditing ? 'Edit Franchise: ' . $franchise_name : 'Register New Franchise' }}</h2>
                         </div>
                     </div>
                     <!-- Main Form -->
@@ -90,13 +79,15 @@
                                 <!-- Password -->
                                 <div>
                                     <label for="password"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Password
-                                        <span class="text-red-500">*</span></label>
+                                        class="block text-sm font-medium text-gray-700 mb-2">
+                                        {{ $isEditing ? 'New Password' : 'Password' }}
+                                        @if(!$isEditing)<span class="text-red-500">*</span>@endif
+                                    </label>
                                     <div class="relative">
                                         <input wire:model.live="password" type="password" id="password"
                                             autocomplete="new-password"
                                             class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border py-3 px-4 pr-10 transition duration-150 ease-in-out"
-                                            placeholder="••••••••">
+                                            placeholder="{{ $isEditing ? 'Leave blank to keep current' : '••••••••' }}">
                                         <button type="button"
                                             class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
                                             onclick="togglePasswordVisibility('password')">
@@ -110,6 +101,9 @@
                                             </svg>
                                         </button>
                                     </div>
+                                    @if($isEditing)
+                                        <p class="mt-1 text-xs text-gray-500">Leave blank to keep current password.</p>
+                                    @endif
                                     @error('password')
                                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -118,13 +112,15 @@
                                 <!-- Confirm Password -->
                                 <div>
                                     <label for="password_confirmation"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Confirm Password <span
-                                            class="text-red-500">*</span></label>
+                                        class="block text-sm font-medium text-gray-700 mb-2">
+                                        {{ $isEditing ? 'Confirm New Password' : 'Confirm Password' }}
+                                        @if(!$isEditing)<span class="text-red-500">*</span>@endif
+                                    </label>
                                     <div class="relative">
                                         <input wire:model.live="password_confirmation" type="password"
                                             id="password_confirmation" autocomplete="new-password"
                                             class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border py-3 px-4 pr-10 transition duration-150 ease-in-out"
-                                            placeholder="••••••••">
+                                            placeholder="{{ $isEditing ? 'Confirm new password' : '••••••••' }}">
                                         <button type="button"
                                             class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
                                             onclick="togglePasswordVisibility('password_confirmation')">
@@ -138,6 +134,9 @@
                                             </svg>
                                         </button>
                                     </div>
+                                    @error('password_confirmation')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                  <div>
                                     <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email
@@ -490,7 +489,7 @@
                                 class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition relative">
                                 <!-- Visible when not loading -->
                                 <span wire:loading.remove wire:target="submit">
-                                    Create Franchise
+                                    {{ $isEditing ? 'Update Franchise' : 'Create Franchise' }}
                                 </span>
 
                                 <!-- Loading state -->

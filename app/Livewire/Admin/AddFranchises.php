@@ -6,69 +6,107 @@ use App\Models\Franchise;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Rule;
-use Livewire\Component;
 use Illuminate\Support\Facades\Log;
-use Livewire\Attributes\Title;
+use Illuminate\Validation\Rule;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
 
-#[Title('Add Franchise')]
 #[Layout('components.layouts.admin-layout')]
 class AddFranchises extends Component
 {
-    #[Rule('required|string|min:3|unique:franchises,franchise_name|max:255')]
+    public $franchiseId = null;
+    public $isEditing = false;
+
     public $franchise_name;
-
-    #[Rule('required|digits:10|regex:/^[6-9][0-9]{9}$/|unique:franchises,contact_no')]
     public $contact_no;
-
-    #[Rule('required|email:rfc,dns|unique:franchises,email')]
     public $email;
-    
-    #[Rule('required|string|min:6')]
     public $password;
-    
-    #[Rule('required|string|min:6|same:password')]
     public $password_confirmation;
-
-    #[Rule('nullable|digits:12|regex:/^[2-9]{1}[0-9]{11}$/|unique:franchises,aadhar_no')]
     public $aadhar_no;
-
-    #[Rule('nullable|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/|unique:franchises,pan_no')]
     public $pan_no;
-
-    // ✅ IFSC validation relaxed — allows all formats
-    #[Rule('nullable|string|max:20')]
     public $ifsc_code;
-
-    #[Rule('nullable|string|max:255')]
     public $bank_name;
-
-    #[Rule('nullable|digits_between:9,18|unique:franchises,account_no')]
     public $account_no;
-
-    #[Rule('nullable|string|max:255')]
     public $city;
-
-    #[Rule('nullable|string|max:255')]
     public $district;
-
-    #[Rule('required|digits:6|regex:/^[1-9][0-9]{5}$/')]
     public $pincode;
-
-    #[Rule('required|string|max:255')]
     public $state;
-
-    #[Rule('required|string|max:255')]
     public $street;
-
-    #[Rule('required|string|max:255')]
     public $country = 'India';
-
-    #[Rule('nullable|date')]
     public $doc;
-
     public $status = 'active';
+
+    public function mount($id = null)
+    {
+        if ($id) {
+            $this->isEditing = true;
+            $this->franchiseId = $id;
+            $franchise = Franchise::findOrFail($id);
+
+            $this->franchise_name = $franchise->franchise_name;
+            $this->contact_no = $franchise->contact_no;
+            $this->email = $franchise->email;
+            $this->aadhar_no = $franchise->aadhar_no;
+            $this->pan_no = $franchise->pan_no;
+            $this->ifsc_code = $franchise->ifsc_code;
+            $this->bank_name = $franchise->bank_name;
+            $this->account_no = $franchise->account_no;
+            $this->city = $franchise->city;
+            $this->district = $franchise->district;
+            $this->pincode = $franchise->pincode;
+            $this->state = $franchise->state;
+            $this->street = $franchise->street;
+            $this->country = $franchise->country ?? 'India';
+            $this->doc = $franchise->doc ? \Carbon\Carbon::parse($franchise->doc)->format('Y-m-d') : null;
+            $this->status = $franchise->status ?? 'active';
+        }
+    }
+
+    protected function rules()
+    {
+        return [
+            'franchise_name' => [
+                'required', 'string', 'min:3', 'max:255',
+                Rule::unique('franchises', 'franchise_name')->ignore($this->franchiseId),
+            ],
+            'contact_no' => [
+                'required', 'digits:10', 'regex:/^[6-9][0-9]{9}$/',
+                Rule::unique('franchises', 'contact_no')->ignore($this->franchiseId),
+            ],
+            'email' => [
+                'required', 'email:rfc,dns',
+                Rule::unique('franchises', 'email')->ignore($this->franchiseId),
+            ],
+            'password' => $this->isEditing
+                ? 'nullable|string|min:6'
+                : 'required|string|min:6',
+            'password_confirmation' => $this->isEditing
+                ? 'nullable|string|min:6|same:password'
+                : 'required|string|min:6|same:password',
+            'aadhar_no' => [
+                'nullable', 'digits:12', 'regex:/^[2-9]{1}[0-9]{11}$/',
+                Rule::unique('franchises', 'aadhar_no')->ignore($this->franchiseId),
+            ],
+            'pan_no' => [
+                'nullable', 'regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/',
+                Rule::unique('franchises', 'pan_no')->ignore($this->franchiseId),
+            ],
+            'ifsc_code' => 'nullable|string|max:20',
+            'bank_name' => 'nullable|string|max:255',
+            'account_no' => [
+                'nullable', 'digits_between:9,18',
+                Rule::unique('franchises', 'account_no')->ignore($this->franchiseId),
+            ],
+            'city' => 'nullable|string|max:255',
+            'district' => 'nullable|string|max:255',
+            'pincode' => 'required|digits:6|regex:/^[1-9][0-9]{5}$/',
+            'state' => 'required|string|max:255',
+            'street' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'doc' => 'nullable|date',
+            'status' => 'required|in:active,inactive,pending',
+        ];
+    }
 
     protected $messages = [
         'contact_no.digits' => 'Contact number must be exactly 10 digits.',
@@ -79,7 +117,7 @@ class AddFranchises extends Component
         'pincode.digits' => 'Pincode must be exactly 6 digits.',
         'pincode.regex' => 'Pincode cannot start with 0.',
         'password_confirmation.same' => 'Passwords do not match.',
-        'password.min' => 'Password must be at least 8 characters long.',
+        'password.min' => 'Password must be at least 6 characters long.',
         'street.required' => 'Street address is required.',
         'street.max' => 'Street address must not exceed 255 characters.',
     ];
@@ -87,8 +125,8 @@ class AddFranchises extends Component
     public function submit()
     {
         $this->validate();
-        
-        if ($this->password !== $this->password_confirmation) {
+
+        if (!empty($this->password) && $this->password !== $this->password_confirmation) {
             $this->addError('password_confirmation', 'Passwords do not match.');
             return;
         }
@@ -96,11 +134,10 @@ class AddFranchises extends Component
         DB::beginTransaction();
 
         try {
-            Franchise::create([
+            $data = [
                 'franchise_name' => $this->franchise_name,
                 'contact_no' => $this->contact_no,
                 'email' => $this->email,
-                'password' => Hash::make($this->password),
                 'aadhar_no' => $this->aadhar_no,
                 'pan_no' => $this->pan_no,
                 'ifsc_code' => $this->ifsc_code,
@@ -114,17 +151,29 @@ class AddFranchises extends Component
                 'country' => $this->country,
                 'doc' => $this->doc,
                 'status' => $this->status,
-            ]);
+            ];
 
-            DB::commit();
+            if (!empty($this->password)) {
+                $data['password'] = Hash::make($this->password);
+            }
 
-            session()->flash('success', 'Franchise created successfully ✅');
+            if ($this->isEditing) {
+                $franchise = Franchise::findOrFail($this->franchiseId);
+                $franchise->update($data);
+                DB::commit();
+                session()->flash('success', 'Franchise updated successfully ✅');
+            } else {
+                Franchise::create($data);
+                DB::commit();
+                session()->flash('success', 'Franchise created successfully ✅');
+            }
+
             return redirect()->route('admin.manage-franchises');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Franchise creation failed: ' . $e->getMessage());
-            session()->flash('error', '❌ Failed to create franchise. Please try again.');
+            Log::error('Franchise save failed: ' . $e->getMessage());
+            session()->flash('error', '❌ Failed to save franchise. Please try again.');
         }
     }
 
@@ -140,7 +189,6 @@ class AddFranchises extends Component
             return;
         }
 
-        // ✅ No strict regex validation
         try {
             $res = Http::timeout(5)->get("https://ifsc.razorpay.com/{$value}");
             if ($res->ok()) {
@@ -199,6 +247,7 @@ class AddFranchises extends Component
 
     public function render()
     {
-        return view('livewire.admin.add-franchises');
+        return view('livewire.admin.add-franchises')
+            ->title($this->isEditing ? 'Edit Franchise' : 'Add Franchise');
     }
 }
