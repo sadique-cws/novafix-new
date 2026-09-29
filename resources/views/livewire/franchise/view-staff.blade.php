@@ -10,45 +10,42 @@
         <div class="bg-gradient-to-r from-indigo-600 to-indigo-800 px-6 py-5 sm:px-8">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div class="flex items-center space-x-4">
-                    <div
-                        class="h-16 w-16 sm:h-20 sm:w-20 rounded-full overflow-hidden bg-white border-2 border-white shadow">
-                        <img src="{{ $staff->image ? asset('storage/' . $staff->image) : asset('images/default-staff.png') }}"
-                            alt="{{ $staff->name }}" class="h-full w-full object-cover">
+                    <div class="h-16 w-16 sm:h-20 sm:w-20 rounded-full overflow-hidden bg-white/10 backdrop-blur-xs border-2 border-white/30 shadow flex items-center justify-center text-white font-bold text-xl sm:text-2xl flex-shrink-0">
+                        @if($staff->image_url)
+                            <img src="{{ $staff->image_url }}"
+                                alt="{{ $staff->name }}" class="h-full w-full object-cover"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                            <span class="text-white" style="display: none;">{{ strtoupper(substr($staff->name ?? 'S', 0, 1)) }}</span>
+                        @else
+                            <span class="text-white">{{ strtoupper(substr($staff->name ?? 'S', 0, 1)) }}</span>
+                        @endif
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-2xl  text-white">{{ $staff->name }}</h1>
-                        <div class="flex flex-wrap items-center gap-2 mt-1">
-                            <span
-                                class="px-2 py-1 rounded-full text-xs sm:text-sm font-medium bg-white bg-opacity-20 text-white">
+                        <h1 class="text-xl sm:text-2xl text-white font-bold">{{ $staff->name }}</h1>
+                        <div class="flex flex-wrap items-center gap-2 mt-1.5">
+                            <span class="px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-white/20 text-white backdrop-blur-xs border border-white/20 shadow-xs">
                                 {{ $staff->serviceCategory->name ?? 'No Category' }}
                             </span>
-                            <span
-                                class="px-2 py-1 rounded-full text-xs sm:text-sm font-medium 
-                                {{ $staff->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                            <span class="px-3 py-1 rounded-full text-xs sm:text-sm font-semibold shadow-xs {{ $staff->status === 'active' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800' }}">
                                 {{ ucfirst($staff->status) }}
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="flex hidden md:block flex-wrap gap-2 sm:gap-3 w-full sm:w-auto justify-end">
-                    <button wire:click="$dispatch('edit-staff', { id: {{ $staff->id }} })"
-                        class="flex items-center px-3 py-1.5 bg-white text-indigo-700 rounded-full text-sm font-medium hover:bg-opacity-90 transition-all shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
-                            fill="currentColor">
-                            <path
-                                d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                <div class="flex items-center flex-wrap gap-2 sm:gap-3 w-full sm:w-auto justify-end">
+                    <a wire:navigate href="{{ route('franchise.staff.edit', $staff->id) }}"
+                        class="flex items-center px-4 py-2 bg-white text-indigo-700 hover:bg-indigo-50 rounded-full text-sm font-semibold transition-all shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                         </svg>
-                        Edit Profile
-                    </button>
+                        <span>Edit Profile</span>
+                    </a>
                     <button
-                        class="flex items-center px-3 py-1.5 bg-indigo-700 text-white rounded-full text-sm font-medium hover:bg-opacity-90 transition-all shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
-                            fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
+                        class="flex items-center px-4 py-2 bg-indigo-500/30 hover:bg-indigo-500/50 text-white rounded-full text-sm font-medium transition-all shadow-sm border border-white/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
                         </svg>
-                        Export
+                        <span>Export</span>
                     </button>
                 </div>
             </div>

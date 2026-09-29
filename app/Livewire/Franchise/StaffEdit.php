@@ -37,6 +37,14 @@ class StaffEdit extends Component
         $this->loadStaffData();
     }
 
+    public function resetForm()
+    {
+        $this->loadStaffData();
+        $this->image = null;
+        $this->resetErrorBag();
+        session()->flash('info', 'Form reset to original values.');
+    }
+
     public function loadStaffData()
     {
         $this->name = $this->staff->name;

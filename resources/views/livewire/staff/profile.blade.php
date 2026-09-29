@@ -66,7 +66,7 @@
                         <div class="flex items-center space-x-6">
                             <div class="relative group">
                                 <img class="h-20 w-20 rounded-full object-cover border-2 border-white shadow"
-                                    src="{{ asset('storage/staff/images' . $staff->image) }}" alt="Profile photo">
+                                    src="{{ $staff->image_url ?? asset('images/default-avatar.png') }}" alt="Profile photo">
                                 <div wire:loading wire:target="image"
                                     class="absolute inset-0 bg-black bg-opacity-40 rounded-full flex items-center justify-center">
                                     <svg class="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg"

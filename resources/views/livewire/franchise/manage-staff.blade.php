@@ -49,9 +49,19 @@
                     <td class="px-5 py-4 text-sm text-gray-900 font-medium">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 h-10 w-10">
-                                <img class="h-10 w-10 rounded-full object-cover border border-gray-200" 
-                                     src="{{ $staff->image ? asset('storage/' . $staff->image) : asset('images/default-avatar.png') }}" 
-                                     alt="{{ $staff->name }}">
+                                @if ($staff->image_url)
+                                    <img class="h-10 w-10 rounded-full object-cover border border-gray-200 shadow-xs" 
+                                         src="{{ $staff->image_url }}" 
+                                         alt="{{ $staff->name }}"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 items-center justify-center text-white font-semibold text-sm shadow-xs" style="display: none;">
+                                        {{ strtoupper(substr($staff->name ?? 'S', 0, 1)) }}
+                                    </div>
+                                @else
+                                    <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm shadow-xs">
+                                        {{ strtoupper(substr($staff->name ?? 'S', 0, 1)) }}
+                                    </div>
+                                @endif
                             </div>
                             <div class="ml-4">
                                 <div class="text-sm font-medium text-gray-900">{{ $staff->name }}</div>

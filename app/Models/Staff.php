@@ -67,12 +67,21 @@ class Staff extends Authenticatable
     {
         return $this->HasMany(userAnswer::class, 'user_id');
     }
-    public function getImageUrlAttribute()
+    public function getImageUrlAttribute($value)
     {
-        if ($this->image) {
-            return asset('storage/' . $this->image);
+        $raw = $this->attributes['image_url'] ?? $value;
+        if (!empty($raw)) {
+            if (str_starts_with($raw, 'http://') || str_starts_with($raw, 'https://')) {
+                return $raw;
+            }
+            return asset('storage/' . ltrim($raw, '/'));
         }
-        return asset('images/default-avatar.png'); // Default image if none exists
+        return null;
+    }
+
+    public function getImageAttribute()
+    {
+        return $this->image_url;
     }
     public function serviceRequests()
     {

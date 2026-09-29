@@ -6,9 +6,9 @@
             <!-- Profile header with image -->
             <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-indigo-50 to-blue-50">
                 <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-                    @if($staff->image)
+                    @if($staff->image_url)
                         <div class="flex-shrink-0 h-24 w-24 sm:h-28 sm:w-28">
-                            <img class="h-full w-full rounded-full object-cover ring-4 ring-white shadow" src="{{ asset('storage/'.$staff->image) }}" alt="Staff Image">
+                            <img class="h-full w-full rounded-full object-cover ring-4 ring-white shadow" src="{{ $staff->image_url }}" alt="Staff Image">
                         </div>
                     @else
                         <div class="flex-shrink-0 h-24 w-24 sm:h-28 sm:w-28 bg-indigo-100 rounded-full flex items-center justify-center">
