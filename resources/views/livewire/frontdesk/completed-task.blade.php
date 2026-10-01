@@ -17,78 +17,88 @@
         </div>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
             <!-- Total Completed -->
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-xs sm:text-sm font-medium text-gray-500">Total Completed</p>
-                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{ $totalCompleted }}</h3>
-                    </div>
-                    <div class="p-2 sm:p-3 rounded-full bg-green-50 text-green-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
+            <div class="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100 min-w-0 overflow-hidden flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start sm:items-center justify-between gap-2 min-w-0">
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs sm:text-sm font-medium text-gray-500 truncate">Total Completed</p>
+                            <h3 class="text-lg sm:text-2xl font-bold text-gray-800 mt-0.5 sm:mt-1 truncate">{{ $totalCompleted }}</h3>
+                        </div>
+                        <div class="flex-shrink-0 p-1.5 sm:p-2.5 rounded-full bg-green-50 text-green-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
-                <p class="text-xs text-gray-500 mt-1 sm:mt-2">Successfully resolved requests</p>
+                <p class="text-[11px] sm:text-xs text-gray-400 mt-2 truncate">Successfully resolved</p>
             </div>
 
             <!-- This Week -->
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-xs sm:text-sm font-medium text-gray-500">This Week</p>
-                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{ $thisWeekCount }}</h3>
-                    </div>
-                    <div class="p-2 sm:p-3 rounded-full bg-blue-50 text-blue-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
+            <div class="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100 min-w-0 overflow-hidden flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start sm:items-center justify-between gap-2 min-w-0">
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs sm:text-sm font-medium text-gray-500 truncate">This Week</p>
+                            <h3 class="text-lg sm:text-2xl font-bold text-gray-800 mt-0.5 sm:mt-1 truncate">{{ $thisWeekCount }}</h3>
+                        </div>
+                        <div class="flex-shrink-0 p-1.5 sm:p-2.5 rounded-full bg-blue-50 text-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
-                <p class="text-xs text-gray-500 mt-1 sm:mt-2">Completed in last 7 days</p>
+                <p class="text-[11px] sm:text-xs text-gray-400 mt-2 truncate">Last 7 days</p>
             </div>
 
             <!-- Top Technician -->
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-xs sm:text-sm font-medium text-gray-500">Top Technician</p>
-                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1 truncate">
-                            {{ $topTechnician->name ?? 'N/A' }}</h3>
-                    </div>
-                    <div class="p-2 sm:p-3 rounded-full bg-purple-50 text-purple-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                        </svg>
+            <div class="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100 min-w-0 overflow-hidden flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start sm:items-center justify-between gap-2 min-w-0">
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs sm:text-sm font-medium text-gray-500 truncate">Top Technician</p>
+                            <h3 class="text-sm sm:text-lg font-bold text-gray-800 mt-0.5 sm:mt-1 truncate" title="{{ $topTechnician->name ?? 'N/A' }}">
+                                {{ $topTechnician->name ?? 'N/A' }}
+                            </h3>
+                        </div>
+                        <div class="flex-shrink-0 p-1.5 sm:p-2.5 rounded-full bg-purple-50 text-purple-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
-                <p class="text-xs text-gray-500 mt-1 sm:mt-2">{{ $topTechnician->count ?? 0 }} completed</p>
+                <p class="text-[11px] sm:text-xs text-gray-400 mt-2 truncate">{{ $topTechnician->count ?? 0 }} completed</p>
             </div>
 
             <!-- Average Resolution -->
-            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-xs sm:text-sm font-medium text-gray-500">Avg. Resolution</p>
-                        <h3 class="text-xl sm:text-2xl  text-gray-800 mt-1">{{ $averageResolutionDays }} days
-                        </h3>
-                    </div>
-                    <div class="p-2 sm:p-3 rounded-full bg-yellow-50 text-yellow-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+            <div class="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100 min-w-0 overflow-hidden flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start sm:items-center justify-between gap-2 min-w-0">
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs sm:text-sm font-medium text-gray-500 truncate">Avg. Resolution</p>
+                            <h3 class="text-lg sm:text-2xl font-bold text-gray-800 mt-0.5 sm:mt-1 truncate">
+                                {{ $averageResolutionDays }} <span class="text-xs sm:text-sm font-normal text-gray-500">days</span>
+                            </h3>
+                        </div>
+                        <div class="flex-shrink-0 p-1.5 sm:p-2.5 rounded-full bg-yellow-50 text-yellow-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
-                <p class="text-xs text-gray-500 mt-1 sm:mt-2">Time to complete requests</p>
+                <p class="text-[11px] sm:text-xs text-gray-400 mt-2 truncate">Avg completion time</p>
             </div>
         </div>
 
