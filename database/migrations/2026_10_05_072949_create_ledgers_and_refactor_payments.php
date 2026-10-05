@@ -10,36 +10,47 @@ return new class extends Migration
     public function up(): void
     {
         // 1. Add customer_id to service_requests
-        Schema::table('service_requests', function (Blueprint $table) {
-            $table->foreignId('customer_id')->nullable()->after('shop_id')->constrained('customers')->nullOnDelete();
-        });
+        if (!Schema::hasColumn('service_requests', 'customer_id')) {
+            Schema::table('service_requests', function (Blueprint $table) {
+                $table->foreignId('customer_id')->nullable()->after('shop_id')->constrained('customers')->nullOnDelete();
+            });
+        }
 
         // 2. Add balance to shops and customers
-        Schema::table('shops', function (Blueprint $table) {
-            $table->decimal('balance', 10, 2)->default(0)->after('gst_number');
-        });
-        Schema::table('customers', function (Blueprint $table) {
-            $table->decimal('balance', 10, 2)->default(0)->after('email');
-        });
+        if (!Schema::hasColumn('shops', 'balance')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->decimal('balance', 10, 2)->default(0)->after('gst_number');
+            });
+        }
+        if (!Schema::hasColumn('customers', 'balance')) {
+            Schema::table('customers', function (Blueprint $table) {
+                $table->decimal('balance', 10, 2)->default(0)->after('email');
+            });
+        }
 
         // 3. Create ledgers table
-        Schema::create('ledgers', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('franchise_id')->constrained()->onDelete('cascade');
-            $table->foreignId('shop_id')->nullable()->constrained('shops')->onDelete('cascade');
-            $table->foreignId('customer_id')->nullable()->constrained('customers')->onDelete('cascade');
-            $table->foreignId('service_request_id')->nullable()->constrained('service_requests')->onDelete('cascade');
-            
-            $table->enum('type', ['debit', 'credit']); // debit = increases due, credit = decreases due
-            $table->decimal('amount', 10, 2);
-            $table->string('description')->nullable();
-            
-            $table->foreignId('recorded_by')->nullable()->constrained('users')->nullOnDelete();
-            
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('ledgers')) {
+            Schema::create('ledgers', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('franchise_id')->constrained()->onDelete('cascade');
+                $table->foreignId('shop_id')->nullable()->constrained('shops')->onDelete('cascade');
+                $table->foreignId('customer_id')->nullable()->constrained('customers')->onDelete('cascade');
+                $table->foreignId('service_request_id')->nullable()->constrained('service_requests')->onDelete('cascade');
+                
+                $table->enum('type', ['debit', 'credit']); // debit = increases due, credit = decreases due
+                $table->decimal('amount', 10, 2);
+                $table->string('description')->nullable();
+                
+                $table->foreignId('recorded_by')->nullable()->constrained('users')->nullOnDelete();
+                
+                $table->timestamps();
+            });
+        }
 
         // 4. Data Migration
+        // Clear ledgers in case of re-run
+        DB::table('ledgers')->truncate();
+
         // First, link existing service_requests to customers if not a shop
         $serviceRequests = DB::table('service_requests')->get();
         foreach ($serviceRequests as $sr) {
