@@ -30,30 +30,33 @@ class ManageShop extends Component
     public function openModal()
     {
         $this->reset(['shop_name', 'owner_name', 'contact', 'email', 'address', 'gst_number', 'shop_id']);
-        $this->dispatch('open-modal', 'shopModal');
+        $this->dispatch('open-modal', name: 'shopModal');
     }
 
     public function closeModal()
     {
-        $this->dispatch('close-modal', 'shopModal');
+        $this->dispatch('close-modal', name: 'shopModal');
     }
 
     public function save()
     {
         $this->validate();
 
-        Shop::updateOrCreate(
-            ['id' => $this->shop_id],
-            [
-                'franchise_id' => Auth::guard('franchise')->user()->id,
-                'shop_name' => $this->shop_name,
-                'owner_name' => $this->owner_name,
-                'contact' => $this->contact,
-                'email' => $this->email,
-                'address' => $this->address,
-                'gst_number' => $this->gst_number,
-            ]
-        );
+        $data = [
+            'franchise_id' => Auth::guard('franchise')->user()->id,
+            'shop_name' => $this->shop_name,
+            'owner_name' => $this->owner_name,
+            'contact' => $this->contact,
+            'email' => $this->email,
+            'address' => $this->address,
+            'gst_number' => $this->gst_number,
+        ];
+
+        if ($this->shop_id) {
+            Shop::where('id', $this->shop_id)->update($data);
+        } else {
+            Shop::create($data);
+        }
 
         $this->closeModal();
         session()->flash('message', $this->shop_id ? 'Shop updated successfully.' : 'Shop added successfully.');
