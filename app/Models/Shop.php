@@ -17,6 +17,7 @@ class Shop extends Model
         'email',
         'address',
         'gst_number',
+        'balance',
     ];
 
     public function serviceRequests()
@@ -27,5 +28,20 @@ class Shop extends Model
     public function franchise()
     {
         return $this->belongsTo(Franchise::class);
+    }
+
+    public function ledgers()
+    {
+        return $this->hasMany(Ledger::class);
+    }
+
+    public function refreshBalance()
+    {
+        $debits = $this->ledgers()->where('type', 'debit')->sum('amount');
+        $credits = $this->ledgers()->where('type', 'credit')->sum('amount');
+        
+        $this->update(['balance' => $debits - $credits]);
+        
+        return $this->balance;
     }
 }

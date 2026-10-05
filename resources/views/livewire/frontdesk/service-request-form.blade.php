@@ -233,7 +233,7 @@
                 <!-- Service Amount & Payments -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-1 md:col-span-2">
                     <div>
-                        <label for="service_amount" class="block text-sm font-medium text-slate-600">Total Bill
+                        <label for="service_amount" class="block text-sm font-medium text-slate-600">Estimate Bill
                             Amount</label>
                         <input type="number" step="0.01" id="service_amount" wire:model.live="service_amount"
                             class="mt-1 w-full rounded-md border border-slate-300 shadow-sm focus:ring-primary focus:border-primary p-2">

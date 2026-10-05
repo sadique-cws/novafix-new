@@ -40,71 +40,59 @@
                 <p class="text-md font-medium text-gray-800">{{ $shop->gst_number ?? 'N/A' }}</p>
             </div>
             <div>
-                <p class="text-sm font-bold text-gray-500 uppercase mb-1">Total Outstanding Dues</p>
-                <p class="text-xl font-bold {{ $total_dues > 0 ? 'text-red-600' : 'text-green-600' }}">
-                    ₹{{ number_format($total_dues, 2) }}
+                <p class="text-sm font-bold text-gray-500 uppercase mb-1">
+                    {{ $shop->balance > 0 ? 'Outstanding Due' : 'Advance Balance' }}
                 </p>
-                @if($total_dues > 0)
-                <button type="button" x-data @click="$dispatch('open-modal', 'settleModal')" class="mt-2 bg-primary hover:bg-primary/90 text-white text-xs font-bold py-1.5 px-4 rounded transition-colors">
-                    Settle Dues
+                <p class="text-2xl font-bold {{ $shop->balance > 0 ? 'text-red-600' : 'text-green-600' }}">
+                    ₹{{ number_format(abs($shop->balance), 2) }}
+                </p>
+                <button type="button" x-data @click="$dispatch('open-modal', 'settleModal')" class="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-2 px-5 rounded shadow-sm transition-colors">
+                    Receive Payment
                 </button>
-                @endif
             </div>
         </div>
     </div>
 
-    <!-- Shop Ledger / Request History -->
+    <!-- Shop Ledger / Passbook -->
     <div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-        <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
-            <h3 class="text-lg font-bold text-gray-800">Recent Service Requests</h3>
+        <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+            <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-book mr-2 text-gray-500"></i>Shop Passbook (Ledger)</h3>
         </div>
         <div class="overflow-x-auto">
             <x-ui.table>
                 <x-slot name="head">
-                    <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Tracking ID</th>
-                    <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Device</th>
-                    <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Total Bill</th>
-                    <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Due</th>
-                    <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Status</th>
                     <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Date</th>
+                    <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Description</th>
+                    <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Ref (Service Code)</th>
+                    <th class="px-5 py-3 text-right text-xs font-bold text-gray-500 uppercase">Amount</th>
                 </x-slot>
 
-                @forelse ($shop->serviceRequests as $request)
+                @forelse ($shop->ledgers as $ledger)
                     <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                        <td class="px-5 py-4 text-sm font-medium text-primary">
-                            {{ $request->service_code }}
+                        <td class="px-5 py-4 text-sm font-medium text-gray-600">
+                            {{ $ledger->created_at->format('d M Y, h:i A') }}
                         </td>
                         <td class="px-5 py-4">
-                            <div class="text-sm font-bold text-gray-900">{{ $request->product_name }}</div>
-                            <div class="text-xs text-gray-500">{{ $request->brand }}</div>
+                            <div class="flex items-center gap-2">
+                                @if($ledger->type === 'debit')
+                                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                                @else
+                                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                                @endif
+                                <span class="text-sm font-bold text-gray-900">{{ $ledger->description ?? ($ledger->type === 'debit' ? 'Service Bill' : 'Payment Received') }}</span>
+                            </div>
                         </td>
-                        <td class="px-5 py-4 text-sm font-medium">
-                            ₹{{ number_format($request->payment->total_amount ?? 0, 2) }}
+                        <td class="px-5 py-4 text-sm font-medium text-gray-500">
+                            {{ $ledger->serviceRequest ? $ledger->serviceRequest->service_code : '-' }}
                         </td>
-                        <td class="px-5 py-4 text-sm font-bold {{ ($request->payment->due_amount ?? 0) > 0 ? 'text-red-600' : 'text-green-600' }}">
-                            ₹{{ number_format($request->payment->due_amount ?? 0, 2) }}
-                        </td>
-                        <td class="px-5 py-4 text-sm">
-                            @if (in_array((string)$request->status, ['0', '1']))
-                                <x-ui.badge color="yellow">Pending</x-ui.badge>
-                            @elseif(in_array((string)$request->status, ['25', '50', '2']))
-                                <x-ui.badge color="blue">In Progress</x-ui.badge>
-                            @elseif(in_array((string)$request->status, ['100', '3']))
-                                <x-ui.badge color="green">Completed</x-ui.badge>
-                            @elseif((string)$request->status == '90')
-                                <x-ui.badge color="red">Cancelled</x-ui.badge>
-                            @else
-                                <x-ui.badge color="gray">{{ $request->status ?? 'Unknown' }}</x-ui.badge>
-                            @endif
-                        </td>
-                        <td class="px-5 py-4 text-gray-500 text-sm">
-                            {{ $request->created_at->format('d M, Y') }}
+                        <td class="px-5 py-4 text-right text-sm font-bold {{ $ledger->type === 'debit' ? 'text-red-600' : 'text-green-600' }}">
+                            {{ $ledger->type === 'debit' ? '-' : '+' }}₹{{ number_format($ledger->amount, 2) }}
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-5 py-8 text-center text-gray-500">
-                            No service requests found for this shop.
+                        <td colspan="4" class="px-5 py-8 text-center text-gray-500">
+                            No transactions found in this shop's passbook.
                         </td>
                     </tr>
                 @endforelse
@@ -113,17 +101,17 @@
     </div>
 
     <!-- Settle Dues Modal -->
-    <x-ui.modal name="settleModal" title="Settle Shop Dues">
+    <x-ui.modal name="settleModal" title="Receive Payment">
         <div class="p-2">
             <p class="text-sm text-gray-600 mb-4">
-                Total Outstanding: <span class="font-bold text-red-600">₹{{ number_format($total_dues, 2) }}</span>
+                Total Outstanding Balance: <span class="font-bold text-red-600">₹{{ number_format(abs($shop->balance), 2) }}</span>
             </p>
             
             <form wire:submit.prevent="settleDues">
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Amount Received</label>
-                    <input type="number" step="0.01" wire:model="settle_amount" max="{{ $total_dues }}"
-                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    <input type="number" step="0.01" wire:model="settle_amount"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border" placeholder="Enter amount">
                     @error('settle_amount') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 
@@ -133,7 +121,7 @@
                         Cancel
                     </button>
                     <button type="submit"
-                        class="px-4 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-primary/90">
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700">
                         Record Payment
                     </button>
                 </div>

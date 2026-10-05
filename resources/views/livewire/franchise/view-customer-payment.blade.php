@@ -161,11 +161,6 @@
 
                 <!-- Payment Actions -->
                 <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 mt-8 border-t border-gray-100 pt-6">
-                    @if($payment->status !== 'completed')
-                        <x-ui.button wire:click="$set('showPaymentModal', true)" variant="primary">
-                            <i class="fas fa-money-bill-wave mr-2"></i> Record Payment
-                        </x-ui.button>
-                    @endif
                     <x-ui.button wire:click="printReceipt({{ $payment->id }})" variant="secondary">
                         <i class="fas fa-print mr-2"></i> Print Receipt
                     </x-ui.button>

@@ -14,6 +14,7 @@ class Customer extends Model
         'name',
         'contact',
         'email',
+        'balance',
     ];
 
     public function franchise()
@@ -23,7 +24,21 @@ class Customer extends Model
 
     public function serviceRequests()
     {
-        return $this->hasMany(ServiceRequest::class, 'contact', 'contact')
-                    ->where('franchise_id', $this->franchise_id);
+        return $this->hasMany(ServiceRequest::class, 'customer_id');
+    }
+
+    public function ledgers()
+    {
+        return $this->hasMany(Ledger::class);
+    }
+
+    public function refreshBalance()
+    {
+        $debits = $this->ledgers()->where('type', 'debit')->sum('amount');
+        $credits = $this->ledgers()->where('type', 'credit')->sum('amount');
+        
+        $this->update(['balance' => $debits - $credits]);
+        
+        return $this->balance;
     }
 }

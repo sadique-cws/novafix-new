@@ -150,62 +150,6 @@ class ViewTask extends Component
         );
     }
 
-    public function recordPayment()
-    {
-        $this->validate([
-            'paymentMethod' => 'required|string|in:cash,card,upi',
-            'paymentAmount' => 'required|numeric|min:1',
-            'paymentReference' => 'nullable|string|max:255',
-        ]);
-
-        $payment = $this->task->payment;
-        if (!$payment) {
-            return;
-        }
-
-        $remaining_due = (float) $payment->due_amount;
-        
-        if ($this->paymentAmount > $remaining_due) {
-            $this->addError('paymentAmount', 'Amount cannot exceed the remaining due of ₹' . number_format($remaining_due, 2));
-            return;
-        }
-
-        \App\Models\PaymentTransaction::create([
-            'payment_id' => $payment->id,
-            'service_request_id' => $this->task->id,
-            'amount_paid' => $this->paymentAmount,
-            'payment_method' => $this->paymentMethod,
-            'transaction_id' => $this->paymentMethod === 'cash' ? 'CASH-'.uniqid() : $this->paymentReference,
-            'staff_id' => null,
-            'received_by' => Auth::guard('frontdesk')->id(),
-            'notes' => $this->paymentReference,
-        ]);
-
-        $new_paid = (float) $payment->paid_amount + $this->paymentAmount;
-        $new_due = (float) $payment->total_amount - $new_paid;
-        
-        $payment->update([
-            'paid_amount' => $new_paid,
-            'due_amount' => max($new_due, 0),
-            'status' => $new_due <= 0 ? 'completed' : 'partial',
-        ]);
-
-        $this->paymentCompleted = $new_due <= 0;
-        
-        $this->dispatch('close-modal', 'recordPaymentModal');
-
-        $this->dispatch(
-            'notify',
-            type: 'success',
-            title: 'Payment Recorded!',
-            message: 'Payment of ₹'.number_format($this->paymentAmount, 2).' recorded successfully.',
-            duration: 5000
-        );
-
-        $this->paymentAmount = 0;
-        $this->task->refresh();
-    }
-
     public function directDelivery()
     {
         $this->task->update([

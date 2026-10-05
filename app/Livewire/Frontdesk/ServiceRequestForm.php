@@ -225,9 +225,25 @@ class ServiceRequestForm extends Component
                 }
             }
 
+            $customerId = null;
+            if ($this->request_type === 'customer' && $this->contact) {
+                $customerRecord = Customer::updateOrCreate(
+                    [
+                        'contact' => $this->contact,
+                        'franchise_id' => $this->franchise_id
+                    ],
+                    [
+                        'name' => $this->owner_name,
+                        'email' => $this->email,
+                    ]
+                );
+                $customerId = $customerRecord->id;
+            }
+
             $serviceRequest = ServiceRequest::create([
                 'is_shop' => $this->request_type === 'shop',
                 'shop_id' => $this->request_type === 'shop' ? $this->shop_id : null,
+                'customer_id' => $customerId,
                 'receptioners_id' => $this->receptioners_id,
                 'serial_no' => $this->serial_no,
                 'technician_id' => $this->technician_id,
@@ -274,30 +290,27 @@ class ServiceRequestForm extends Component
                 'received_by' => $this->receptioners_id,
             ]);
 
-            // Create initial transaction if anything is paid
+            // Create Ledger entry for advance payment
             if ($paid > 0) {
-                \App\Models\PaymentTransaction::create([
-                    'payment_id' => $payment->id,
+                \App\Models\Ledger::create([
+                    'franchise_id' => $this->franchise_id,
+                    'shop_id' => $this->request_type === 'shop' ? $this->shop_id : null,
+                    'customer_id' => $customerId,
                     'service_request_id' => $serviceRequest->id,
-                    'amount_paid' => $paid,
-                    'payment_method' => 'cash',
-                    'received_by' => $this->receptioners_id,
-                    'notes' => 'Advance Payment',
+                    'type' => 'credit',
+                    'amount' => $paid,
+                    'description' => 'Advance Payment for ' . $this->product_name,
+                    'recorded_by' => $this->receptioners_id,
+                    'recorded_by_type' => 'staff'
                 ]);
-            }
 
-            // Save or Update Customer if direct customer
-            if ($this->request_type === 'customer' && $this->contact) {
-                Customer::updateOrCreate(
-                    [
-                        'contact' => $this->contact,
-                        'franchise_id' => $this->franchise_id
-                    ],
-                    [
-                        'name' => $this->owner_name,
-                        'email' => $this->email,
-                    ]
-                );
+                if ($this->request_type === 'shop' && $this->shop_id) {
+                    $shopRecord = Shop::find($this->shop_id);
+                    if ($shopRecord) $shopRecord->refreshBalance();
+                } elseif ($customerId) {
+                    $customerRecord = Customer::find($customerId);
+                    if ($customerRecord) $customerRecord->refreshBalance();
+                }
             }
 
             DB::commit();

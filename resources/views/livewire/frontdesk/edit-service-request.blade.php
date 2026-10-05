@@ -179,7 +179,7 @@
                                 <div>
                                     <label for="service_amount"
                                         class="block text-sm font-medium text-slate-700 mb-1">
-                                        Total Bill Amount
+                                        Estimate Bill Amount
                                     </label>
                                     <div class="relative rounded-md shadow-sm">
                                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

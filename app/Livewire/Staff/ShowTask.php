@@ -4,6 +4,7 @@ namespace App\Livewire\Staff;
 
 use App\Models\Payment;
 use App\Models\ServiceRequest;
+use App\Models\Ledger;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -139,6 +140,38 @@ class ShowTask extends Component
                 'status' => ($new_due <= 0 && $this->task->payment->paid_amount >= $this->finalPriceAmount && $this->finalPriceAmount > 0) ? 'completed' : 'partial'
             ]);
 
+            // Wallet/Ledger Logic
+            $ledger = Ledger::where('service_request_id', $this->task->id)
+                            ->where('type', 'debit')
+                            ->first();
+
+            if ($this->finalPriceAmount > 0) {
+                if ($ledger) {
+                    $ledger->update(['amount' => $this->finalPriceAmount]);
+                } else {
+                    Ledger::create([
+                        'franchise_id' => $this->task->franchise_id,
+                        'shop_id' => $this->task->is_shop ? $this->task->shop_id : null,
+                        'customer_id' => !$this->task->is_shop ? $this->task->customer_id : null,
+                        'service_request_id' => $this->task->id,
+                        'type' => 'debit',
+                        'amount' => $this->finalPriceAmount,
+                        'description' => 'Final Bill for Service ' . $this->task->service_code,
+                        'recorded_by' => Auth::guard('staff')->id(),
+                        'recorded_by_type' => 'staff'
+                    ]);
+                }
+            } elseif ($ledger) {
+                $ledger->delete();
+            }
+
+            // Refresh Balance
+            if ($this->task->is_shop && $this->task->shop) {
+                $this->task->shop->refreshBalance();
+            } elseif (!$this->task->is_shop && $this->task->customer) {
+                $this->task->customer->refreshBalance();
+            }
+
             $this->dispatch('close-modal', 'setFinalPriceModal');
             $this->dispatch(
                 'notify',
@@ -150,67 +183,6 @@ class ShowTask extends Component
         }
     }
 
-    public function recordPayment()
-    {
-        $this->validate([
-            'paymentMethod' => 'required|string|in:cash,card,upi',
-            'paymentAmount' => 'required|numeric|min:1',
-            'paymentReference' => 'nullable|string|max:255',
-        ]);
-
-        $payment = $this->task->payment;
-        if (!$payment) {
-            return;
-        }
-
-        $remaining_due = (float) $payment->due_amount;
-        
-        if ($this->paymentAmount > $remaining_due) {
-            $this->addError('paymentAmount', 'Amount cannot exceed the remaining due of ₹' . number_format($remaining_due, 2));
-            return;
-        }
-
-        \App\Models\PaymentTransaction::create([
-            'payment_id' => $payment->id,
-            'service_request_id' => $this->task->id,
-            'amount_paid' => $this->paymentAmount,
-            'payment_method' => $this->paymentMethod,
-            'transaction_id' => $this->paymentMethod === 'cash' ? 'CASH-'.uniqid() : $this->paymentReference,
-            'staff_id' => Auth::guard('staff')->id(),
-            'notes' => $this->paymentReference,
-        ]);
-
-        $new_paid = (float) $payment->paid_amount + $this->paymentAmount;
-        $new_due = (float) $payment->total_amount - $new_paid;
-        
-        $payment->update([
-            'paid_amount' => $new_paid,
-            'due_amount' => max($new_due, 0),
-            'status' => $new_due <= 0 ? 'completed' : 'partial',
-        ]);
-
-        $this->paymentCompleted = $new_due <= 0;
-        
-        $this->dispatch('close-modal', 'recordPaymentModal');
-
-        $this->dispatch(
-            'notify',
-            type: 'success',
-            title: 'Payment Recorded!',
-            message: 'Payment of ₹'.number_format($this->paymentAmount, 2).' recorded successfully.',
-            duration: 5000
-        );
-
-        $this->paymentAmount = 0;
-        $this->task->refresh();
-    }
-
-    public function cancelPayment()
-    {
-        $this->showPaymentSection = false;
-        $this->selectedStatus = $this->task->status;
-    }
-
     public function render()
     {
         return view('livewire.staff.show-task', [
@@ -218,3 +190,4 @@ class ShowTask extends Component
         ]);
     }
 }
+

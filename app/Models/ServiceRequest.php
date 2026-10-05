@@ -48,6 +48,16 @@ class ServiceRequest extends Model
     {
         return $this->belongsTo(ServiceCategory::class, 'service_categories_id');
     }
+    
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class, 'shop_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
    
 }
 
