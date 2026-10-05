@@ -51,7 +51,7 @@ return new class extends Migration
                 
                 if (!$customer) {
                     $customerId = DB::table('customers')->insertGetId([
-                        'franchise_id' => $sr->franchise_id,
+                        'franchise_id' => $sr->franchise_id ?? 1,
                         'name' => $sr->owner_name,
                         'contact' => $sr->contact,
                         'email' => $sr->email,
@@ -73,7 +73,7 @@ return new class extends Migration
                 $sr = DB::table('service_requests')->where('id', $payment->service_request_id)->first();
                 if ($sr) {
                     DB::table('ledgers')->insert([
-                        'franchise_id' => $sr->franchise_id,
+                        'franchise_id' => $sr->franchise_id ?? 1,
                         'shop_id' => $sr->is_shop ? $sr->shop_id : null,
                         'customer_id' => !$sr->is_shop ? $sr->customer_id : null,
                         'service_request_id' => $sr->id,
@@ -93,7 +93,7 @@ return new class extends Migration
             $sr = DB::table('service_requests')->where('id', $txn->service_request_id)->first();
             if ($sr) {
                 DB::table('ledgers')->insert([
-                    'franchise_id' => $sr->franchise_id,
+                    'franchise_id' => $sr->franchise_id ?? 1,
                     'shop_id' => $sr->is_shop ? $sr->shop_id : null,
                     'customer_id' => !$sr->is_shop ? $sr->customer_id : null,
                     'service_request_id' => $sr->id,
